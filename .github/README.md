@@ -1,10 +1,19 @@
-# <img src="appicons/gymnutshell-tinted-circle.png" width="72" align="middle" alt="Ícone do Gym Nutshell">&nbsp;&nbsp;Gym Nutshell para Android
+# <img src="appicons/gymnutshell-tinted-circle.png" width="72" align="middle" alt="Ícone do Gym Nutshell">&nbsp;&nbsp;Gym Nutshell (Android)
 
-Versão nativa para Android do Gym Nutshell, o app de check-in diário de metas fitness com conquistas, temas e bônus de sequência.
+_Rastreie metas de nutrição, sono, suplementos e libere conquistas._
 
-O app reúne em uma tela só o que importa no dia: treino, cardio, sono, água, calorias, macronutrientes e suplementos. O progresso de cada meta vira um nível de conquista, representado pelo emoji do tema escolhido, e fica registrado em um calendário. Dias consistentes rendem bônus semanais e mensais. Tem as mesmas funções da [versão iOS](https://github.com/jonathaxs/gymnutshell-ios) e é gratuito, sem anúncios, sem assinatura e sem cadastro.
+O Gym Nutshell nasceu da minha rotina de academia. Eu precisava lembrar de bater a meta de proteína, água, fibras e creatina, e ainda registrar cardio e sono, mas não achei nenhum app que fizesse tudo isso junto.
 
-## Funcionalidades
+Durante o dia, você rastreia cada meta com sliders simples, incluindo calorias, carboidratos e gorduras, e recebe notificações durante o dia.
+
+Para deixar o app um pouco mais divertido, cada dia completo vira uma conquista temática, com sequências e um calendário do seu progresso.
+
+Tem as mesmas funções da [versão iOS](https://github.com/jonathaxs/gymnutshell-ios) e é gratuito, sem anúncios, sem assinatura e sem cadastro.
+
+**Disponível em [APK](https://jonathasmotta.com/downloads/GymNutshell-1.0.apk)** para Android, com suporte para tablets e Wear OS.
+
+## Funcionalidades - Versão 1.0 
+_(Algumas funcionalidades estão sendo removidas e outras aprimoradas na futura Versão 1.1)_ 
 
 **Hoje**
 - Metas do dia com registro rápido e anel de progresso geral.
