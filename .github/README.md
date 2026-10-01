@@ -1,4 +1,4 @@
-# <img src="appicons/gymnutshell-tinted-circle.png" width="72" align="middle" alt="Ícone do Gym Nutshell">&nbsp;&nbsp;Gym Nutshell (Android)
+# <img src="appicons/gymnutshell-tinted-circle.png" width="56" align="absmiddle" alt="Ícone do Gym Nutshell">&nbsp;&nbsp;Gym&nbsp;Nutshell&nbsp;&nbsp;<img src="appicons/android.svg" width="28" height="28" align="absmiddle" alt="Android">
 
 _Rastreie metas de nutrição, sono, suplementos e libere conquistas._
 
