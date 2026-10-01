@@ -13,7 +13,7 @@ Tem as mesmas funções da [versão iOS](https://github.com/jonathaxs/gymnutshel
 **Disponível em [APK](https://jonathasmotta.com/downloads/GymNutshell-1.0.apk)** para Android, com suporte para tablets e Wear OS.
 
 ## Funcionalidades - Versão 1.0 
-_(Algumas funcionalidades estão sendo removidas e outras aprimoradas na futura Versão 1.1)_ 
+_(Algumas funcionalidades estão sendo removidas e outras aprimoradas na futura Versão 1.1. Qualquer dúvida ou sugestão entre em [contato comigo](https://jonathasmotta.com))_ 
 
 **Hoje**
 - Metas do dia com registro rápido e anel de progresso geral.
