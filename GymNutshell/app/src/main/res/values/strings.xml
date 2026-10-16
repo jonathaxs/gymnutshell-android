@@ -519,4 +519,8 @@
     <string name="widget_bg_footer_custom">Widgets use a color you pick.</string>
     <string name="widget_bg_preview">Preview</string>
     <string name="widget_bg_pick_color">Pick a color</string>
+
+    <!-- Navegação 2.0 (Batch L2) -->
+    <string name="common_close">Close</string>
+    <string name="today_history">History</string>
 </resources>

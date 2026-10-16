@@ -19,6 +19,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Icon
@@ -57,6 +58,7 @@ fun AchievementsScreen(
     modifier: Modifier = Modifier,
     onOpenHistory: () -> Unit = {},
     onEditRecord: (Long) -> Unit = {},
+    onBack: (() -> Unit)? = null,
     viewModel: AchievementsViewModel = viewModel(),
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -71,7 +73,7 @@ fun AchievementsScreen(
             Modifier.fillMaxSize()
         }
         Column(contentMod) {
-            AchievementsHeader(accent = accent, onOpenHistory = onOpenHistory)
+            AchievementsHeader(accent = accent, onOpenHistory = onOpenHistory, onBack = onBack)
             FilterSelector(selected = state.filterMode, accent = accent, onSelect = viewModel::setFilterMode)
             if (isWide && state.filterMode == AchievementsFilterMode.Calendar) {
                 // Wide + Calendário: calendário à esquerda, histórico à direita (duas colunas roláveis).
@@ -140,16 +142,30 @@ private fun HistoryContent(state: AchievementsUiState, accent: Color, onEditReco
     }
 }
 
-/** Cabeçalho: sino que abre o histórico de notificações + título da tela. Espelha a toolbar do iOS. */
+/** Cabeçalho: sino que abre o histórico de notificações ou seta de voltar + título da tela. Espelha a toolbar do iOS. */
 @Composable
-private fun AchievementsHeader(accent: Color, onOpenHistory: () -> Unit) {
-    val bellDesc = stringResource(R.string.cd_notification_history)
+private fun AchievementsHeader(
+    accent: Color,
+    onOpenHistory: () -> Unit,
+    onBack: (() -> Unit)? = null,
+) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(start = 4.dp, end = 16.dp, top = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        IconButton(onClick = onOpenHistory, modifier = Modifier.semantics { contentDescription = bellDesc }) {
-            Icon(Icons.Default.Notifications, contentDescription = null, tint = accent)
+        if (onBack != null) {
+            IconButton(onClick = onBack) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.cd_back),
+                    tint = accent,
+                )
+            }
+        } else {
+            val bellDesc = stringResource(R.string.cd_notification_history)
+            IconButton(onClick = onOpenHistory, modifier = Modifier.semantics { contentDescription = bellDesc }) {
+                Icon(Icons.Default.Notifications, contentDescription = null, tint = accent)
+            }
         }
         Text(
             stringResource(R.string.achievements_header_title),

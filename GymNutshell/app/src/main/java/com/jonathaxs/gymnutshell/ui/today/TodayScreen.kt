@@ -10,6 +10,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -33,9 +34,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.systemGestureExclusion
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedIconButton
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
@@ -90,7 +100,10 @@ private val TodayContentMaxWidth = 330.dp
 fun TodayScreen(
     modifier: Modifier = Modifier,
     accent: Color = MaterialTheme.colorScheme.primary,
+    onOpenNotifications: () -> Unit = {},
+    onOpenSettings: () -> Unit = {},
     onOpenHistory: () -> Unit = {},
+    onOpenAchievements: () -> Unit = {},
     onOpenTheme: () -> Unit = {},
     viewModel: TodayViewModel = viewModel(),
 ) {
@@ -124,9 +137,39 @@ fun TodayScreen(
         val isWide = maxWidth >= Breakpoints.WideThreshold
         val isTall = maxHeight >= Breakpoints.TallThreshold
         when {
-            !isWide -> TodayPortrait(state, accent, onOpenHistory, onRingClick, onTierClick, viewModel)
-            isTall -> TodayWideGrid(state, accent, onOpenHistory, onRingClick, onTierClick, viewModel)
-            else -> TodayWideColumn(state, accent, onOpenHistory, onRingClick, onTierClick, viewModel)
+            !isWide -> TodayPortrait(
+                state = state,
+                accent = accent,
+                onOpenNotifications = onOpenNotifications,
+                onOpenSettings = onOpenSettings,
+                onOpenHistory = onOpenHistory,
+                onOpenAchievements = onOpenAchievements,
+                onRingClick = onRingClick,
+                onTierClick = onTierClick,
+                viewModel = viewModel,
+            )
+            isTall -> TodayWideGrid(
+                state = state,
+                accent = accent,
+                onOpenNotifications = onOpenNotifications,
+                onOpenSettings = onOpenSettings,
+                onOpenHistory = onOpenHistory,
+                onOpenAchievements = onOpenAchievements,
+                onRingClick = onRingClick,
+                onTierClick = onTierClick,
+                viewModel = viewModel,
+            )
+            else -> TodayWideColumn(
+                state = state,
+                accent = accent,
+                onOpenNotifications = onOpenNotifications,
+                onOpenSettings = onOpenSettings,
+                onOpenHistory = onOpenHistory,
+                onOpenAchievements = onOpenAchievements,
+                onRingClick = onRingClick,
+                onTierClick = onTierClick,
+                viewModel = viewModel,
+            )
         }
     }
 
@@ -148,15 +191,25 @@ fun TodayScreen(
 private fun TodayPortrait(
     state: TodayUiState,
     accent: Color,
+    onOpenNotifications: () -> Unit,
+    onOpenSettings: () -> Unit,
     onOpenHistory: () -> Unit,
+    onOpenAchievements: () -> Unit,
     onRingClick: () -> Unit,
     onTierClick: () -> Unit,
     viewModel: TodayViewModel,
 ) {
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         TodayHero(
-            state, accent, vertical = false,
-            onOpenHistory = onOpenHistory, onRingClick = onRingClick, onTierClick = onTierClick,
+            state = state,
+            accent = accent,
+            vertical = false,
+            onOpenNotifications = onOpenNotifications,
+            onOpenSettings = onOpenSettings,
+            onOpenHistory = onOpenHistory,
+            onOpenAchievements = onOpenAchievements,
+            onRingClick = onRingClick,
+            onTierClick = onTierClick,
             modifier = Modifier.widthIn(max = TodayContentMaxWidth).fillMaxWidth(),
         )
         TodayGoalsList(state, accent, viewModel, Modifier.fillMaxSize())
@@ -168,7 +221,10 @@ private fun TodayPortrait(
 private fun TodayWideGrid(
     state: TodayUiState,
     accent: Color,
+    onOpenNotifications: () -> Unit,
+    onOpenSettings: () -> Unit,
     onOpenHistory: () -> Unit,
+    onOpenAchievements: () -> Unit,
     onRingClick: () -> Unit,
     onTierClick: () -> Unit,
     viewModel: TodayViewModel,
@@ -176,8 +232,15 @@ private fun TodayWideGrid(
     Row(Modifier.fillMaxSize().padding(horizontal = 24.dp, vertical = 16.dp)) {
         Box(Modifier.width(360.dp).fillMaxHeight(), contentAlignment = Alignment.Center) {
             TodayHero(
-                state, accent, vertical = true,
-                onOpenHistory = onOpenHistory, onRingClick = onRingClick, onTierClick = onTierClick,
+                state = state,
+                accent = accent,
+                vertical = true,
+                onOpenNotifications = onOpenNotifications,
+                onOpenSettings = onOpenSettings,
+                onOpenHistory = onOpenHistory,
+                onOpenAchievements = onOpenAchievements,
+                onRingClick = onRingClick,
+                onTierClick = onTierClick,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -194,7 +257,10 @@ private fun TodayWideGrid(
 private fun TodayWideColumn(
     state: TodayUiState,
     accent: Color,
+    onOpenNotifications: () -> Unit,
+    onOpenSettings: () -> Unit,
     onOpenHistory: () -> Unit,
+    onOpenAchievements: () -> Unit,
     onRingClick: () -> Unit,
     onTierClick: () -> Unit,
     viewModel: TodayViewModel,
@@ -202,8 +268,15 @@ private fun TodayWideColumn(
     Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically) {
         Box(Modifier.width(340.dp).fillMaxHeight(), contentAlignment = Alignment.Center) {
             TodayHero(
-                state, accent, vertical = false,
-                onOpenHistory = onOpenHistory, onRingClick = onRingClick, onTierClick = onTierClick,
+                state = state,
+                accent = accent,
+                vertical = false,
+                onOpenNotifications = onOpenNotifications,
+                onOpenSettings = onOpenSettings,
+                onOpenHistory = onOpenHistory,
+                onOpenAchievements = onOpenAchievements,
+                onRingClick = onRingClick,
+                onTierClick = onTierClick,
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             )
         }
@@ -292,16 +365,18 @@ private fun todayGridCells(
 }
 
 /**
- * Cabeçalho: data por extenso e, abaixo, anel de progresso (esquerda) + conquista do dia (direita),
- * lado a lado — espelha a HStack do TodayHeroView (iOS). A conquista mostra o rótulo "Achievement",
- * o emoji do tier e o nome "Level N" (nomes localizados por tema ainda não existem no Android).
+ * Cabeçalho: barra superior (sino, data, engrenagem) e, abaixo, anel de progresso (esquerda) +
+ * conquista do dia (direita), seguidos pelos botões de atalho para Histórico e Conquistas.
  */
 @Composable
 private fun TodayHero(
     state: TodayUiState,
     accent: Color,
     vertical: Boolean,
+    onOpenNotifications: () -> Unit,
+    onOpenSettings: () -> Unit,
     onOpenHistory: () -> Unit,
+    onOpenAchievements: () -> Unit,
     onRingClick: () -> Unit,
     onTierClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -310,7 +385,12 @@ private fun TodayHero(
         modifier = modifier.padding(horizontal = 16.dp, vertical = 12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        DateButton(state.dateLabel, accent, onOpenHistory)
+        TodayTopBar(
+            dateLabel = state.dateLabel,
+            accent = accent,
+            onOpenNotifications = onOpenNotifications,
+            onOpenSettings = onOpenSettings,
+        )
         Spacer(Modifier.height(16.dp))
         if (vertical) {
             // Tablet com altura sobrando: anel em cima, conquista embaixo (porte do verticalLayout do iOS).
@@ -324,26 +404,95 @@ private fun TodayHero(
                 TierBlock(state, onTierClick, Modifier.weight(1f))
             }
         }
+        Spacer(Modifier.height(16.dp))
+        TodayHeroButtons(
+            accent = accent,
+            onOpenHistory = onOpenHistory,
+            onOpenAchievements = onOpenAchievements,
+        )
     }
 }
 
-/** Data de hoje: botão com borda arredondada na cor de destaque que abre o histórico de notificações. */
+/** Barra superior temporária da Hoje: sino à esquerda, data no centro e engrenagem à direita. */
 @Composable
-private fun DateButton(label: String, accent: Color, onOpenHistory: () -> Unit) {
-    val historyDesc = stringResource(R.string.cd_notification_history)
-    Text(
-        label,
-        style = MaterialTheme.typography.titleMedium,
-        textAlign = TextAlign.Center,
-        modifier = Modifier
-            .widthIn(max = TodayContentMaxWidth)
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(18.dp))
-            .clickable(onClick = onOpenHistory)
-            .border(1.5.dp, accent.copy(alpha = 0.33f), RoundedCornerShape(18.dp))
-            .padding(horizontal = 14.dp, vertical = 10.dp)
-            .semantics { contentDescription = historyDesc },
-    )
+private fun TodayTopBar(
+    dateLabel: String,
+    accent: Color,
+    onOpenNotifications: () -> Unit,
+    onOpenSettings: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        IconButton(onClick = onOpenNotifications) {
+            Icon(
+                imageVector = Icons.Default.Notifications,
+                contentDescription = stringResource(R.string.cd_notification_history),
+                tint = accent,
+            )
+        }
+        Text(
+            text = dateLabel,
+            style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.weight(1f),
+        )
+        IconButton(onClick = onOpenSettings) {
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = stringResource(R.string.tab_settings),
+                tint = accent,
+            )
+        }
+    }
+}
+
+/** Linha centralizada abaixo do hero com pílula de Histórico e botão redondo de Conquistas. */
+@Composable
+private fun TodayHeroButtons(
+    accent: Color,
+    onOpenHistory: () -> Unit,
+    onOpenAchievements: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp, Alignment.CenterHorizontally),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        OutlinedButton(
+            onClick = onOpenHistory,
+            shape = CircleShape,
+            border = BorderStroke(1.dp, accent.copy(alpha = 0.5f)),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        ) {
+            Icon(
+                imageVector = Icons.Default.DateRange,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp),
+                tint = accent,
+            )
+            Spacer(Modifier.width(8.dp))
+            Text(
+                text = stringResource(R.string.today_history),
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+        OutlinedIconButton(
+            onClick = onOpenAchievements,
+            shape = CircleShape,
+            border = BorderStroke(1.dp, accent.copy(alpha = 0.5f)),
+        ) {
+            Icon(
+                imageVector = Icons.Default.Star,
+                contentDescription = stringResource(R.string.tab_achievements),
+                tint = accent,
+            )
+        }
+    }
 }
 
 /** Bloco do anel: rótulo "Progress" + anel com % no centro. Toque abre a info do anel. */

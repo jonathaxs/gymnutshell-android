@@ -1,15 +1,19 @@
 package com.jonathaxs.gymnutshell.ui.settings
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -20,11 +24,11 @@ import com.jonathaxs.gymnutshell.ui.components.GroupRow
 import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
 import com.jonathaxs.gymnutshell.ui.components.GroupSection
 import com.jonathaxs.gymnutshell.ui.theme.color
-import com.jonathaxs.gymnutshell.ui.util.rememberIsTablet
 
 /**
  * Lista raiz da Settings — porte da SettingsView (iOS): mesmas seções, na mesma ordem
  * (Profile → Preferences → System → About), agrupadas em cards arredondados (visual moderno).
+ * Em telas largas, a lista é centralizada com largura máxima de 700dp (sem layout dividido/two-pane).
  */
 @Composable
 fun SettingsListScreen(
@@ -49,12 +53,18 @@ fun SettingsListScreen(
     val accent by viewModel.accentColor.collectAsStateWithLifecycle()
 
     Scaffold(topBar = { SettingsTopBar(stringResource(R.string.tab_settings)) }) { padding ->
-        Column(
-            Modifier
+        Box(
+            modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
-                .verticalScroll(rememberScrollState()),
+                .padding(padding),
+            contentAlignment = Alignment.TopCenter,
         ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .widthIn(max = 700.dp)
+                    .verticalScroll(rememberScrollState()),
+            ) {
             // Seção Profile: dados físicos, objetivo fitness e metas (settings.section.edit do iOS).
             GroupSection(title = stringResource(R.string.settings_section_profile), titleColor = accent.color) {
                 GroupRow(stringResource(R.string.settings_physical_data), showChevron = true, onClick = onOpenPhysical)
@@ -100,6 +110,7 @@ fun SettingsListScreen(
             }
 
             Spacer(Modifier.height(24.dp))
+            }
         }
     }
 }
