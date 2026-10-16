@@ -33,17 +33,17 @@ object WearSnapshotSync {
      */
     fun computeStats(
         records: List<DailyRecord>,
-        bonusPoints: Int,
         today: Long = LocalDate.now().toEpochDay(),
     ): WearStatsSummary {
         fun tierOf(record: DailyRecord) = DailyAchievement.from(record.percent / 100.0)
         return WearStatsSummary(
             totalDays = records.size,
-            totalPoints = records.sumOf { it.points } + bonusPoints,
+            totalPoints = records.sumOf { it.points }, // 2.0: so os registros diarios
             level1Days = records.count { tierOf(it) == DailyAchievement.Level1 },
             level2Days = records.count { tierOf(it) == DailyAchievement.Level2 },
             level3Days = records.count { tierOf(it) == DailyAchievement.Level3 },
             level4Days = records.count { tierOf(it) == DailyAchievement.Level4 },
+            level5Days = records.count { tierOf(it) == DailyAchievement.Level5 },
             workoutDays = records.count { it.didWorkout },
             cardioDays = records.count { it.didCardio },
             last7Days = ((today - 6)..today).map { day ->
@@ -87,7 +87,7 @@ object WearSnapshotSync {
                     categoryRaw = c.categoryRaw,
                 )
             },
-            stats = computeStats(recordRepo.allRecords(), recordRepo.allBonuses().sumOf { it.bonusPoints }),
+            stats = computeStats(recordRepo.allRecords()),
             notificationHistory = NotificationHistoryRepository(context).snapshot().map { e ->
                 WearNotificationEntry(
                     id = e.id,

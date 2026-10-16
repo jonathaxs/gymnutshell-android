@@ -10,7 +10,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.jonathaxs.gymnutshell.core.domain.AppOrientation
 
 /**
  * Limiares de adaptação de layout — mesmos valores do iOS (que compara `geo.size` contra 700/500 pt).
@@ -31,21 +30,18 @@ fun rememberIsTablet(): Boolean =
     LocalConfiguration.current.smallestScreenWidthDp >= Breakpoints.TabletSmallestWidthDp
 
 /**
- * Aplica o travamento de orientação à Activity hospedeira — porte do OrientationLockManager (iOS).
- * No tablet ignora a preferência e deixa sempre livre; no celular respeita a escolha do usuário
- * (Portrait trava na vertical; Both aceita ambas, seguindo o auto-rotate do sistema).
+ * Trava a orientação da Activity hospedeira. Desde a 2.0 o celular fica sempre em retrato
+ * (igual ao iPhone); o tablet continua livre.
  */
 @Composable
-fun ApplyOrientationLock(orientation: AppOrientation) {
+fun ApplyOrientationLock() {
     val context = LocalContext.current
     val isTablet = rememberIsTablet()
-    DisposableEffect(orientation, isTablet) {
+    DisposableEffect(isTablet) {
         val activity = context.findActivity()
-        activity?.requestedOrientation = when {
-            isTablet -> ActivityInfo.SCREEN_ORIENTATION_FULL_USER
-            orientation == AppOrientation.Portrait -> ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT
-            else -> ActivityInfo.SCREEN_ORIENTATION_USER
-        }
+        activity?.requestedOrientation =
+            if (isTablet) ActivityInfo.SCREEN_ORIENTATION_FULL_USER
+            else ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT
         onDispose { }
     }
 }

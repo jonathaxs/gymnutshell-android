@@ -1,5 +1,6 @@
 package com.jonathaxs.gymnutshell.core.backup
 
+import com.jonathaxs.gymnutshell.core.data.CustomGoalCategory
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -10,10 +11,6 @@ import kotlinx.serialization.Serializable
  * Campos obrigatórios no iOS (version, exportedAt, profile, goals, goalsOrder, customGoals,
  * dailyRecords) ficam sem default → são sempre emitidos. Os opcionais ficam nuláveis com
  * default null → somem do JSON quando vazios (espelha o `nil` do iOS, via `encodeDefaults = false`).
- *
- * Campos iOS-only que o Android ainda não tem (removedItems, customCategories, categoryOrder,
- * builtinCategoryOrder) não entram aqui: no export ficam ausentes (iOS lê como nil) e no import
- * são ignorados (via `ignoreUnknownKeys`).
  */
 @Serializable
 data class BackupPayload(
@@ -26,6 +23,7 @@ data class BackupPayload(
     val dailyRecords: List<RecordSnapshot>,
     val appearance: AppearanceSnapshot? = null,
     val preferences: PreferencesSnapshot? = null,
+    val customCategories: List<CustomGoalCategory>? = null,
 )
 
 /** Dados de perfil. A chave JSON `fitnessGoal` é legada (era o nome antes do rename userGoal). */
@@ -103,6 +101,7 @@ data class PreferencesSnapshot(
     val widgetBackgroundMode: String? = null,
     val orientationLock: String? = null,
     val autoWorkoutCheckin: Boolean? = null,
+    val controlStyle: String? = null,
     val notificationEnabled: Map<String, Boolean>? = null,
     val notificationInterval: Map<String, Int>? = null,
     val notificationSound: Map<String, String>? = null,

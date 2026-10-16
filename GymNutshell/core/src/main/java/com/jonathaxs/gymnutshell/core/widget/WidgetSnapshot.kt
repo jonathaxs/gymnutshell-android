@@ -41,12 +41,7 @@ data class WidgetSnapshot(
 
     /** Pontos do tier atual — derivados do nível (espelha DailyAchievement.points). */
     val tierPoints: Int
-        get() = when (tier) {
-            2 -> 40
-            3 -> 60
-            4 -> 90
-            else -> 0
-        }
+        get() = DailyAchievement.entries.getOrNull(tier - 1)?.points ?: 0
 
     companion object {
         /** Snapshot de exemplo pro preview/placeholder do widget, espelha o do iOS. */

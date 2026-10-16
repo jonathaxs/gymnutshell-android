@@ -54,6 +54,15 @@ class BuiltInGoalsTest {
     }
 
     @Test
+    fun `active descarta calorias quando removida`() {
+        val config = GoalConfig(removedKeys = setOf("tracking.calories"))
+        val keys = BuiltInGoals.active(result, config).map { it.key }
+
+        assertEquals(9, keys.size)
+        assert("tracking.calories" !in keys)
+    }
+
+    @Test
     fun `active aplica override de valor e incremento só na meta editada`() {
         val config = GoalConfig(
             valueOverrides = mapOf("tracking.water" to 3000),

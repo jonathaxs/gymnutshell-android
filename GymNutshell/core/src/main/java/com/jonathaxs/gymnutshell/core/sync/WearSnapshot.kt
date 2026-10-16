@@ -44,6 +44,7 @@ data class WearStatsSummary(
     val level2Days: Int,
     val level3Days: Int,
     val level4Days: Int,
+    val level5Days: Int = 0,
     val workoutDays: Int,
     val cardioDays: Int,
     /** 7 entradas, da mais antiga pra mais recente (hoje incluso, vazio se sem registro). */

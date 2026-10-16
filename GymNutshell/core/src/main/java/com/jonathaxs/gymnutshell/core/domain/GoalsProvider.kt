@@ -8,9 +8,6 @@ object GoalsProvider {
 
     fun goals(profile: Profile): GoalsCalculator.Result =
         GoalsCalculator.calculate(
-            weightKg = profile.weightKg,
-            heightCm = profile.heightCm,
-            age = profile.age,
             sex = profile.sex,
             goal = profile.goal,
         )

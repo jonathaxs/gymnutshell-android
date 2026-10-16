@@ -51,16 +51,6 @@ class GymNotifier(context: Context) {
         history.append(kind.rawValue, title, body, kind.route.rawValue, achievementEpochDay)
     }
 
-    /** Bônus de sequência (semanal/mensal). Porte de fireStreakBonus (iOS). */
-    suspend fun fireStreakBonus(emoji: String, points: Int) {
-        val kind = NotificationKind.StreakBonus
-        if (!prefs.isEnabled(kind)) return
-        val title = appContext.getString(R.string.notif_kind_streak_title)
-        val body = appContext.getString(R.string.notif_event_streak_body, emoji, points)
-        post(kind, title, body, sound = prefs.sound(kind))
-        history.append(kind.rawValue, title, body, kind.route.rawValue)
-    }
-
     enum class HealthLogKind { Cardio, Workout, Sleep }
 
     /** Confirmação de dado sincronizado do Health Connect. Porte de fireHealthLogged (iOS). */
@@ -220,7 +210,7 @@ class GymNotifier(context: Context) {
 
         // Kinds de evento ficam no grupo "Sistema"; o resto (metas + progresso) em "Lembretes".
         private val EVENT_KINDS = setOf(
-            NotificationKind.Achievement, NotificationKind.StreakBonus,
+            NotificationKind.Achievement,
             NotificationKind.HealthSync, NotificationKind.Backup,
         )
 

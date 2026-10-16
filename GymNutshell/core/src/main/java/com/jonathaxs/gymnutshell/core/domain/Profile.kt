@@ -12,10 +12,14 @@ data class Profile(
     val weightKg: Double = 0.0,
     val heightCm: Int = 0,
     val age: Int = 0,
-    val sex: String = "other",
+    val sex: String = "male",
     val goal: UserGoal = UserGoal.Maintenance,
 ) {
     companion object {
+        /** Sexo só pode ser "male" ou "female". Qualquer outro valor vira "male". */
+        fun normalizedSex(raw: String?): String =
+            if (raw == "female") "female" else "male"
+
         /** Idade em anos a partir do nascimento — porte de UserProfile.age(from:now:). */
         fun age(birthday: LocalDate, now: LocalDate = LocalDate.now()): Int =
             maxOf(0, Period.between(birthday, now).years)

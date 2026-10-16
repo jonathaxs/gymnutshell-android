@@ -14,21 +14,22 @@ class WearSnapshotSyncTest {
         )
 
     @Test
-    fun `agrega pontos com bonus e conta dias por tier`() {
+    fun `soma pontos dos registros e conta dias por tier`() {
         val today = 20_600L
         val records = listOf(
-            record(today - 3, percent = 100, points = 90, workout = true, cardio = true), // L4
-            record(today - 2, percent = 70, points = 60, workout = true), // L3
+            record(today - 3, percent = 100, points = 90, workout = true, cardio = true), // L5
+            record(today - 2, percent = 70, points = 60, workout = true), // L4
             record(today - 1, percent = 10), // L1
         )
-        val stats = WearSnapshotSync.computeStats(records, bonusPoints = 50, today = today)
+        val stats = WearSnapshotSync.computeStats(records, today = today)
 
         assertEquals(3, stats.totalDays)
-        assertEquals(90 + 60 + 0 + 50, stats.totalPoints)
+        assertEquals(90 + 60 + 0, stats.totalPoints)
         assertEquals(1, stats.level1Days)
         assertEquals(0, stats.level2Days)
-        assertEquals(1, stats.level3Days)
+        assertEquals(0, stats.level3Days)
         assertEquals(1, stats.level4Days)
+        assertEquals(1, stats.level5Days)
         assertEquals(2, stats.workoutDays)
         assertEquals(1, stats.cardioDays)
     }
@@ -37,7 +38,7 @@ class WearSnapshotSyncTest {
     fun `faixa de 7 dias vai do mais antigo ao mais recente com buracos vazios`() {
         val today = 20_600L
         val records = listOf(record(today - 1, percent = 80), record(today - 6, percent = 30))
-        val stats = WearSnapshotSync.computeStats(records, bonusPoints = 0, today = today)
+        val stats = WearSnapshotSync.computeStats(records, today = today)
 
         assertEquals(7, stats.last7Days.size)
         assertEquals(WearDayEntry("💪", 30), stats.last7Days.first()) // today-6

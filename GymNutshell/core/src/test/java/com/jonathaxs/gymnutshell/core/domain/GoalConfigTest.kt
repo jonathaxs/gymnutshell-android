@@ -2,6 +2,7 @@ package com.jonathaxs.gymnutshell.core.domain
 
 import com.jonathaxs.gymnutshell.core.data.CustomGoalCategory
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
@@ -49,5 +50,25 @@ class GoalConfigTest {
         assertEquals("builtin:essencial", ids.first())
         // As demais fixas continuam aparecendo (anexadas no fim).
         assertEquals(GoalCategory.entries.size, ids.size)
+    }
+
+    @Test
+    fun `chaves removiveis incluem calorias gordura boa e creatina`() {
+        assertTrue("tracking.calories" in GoalOrder.REMOVABLE_KEYS)
+        assertTrue("tracking.goodFat" in GoalOrder.REMOVABLE_KEYS)
+        assertTrue("tracking.creatine" in GoalOrder.REMOVABLE_KEYS)
+    }
+
+    @Test
+    fun `ordem padrao da nutricao e calorias proteina carbs fibra e gordura boa`() {
+        val nutritionKeys = listOf(
+            "tracking.calories",
+            "tracking.protein",
+            "tracking.carbs",
+            "tracking.fiber",
+            "tracking.goodFat",
+        )
+        val inDefault = GoalOrder.DEFAULT.filter { it in nutritionKeys }
+        assertEquals(nutritionKeys, inDefault)
     }
 }

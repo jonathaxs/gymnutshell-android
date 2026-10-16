@@ -2,6 +2,8 @@ package com.jonathaxs.gymnutshell.core.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.jonathaxs.gymnutshell.core.domain.AppTheme
+import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
 
 /**
  * Um dia concluído no Gym Nutshell — porte do @Model DailyRecord (SwiftData) pro Room @Entity.
@@ -36,3 +38,18 @@ data class DailyRecord(
     val achievementEmoji: String = "",
     val points: Int = 0,
 )
+
+/**
+ * Recalcula emoji e pontos pela % salva, mantendo o tema detectado pelo emoji armazenado (fallback Cat).
+ * Usado na migração pros 5 níveis e na restauração de backup (2.0).
+ */
+fun DailyRecord.normalizeAchievement(): DailyRecord {
+    val tier = DailyAchievement.fromPercent(percent)
+    val theme = AppTheme.entries.firstOrNull { theme ->
+        DailyAchievement.entries.any { theme.emoji(it) == achievementEmoji }
+    } ?: AppTheme.Cat
+    return copy(
+        achievementEmoji = theme.emoji(tier),
+        points = tier.points,
+    )
+}

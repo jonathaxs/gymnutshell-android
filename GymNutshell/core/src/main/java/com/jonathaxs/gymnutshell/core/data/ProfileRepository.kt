@@ -41,7 +41,7 @@ class ProfileRepository(private val context: Context) {
             weightKg = prefs[Keys.weight] ?: 0.0,
             heightCm = prefs[Keys.height] ?: 0,
             age = prefs[Keys.age] ?: 0,
-            sex = prefs[Keys.sex] ?: "other",
+            sex = Profile.normalizedSex(prefs[Keys.sex]),
             goal = UserGoal.fromRaw(prefs[Keys.goal]) ?: UserGoal.Maintenance,
         )
     }
@@ -52,8 +52,23 @@ class ProfileRepository(private val context: Context) {
             prefs[Keys.weight] = profile.weightKg
             prefs[Keys.height] = profile.heightCm
             prefs[Keys.age] = profile.age
-            prefs[Keys.sex] = profile.sex
+            prefs[Keys.sex] = Profile.normalizedSex(profile.sex)
             prefs[Keys.goal] = profile.goal.rawValue
+        }
+    }
+
+    /** Roda no launch: remove dados físicos antigos e normaliza o sexo para male/female. */
+    suspend fun migrateLegacyProfile() {
+        context.appPreferences.edit { prefs ->
+            prefs.remove(Keys.weight)
+            prefs.remove(Keys.height)
+            prefs.remove(Keys.age)
+            prefs.remove(stringPreferencesKey("profile.birthday"))
+            val currentSex = prefs[Keys.sex]
+            val normalized = Profile.normalizedSex(currentSex)
+            if (currentSex != normalized) {
+                prefs[Keys.sex] = normalized
+            }
         }
     }
 }

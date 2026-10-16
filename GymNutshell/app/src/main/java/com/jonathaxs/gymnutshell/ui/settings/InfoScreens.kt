@@ -248,12 +248,7 @@ internal fun InfoSheetTitle(title: String) {
 private data class BonusRow(val emoji: String, val titleRes: Int, val descRes: Int, val points: Int)
 
 /** Faixa de porcentagem de cada tier, igual ao rangeLabel do iOS. */
-internal fun tierRange(tier: DailyAchievement): String = when (tier) {
-    DailyAchievement.Level1 -> "0 – 32%"
-    DailyAchievement.Level2 -> "33 – 65%"
-    DailyAchievement.Level3 -> "66 – 89%"
-    DailyAchievement.Level4 -> "90 – 100%"
-}
+internal fun tierRange(tier: DailyAchievement): String = tier.percentRange
 
 // ---- Blocos compartilhados pelas três páginas ----
 

@@ -14,6 +14,13 @@ class GoalsProviderTest {
     }
 
     @Test
+    fun `perfil com sexo other usa tabela masculina`() {
+        val profile = Profile(sex = "other", goal = UserGoal.Cutting)
+        val expected = GoalsCalculator.calculate("male", UserGoal.Cutting)
+        assertEquals(expected, GoalsProvider.goals(profile))
+    }
+
+    @Test
     fun `idade calculada a partir do nascimento`() {
         val birthday = LocalDate.of(1996, 5, 16)
         assertEquals(30, Profile.age(birthday, now = LocalDate.of(2026, 5, 16)))

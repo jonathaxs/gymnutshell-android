@@ -1,5 +1,6 @@
 package com.jonathaxs.gymnutshell.core.backup
 
+import com.jonathaxs.gymnutshell.core.data.CustomGoalCategory
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -30,19 +31,20 @@ class BackupCodecTest {
         appearance = AppearanceSnapshot(theme = "gym", accentColor = "blue"),
         preferences = PreferencesSnapshot(
             autoWorkoutCheckin = true,
+            controlStyle = "stepper",
             notificationEnabled = mapOf("water" to true),
         ),
     )
 
     @Test
-    fun roundTrip_preservaCampos() {
+    fun `roundTrip preserva campos`() {
         val original = samplePayload()
         val decoded = BackupCodec.decode(BackupCodec.encode(original))
         assertEquals(original, decoded)
     }
 
     @Test
-    fun json_usaChavesLegadasDoIos() {
+    fun `json usa chaves legadas do ios`() {
         val json = BackupCodec.encode(samplePayload())
         assertTrue("fitnessGoal", json.contains("\"fitnessGoal\""))
         assertTrue("fats (goals)", json.contains("\"fats\""))
@@ -53,7 +55,7 @@ class BackupCodecTest {
     }
 
     @Test
-    fun encode_omiteOpcionaisNulos() {
+    fun `encode omite opcionais nulos`() {
         // Sem appearance/preferences, esses campos não devem aparecer no JSON (espelha o nil do iOS).
         val minimal = samplePayload().copy(appearance = null, preferences = null)
         val json = BackupCodec.encode(minimal)
@@ -64,7 +66,7 @@ class BackupCodecTest {
     }
 
     @Test
-    fun decode_ignoraCamposIosOnly() {
+    fun `decode ignora campos ios only`() {
         // Um backup do iOS traz campos que o Android não modela; o decode deve ignorá-los sem quebrar.
         val iosJson = """
             {
@@ -85,5 +87,73 @@ class BackupCodecTest {
         assertEquals("maintenance", decoded.profile.userGoal)
         assertEquals(80, decoded.goals.goodFat)
         assertNull(decoded.preferences)
+    }
+
+    @Test
+    fun `estilo de controle viaja no backup e faz roundtrip`() {
+        val original = samplePayload().copy(
+            preferences = PreferencesSnapshot(controlStyle = "stepper"),
+        )
+        val json = BackupCodec.encode(original)
+        assertTrue(json.contains("\"controlStyle\": \"stepper\"") || json.contains("\"controlStyle\""))
+        val decoded = BackupCodec.decode(json)
+        assertEquals("stepper", decoded.preferences?.controlStyle)
+    }
+
+    @Test
+    fun `backup JSON sem controlStyle e sem symbolName decodifica com defaults`() {
+        val json = """
+            {
+              "version": 4,
+              "exportedAt": "2026-09-01T12:00:00Z",
+              "profile": {"name":"Ana","height":170,"weight":65.5,"age":28,"sex":"other","fitnessGoal":"cutting"},
+              "goals": {"calories":2000,"sleep":7,"water":3000,"protein":150,"carbs":300,"fats":80,"fiber":25},
+              "goalsOrder": [],
+              "customGoals": [],
+              "dailyRecords": [],
+              "customCategories": [{"id":"abc","name":"Alongamento","supportsRestDay":true}],
+              "preferences": {"widgetBackground":"x","orientationLock":"portrait"}
+            }
+        """.trimIndent()
+        val decoded = BackupCodec.decode(json)
+        assertNull(decoded.preferences?.controlStyle)
+        val cat = decoded.customCategories?.first()
+        assertEquals("Alongamento", cat?.name)
+        assertEquals(true, cat?.supportsRestDay)
+        assertEquals("square.grid.2x2.fill", cat?.symbolName)
+    }
+
+    @Test
+    fun `backup da 1 0 com dados fisicos ainda decodifica`() {
+        val json = """
+            {"version":4,"exportedAt":"2026-09-01T12:00:00Z",
+             "profile":{"name":"Ana","height":170,"weight":65.5,"age":28,"sex":"other","fitnessGoal":"cutting"},
+             "goals":{"calories":2000,"sleep":7,"water":3000,"protein":150,"carbs":300,"fats":80,"fiber":25},
+             "goalsOrder":[],"customGoals":[],"dailyRecords":[]}
+        """.trimIndent()
+        val payload = BackupCodec.decode(json)
+        assertEquals("Ana", payload.profile.name)
+        assertEquals(2000, payload.goals.calories)
+        assertEquals(170, payload.profile.height)
+        assertEquals(65.5, payload.profile.weight, 1e-4)
+        assertEquals(28, payload.profile.age)
+    }
+
+    @Test
+    fun `categoria com symbolName personalizado viaja no json`() {
+        val original = samplePayload().copy(
+            customCategories = listOf(
+                CustomGoalCategory(
+                    id = "c1",
+                    name = "Yoga",
+                    supportsRestDay = false,
+                    symbolName = "figure.yoga",
+                ),
+            ),
+        )
+        val json = BackupCodec.encode(original)
+        assertTrue(json.contains("\"symbolName\": \"figure.yoga\"") || json.contains("\"symbolName\""))
+        val decoded = BackupCodec.decode(json)
+        assertEquals("figure.yoga", decoded.customCategories?.first()?.symbolName)
     }
 }

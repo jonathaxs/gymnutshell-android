@@ -18,9 +18,8 @@ fun RootScreen(
     onRouteConsumed: () -> Unit = {},
 ) {
     val onboarded by viewModel.onboarded.collectAsStateWithLifecycle()
-    // Trava a orientação conforme a preferência (celular); o tablet fica sempre livre.
-    val orientation by viewModel.orientation.collectAsStateWithLifecycle()
-    ApplyOrientationLock(orientation)
+    // Celular sempre em retrato; o tablet fica livre.
+    ApplyOrientationLock()
 
     when (onboarded) {
         true -> MainScreen(pendingRoute = pendingRoute, onRouteConsumed = onRouteConsumed)

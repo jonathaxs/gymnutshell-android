@@ -26,8 +26,8 @@ object BuiltInGoals {
         BuiltInGoal("tracking.calories", "🔥", "kcal", DefaultGoals.CALORIES_INCREMENT, result.calories),
         BuiltInGoal("tracking.protein", "🍗", "g", 20, result.protein),
         BuiltInGoal("tracking.carbs", "🍞", "g", 20, result.carbs),
-        BuiltInGoal("tracking.goodFat", "🧈", "g", 5, result.goodFat),
         BuiltInGoal("tracking.fiber", "🌾", "g", 5, result.fiber),
+        BuiltInGoal("tracking.goodFat", "🧈", "g", 5, result.goodFat),
         // Treino
         BuiltInGoal("tracking.workout", "🏋️", "min", DefaultGoals.WORKOUT_INCREMENT, result.workout),
         BuiltInGoal("tracking.cardio", "🏃", "min", DefaultGoals.CARDIO_INCREMENT, result.cardio),

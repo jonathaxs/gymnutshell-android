@@ -9,7 +9,7 @@ object DefaultGoals {
     const val CARDIO_INCREMENT = 5
 
     // Recuperação
-    const val SLEEP = 7
+    const val SLEEP = 8
 
     // Hidratação
     const val WATER = 3000

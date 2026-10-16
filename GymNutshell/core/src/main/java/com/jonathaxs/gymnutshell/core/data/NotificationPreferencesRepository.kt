@@ -128,13 +128,12 @@ class NotificationPreferencesRepository(private val context: Context) {
 
     /**
      * Aplica os kinds ligados por padrão na primeira autorização — porte de applyDefaultEnabledKinds (iOS).
-     * Liga Progresso, Conquista, Bônus e Água; deixa o resto desligado.
+     * Liga Progresso, Conquista e Água; deixa o resto desligado.
      */
     suspend fun applyDefaultEnabledKinds() {
         context.appPreferences.edit { prefs ->
             prefs[enabledKey(NotificationKind.Progress)] = true
             prefs[enabledKey(NotificationKind.Achievement)] = true
-            prefs[enabledKey(NotificationKind.StreakBonus)] = true
             prefs[enabledKey(NotificationKind.HealthSync)] = false
             prefs[enabledKey(NotificationKind.Backup)] = false
             prefs[enabledKey(NotificationKind.Water)] = true

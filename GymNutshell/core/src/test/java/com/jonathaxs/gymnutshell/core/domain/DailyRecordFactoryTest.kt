@@ -10,13 +10,14 @@ class DailyRecordFactoryTest {
     private val result = GoalsCalculator.calculate(80.0, 180, 30, "male", UserGoal.Maintenance)
 
     @Test
-    fun `build com todas as metas no alvo gera 100 por cento e tier Level4`() {
+    fun `build com todas as metas no alvo gera 100 por cento e tier Level5`() {
         val full = BuiltInGoals.forResult(result).associate { it.key to it.target }
         val rec = DailyRecordFactory.build(epochDay = 100L, intakes = full, result = result, theme = AppTheme.Gym)
 
         assertEquals(100L, rec.date)
         assertEquals(100, rec.percent)
-        assertEquals(DailyAchievement.Level4.points, rec.points)
+        assertEquals(DailyAchievement.Level5.points, rec.points)
+        assertEquals(AppTheme.Gym.emoji(DailyAchievement.Level5), rec.achievementEmoji)
         assertEquals(result.water, rec.water)
         assertEquals(result.protein, rec.protein)
         assertTrue(rec.didWorkout)

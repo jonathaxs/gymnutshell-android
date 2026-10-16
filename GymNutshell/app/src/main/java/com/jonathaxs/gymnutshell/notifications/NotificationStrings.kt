@@ -16,7 +16,6 @@ object NotificationStrings {
     fun titleRes(kind: NotificationKind): Int = when (kind) {
         NotificationKind.Progress -> R.string.notif_kind_progress_title
         NotificationKind.Achievement -> R.string.notif_kind_achievement_title
-        NotificationKind.StreakBonus -> R.string.notif_kind_streak_title
         NotificationKind.HealthSync -> R.string.notif_kind_health_title
         NotificationKind.Backup -> R.string.notif_kind_backup_title
         NotificationKind.Sleep -> R.string.notif_kind_sleep_title
@@ -35,7 +34,6 @@ object NotificationStrings {
     fun descRes(kind: NotificationKind): Int = when (kind) {
         NotificationKind.Progress -> R.string.notif_kind_progress_desc
         NotificationKind.Achievement -> R.string.notif_kind_achievement_desc
-        NotificationKind.StreakBonus -> R.string.notif_kind_streak_desc
         NotificationKind.HealthSync -> R.string.notif_kind_health_desc
         NotificationKind.Backup -> R.string.notif_kind_backup_desc
         NotificationKind.Sleep -> R.string.notif_kind_sleep_desc

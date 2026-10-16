@@ -33,36 +33,36 @@ enum class AppTheme(val rawValue: String, val category: ThemeCategory) {
 
     /** Emoji do tema para um tier — valores idênticos ao AppTheme.emoji(for:) do iOS (base). */
     fun emoji(tier: DailyAchievement): String = when (this) {
-        Gym -> tier.pick("🐓", "🏋️", "🐀", "💪")
-        Running -> tier.pick("🚶", "👟", "🏃", "🏅")
-        Cat -> tier.pick("🐱", "🐈", "🐆", "🦁")
-        Dog -> tier.pick("🐶", "🐩", "🐕‍🦺", "🐕")
-        Bear -> tier.pick("🧸", "🐻", "🐻‍❄️", "🦬")
-        Dino -> tier.pick("🐢", "🐊", "🦖", "🦕")
-        Dragon -> tier.pick("🥚", "🦎", "🐉", "🐲")
-        Horse -> tier.pick("🐴", "🦄", "🏇", "🎠")
-        Ocean -> tier.pick("🐟", "🐬", "🪼", "🐋")
-        Monkey -> tier.pick("🐒", "🐵", "🦍", "🦧")
-        Bird -> tier.pick("🐣", "🐦", "🦅", "🦉")
-        Doctor -> tier.pick("🥼", "💉", "⚕️", "👨‍⚕️")
-        Ninja -> tier.pick("🥋", "⚔️", "🥷", "🦸")
-        Fire -> tier.pick("🕯️", "🔥", "🌋", "🌞")
-        Plant -> tier.pick("🌱", "🌿", "🌳", "🎄")
-        Astronaut -> tier.pick("🛰️", "🧑‍🚀", "🚀", "🛸")
-        Celestial -> tier.pick("☄️", "🌔", "🌎", "🪐")
-        Champion -> tier.pick("🥉", "🥈", "🥇", "💎")
-        Number -> tier.pick("1️⃣", "2️⃣", "3️⃣", "4️⃣")
+        Gym -> tier.pick("🐓", "🏋️", "🐀", "💪", "🗿")
+        Running -> tier.pick("🚶", "👟", "🏃", "🏅", "🎽")
+        Cat -> tier.pick("🐱", "🐈", "🐆", "🦁", "🐅")
+        Dog -> tier.pick("🐶", "🐩", "🐕‍🦺", "🐕", "🐺")
+        Bear -> tier.pick("🧸", "🐻", "🐻‍❄️", "🦬", "🦣")
+        Dino -> tier.pick("🐢", "🐊", "🦖", "🦕", "🦴")
+        Dragon -> tier.pick("🥚", "🦎", "🐉", "🐲", "👑")
+        Horse -> tier.pick("🐴", "🦄", "🏇", "🎠", "🐎")
+        Ocean -> tier.pick("🐟", "🐬", "🪼", "🐋", "🦑")
+        Monkey -> tier.pick("🐒", "🐵", "🦍", "🦧", "🌴")
+        Bird -> tier.pick("🐣", "🐦", "🦅", "🦉", "🐦‍🔥")
+        Doctor -> tier.pick("🥼", "💉", "⚕️", "👨‍⚕️", "🏥")
+        Ninja -> tier.pick("🥋", "⚔️", "🥷", "🦸", "⛩️")
+        Fire -> tier.pick("🕯️", "🔥", "🌋", "🌞", "💥")
+        Plant -> tier.pick("🌱", "🌿", "🌳", "🎄", "🏞️")
+        Astronaut -> tier.pick("🛰️", "🧑‍🚀", "🚀", "🛸", "👽")
+        Celestial -> tier.pick("☄️", "🌔", "🌎", "🪐", "🌌")
+        Champion -> tier.pick("🥉", "🥈", "🥇", "💎", "🏆")
+        Number -> tier.pick("1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣")
     }
 
     /**
      * Emoji do tema para um tier, com variante por sexo — porte de AppTheme.emoji(for:sex:) do iOS.
-     * `sex != "male"` usa a variante feminina (só Gym, Running e Doctor têm alguma); o resto cai na
+     * `sex == "female"` usa a variante feminina (só Gym, Running e Doctor têm alguma); o resto cai na
      * base. Usar só em EXIBIÇÃO — o emoji congelado no DailyRecord é sempre o base (chave do tier).
      */
     fun emoji(tier: DailyAchievement, sex: String): String {
-        if (sex != "male") {
+        if (sex == "female") {
             when (this) {
-                Gym -> return tier.pick("🐔", "🏋️‍♀️", "🐁", "🍑")
+                Gym -> return tier.pick("🐔", "🏋️‍♀️", "🐁", "🍑", "🗿")
                 Running -> when (tier) {
                     DailyAchievement.Level1 -> return "🚶‍♀️"
                     DailyAchievement.Level3 -> return "🏃‍♀️"
@@ -81,34 +81,34 @@ enum class AppTheme(val rawValue: String, val category: ThemeCategory) {
      */
     @StringRes
     fun tierNameRes(tier: DailyAchievement): Int = when (this) {
-        Gym -> tier.pick(R.string.tier_gym_level1, R.string.tier_gym_level2, R.string.tier_gym_level3, R.string.tier_gym_level4)
-        Running -> tier.pick(R.string.tier_running_level1, R.string.tier_running_level2, R.string.tier_running_level3, R.string.tier_running_level4)
-        Cat -> tier.pick(R.string.tier_cat_level1, R.string.tier_cat_level2, R.string.tier_cat_level3, R.string.tier_cat_level4)
-        Dog -> tier.pick(R.string.tier_dog_level1, R.string.tier_dog_level2, R.string.tier_dog_level3, R.string.tier_dog_level4)
-        Bear -> tier.pick(R.string.tier_bear_level1, R.string.tier_bear_level2, R.string.tier_bear_level3, R.string.tier_bear_level4)
-        Dino -> tier.pick(R.string.tier_dino_level1, R.string.tier_dino_level2, R.string.tier_dino_level3, R.string.tier_dino_level4)
-        Dragon -> tier.pick(R.string.tier_dragon_level1, R.string.tier_dragon_level2, R.string.tier_dragon_level3, R.string.tier_dragon_level4)
-        Horse -> tier.pick(R.string.tier_horse_level1, R.string.tier_horse_level2, R.string.tier_horse_level3, R.string.tier_horse_level4)
-        Ocean -> tier.pick(R.string.tier_ocean_level1, R.string.tier_ocean_level2, R.string.tier_ocean_level3, R.string.tier_ocean_level4)
-        Monkey -> tier.pick(R.string.tier_monkey_level1, R.string.tier_monkey_level2, R.string.tier_monkey_level3, R.string.tier_monkey_level4)
-        Bird -> tier.pick(R.string.tier_bird_level1, R.string.tier_bird_level2, R.string.tier_bird_level3, R.string.tier_bird_level4)
-        Doctor -> tier.pick(R.string.tier_doctor_level1, R.string.tier_doctor_level2, R.string.tier_doctor_level3, R.string.tier_doctor_level4)
-        Ninja -> tier.pick(R.string.tier_ninja_level1, R.string.tier_ninja_level2, R.string.tier_ninja_level3, R.string.tier_ninja_level4)
-        Fire -> tier.pick(R.string.tier_fire_level1, R.string.tier_fire_level2, R.string.tier_fire_level3, R.string.tier_fire_level4)
-        Plant -> tier.pick(R.string.tier_plant_level1, R.string.tier_plant_level2, R.string.tier_plant_level3, R.string.tier_plant_level4)
-        Astronaut -> tier.pick(R.string.tier_astronaut_level1, R.string.tier_astronaut_level2, R.string.tier_astronaut_level3, R.string.tier_astronaut_level4)
-        Celestial -> tier.pick(R.string.tier_celestial_level1, R.string.tier_celestial_level2, R.string.tier_celestial_level3, R.string.tier_celestial_level4)
-        Champion -> tier.pick(R.string.tier_champion_level1, R.string.tier_champion_level2, R.string.tier_champion_level3, R.string.tier_champion_level4)
-        Number -> tier.pick(R.string.tier_number_level1, R.string.tier_number_level2, R.string.tier_number_level3, R.string.tier_number_level4)
+        Gym -> tier.pick(R.string.tier_gym_level1, R.string.tier_gym_level2, R.string.tier_gym_level3, R.string.tier_gym_level4, R.string.tier_gym_level5)
+        Running -> tier.pick(R.string.tier_running_level1, R.string.tier_running_level2, R.string.tier_running_level3, R.string.tier_running_level4, R.string.tier_running_level5)
+        Cat -> tier.pick(R.string.tier_cat_level1, R.string.tier_cat_level2, R.string.tier_cat_level3, R.string.tier_cat_level4, R.string.tier_cat_level5)
+        Dog -> tier.pick(R.string.tier_dog_level1, R.string.tier_dog_level2, R.string.tier_dog_level3, R.string.tier_dog_level4, R.string.tier_dog_level5)
+        Bear -> tier.pick(R.string.tier_bear_level1, R.string.tier_bear_level2, R.string.tier_bear_level3, R.string.tier_bear_level4, R.string.tier_bear_level5)
+        Dino -> tier.pick(R.string.tier_dino_level1, R.string.tier_dino_level2, R.string.tier_dino_level3, R.string.tier_dino_level4, R.string.tier_dino_level5)
+        Dragon -> tier.pick(R.string.tier_dragon_level1, R.string.tier_dragon_level2, R.string.tier_dragon_level3, R.string.tier_dragon_level4, R.string.tier_dragon_level5)
+        Horse -> tier.pick(R.string.tier_horse_level1, R.string.tier_horse_level2, R.string.tier_horse_level3, R.string.tier_horse_level4, R.string.tier_horse_level5)
+        Ocean -> tier.pick(R.string.tier_ocean_level1, R.string.tier_ocean_level2, R.string.tier_ocean_level3, R.string.tier_ocean_level4, R.string.tier_ocean_level5)
+        Monkey -> tier.pick(R.string.tier_monkey_level1, R.string.tier_monkey_level2, R.string.tier_monkey_level3, R.string.tier_monkey_level4, R.string.tier_monkey_level5)
+        Bird -> tier.pick(R.string.tier_bird_level1, R.string.tier_bird_level2, R.string.tier_bird_level3, R.string.tier_bird_level4, R.string.tier_bird_level5)
+        Doctor -> tier.pick(R.string.tier_doctor_level1, R.string.tier_doctor_level2, R.string.tier_doctor_level3, R.string.tier_doctor_level4, R.string.tier_doctor_level5)
+        Ninja -> tier.pick(R.string.tier_ninja_level1, R.string.tier_ninja_level2, R.string.tier_ninja_level3, R.string.tier_ninja_level4, R.string.tier_ninja_level5)
+        Fire -> tier.pick(R.string.tier_fire_level1, R.string.tier_fire_level2, R.string.tier_fire_level3, R.string.tier_fire_level4, R.string.tier_fire_level5)
+        Plant -> tier.pick(R.string.tier_plant_level1, R.string.tier_plant_level2, R.string.tier_plant_level3, R.string.tier_plant_level4, R.string.tier_plant_level5)
+        Astronaut -> tier.pick(R.string.tier_astronaut_level1, R.string.tier_astronaut_level2, R.string.tier_astronaut_level3, R.string.tier_astronaut_level4, R.string.tier_astronaut_level5)
+        Celestial -> tier.pick(R.string.tier_celestial_level1, R.string.tier_celestial_level2, R.string.tier_celestial_level3, R.string.tier_celestial_level4, R.string.tier_celestial_level5)
+        Champion -> tier.pick(R.string.tier_champion_level1, R.string.tier_champion_level2, R.string.tier_champion_level3, R.string.tier_champion_level4, R.string.tier_champion_level5)
+        Number -> tier.pick(R.string.tier_number_level1, R.string.tier_number_level2, R.string.tier_number_level3, R.string.tier_number_level4, R.string.tier_number_level5)
     }
 
     /**
      * Nome do tema para um tier, com variante por sexo — porte de AppTheme.name(for:sex:) do iOS.
-     * `sex != "male"` usa o @StringRes feminino quando este tema+tier tem um; senão devolve a base.
+     * `sex == "female"` usa o @StringRes feminino quando este tema+tier tem um; senão devolve a base.
      */
     @StringRes
     fun tierNameRes(tier: DailyAchievement, sex: String): Int {
-        if (sex != "male") {
+        if (sex == "female") {
             val fem = femTierNameRes(tier)
             if (fem != 0) return fem
         }
@@ -122,20 +122,21 @@ enum class AppTheme(val rawValue: String, val category: ThemeCategory) {
      */
     @StringRes
     private fun femTierNameRes(tier: DailyAchievement): Int = when (this) {
-        Gym -> tier.pick(R.string.tier_gym_level1_fem, R.string.tier_gym_level2_fem, R.string.tier_gym_level3_fem, R.string.tier_gym_level4_fem)
-        Running -> tier.pick(0, 0, R.string.tier_running_level3_fem, 0)
-        Cat -> tier.pick(R.string.tier_cat_level1_fem, R.string.tier_cat_level2_fem, R.string.tier_cat_level3_fem, R.string.tier_cat_level4_fem)
-        Dog -> tier.pick(R.string.tier_dog_level1_fem, R.string.tier_dog_level2_fem, R.string.tier_dog_level3_fem, R.string.tier_dog_level4_fem)
-        Bear -> tier.pick(R.string.tier_bear_level1_fem, R.string.tier_bear_level2_fem, R.string.tier_bear_level3_fem, R.string.tier_bear_level4_fem)
-        Dino -> tier.pick(0, 0, 0, R.string.tier_dino_level4_fem)
-        Dragon -> tier.pick(R.string.tier_dragon_level1_fem, R.string.tier_dragon_level2_fem, R.string.tier_dragon_level3_fem, R.string.tier_dragon_level4_fem)
-        Horse -> tier.pick(R.string.tier_horse_level1_fem, R.string.tier_horse_level2_fem, R.string.tier_horse_level3_fem, R.string.tier_horse_level4_fem)
-        Fire -> tier.pick(0, 0, R.string.tier_fire_level3_fem, R.string.tier_fire_level4_fem)
-        Doctor -> tier.pick(0, 0, R.string.tier_doctor_level3_fem, R.string.tier_doctor_level4_fem)
+        Gym -> tier.pick(R.string.tier_gym_level1_fem, R.string.tier_gym_level2_fem, R.string.tier_gym_level3_fem, R.string.tier_gym_level4_fem, R.string.tier_gym_level5_fem)
+        Running -> tier.pick(0, 0, R.string.tier_running_level3_fem, 0, 0)
+        Cat -> tier.pick(R.string.tier_cat_level1_fem, R.string.tier_cat_level2_fem, R.string.tier_cat_level3_fem, R.string.tier_cat_level4_fem, R.string.tier_cat_level5_fem)
+        Dog -> tier.pick(R.string.tier_dog_level1_fem, R.string.tier_dog_level2_fem, R.string.tier_dog_level3_fem, R.string.tier_dog_level4_fem, R.string.tier_dog_level5_fem)
+        Bear -> tier.pick(R.string.tier_bear_level1_fem, R.string.tier_bear_level2_fem, R.string.tier_bear_level3_fem, R.string.tier_bear_level4_fem, 0)
+        Dino -> tier.pick(0, 0, 0, R.string.tier_dino_level4_fem, 0)
+        Dragon -> tier.pick(R.string.tier_dragon_level1_fem, R.string.tier_dragon_level2_fem, R.string.tier_dragon_level3_fem, R.string.tier_dragon_level4_fem, R.string.tier_dragon_level5_fem)
+        Horse -> tier.pick(R.string.tier_horse_level1_fem, R.string.tier_horse_level2_fem, R.string.tier_horse_level3_fem, R.string.tier_horse_level4_fem, 0)
+        Fire -> tier.pick(0, 0, R.string.tier_fire_level3_fem, R.string.tier_fire_level4_fem, 0)
+        Doctor -> tier.pick(0, 0, R.string.tier_doctor_level3_fem, R.string.tier_doctor_level4_fem, R.string.tier_doctor_level5_fem)
+        Ninja -> tier.pick(0, 0, 0, 0, R.string.tier_ninja_level5_fem)
         else -> 0
     }
 
-    /** Os 4 emojis do tema, do tier 1 ao 4, respeitando o sexo — usado em prévias do seletor. */
+    /** Os 5 emojis do tema, do tier 1 ao 5, respeitando o sexo — usado em prévias do seletor. */
     fun previewEmojis(sex: String): List<String> = DailyAchievement.entries.map { emoji(it, sex) }
 
     companion object {
@@ -145,10 +146,11 @@ enum class AppTheme(val rawValue: String, val category: ThemeCategory) {
     }
 }
 
-/** Atalho: escolhe um dos 4 valores conforme o tier. */
-private fun <T> DailyAchievement.pick(l1: T, l2: T, l3: T, l4: T): T = when (this) {
+/** Atalho: escolhe um dos 5 valores conforme o tier. */
+private fun <T> DailyAchievement.pick(l1: T, l2: T, l3: T, l4: T, l5: T): T = when (this) {
     DailyAchievement.Level1 -> l1
     DailyAchievement.Level2 -> l2
     DailyAchievement.Level3 -> l3
     DailyAchievement.Level4 -> l4
+    DailyAchievement.Level5 -> l5
 }

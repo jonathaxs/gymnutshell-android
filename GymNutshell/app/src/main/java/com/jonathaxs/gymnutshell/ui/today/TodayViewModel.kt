@@ -19,7 +19,6 @@ import com.jonathaxs.gymnutshell.core.data.HealthPreferencesRepository
 import com.jonathaxs.gymnutshell.core.data.IntakeRepository
 import com.jonathaxs.gymnutshell.core.data.ProfileRepository
 import com.jonathaxs.gymnutshell.core.data.SettingsRepository
-import com.jonathaxs.gymnutshell.core.data.StreakBonus
 import com.jonathaxs.gymnutshell.core.data.TodayPreferencesRepository
 import com.jonathaxs.gymnutshell.core.domain.AppDateFormatters
 import com.jonathaxs.gymnutshell.core.domain.BuiltInGoals
@@ -32,7 +31,6 @@ import com.jonathaxs.gymnutshell.core.domain.MeasurementSystem
 import com.jonathaxs.gymnutshell.core.domain.NotificationKind
 import com.jonathaxs.gymnutshell.core.domain.Profile
 import com.jonathaxs.gymnutshell.core.domain.ProgressHelpers
-import com.jonathaxs.gymnutshell.core.domain.StreakBonusEvaluator
 import com.jonathaxs.gymnutshell.core.domain.UnifiedCategoryOrder
 import com.jonathaxs.gymnutshell.core.domain.UnitConverter
 import com.jonathaxs.gymnutshell.core.domain.UserGoal
@@ -170,20 +168,6 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
         }
         // 4) marca hoje como dia ativo
         intakeRepo.setLastActiveDay(today)
-        // 5) avalia bônus de sequência nos registros acumulados
-        val awarded = recordRepo.awardedAnchors()
-        StreakBonusEvaluator.evaluate(recordRepo.allRecords(), awarded).forEach { award ->
-            recordRepo.insertBonus(
-                StreakBonus(
-                    anchorDate = award.anchorEpochDay,
-                    bonusType = award.bonusType,
-                    bonusPoints = award.points,
-                    bonusEmoji = award.emoji,
-                ),
-            )
-            // Notifica cada bônus de sequência conquistado (porte de fireStreakBonus do iOS).
-            notifier.fireStreakBonus(award.emoji, award.points)
-        }
     }
 
     val uiState: StateFlow<TodayUiState> =

@@ -98,7 +98,7 @@ class ProgressViewModel(app: Application) : AndroidViewModel(app) {
 
             ProgressUiState(
                 totalDays = records.size,
-                totalPoints = records.sumOf { it.points } + bonuses.sumOf { it.bonusPoints },
+                totalPoints = records.sumOf { it.points },
                 bonusCount = bonuses.size,
                 tierCounts = DailyAchievement.entries.map { tier ->
                     TierCountUi(

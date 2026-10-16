@@ -10,7 +10,6 @@ enum class NotificationKind(val rawValue: String) {
     // Sistema
     Progress("progress"),
     Achievement("achievement"),
-    StreakBonus("streakBonus"),
     HealthSync("appleHealth"),
     Backup("backup"),
 
@@ -28,13 +27,13 @@ enum class NotificationKind(val rawValue: String) {
 
     /**
      * True se a notificação permite o usuário editar o intervalo em minutos.
-     * Todas as Metas + Progresso são editáveis; Conquista, Bônus, Saúde e Backup são eventos.
+     * Todas as Metas + Progresso são editáveis; Conquista, Saúde e Backup são eventos.
      */
     val isEditable: Boolean
         get() = when (this) {
             Progress, Sleep, Water, Calories, Protein, Carbs, GoodFat, Fiber,
             Workout, Cardio, Creatine -> true
-            Achievement, StreakBonus, HealthSync, Backup -> false
+            Achievement, HealthSync, Backup -> false
         }
 
     /** True quando a notificação é baseada em intervalo (agendamento periódico no dia). */
@@ -50,7 +49,7 @@ enum class NotificationKind(val rawValue: String) {
             Water -> 120
             Sleep -> 180
             Calories, Protein, Carbs, GoodFat, Fiber, Workout, Cardio, Creatine -> 120
-            Achievement, StreakBonus, HealthSync, Backup -> 0
+            Achievement, HealthSync, Backup -> 0
         }
 
     /**
@@ -67,11 +66,11 @@ enum class NotificationKind(val rawValue: String) {
 
     /**
      * Rota de deep-link ao tocar na notificação.
-     * Conquista/Bônus abrem Achievements (hoje); Backup abre a tela de Backup; o resto abre a Today.
+     * Conquista abre Achievements (hoje); Backup abre a tela de Backup; o resto abre a Today.
      */
     val route: NotificationRoute
         get() = when (this) {
-            Achievement, StreakBonus -> NotificationRoute.AchievementsToday
+            Achievement -> NotificationRoute.AchievementsToday
             Backup -> NotificationRoute.Backup
             else -> NotificationRoute.Today
         }

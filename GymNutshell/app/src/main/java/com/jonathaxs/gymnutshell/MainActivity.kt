@@ -16,7 +16,10 @@ import androidx.compose.runtime.setValue
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.jonathaxs.gymnutshell.core.data.DailyRecordRepository
 import com.jonathaxs.gymnutshell.core.data.NotificationPreferencesRepository
+import com.jonathaxs.gymnutshell.core.data.ProfileRepository
+import com.jonathaxs.gymnutshell.core.data.SettingsRepository
 import com.jonathaxs.gymnutshell.notifications.GymNotifier
 import com.jonathaxs.gymnutshell.notifications.NotificationScheduler
 import com.jonathaxs.gymnutshell.ui.RootScreen
@@ -25,6 +28,7 @@ import com.jonathaxs.gymnutshell.util.AppLocales
 import com.jonathaxs.gymnutshell.wear.PhoneWearSync
 import com.jonathaxs.gymnutshell.widget.GymWidgets
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : ComponentActivity() {
 
@@ -44,6 +48,12 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // 2.0: migracoes de uma vez so, antes da primeira tela ler os dados.
+        runBlocking {
+            ProfileRepository(applicationContext).migrateLegacyProfile()
+            SettingsRepository(applicationContext).migrateLegacyUkSystem()
+            DailyRecordRepository(applicationContext).migrateToFiveLevelsIfNeeded()
+        }
         enableEdgeToEdge()
         maybeRequestNotificationsPermission()
         pendingRoute = intent?.getStringExtra(GymNotifier.EXTRA_ROUTE)

@@ -216,6 +216,7 @@ private fun daysFor(tier: DailyAchievement, s: WearStatsSummary): Int = when (ti
     DailyAchievement.Level2 -> s.level2Days
     DailyAchievement.Level3 -> s.level3Days
     DailyAchievement.Level4 -> s.level4Days
+    DailyAchievement.Level5 -> s.level5Days
 }
 
 private fun formatted(value: Int): String =

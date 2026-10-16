@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.jonathaxs.gymnutshell.core.domain.AppOrientation
 import com.jonathaxs.gymnutshell.core.domain.AppTheme
+import com.jonathaxs.gymnutshell.core.domain.ControlStyle
 import com.jonathaxs.gymnutshell.core.domain.MeasurementSystem
 import com.jonathaxs.gymnutshell.core.theme.AccentColor
 import kotlinx.coroutines.flow.Flow
@@ -21,7 +21,7 @@ class SettingsRepository(private val context: Context) {
     private val accentKey = stringPreferencesKey(AccentColor.STORAGE_KEY)
     private val themeKey = stringPreferencesKey("app.theme")
     private val measurementKey = stringPreferencesKey("profile.measurementSystem")
-    private val orientationKey = stringPreferencesKey(AppOrientation.STORAGE_KEY)
+    private val controlStyleKey = stringPreferencesKey(ControlStyle.STORAGE_KEY)
     private val achievementsFilterKey = stringPreferencesKey("achievements.filterMode")
     private val achievementsSelectedDayKey = longPreferencesKey("achievements.selectedDay")
 
@@ -54,16 +54,22 @@ class SettingsRepository(private val context: Context) {
         context.appPreferences.edit { prefs -> prefs[measurementKey] = system.rawValue }
     }
 
-    /**
-     * Travamento de orientação persistido (Portrait por padrão). Só é aplicado no celular —
-     * em tablet a camada de UI ignora a preferência e mantém o app sempre livre.
-     */
-    val orientation: Flow<AppOrientation> = context.appPreferences.data.map { prefs ->
-        AppOrientation.fromRaw(prefs[orientationKey])
+    /** Estilo global de controle das metas (Slider ou Stepper). Default: Slider. */
+    val controlStyle: Flow<ControlStyle> = context.appPreferences.data.map { prefs ->
+        ControlStyle.fromRaw(prefs[controlStyleKey])
     }
 
-    suspend fun setOrientation(orientation: AppOrientation) {
-        context.appPreferences.edit { prefs -> prefs[orientationKey] = orientation.rawValue }
+    suspend fun setControlStyle(style: ControlStyle) {
+        context.appPreferences.edit { prefs -> prefs[controlStyleKey] = style.rawValue }
+    }
+
+    /** Roda no launch: converte sistema "uk" legado para "metric". */
+    suspend fun migrateLegacyUkSystem() {
+        context.appPreferences.edit { prefs ->
+            if (prefs[measurementKey] == "uk") {
+                prefs[measurementKey] = MeasurementSystem.Metric.rawValue
+            }
+        }
     }
 
     /**

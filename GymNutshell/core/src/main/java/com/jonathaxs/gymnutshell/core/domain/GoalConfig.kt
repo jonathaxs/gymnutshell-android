@@ -22,15 +22,15 @@ object GoalOrder {
         "tracking.calories",
         "tracking.protein",
         "tracking.carbs",
-        "tracking.goodFat",
         "tracking.fiber",
+        "tracking.goodFat",
         "tracking.workout",
         "tracking.cardio",
         "tracking.creatine",
     )
 
     /** Metas opcionais que o usuário pode remover — porte de RemovedItemsStore.removableTrackingKeys (iOS). */
-    val REMOVABLE_KEYS: Set<String> = setOf("tracking.goodFat", "tracking.creatine")
+    val REMOVABLE_KEYS: Set<String> = setOf("tracking.calories", "tracking.goodFat", "tracking.creatine")
 }
 
 /**

@@ -13,121 +13,143 @@
     <string name="tier_gym_level2">Strongling</string>
     <string name="tier_gym_level3">Gym Rat</string>
     <string name="tier_gym_level4">Muscly</string>
+    <string name="tier_gym_level5">Beast</string>
 
     <string name="tier_running_level1">Walker</string>
     <string name="tier_running_level2">On pace</string>
     <string name="tier_running_level3">Runner</string>
     <string name="tier_running_level4">Marathoner</string>
+    <string name="tier_running_level5">Ultramarathoner</string>
 
     <!-- Animals -->
     <string name="tier_cat_level1">Little Cat</string>
     <string name="tier_cat_level2">Fitness Cat</string>
     <string name="tier_cat_level3">Big Cat</string>
     <string name="tier_cat_level4">Leader Cat</string>
+    <string name="tier_cat_level5">Tiger</string>
 
     <string name="tier_dog_level1">Little Dog</string>
     <string name="tier_dog_level2">Fitness Dog</string>
     <string name="tier_dog_level3">Snoop Dog</string>
     <string name="tier_dog_level4">The Caramel Dog</string>
+    <string name="tier_dog_level5">Wolf</string>
 
     <string name="tier_bear_level1">Bear Cub</string>
     <string name="tier_bear_level2">Brown Bear</string>
     <string name="tier_bear_level3">Polar Bear</string>
     <string name="tier_bear_level4">Mighty Bison</string>
+    <string name="tier_bear_level5">Mammoth</string>
 
     <string name="tier_dino_level1">Baby Turtle</string>
     <string name="tier_dino_level2">Crocodile</string>
     <string name="tier_dino_level3">T-Rex</string>
     <string name="tier_dino_level4">Big Dino</string>
+    <string name="tier_dino_level5">Legendary Fossil</string>
 
     <string name="tier_dragon_level1">Little Egg</string>
     <string name="tier_dragon_level2">Lizard</string>
     <string name="tier_dragon_level3">Dragon</string>
     <string name="tier_dragon_level4">Elder Dragon</string>
+    <string name="tier_dragon_level5">Dragon King</string>
 
     <string name="tier_horse_level1">Colt</string>
     <string name="tier_horse_level2">Unicorn</string>
     <string name="tier_horse_level3">Jockey</string>
     <string name="tier_horse_level4">Carousel Champion</string>
+    <string name="tier_horse_level5">Thoroughbred</string>
 
     <string name="tier_ocean_level1">Little Fish</string>
     <string name="tier_ocean_level2">Dolphin</string>
     <string name="tier_ocean_level3">Jellyfish</string>
     <string name="tier_ocean_level4">Blue Whale</string>
+    <string name="tier_ocean_level5">Kraken</string>
 
     <string name="tier_monkey_level1">Little Primate</string>
     <string name="tier_monkey_level2">Fit Primate</string>
     <string name="tier_monkey_level3">Donkey Primate</string>
     <string name="tier_monkey_level4">Master Primate</string>
+    <string name="tier_monkey_level5">Jungle Legend</string>
 
     <string name="tier_bird_level1">Little Chick</string>
     <string name="tier_bird_level2">Bluebird</string>
     <string name="tier_bird_level3">Eagle</string>
     <string name="tier_bird_level4">Wise Owl</string>
+    <string name="tier_bird_level5">Phoenix</string>
 
     <!-- Warrior -->
     <string name="tier_doctor_level1">Apprentice</string>
     <string name="tier_doctor_level2">Beginner</string>
     <string name="tier_doctor_level3">Graduate</string>
     <string name="tier_doctor_level4">Doctor Who</string>
+    <string name="tier_doctor_level5">Chief of Medicine</string>
 
     <string name="tier_ninja_level1">Trainee</string>
     <string name="tier_ninja_level2">Swordsman</string>
     <string name="tier_ninja_level3">Ninja</string>
     <string name="tier_ninja_level4">Super</string>
+    <string name="tier_ninja_level5">Legendary Master</string>
 
     <!-- Elements -->
     <string name="tier_fire_level1">Candle</string>
     <string name="tier_fire_level2">Flame</string>
     <string name="tier_fire_level3">Volcano</string>
     <string name="tier_fire_level4">Solar</string>
+    <string name="tier_fire_level5">Supernova</string>
 
     <string name="tier_plant_level1">Little Sprout</string>
     <string name="tier_plant_level2">Herb</string>
     <string name="tier_plant_level3">Big Tree</string>
     <string name="tier_plant_level4">Christmas Tree</string>
+    <string name="tier_plant_level5">Forest</string>
 
     <!-- Space -->
     <string name="tier_astronaut_level1">Satellite</string>
     <string name="tier_astronaut_level2">Astronaut</string>
     <string name="tier_astronaut_level3">Space rocket</string>
     <string name="tier_astronaut_level4">Flying Saucer</string>
+    <string name="tier_astronaut_level5">Alien</string>
 
     <string name="tier_celestial_level1">Comet</string>
     <string name="tier_celestial_level2">Moon</string>
     <string name="tier_celestial_level3">Earth</string>
     <string name="tier_celestial_level4">Saturn</string>
+    <string name="tier_celestial_level5">Galaxy</string>
 
     <!-- Competition -->
     <string name="tier_champion_level1">Bronze</string>
     <string name="tier_champion_level2">Silver</string>
     <string name="tier_champion_level3">Gold</string>
     <string name="tier_champion_level4">Diamond</string>
+    <string name="tier_champion_level5">Trophy</string>
 
     <string name="tier_number_level1">One</string>
     <string name="tier_number_level2">Two</string>
     <string name="tier_number_level3">Three</string>
     <string name="tier_number_level4">Four</string>
+    <string name="tier_number_level5">Five</string>
 
     <!--
-      Variantes femininas dos nomes de nível (sex != "male") — espelham as chaves
-      daily.achievement.*.fem do iOS. Em inglês o iOS só diferencia "Hen" (Gym L1); as demais
-      repetem a base de propósito, porque o resource precisa existir no default `values/` pra
-      resolução. Onde de fato mudam é no values-pt-rBR.
+      Variantes femininas dos nomes de nível (sex == "female") — espelham as chaves
+      daily.achievement.*.fem do iOS. Em inglês o iOS só diferencia "Hen" (Gym L1), "Tigress" (Cat L5)
+      e "Dragon Queen" (Dragon L5); as demais repetem a base de propósito, porque o resource precisa
+      existir no default `values/` pra resolução. Onde de fato mudam é no values-pt-rBR.
     -->
     <string name="tier_gym_level1_fem">Hen</string>
     <string name="tier_gym_level2_fem">Strongling</string>
     <string name="tier_gym_level3_fem">Gym Rat</string>
     <string name="tier_gym_level4_fem">Muscly</string>
+    <string name="tier_gym_level5_fem">Beast</string>
     <string name="tier_running_level3_fem">Runner</string>
     <string name="tier_cat_level1_fem">Little Cat</string>
     <string name="tier_cat_level2_fem">Fitness Cat</string>
     <string name="tier_cat_level3_fem">Big Cat</string>
     <string name="tier_cat_level4_fem">Leader Cat</string>
+    <string name="tier_cat_level5_fem">Tigress</string>
     <string name="tier_dog_level1_fem">Little Dog</string>
     <string name="tier_dog_level2_fem">Fitness Dog</string>
     <string name="tier_dog_level3_fem">Snoop Dog</string>
     <string name="tier_dog_level4_fem">The Caramel Dog</string>
+    <string name="tier_dog_level5_fem">Wolf</string>
     <string name="tier_bear_level1_fem">Bear Cub</string>
     <string name="tier_bear_level2_fem">Brown Bear</string>
     <string name="tier_bear_level3_fem">Polar Bear</string>
@@ -137,6 +159,7 @@
     <string name="tier_dragon_level2_fem">Lizard</string>
     <string name="tier_dragon_level3_fem">Dragon</string>
     <string name="tier_dragon_level4_fem">Elder Dragon</string>
+    <string name="tier_dragon_level5_fem">Dragon Queen</string>
     <string name="tier_horse_level1_fem">Colt</string>
     <string name="tier_horse_level2_fem">Unicorn</string>
     <string name="tier_horse_level3_fem">Jockey</string>
@@ -145,5 +168,7 @@
     <string name="tier_fire_level4_fem">Solar</string>
     <string name="tier_doctor_level3_fem">Graduate</string>
     <string name="tier_doctor_level4_fem">Doctor Who</string>
+    <string name="tier_doctor_level5_fem">Chief of Medicine</string>
+    <string name="tier_ninja_level5_fem">Legendary Master</string>
 
 </resources>

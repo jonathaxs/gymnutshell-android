@@ -36,15 +36,15 @@ class WidgetSnapshotBuilderTest {
     )
 
     @Test
-    fun `todas as metas no alvo gera 100 por cento e tier 4`() {
+    fun `todas as metas no alvo gera 100 por cento e tier 5`() {
         val full = BuiltInGoals.forResult(result).associate { it.key to it.target }
         val snap = snapshot(intakes = full)
 
         assertEquals(100, snap.progressPercent)
-        assertEquals(4, snap.tier)
-        assertEquals(90, snap.tierPoints)
-        assertEquals(AppTheme.Gym.emoji(DailyAchievement.Level4), snap.tierEmoji)
-        assertEquals(AppTheme.Gym.tierNameRes(DailyAchievement.Level4), snap.tierNameRes)
+        assertEquals(5, snap.tier)
+        assertEquals(100, snap.tierPoints)
+        assertEquals(AppTheme.Gym.emoji(DailyAchievement.Level5), snap.tierEmoji)
+        assertEquals(AppTheme.Gym.tierNameRes(DailyAchievement.Level5), snap.tierNameRes)
     }
 
     @Test

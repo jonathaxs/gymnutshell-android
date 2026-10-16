@@ -47,7 +47,7 @@ import com.jonathaxs.gymnutshell.ui.components.GroupSection
 
 // Kinds da seção Sistema e da seção Metas (mesma ordem do iOS).
 private val SYSTEM_KINDS = listOf(
-    NotificationKind.Progress, NotificationKind.Achievement, NotificationKind.StreakBonus,
+    NotificationKind.Progress, NotificationKind.Achievement,
     NotificationKind.HealthSync, NotificationKind.Backup,
 )
 private val GOAL_KINDS = listOf(

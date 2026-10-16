@@ -34,7 +34,6 @@ fun SettingsListScreen(
     onOpenTheme: () -> Unit,
     onOpenCustomGoals: () -> Unit,
     onOpenUnits: () -> Unit,
-    onOpenOrientation: () -> Unit,
     onOpenNotifications: () -> Unit,
     onOpenHealth: () -> Unit,
     onOpenBackup: () -> Unit,
@@ -74,11 +73,6 @@ fun SettingsListScreen(
                 GroupRow(stringResource(R.string.settings_widget_background), showChevron = true, onClick = onOpenWidgetBackground)
                 GroupRowDivider()
                 GroupRow(stringResource(R.string.settings_units), showChevron = true, onClick = onOpenUnits)
-                // Orientação só faz sentido no celular; o tablet sempre aceita ambas (igual ao iOS).
-                if (!rememberIsTablet()) {
-                    GroupRowDivider()
-                    GroupRow(stringResource(R.string.settings_orientation), showChevron = true, onClick = onOpenOrientation)
-                }
             }
 
             // Seção System: notificações, Health Connect e backup.

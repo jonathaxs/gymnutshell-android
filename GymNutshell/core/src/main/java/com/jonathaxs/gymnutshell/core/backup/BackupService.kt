@@ -2,6 +2,8 @@ package com.jonathaxs.gymnutshell.core.backup
 
 import android.content.Context
 import com.jonathaxs.gymnutshell.core.data.CustomGoal
+import com.jonathaxs.gymnutshell.core.data.CustomGoalCategory
+import com.jonathaxs.gymnutshell.core.data.CustomGoalCategoryRepository
 import com.jonathaxs.gymnutshell.core.data.CustomGoalRepository
 import com.jonathaxs.gymnutshell.core.data.DailyRecord
 import com.jonathaxs.gymnutshell.core.data.DailyRecordRepository
@@ -9,7 +11,9 @@ import com.jonathaxs.gymnutshell.core.data.HealthPreferencesRepository
 import com.jonathaxs.gymnutshell.core.data.NotificationPreferencesRepository
 import com.jonathaxs.gymnutshell.core.data.ProfileRepository
 import com.jonathaxs.gymnutshell.core.data.SettingsRepository
+import com.jonathaxs.gymnutshell.core.data.normalizeAchievement
 import com.jonathaxs.gymnutshell.core.domain.AppTheme
+import com.jonathaxs.gymnutshell.core.domain.ControlStyle
 import com.jonathaxs.gymnutshell.core.domain.GoalsProvider
 import com.jonathaxs.gymnutshell.core.domain.MeasurementSystem
 import com.jonathaxs.gymnutshell.core.domain.Profile
@@ -32,6 +36,7 @@ class BackupService(context: Context) {
     private val settingsRepo = SettingsRepository(context)
     private val recordRepo = DailyRecordRepository(context)
     private val customGoalRepo = CustomGoalRepository(context)
+    private val customCategoryRepo = CustomGoalCategoryRepository(context)
     private val notifPrefs = NotificationPreferencesRepository(context)
     private val healthPrefs = HealthPreferencesRepository(context)
 
@@ -49,6 +54,7 @@ class BackupService(context: Context) {
         val measurement = settingsRepo.measurementSystem.first()
         val theme = settingsRepo.theme.first()
         val accent = settingsRepo.accentColor.first()
+        val controlStyle = settingsRepo.controlStyle.first()
         val goals = GoalsProvider.goals(profile)
 
         return BackupPayload(
@@ -56,10 +62,10 @@ class BackupService(context: Context) {
             exportedAt = Instant.now().toString(),
             profile = ProfileSnapshot(
                 name = profile.name,
-                height = profile.heightCm,
-                weight = profile.weightKg,
-                age = profile.age,
-                sex = profile.sex,
+                height = 0,
+                weight = 0.0,
+                age = 0,
+                sex = Profile.normalizedSex(profile.sex),
                 userGoal = profile.goal.rawValue,
                 measurementSystem = measurement.rawValue,
             ),
@@ -73,10 +79,12 @@ class BackupService(context: Context) {
             appearance = AppearanceSnapshot(theme = theme.rawValue, accentColor = accent.name),
             preferences = PreferencesSnapshot(
                 autoWorkoutCheckin = healthPrefs.autoWorkoutCheckin(),
+                controlStyle = controlStyle.rawValue,
                 notificationEnabled = notifPrefs.enabledSnapshot().ifEmpty { null },
                 notificationInterval = notifPrefs.intervalSnapshot().ifEmpty { null },
                 notificationSound = notifPrefs.soundSnapshot().ifEmpty { null },
             ),
+            customCategories = customCategoryRepo.all().ifEmpty { null },
         )
     }
 
@@ -94,10 +102,10 @@ class BackupService(context: Context) {
         profileRepo.update(
             Profile(
                 name = p.name,
-                weightKg = p.weight,
-                heightCm = p.height,
-                age = p.age,
-                sex = p.sex,
+                weightKg = 0.0,
+                heightCm = 0,
+                age = 0,
+                sex = Profile.normalizedSex(p.sex),
                 goal = UserGoal.fromRaw(p.userGoal) ?: UserGoal.Maintenance,
             ),
         )
@@ -109,10 +117,14 @@ class BackupService(context: Context) {
         }
 
         customGoalRepo.replaceAll(payload.customGoals.map { it.toEntity() })
-        recordRepo.replaceAll(payload.dailyRecords.map { it.toEntity() })
+        payload.customCategories?.let { customCategoryRepo.replaceAll(it) }
+        recordRepo.replaceAll(payload.dailyRecords.map { it.toEntity().normalizeAchievement() })
 
         payload.preferences?.let { prefs ->
             prefs.autoWorkoutCheckin?.let { healthPrefs.setAutoWorkoutCheckin(it) }
+            prefs.controlStyle?.let { raw ->
+                ControlStyle.fromRawOrNull(raw)?.let { settingsRepo.setControlStyle(it) }
+            }
             notifPrefs.restoreFromBackup(prefs.notificationEnabled, prefs.notificationInterval, prefs.notificationSound)
         }
     }
