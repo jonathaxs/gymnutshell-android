@@ -67,16 +67,17 @@ class AddGoalViewModel(app: Application) : AndroidViewModel(app) {
         target: Int,
         increment: Int,
         selection: CategorySelection,
-        newCategory: Pair<String, Boolean>?,
+        newCategory: Triple<String, Boolean, String>?,
         editingId: Long?,
     ) {
         viewModelScope.launch {
             var resolved = selection
-            newCategory?.let { (catName, restDay) ->
+            newCategory?.let { (catName, restDay, symbol) ->
                 val category = CustomGoalCategory(
                     id = UUID.randomUUID().toString(),
                     name = catName.trim(),
                     supportsRestDay = restDay,
+                    symbolName = symbol,
                 )
                 customCategoryRepo.upsert(category)
                 resolved = CategorySelection.Custom(category.id)

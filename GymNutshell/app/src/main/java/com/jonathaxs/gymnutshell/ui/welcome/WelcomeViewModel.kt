@@ -2,6 +2,7 @@ package com.jonathaxs.gymnutshell.ui.welcome
 
 import android.app.Application
 import android.net.Uri
+import androidx.core.app.NotificationManagerCompat
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -108,6 +109,10 @@ class WelcomeViewModel(app: Application) : AndroidViewModel(app) {
         WelcomeUiState(isHealthAvailable = healthManager.isAvailable)
     )
     val state: StateFlow<WelcomeUiState> = _state.asStateFlow()
+
+    init {
+        refreshPermissions()
+    }
 
     val healthPermissions: Set<String>
         get() = healthManager.allPermissions
@@ -249,11 +254,32 @@ class WelcomeViewModel(app: Application) : AndroidViewModel(app) {
 
     // MARK: - Permissões
 
-    fun onNotificationPermissionResult(granted: Boolean) {
-        _state.update {
-            it.copy(notificationsPermissionState = if (granted) WelcomePermissionState.Allowed else WelcomePermissionState.Denied)
+    /**
+     * Reavalia o estado real das permissões de notificações e Health Connect,
+     * atualizando para Allowed se já concedidas no sistema operacional.
+     */
+    fun refreshPermissions() {
+        viewModelScope.launch {
+            val notifGranted = NotificationManagerCompat.from(getApplication()).areNotificationsEnabled()
+            val healthGranted = if (healthManager.isAvailable) {
+                healthManager.grantedPermissions().containsAll(healthManager.allPermissions)
+            } else false
+
+            _state.update { current ->
+                current.copy(
+                    notificationsPermissionState = if (notifGranted) WelcomePermissionState.Allowed else current.notificationsPermissionState,
+                    healthPermissionState = if (healthGranted) WelcomePermissionState.Allowed else current.healthPermissionState,
+                )
+            }
         }
-        if (granted) {
+    }
+
+    fun onNotificationPermissionResult(granted: Boolean) {
+        val actuallyGranted = NotificationManagerCompat.from(getApplication()).areNotificationsEnabled() || granted
+        _state.update {
+            it.copy(notificationsPermissionState = if (actuallyGranted) WelcomePermissionState.Allowed else WelcomePermissionState.Denied)
+        }
+        if (actuallyGranted) {
             viewModelScope.launch {
                 notificationPrefs.applyDefaultEnabledKindsOnce()
                 notificationScheduler.rescheduleAllActive()
@@ -262,12 +288,16 @@ class WelcomeViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun onHealthPermissionResult(granted: Boolean) {
-        _state.update {
-            it.copy(healthPermissionState = if (granted) WelcomePermissionState.Allowed else WelcomePermissionState.Requested)
-        }
         viewModelScope.launch {
-            healthPrefs.setSyncSleepEnabled(true)
-            healthPrefs.setAutoWorkoutCheckin(true)
+            val allGranted = healthManager.grantedPermissions().containsAll(healthManager.allPermissions)
+            val isAllowed = allGranted || granted
+            _state.update {
+                it.copy(healthPermissionState = if (isAllowed) WelcomePermissionState.Allowed else WelcomePermissionState.Requested)
+            }
+            if (isAllowed) {
+                healthPrefs.setSyncSleepEnabled(true)
+                healthPrefs.setAutoWorkoutCheckin(true)
+            }
         }
     }
 

@@ -141,21 +141,26 @@
     <string name="streak_bonus_monthly_l3_desc">All days of the month with level 3 or 4 achievements.</string>
     <string name="streak_bonus_monthly_l4_desc">All days of the month with 4 achievements.</string>
     <string name="streak_bonus_points_format">+%1$d pts</string>
-    <string name="settings_accent_color">Colors</string>
+    <string name="settings_accent_color">Accent colors</string>
     <string name="a11y_selected">Selected</string>
     <string name="a11y_not_selected">Not selected</string>
 
     <!-- Nomes das cores de destaque -->
     <string name="color_red">Red</string>
     <string name="color_blue">Blue</string>
-    <string name="color_purple">Purple</string>
+    <string name="color_purple">Violet</string>
     <string name="color_green">Green</string>
     <string name="color_yellow">Yellow</string>
     <string name="color_orange">Orange</string>
     <string name="color_cyan">Cyan</string>
     <string name="color_pink">Pink</string>
 
-    <!-- Dados físicos -->
+    <!-- Dados físicos e perfil -->
+    <string name="settings_section_data">Your data</string>
+    <string name="settings_profile_title">Profile</string>
+    <string name="settings_profile_section_optional">Optional</string>
+    <string name="settings_profile_name">Name</string>
+    <string name="settings_profile_name_placeholder">Optional</string>
     <string name="settings_physical_data">Your data</string>
     <string name="settings_profile_section_physical">Physical data</string>
     <string name="field_name">Name</string>
@@ -164,13 +169,21 @@
     <string name="field_age">Age</string>
     <string name="field_sex">Sex</string>
     <string name="field_goal">Goal</string>
-    <string name="settings_fitness_goal">Fitness Goal</string>
+    <string name="settings_fitness_goal">Goal</string>
     <!-- Rótulo na lista de Ajustes (a tela em si tem título "Goals" via goals_title) -->
-    <string name="settings_daily_goals">Daily Goals</string>
+    <string name="settings_daily_goals">Goals</string>
     <!-- Tela de objetivo fitness (picker em cards + prévia das metas recalculadas) -->
+    <string name="settings_goalchange_section_pick">Choose your goal</string>
     <string name="settings_goalchange_pick_header">Choose your goal</string>
     <string name="settings_goalchange_pick_footer">Changing your goal recalculates the app\'s default goals based on your physical data and your chosen new goal.</string>
+    <string name="settings_goalchange_section_preview">Recalculated goals</string>
     <string name="settings_goalchange_preview_header">Recalculated goals</string>
+    <string name="settings_goalchange_save_recalc">Save and recalculate</string>
+    <string name="settings_goalchange_save_keep">Save without recalculating</string>
+    <string name="settings_preference_control_style">Controls</string>
+    <string name="settings_control_style_footer">You can switch between list and grid views directly on the Today screen.</string>
+    <string name="settings_color_preview">Preview</string>
+    <string name="settings_color_subtitle">Accent colors</string>
     <string name="settings_units">Measurements</string>
     <!-- Orientação (só celular) -->
     <string name="settings_orientation">Orientation</string>
@@ -232,6 +245,7 @@
     <string name="addgoal_category_new_section">Custom category</string>
     <string name="addgoal_category_new_name_placeholder">example: Stretching</string>
     <string name="addgoal_category_new_rest_day">Day off toggle (ON/OFF)</string>
+    <string name="settings_category_icon_section">Icon</string>
     <!-- Detalhe de meta fixa (valor + passo) -->
     <string name="goaldetail_stepper">Adjust value</string>
     <string name="goaldetail_increment_stepper">Adjust step</string>

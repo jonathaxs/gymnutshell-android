@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
@@ -43,6 +45,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.data.CustomGoalCategory
+import com.jonathaxs.gymnutshell.ui.components.CategorySymbolPicker
 import com.jonathaxs.gymnutshell.ui.components.GroupRow
 import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
 import com.jonathaxs.gymnutshell.ui.components.GroupSection
@@ -104,6 +107,7 @@ fun CategoriesScreen(onBack: () -> Unit, viewModel: CategoriesViewModel = viewMo
     editing?.let { category ->
         EditCategorySheet(
             category = category,
+            accent = accent,
             onDismiss = { editing = null },
             onSave = { updated ->
                 viewModel.saveCategory(updated)
@@ -134,17 +138,19 @@ private fun ReorderArrows(canUp: Boolean, canDown: Boolean, onMoveUp: () -> Unit
     }
 }
 
-/** Sheet de editar categoria personalizada (nome + toggle dia-off) — porte de EditCustomGoalCategoryView (iOS). */
+/** Sheet de editar categoria personalizada (nome + toggle dia-off + ícone) — porte de EditCustomGoalCategoryView (iOS). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun EditCategorySheet(
     category: CustomGoalCategory,
+    accent: Color,
     onDismiss: () -> Unit,
     onSave: (CustomGoalCategory) -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var name by remember { mutableStateOf(category.name) }
     var restDay by remember { mutableStateOf(category.supportsRestDay) }
+    var symbol by remember { mutableStateOf(category.symbolName) }
 
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
         Column(
@@ -152,11 +158,17 @@ private fun EditCategorySheet(
                 .fillMaxWidth()
                 .navigationBarsPadding()
                 .imePadding()
+                .verticalScroll(rememberScrollState())
                 .padding(horizontal = 24.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.Start,
         ) {
             Text(stringResource(R.string.addgoal_category_new_section), style = MaterialTheme.typography.titleMedium)
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
                 Text(stringResource(R.string.addgoal_category_new_rest_day), modifier = Modifier.weight(1f))
                 Switch(checked = restDay, onCheckedChange = { restDay = it })
             }
@@ -167,8 +179,14 @@ private fun EditCategorySheet(
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
             )
+            Text(stringResource(R.string.settings_category_icon_section), style = MaterialTheme.typography.titleMedium)
+            CategorySymbolPicker(
+                selection = symbol,
+                onSelect = { symbol = it },
+                accentColor = accent,
+            )
             Button(
-                onClick = { onSave(category.copy(name = name.trim(), supportsRestDay = restDay)) },
+                onClick = { onSave(category.copy(name = name.trim(), supportsRestDay = restDay, symbolName = symbol)) },
                 enabled = name.isNotBlank(),
                 modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
             ) { Text(stringResource(R.string.action_save)) }

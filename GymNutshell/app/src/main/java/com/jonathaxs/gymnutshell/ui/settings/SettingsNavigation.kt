@@ -22,9 +22,10 @@ object SettingsRoutes {
     const val GRAPH = "settings"
     const val LIST = "settings_list"
     const val COLOR = "settings_color"
-    const val PHYSICAL = "settings_physical"
+    const val PROFILE = "settings_profile"
     const val GOAL = "settings_goal"
     const val THEME = "settings_theme"
+    const val CONTROLS = "settings_controls"
     const val CUSTOM_GOALS = "settings_custom_goals" // hub de Goals (porte de TrackingGoalsSettingsView)
     const val ADD_GOAL = "settings_add_goal" // + "?goalId={goalId}" pra editar
     const val GOAL_DETAIL = "settings_goal_detail" // + "/{key}"
@@ -40,43 +41,46 @@ object SettingsRoutes {
     const val WEAR = "settings_wear"
     const val RING_INFO = "settings_ring_info"
     const val TIER_INFO = "settings_tier_info"
-    const val BONUS_INFO = "settings_bonus_info"
 }
 
-/** Grafo aninhado da Settings: lista → sub-telas (cor, dados físicos). */
+/** Grafo aninhado da Settings: lista → sub-telas. */
 fun NavGraphBuilder.settingsGraph(navController: NavController) {
     navigation(startDestination = SettingsRoutes.LIST, route = SettingsRoutes.GRAPH) {
         composable(SettingsRoutes.LIST) {
             SettingsListScreen(
-                onOpenColor = { navController.navigate(SettingsRoutes.COLOR) },
-                onOpenPhysical = { navController.navigate(SettingsRoutes.PHYSICAL) },
-                onOpenGoal = { navController.navigate(SettingsRoutes.GOAL) },
-                onOpenTheme = { navController.navigate(SettingsRoutes.THEME) },
+                onBack = { navController.popBackStack() },
                 onOpenCustomGoals = { navController.navigate(SettingsRoutes.CUSTOM_GOALS) },
-                onOpenUnits = { navController.navigate(SettingsRoutes.UNITS) },
-                onOpenNotifications = { navController.navigate(SettingsRoutes.NOTIFICATIONS) },
+                onOpenGoal = { navController.navigate(SettingsRoutes.GOAL) },
+                onOpenProfile = { navController.navigate(SettingsRoutes.PROFILE) },
+                onOpenTheme = { navController.navigate(SettingsRoutes.THEME) },
+                onOpenColor = { navController.navigate(SettingsRoutes.COLOR) },
+                onOpenWidgetBackground = { navController.navigate(SettingsRoutes.WIDGET_BG) },
+                onOpenControls = { navController.navigate(SettingsRoutes.CONTROLS) },
                 onOpenHealth = { navController.navigate(SettingsRoutes.HEALTH) },
+                onOpenNotifications = { navController.navigate(SettingsRoutes.NOTIFICATIONS) },
+                onOpenUnits = { navController.navigate(SettingsRoutes.UNITS) },
                 onOpenBackup = { navController.navigate(SettingsRoutes.BACKUP) },
                 onOpenLanguage = { navController.navigate(SettingsRoutes.LANGUAGE) },
-                onOpenWidgetBackground = { navController.navigate(SettingsRoutes.WIDGET_BG) },
                 onOpenAbout = { navController.navigate(SettingsRoutes.ABOUT) },
                 onOpenWear = { navController.navigate(SettingsRoutes.WEAR) },
                 onOpenRingInfo = { navController.navigate(SettingsRoutes.RING_INFO) },
                 onOpenTierInfo = { navController.navigate(SettingsRoutes.TIER_INFO) },
-                onOpenBonusInfo = { navController.navigate(SettingsRoutes.BONUS_INFO) },
             )
         }
         composable(SettingsRoutes.COLOR) {
             ColorSettingsScreen(onBack = { navController.popBackStack() })
         }
-        composable(SettingsRoutes.PHYSICAL) {
-            PhysicalDataScreen(onBack = { navController.popBackStack() })
+        composable(SettingsRoutes.PROFILE) {
+            ProfileSettingsScreen(onBack = { navController.popBackStack() })
         }
         composable(SettingsRoutes.GOAL) {
             UserGoalScreen(onBack = { navController.popBackStack() })
         }
         composable(SettingsRoutes.THEME) {
             ThemeSettingsScreen(onBack = { navController.popBackStack() })
+        }
+        composable(SettingsRoutes.CONTROLS) {
+            ControlStyleSettingsScreen(onBack = { navController.popBackStack() })
         }
         composable(SettingsRoutes.CUSTOM_GOALS) {
             GoalsScreen(
@@ -149,9 +153,6 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
                 onBack = { navController.popBackStack() },
                 onOpenTheme = { navController.navigate(SettingsRoutes.THEME) },
             )
-        }
-        composable(SettingsRoutes.BONUS_INFO) {
-            StreakBonusInfoScreen(onBack = { navController.popBackStack() })
         }
         composable(
             route = "${SettingsRoutes.NOTIF_EDIT}/{target}",

@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +30,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -44,6 +48,9 @@ import com.jonathaxs.gymnutshell.notifications.NotificationStrings
 import com.jonathaxs.gymnutshell.ui.components.GroupRow
 import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
 import com.jonathaxs.gymnutshell.ui.components.GroupSection
+import com.jonathaxs.gymnutshell.ui.components.PermissionCard
+import com.jonathaxs.gymnutshell.ui.components.PermissionCardState
+import com.jonathaxs.gymnutshell.ui.theme.color
 
 // Kinds da seção Sistema e da seção Metas (mesma ordem do iOS).
 private val SYSTEM_KINDS = listOf(
@@ -67,8 +74,10 @@ fun NotificationsSettingsScreen(
     onBack: () -> Unit,
     onEditTarget: (String) -> Unit,
     viewModel: NotificationsViewModel = viewModel(),
+    settingsViewModel: SettingsViewModel = viewModel(),
 ) {
     val ui by viewModel.state.collectAsStateWithLifecycle()
+    val accent by settingsViewModel.accentColor.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -99,7 +108,29 @@ fun NotificationsSettingsScreen(
     Scaffold(topBar = { SettingsTopBar(stringResource(R.string.settings_notifications), onBack) }) { padding ->
         Column(Modifier.fillMaxSize().padding(padding).verticalScroll(rememberScrollState())) {
             if (!allowed) {
-                AuthorizeBanner(onEnableClick)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalAlignment = Alignment.Start,
+                ) {
+                    PermissionCard(
+                        icon = Icons.Default.Notifications,
+                        iconBackgroundColor = Color(0xFFFF3B30),
+                        title = stringResource(R.string.welcome_ready_notifications_title),
+                        description = stringResource(R.string.welcome_ready_notifications_desc),
+                        state = PermissionCardState.Idle,
+                        accentColor = accent.color,
+                        onAllow = onEnableClick,
+                    )
+                    Text(
+                        text = stringResource(R.string.settings_notifications_authorize_footer),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                    )
+                }
             }
 
             GroupSection(title = stringResource(R.string.settings_notifications_section_system)) {
@@ -154,21 +185,6 @@ fun NotificationsSettingsScreen(
     }
 }
 
-/** Banner pra habilitar as notificações no SO (mostrado só quando estão bloqueadas). */
-@Composable
-private fun AuthorizeBanner(onEnable: () -> Unit) {
-    Card(Modifier.fillMaxWidth().padding(16.dp)) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            Text(
-                stringResource(R.string.settings_notifications_authorize_footer),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-            Button(onClick = onEnable) {
-                Text(stringResource(R.string.settings_notifications_authorize_button))
-            }
-        }
-    }
-}
 
 /** Linha de notificação: emoji opcional + título/descrição (toca pra editar) + switch. */
 @Composable

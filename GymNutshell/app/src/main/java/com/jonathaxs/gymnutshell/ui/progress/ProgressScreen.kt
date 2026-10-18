@@ -69,7 +69,8 @@ fun ProgressScreen(
     onOpenTheme: () -> Unit = {},
     onOpenGoals: () -> Unit = {},
     onOpenUserGoal: () -> Unit = {},
-    onOpenPhysical: () -> Unit = {},
+    onOpenProfile: () -> Unit = {},
+    onOpenPhysical: () -> Unit = onOpenProfile,
     onOpenAchievements: () -> Unit = {},
     viewModel: ProgressViewModel = viewModel(),
 ) {
@@ -112,7 +113,7 @@ fun ProgressScreen(
                     // Coluna direita: bônus de sequência → dados físicos.
                     Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(16.dp)) {
                         BonusesCard(state, accent) { showBonusInfo = true }
-                        state.physical?.let { PhysicalCard(it, accent, onOpenPhysical) }
+                        state.physical?.let { PhysicalCard(it, accent, onOpenProfile) }
                     }
                 }
                 UserGoalCard(state, accent, onOpenUserGoal)
@@ -130,7 +131,7 @@ fun ProgressScreen(
                 item { ActivityCard(state, accent, onActivityClick) }
                 item { GoalsCard(state, accent, onOpenGoals) }
                 item { UserGoalCard(state, accent, onOpenUserGoal) }
-                state.physical?.let { physical -> item { PhysicalCard(physical, accent, onOpenPhysical) } }
+                state.physical?.let { physical -> item { PhysicalCard(physical, accent, onOpenProfile) } }
                 item { RecentActivityCard(state, accent, onRecentDayClick) }
             }
         }

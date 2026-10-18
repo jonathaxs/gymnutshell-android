@@ -140,21 +140,26 @@
     <string name="streak_bonus_monthly_l3_desc">Todos os dias do mês com conquistas nível 3 ou 4.</string>
     <string name="streak_bonus_monthly_l4_desc">Todos os dias do mês com conquistas nível 4.</string>
     <string name="streak_bonus_points_format">+%1$d pts</string>
-    <string name="settings_accent_color">Cores</string>
+    <string name="settings_accent_color">Cores de destaque</string>
     <string name="a11y_selected">Selecionado</string>
     <string name="a11y_not_selected">Não selecionado</string>
 
     <!-- Nomes das cores de destaque -->
     <string name="color_red">Vermelho</string>
     <string name="color_blue">Azul</string>
-    <string name="color_purple">Roxo</string>
+    <string name="color_purple">Violeta</string>
     <string name="color_green">Verde</string>
     <string name="color_yellow">Amarelo</string>
     <string name="color_orange">Laranja</string>
     <string name="color_cyan">Ciano</string>
     <string name="color_pink">Rosa</string>
 
-    <!-- Dados físicos -->
+    <!-- Dados físicos e perfil -->
+    <string name="settings_section_data">Seus dados</string>
+    <string name="settings_profile_title">Perfil</string>
+    <string name="settings_profile_section_optional">Opcional</string>
+    <string name="settings_profile_name">Nome</string>
+    <string name="settings_profile_name_placeholder">Opcional</string>
     <string name="settings_physical_data">Seus dados</string>
     <string name="settings_profile_section_physical">Dados físicos</string>
     <string name="field_name">Nome</string>
@@ -165,9 +170,18 @@
     <string name="field_goal">Objetivo</string>
     <string name="settings_fitness_goal">Objetivo</string>
     <string name="settings_daily_goals">Metas</string>
+    <!-- Tela de objetivo fitness (picker em cards + prévia das metas recalculadas) -->
+    <string name="settings_goalchange_section_pick">Escolha seu objetivo</string>
     <string name="settings_goalchange_pick_header">Escolha seu objetivo</string>
     <string name="settings_goalchange_pick_footer">Alterar seu objetivo recalcula as metas padrões do app com base nos seus dados físicos e seu novo objetivo escolhido.</string>
+    <string name="settings_goalchange_section_preview">Metas recalculadas</string>
     <string name="settings_goalchange_preview_header">Metas recalculadas</string>
+    <string name="settings_goalchange_save_recalc">Salvar e recalcular</string>
+    <string name="settings_goalchange_save_keep">Salvar sem recalcular</string>
+    <string name="settings_preference_control_style">Controles</string>
+    <string name="settings_control_style_footer">A forma de exibição (lista ou grade) pode ser trocada na própria tela Hoje.</string>
+    <string name="settings_color_preview">Prévia</string>
+    <string name="settings_color_subtitle">Cores de destaque</string>
     <string name="settings_units">Medidas</string>
     <!-- Orientação (só celular) -->
     <string name="settings_orientation">Orientação</string>
@@ -229,6 +243,7 @@
     <string name="addgoal_category_new_section">Categoria personalizada</string>
     <string name="addgoal_category_new_name_placeholder">ex: Alongamento</string>
     <string name="addgoal_category_new_rest_day">Botão de descanso (ON/OFF)</string>
+    <string name="settings_category_icon_section">Ícone</string>
     <!-- Detalhe de meta fixa (valor + passo) -->
     <string name="goaldetail_stepper">Ajustar valor</string>
     <string name="goaldetail_increment_stepper">Ajustar passo</string>

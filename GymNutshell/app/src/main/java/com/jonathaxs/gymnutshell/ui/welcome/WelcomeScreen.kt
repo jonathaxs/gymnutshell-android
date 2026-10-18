@@ -60,6 +60,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -79,9 +80,13 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.health.connect.client.PermissionController
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
+import com.jonathaxs.gymnutshell.ui.components.PermissionCard
 import com.jonathaxs.gymnutshell.core.domain.AppTheme
 import com.jonathaxs.gymnutshell.core.domain.ControlStyle
 import com.jonathaxs.gymnutshell.core.domain.MeasurementSystem
@@ -103,6 +108,18 @@ import kotlin.math.roundToInt
 fun WelcomeScreen(viewModel: WelcomeViewModel = viewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val animatedStepColor by animateColorAsState(state.stepColor, tween(400), label = "step_color")
+
+    // Reavalia permissões reais ao voltar para a tela (espelha ON_RESUME do iOS)
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                viewModel.refreshPermissions()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
 
     // Trata o botão voltar do sistema Android (espelha swipe-back e botão de rodapé)
     BackHandler(enabled = state.currentStep != WelcomeStep.Start) {

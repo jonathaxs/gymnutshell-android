@@ -36,6 +36,11 @@ class ProfileRepository(private val context: Context) {
         context.appPreferences.edit { prefs -> prefs[Keys.onboarding] = true }
     }
 
+    /** Reseta a flag de onboarding para permitir rever o Welcome (Easter egg do Sobre). */
+    suspend fun resetOnboarding() {
+        context.appPreferences.edit { prefs -> prefs[Keys.onboarding] = false }
+    }
+
     val profile: Flow<Profile> = context.appPreferences.data.map { prefs ->
         Profile(
             name = prefs[Keys.name] ?: "",

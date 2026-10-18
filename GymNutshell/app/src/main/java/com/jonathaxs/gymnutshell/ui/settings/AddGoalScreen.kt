@@ -40,7 +40,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
+import com.jonathaxs.gymnutshell.core.data.CustomGoalCategory
 import com.jonathaxs.gymnutshell.core.domain.GoalCategory
+import com.jonathaxs.gymnutshell.ui.components.CategorySymbolPicker
 import java.text.BreakIterator
 
 /** Formulário de criar/editar meta personalizada — porte de AddTrackingGoalView (iOS). */
@@ -60,6 +62,7 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
     var creatingNewCategory by remember { mutableStateOf(false) }
     var newCategoryName by remember { mutableStateOf("") }
     var newCategoryRestDay by remember { mutableStateOf(false) }
+    var newCategorySymbol by remember { mutableStateOf(CustomGoalCategory.DEFAULT_SYMBOL_NAME) }
 
     // Pré-preenche uma vez quando a meta em edição termina de carregar.
     LaunchedEffect(data.editing?.id) {
@@ -125,7 +128,7 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
                                 increment = stepValue ?: 1,
                                 selection = selectedCategory,
                                 newCategory = if (creatingNewCategory && newCategoryName.isNotBlank()) {
-                                    newCategoryName to newCategoryRestDay
+                                    Triple(newCategoryName, newCategoryRestDay, newCategorySymbol)
                                 } else {
                                     null
                                 },
@@ -154,7 +157,16 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
                 customCategories = data.customCategories,
                 onSelect = { selectedCategory = it },
             )
-            TextButton(onClick = { creatingNewCategory = !creatingNewCategory }) {
+            TextButton(
+                onClick = {
+                    creatingNewCategory = !creatingNewCategory
+                    if (!creatingNewCategory) {
+                        newCategoryName = ""
+                        newCategoryRestDay = false
+                        newCategorySymbol = CustomGoalCategory.DEFAULT_SYMBOL_NAME
+                    }
+                },
+            ) {
                 Text(
                     (if (creatingNewCategory) "− " else "+ ") + stringResource(R.string.addgoal_category_new_button),
                     color = accent,
@@ -176,6 +188,12 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
                     isError = categoryNameConflict,
                     supportingText = errorText(categoryNameConflict, R.string.addgoal_warning_category_duplicate),
                     modifier = Modifier.fillMaxWidth(),
+                )
+                FieldLabel(stringResource(R.string.settings_category_icon_section))
+                CategorySymbolPicker(
+                    selection = newCategorySymbol,
+                    onSelect = { newCategorySymbol = it },
+                    accentColor = accent,
                 )
             }
 

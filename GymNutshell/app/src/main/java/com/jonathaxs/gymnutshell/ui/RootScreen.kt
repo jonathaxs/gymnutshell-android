@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -23,7 +24,11 @@ fun RootScreen(
 
     when (onboarded) {
         true -> MainScreen(pendingRoute = pendingRoute, onRouteConsumed = onRouteConsumed)
-        false -> WelcomeScreen()
+        false -> {
+            // Chave nova a cada exibição: depois do easter egg do Sobre o Welcome recomeça do início.
+            val session = rememberSaveable { System.nanoTime() }
+            WelcomeScreen(viewModel = viewModel(key = "welcome_$session"))
+        }
         null -> Box(Modifier.fillMaxSize()) {} // carregando a flag
     }
 }

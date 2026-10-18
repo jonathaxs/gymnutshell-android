@@ -34,7 +34,7 @@ import com.jonathaxs.gymnutshell.ui.settings.AddGoalScreen
 import com.jonathaxs.gymnutshell.ui.settings.CategoriesScreen
 import com.jonathaxs.gymnutshell.ui.settings.GoalDetailScreen
 import com.jonathaxs.gymnutshell.ui.settings.GoalsScreen
-import com.jonathaxs.gymnutshell.ui.settings.PhysicalDataScreen
+import com.jonathaxs.gymnutshell.ui.settings.ProfileSettingsScreen
 import com.jonathaxs.gymnutshell.ui.settings.SettingsRoutes
 import com.jonathaxs.gymnutshell.ui.settings.ThemeSettingsScreen
 import com.jonathaxs.gymnutshell.ui.settings.UserGoalScreen
@@ -150,7 +150,7 @@ fun MainScreen(
                             onOpenTheme = { sheetNavController.navigate(SettingsRoutes.THEME) },
                             onOpenGoals = { sheetNavController.navigate(SettingsRoutes.CUSTOM_GOALS) },
                             onOpenUserGoal = { sheetNavController.navigate(SettingsRoutes.GOAL) },
-                            onOpenPhysical = { sheetNavController.navigate(SettingsRoutes.PHYSICAL) },
+                            onOpenProfile = { sheetNavController.navigate(SettingsRoutes.PROFILE) },
                             onOpenAchievements = { sheetNavController.navigate(SheetRoutes.ACHIEVEMENTS) },
                         )
                     }
@@ -183,8 +183,8 @@ fun MainScreen(
                     composable(SettingsRoutes.GOAL) {
                         UserGoalScreen(onBack = { sheetNavController.popBackStack() })
                     }
-                    composable(SettingsRoutes.PHYSICAL) {
-                        PhysicalDataScreen(onBack = { sheetNavController.popBackStack() })
+                    composable(SettingsRoutes.PROFILE) {
+                        ProfileSettingsScreen(onBack = { sheetNavController.popBackStack() })
                     }
                     composable(SettingsRoutes.CUSTOM_GOALS) {
                         GoalsScreen(

@@ -1,30 +1,36 @@
 package com.jonathaxs.gymnutshell.ui.settings
 
-import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -35,200 +41,370 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
-import com.jonathaxs.gymnutshell.core.domain.GoalsProvider
-import com.jonathaxs.gymnutshell.core.domain.MeasurementSystem
-import com.jonathaxs.gymnutshell.core.domain.UnitConverter
+import com.jonathaxs.gymnutshell.core.domain.GoalsCalculator
 import com.jonathaxs.gymnutshell.core.domain.UserGoal
-import com.jonathaxs.gymnutshell.ui.components.GroupRow
+import com.jonathaxs.gymnutshell.ui.components.GroupCard
+import com.jonathaxs.gymnutshell.ui.components.GroupInset
 import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
-import com.jonathaxs.gymnutshell.ui.components.GroupSection
 import com.jonathaxs.gymnutshell.ui.theme.color
+import com.jonathaxs.gymnutshell.ui.welcome.WelcomeCard
 import kotlin.math.roundToInt
 
-/** Cores fixas dos objetivos — laranja (bulking) e verde (cutting). Manutenção usa a cor de destaque do usuário. */
+/** Cores dos objetivos fitness: laranja (bulking), destaque do usuário (manutenção) e verde (cutting). */
 private val GoalBulkingColor = Color(0xFFFF9500)
 private val GoalCuttingColor = Color(0xFF34C759)
 
 /**
- * Sub-tela do objetivo fitness — porte de UserGoalChangeView (iOS): cards selecionáveis (Bulking/
- * Maintenance/Cutting) com prévia em tempo real das metas recalculadas. Salvar persiste o objetivo
- * (as metas fixas passam a derivar dele). O botão só fica ativo se a seleção mudou de fato.
+ * Tela para alterar o objetivo fitness (porte de UserGoalChangeView do iOS).
+ * Lista de objetivos em cards, prévia proporcional "atual → nova ±X%" e dois botões de ação fixos.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserGoalScreen(onBack: () -> Unit, viewModel: SettingsViewModel = viewModel()) {
+fun UserGoalScreen(
+    onBack: () -> Unit,
+    viewModel: SettingsViewModel = viewModel(),
+) {
     val profile by viewModel.profile.collectAsStateWithLifecycle()
-    val accent = viewModel.accentColor.collectAsStateWithLifecycle().value.color
-    val measurement by viewModel.measurementSystem.collectAsStateWithLifecycle()
+    val accent by viewModel.accentColor.collectAsStateWithLifecycle()
+    val overrides by viewModel.goalValueOverrides.collectAsStateWithLifecycle()
 
-    // Seleção local; sincroniza com o objetivo salvo na carga inicial e após salvar.
-    var selected by remember { mutableStateOf(profile.goal) }
-    LaunchedEffect(profile.goal) { selected = profile.goal }
-    val hasChanged = selected != profile.goal
-    // Prévia recalculada só quando o usuário muda a seleção (igual ao iOS).
-    val preview = if (hasChanged) GoalsProvider.goals(profile.copy(goal = selected)) else null
+    // O objetivo salvo vazio ou não reconhecido conta como manutenção
+    val savedGoal = profile.goal
+
+    var selected by remember { mutableStateOf(savedGoal) }
+    LaunchedEffect(savedGoal) {
+        selected = savedGoal
+    }
+
+    val hasChanged = selected != savedGoal
+
+    // Metas atuais (tabela base + overrides salvos do usuário)
+    val base = GoalsCalculator.calculate(profile.sex, savedGoal)
+    val currentGoals = base.copy(
+        calories = overrides["tracking.calories"] ?: base.calories,
+        protein = overrides["tracking.protein"] ?: base.protein,
+        carbs = overrides["tracking.carbs"] ?: base.carbs,
+        goodFat = overrides["tracking.goodFat"] ?: base.goodFat,
+        fiber = overrides["tracking.fiber"] ?: base.fiber,
+    )
+
+    // Metas reescaladas proporcionalmente com o novo objetivo
+    val rescaledGoals = GoalsCalculator.rescale(
+        current = currentGoals,
+        sex = profile.sex,
+        from = savedGoal,
+        to = selected,
+    )
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.settings_fitness_goal)) },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.cd_back),
-                        )
-                    }
-                },
-                actions = {
-                    TextButton(
-                        onClick = { viewModel.saveProfile(profile.copy(goal = selected)) },
+            SettingsTopBar(
+                title = stringResource(R.string.settings_fitness_goal),
+                onBack = onBack,
+            )
+        },
+        bottomBar = {
+            // Botões de ação fixos na parte inferior
+            Surface(
+                color = MaterialTheme.colorScheme.surface,
+                shadowElevation = 8.dp,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = GroupInset, vertical = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
+                    // Botão 1: Salvar e recalcular
+                    Button(
+                        onClick = {
+                            viewModel.saveGoalWithRecalculate(selected, rescaledGoals)
+                            onBack()
+                        },
                         enabled = hasChanged,
+                        shape = CircleShape,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = accent.color,
+                            disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .widthIn(max = 600.dp)
+                            .height(52.dp),
                     ) {
                         Text(
-                            stringResource(R.string.action_save),
-                            color = if (hasChanged) accent else MaterialTheme.colorScheme.onSurfaceVariant,
+                            text = stringResource(R.string.settings_goalchange_save_recalc),
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                            color = if (hasChanged) Color.White else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
                         )
                     }
-                },
-            )
+
+                    // Botão 2: Salvar sem recalcular
+                    OutlinedButton(
+                        onClick = {
+                            viewModel.saveGoalKeep(selected)
+                            onBack()
+                        },
+                        enabled = hasChanged,
+                        shape = CircleShape,
+                        border = if (hasChanged) BorderStroke(1.5.dp, accent.color)
+                        else BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .widthIn(max = 600.dp)
+                            .height(52.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.settings_goalchange_save_keep),
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                            color = if (hasChanged) accent.color else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+                        )
+                    }
+                }
+            }
         },
     ) { padding ->
-        Column(
-            Modifier
+        Box(
+            modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp),
+                .padding(padding),
+            contentAlignment = Alignment.TopCenter,
         ) {
-            // Cabeçalho da seleção.
-            SectionLabel(stringResource(R.string.settings_goalchange_pick_header), accent)
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                UserGoal.entries.forEach { goal ->
-                    GoalOptionCard(goal, goal == selected, accent) { selected = goal }
-                }
-            }
-            // Rodapé explicativo (igual ao footer da seção de seleção do iOS).
-            Text(
-                stringResource(R.string.settings_goalchange_pick_footer),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(start = 4.dp, end = 4.dp, top = 8.dp),
-            )
-
-            // Prévia das metas recalculadas — só aparece quando a seleção mudou.
-            if (preview != null) {
-                GroupSection(
-                    title = stringResource(R.string.settings_goalchange_preview_header),
-                    titleColor = accent,
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .widthIn(max = 600.dp)
+                    .verticalScroll(rememberScrollState())
+                    .padding(vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp),
+            ) {
+                // 1. Seção de escolha do objetivo em cards
+                Column(
+                    modifier = Modifier.padding(horizontal = GroupInset),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    PreviewRow(stringResource(R.string.today_water), waterDisplay(preview.water, measurement))
-                    GroupRowDivider()
-                    PreviewRow(stringResource(R.string.today_calories), "${preview.calories} kcal")
-                    GroupRowDivider()
-                    PreviewRow(stringResource(R.string.today_protein), "${preview.protein} g")
-                    GroupRowDivider()
-                    PreviewRow(stringResource(R.string.today_carbs), "${preview.carbs} g")
-                    GroupRowDivider()
-                    PreviewRow(stringResource(R.string.today_good_fat), "${preview.goodFat} g")
-                    GroupRowDivider()
-                    PreviewRow(stringResource(R.string.today_fiber), "${preview.fiber} g")
+                    Text(
+                        text = stringResource(R.string.settings_goalchange_section_pick),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                    )
+
+                    // Bulking (Ganho de massa)
+                    GoalOptionCard(
+                        title = stringResource(R.string.goal_bulking),
+                        description = stringResource(R.string.welcome_goal_bulking_desc),
+                        iconRes = R.drawable.ic_goal_bulking,
+                        cardColor = GoalBulkingColor,
+                        isSelected = selected == UserGoal.Bulking,
+                        onClick = { selected = UserGoal.Bulking },
+                    )
+
+                    // Manutenção (Se manter)
+                    GoalOptionCard(
+                        title = stringResource(R.string.goal_maintenance),
+                        description = stringResource(R.string.welcome_goal_maintenance_desc),
+                        iconRes = R.drawable.ic_goal_maintenance,
+                        cardColor = accent.color,
+                        isSelected = selected == UserGoal.Maintenance,
+                        onClick = { selected = UserGoal.Maintenance },
+                    )
+
+                    // Cutting (Emagrecimento / Definição)
+                    GoalOptionCard(
+                        title = stringResource(R.string.goal_cutting),
+                        description = stringResource(R.string.welcome_goal_cutting_desc),
+                        iconRes = R.drawable.ic_goal_cutting,
+                        cardColor = GoalCuttingColor,
+                        isSelected = selected == UserGoal.Cutting,
+                        onClick = { selected = UserGoal.Cutting },
+                    )
                 }
+
+                // 2. Prévia das metas recalculadas (aparece quando o objetivo muda)
+                AnimatedVisibility(
+                    visible = hasChanged,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.settings_goalchange_section_preview),
+                            style = MaterialTheme.typography.titleSmall,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(start = GroupInset + 20.dp, end = GroupInset),
+                        )
+
+                        GroupCard {
+                            GoalPreviewRow(
+                                label = stringResource(R.string.today_calories),
+                                old = currentGoals.calories,
+                                new = rescaledGoals.calories,
+                                unit = " kcal",
+                            )
+                            GroupRowDivider(startInset = 16.dp)
+                            GoalPreviewRow(
+                                label = stringResource(R.string.today_protein),
+                                old = currentGoals.protein,
+                                new = rescaledGoals.protein,
+                                unit = " g",
+                            )
+                            GroupRowDivider(startInset = 16.dp)
+                            GoalPreviewRow(
+                                label = stringResource(R.string.today_carbs),
+                                old = currentGoals.carbs,
+                                new = rescaledGoals.carbs,
+                                unit = " g",
+                            )
+                            GroupRowDivider(startInset = 16.dp)
+                            GoalPreviewRow(
+                                label = stringResource(R.string.today_good_fat),
+                                old = currentGoals.goodFat,
+                                new = rescaledGoals.goodFat,
+                                unit = " g",
+                            )
+                            GroupRowDivider(startInset = 16.dp)
+                            GoalPreviewRow(
+                                label = stringResource(R.string.today_fiber),
+                                old = currentGoals.fiber,
+                                new = rescaledGoals.fiber,
+                                unit = " g",
+                            )
+                        }
+                    }
+                }
+
+                Spacer(Modifier.height(16.dp))
             }
-            Spacer(Modifier.height(24.dp))
         }
     }
 }
 
-/** Card selecionável de objetivo: nome + descrição, fundo na cor do objetivo quando ativo — porte do UserGoalPickerView (iOS). */
+/** Card de opção de objetivo fitness com ícone e seleção. */
 @Composable
-private fun GoalOptionCard(goal: UserGoal, selected: Boolean, accent: Color, onClick: () -> Unit) {
-    val bg = if (selected) goalColor(goal, accent) else MaterialTheme.colorScheme.surfaceContainerHigh
-    val fg = if (selected) Color.White else MaterialTheme.colorScheme.onSurface
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(14.dp))
-            .background(bg)
-            .clickable(onClick = onClick)
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
+private fun GoalOptionCard(
+    title: String,
+    description: String,
+    iconRes: Int,
+    cardColor: Color,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+) {
+    WelcomeCard(
+        isSelected = isSelected,
+        accentColor = cardColor,
+        onClick = onClick,
     ) {
-        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(
-                stringResource(goalLabel(goal)),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = fg,
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(18.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(14.dp),
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(44.dp)
+                    .clip(CircleShape)
+                    .background(cardColor.copy(alpha = 0.15f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    painter = painterResource(iconRes),
+                    contentDescription = null,
+                    tint = cardColor,
+                    modifier = Modifier.size(24.dp),
+                )
+            }
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+            Icon(
+                imageVector = if (isSelected) Icons.Default.CheckCircle else Icons.Default.Check,
+                contentDescription = null,
+                tint = if (isSelected) cardColor else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f),
+                modifier = Modifier.size(24.dp),
             )
-            Text(
-                stringResource(goalDesc(goal)),
-                style = MaterialTheme.typography.bodySmall,
-                color = if (selected) Color.White.copy(alpha = 0.85f) else MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-        if (selected) {
-            Spacer(Modifier.width(8.dp))
-            Text("✓", color = Color.White, style = MaterialTheme.typography.titleMedium)
         }
     }
 }
 
-/** Linha da prévia: rótulo da meta + valor recalculado à direita. */
+/** Linha de prévia: "Calorias   2650 → 3050 kcal   +15%". */
 @Composable
-private fun PreviewRow(label: String, value: String) {
-    GroupRow(
-        title = label,
-        trailing = {
+private fun GoalPreviewRow(
+    label: String,
+    old: Int,
+    new: Int,
+    unit: String,
+) {
+    val percent = if (old > 0) ((new.toDouble() - old.toDouble()) / old.toDouble() * 100.0).roundToInt() else 0
+    val percentText = if (percent == 0) "0%" else if (percent > 0) "+$percent%" else "$percent%"
+    val percentColor = when {
+        percent > 0 -> Color(0xFF34C759)
+        percent < 0 -> Color(0xFFFF9500)
+        else -> MaterialTheme.colorScheme.onSurfaceVariant
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 48.dp)
+            .padding(horizontal = 16.dp, vertical = 10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.weight(1f, fill = false),
+        )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
             Text(
-                value,
-                style = MaterialTheme.typography.bodyMedium,
+                text = "$old → $new$unit",
+                style = MaterialTheme.typography.bodyMedium.copy(fontFeatureSettings = "tnum"),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-        },
-    )
-}
-
-/** Rótulo de seção no estilo dos títulos do GroupSection (cor de destaque). */
-@Composable
-private fun SectionLabel(text: String, accent: Color) {
-    Text(
-        text,
-        style = MaterialTheme.typography.titleSmall,
-        fontWeight = FontWeight.SemiBold,
-        color = accent,
-        modifier = Modifier.padding(start = 4.dp, top = 22.dp, bottom = 8.dp),
-    )
-}
-
-/** Água em fl oz no sistema US (armazenada em ml); ml para os demais — igual ao iOS. */
-private fun waterDisplay(ml: Int, measurement: MeasurementSystem): String = when (measurement) {
-    MeasurementSystem.Us -> "${UnitConverter.mlToFlOz(ml.toDouble()).roundToInt()} fl oz"
-    else -> "$ml ml"
-}
-
-private fun goalColor(goal: UserGoal, accent: Color): Color = when (goal) {
-    UserGoal.Bulking -> GoalBulkingColor
-    UserGoal.Maintenance -> accent
-    UserGoal.Cutting -> GoalCuttingColor
-}
-
-@StringRes
-private fun goalLabel(goal: UserGoal): Int = when (goal) {
-    UserGoal.Bulking -> R.string.goal_bulking
-    UserGoal.Maintenance -> R.string.goal_maintenance
-    UserGoal.Cutting -> R.string.goal_cutting
-}
-
-@StringRes
-private fun goalDesc(goal: UserGoal): Int = when (goal) {
-    UserGoal.Bulking -> R.string.welcome_goal_bulking_desc
-    UserGoal.Maintenance -> R.string.welcome_goal_maintenance_desc
-    UserGoal.Cutting -> R.string.welcome_goal_cutting_desc
+            Text(
+                text = percentText,
+                style = MaterialTheme.typography.labelLarge.copy(
+                    fontWeight = FontWeight.SemiBold,
+                    fontFeatureSettings = "tnum",
+                ),
+                color = percentColor,
+                textAlign = TextAlign.End,
+                modifier = Modifier.widthIn(min = 42.dp),
+            )
+        }
+    }
 }
