@@ -47,7 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
-import com.jonathaxs.gymnutshell.core.domain.ProgressColors
+import com.jonathaxs.gymnutshell.core.widget.SegmentedRing
 import com.jonathaxs.gymnutshell.core.widget.WidgetBackground
 import com.jonathaxs.gymnutshell.core.widget.WidgetBackgroundMode
 import com.jonathaxs.gymnutshell.ui.welcome.WelcomeCard
@@ -271,7 +271,7 @@ private fun WidgetPreviewTile(
     }
 }
 
-/** Anel de progresso estático para a prévia do widget com emoji 💪 no centro. */
+/** Anel de progresso em 5 segmentos para a prévia do widget com emoji 💪 no centro. */
 @Composable
 private fun PreviewRing(
     progress: Float = 0.62f,
@@ -279,7 +279,6 @@ private fun PreviewRing(
     strokeWidth: Dp = 10.dp,
     modifier: Modifier = Modifier,
 ) {
-    val ringColor = Color(ProgressColors.ringArgb(progress.toDouble()))
     val trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.18f)
 
     Box(modifier = modifier.size(size), contentAlignment = Alignment.Center) {
@@ -288,26 +287,38 @@ private fun PreviewRing(
             val inset = stroke / 2f
             val arcSize = Size(this.size.width - stroke, this.size.height - stroke)
             val topLeft = Offset(inset, inset)
-            // Trilha de fundo (círculo completo)
-            drawArc(
-                color = trackColor,
-                startAngle = 0f,
-                sweepAngle = 360f,
-                useCenter = false,
-                topLeft = topLeft,
-                size = arcSize,
-                style = Stroke(width = stroke, cap = StrokeCap.Round),
+            val radius = arcSize.width / 2f
+
+            val segments = SegmentedRing.segments(
+                progress = progress.toDouble(),
+                radius = radius,
+                strokeWidth = stroke,
             )
-            // Arco de progresso (62%)
-            drawArc(
-                color = ringColor,
-                startAngle = -90f,
-                sweepAngle = progress * 360f,
-                useCenter = false,
-                topLeft = topLeft,
-                size = arcSize,
-                style = Stroke(width = stroke, cap = StrokeCap.Round),
-            )
+
+            for (seg in segments) {
+                // Trilho do segmento
+                drawArc(
+                    color = trackColor,
+                    startAngle = seg.startAngle,
+                    sweepAngle = seg.sweepTotal,
+                    useCenter = false,
+                    topLeft = topLeft,
+                    size = arcSize,
+                    style = Stroke(width = stroke, cap = StrokeCap.Round),
+                )
+                // Parte preenchida na cor do segmento
+                if (seg.sweepFilled > 0.001f) {
+                    drawArc(
+                        color = Color(seg.colorArgb),
+                        startAngle = seg.startAngle,
+                        sweepAngle = seg.sweepFilled,
+                        useCenter = false,
+                        topLeft = topLeft,
+                        size = arcSize,
+                        style = Stroke(width = stroke, cap = StrokeCap.Round),
+                    )
+                }
+            }
         }
         Text(
             text = "💪",

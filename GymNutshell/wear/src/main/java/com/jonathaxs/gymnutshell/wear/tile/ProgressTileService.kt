@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 
 /**
  * Tile de progresso — porte do GymNutshellWatchWidget (complication do iOS).
- * Anel de progresso na borda + emoji do tier + percentual + pontos; toque abre o app.
+ * Anel de progresso na borda + emoji do tier + percentual; toque abre o app.
  * Reusa o WidgetSnapshotBuilder do :core (mesma matemática dos widgets do celular),
  * lendo os repos locais do relógio.
  */
@@ -59,7 +59,6 @@ class ProgressTileService : TileService() {
     private fun buildTile(snapshot: WidgetSnapshot, device: DeviceParameters): TileBuilders.Tile {
         val ringArgb = ProgressColors.ringArgb(snapshot.progressNormalized).toInt()
         val trackArgb = 0x33808080.toInt()
-        val grayArgb = 0xFF9E9E9E.toInt()
 
         // Toque em qualquer lugar do tile abre o app (igual à complication do iOS).
         val openApp = ModifiersBuilders.Clickable.Builder()
@@ -86,12 +85,6 @@ class ProgressTileService : TileService() {
                 Text.Builder(this, "${snapshot.progressPercent}%")
                     .setTypography(Typography.TYPOGRAPHY_TITLE2)
                     .setColor(argb(ringArgb))
-                    .build(),
-            )
-            .addContent(
-                Text.Builder(this, "${snapshot.tierPoints} pts")
-                    .setTypography(Typography.TYPOGRAPHY_CAPTION2)
-                    .setColor(argb(grayArgb))
                     .build(),
             )
             .build()

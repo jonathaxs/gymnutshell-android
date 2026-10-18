@@ -50,7 +50,7 @@ import kotlin.math.ceil
 
 /**
  * Widget "Calendário" (Glance, large) — porte do GymNutshellCalendarWidget (iOS).
- * Header com anel + % + pontos + data; abaixo, a grade do mês com cada dia colorido pela escala
+ * Header com anel de 5 segmentos + % + data; abaixo, a grade do mês com cada dia colorido pela escala
  * do anel (ProgressColors). Toque no header → Hoje; toque na grade → Conquistas.
  */
 class CalendarWidget : GlanceAppWidget() {
@@ -127,7 +127,6 @@ class CalendarWidget : GlanceAppWidget() {
                         context = context,
                         sizeDp = 72,
                         progress = snapshot.progressNormalized.toFloat(),
-                        ringArgb = ProgressColors.ringArgb(snapshot.progressNormalized),
                         emoji = snapshot.tierEmoji,
                         strokeDp = 10f,
                         borderArgb = widgetBorderArgb(snapshot),
@@ -144,16 +143,10 @@ class CalendarWidget : GlanceAppWidget() {
                     maxLines = 1,
                     style = TextStyle(fontSize = 17.sp, fontWeight = FontWeight.Medium, color = textColor),
                 )
-                Row(verticalAlignment = Alignment.Bottom) {
-                    Text(
-                        "${snapshot.progressPercent}%",
-                        style = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold, color = textColor),
-                    )
-                    Text(
-                        ", ${snapshot.tierPoints} pts",
-                        style = TextStyle(fontSize = 13.sp, fontWeight = FontWeight.Medium, color = textColor),
-                    )
-                }
+                Text(
+                    "${snapshot.progressPercent}%",
+                    style = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold, color = textColor),
+                )
             }
         }
     }

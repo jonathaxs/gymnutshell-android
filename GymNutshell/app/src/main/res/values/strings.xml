@@ -116,18 +116,6 @@
     <string name="tier_info_section_levels">Achievements</string>
     <string name="tier_info_change_theme">Change Theme</string>
 
-    <!-- Página dos bônus de sequência -->
-    <string name="settings_about_streak_bonus">Streak Bonuses</string>
-    <string name="streak_bonus_info_intro">Streak Bonuses are points awarded when you reach Level 3 or 4 every day of a week or month.</string>
-    <string name="streak_bonus_weekly_l3_title">Fitness Week</string>
-    <string name="streak_bonus_weekly_l4_title">Muscular Week</string>
-    <string name="streak_bonus_monthly_l3_title">Fitness Month</string>
-    <string name="streak_bonus_monthly_l4_title">Muscular Month</string>
-    <string name="streak_bonus_weekly_l3_desc">All days of the week with level 3 or 4 achievements.</string>
-    <string name="streak_bonus_weekly_l4_desc">All days of the week with level 4 achievements.</string>
-    <string name="streak_bonus_monthly_l3_desc">All days of the month with level 3 or 4 achievements.</string>
-    <string name="streak_bonus_monthly_l4_desc">All days of the month with 4 achievements.</string>
-    <string name="streak_bonus_points_format">+%1$d pts</string>
     <string name="settings_accent_color">Accent colors</string>
     <string name="a11y_selected">Selected</string>
     <string name="a11y_not_selected">Not selected</string>
@@ -377,7 +365,6 @@
     <!-- Notificações: títulos por kind (também viram o nome do canal) -->
     <string name="notif_kind_progress_title">Progress</string>
     <string name="notif_kind_achievement_title">Daily achievement</string>
-    <string name="notif_kind_streak_title">Streak bonus</string>
     <string name="notif_kind_health_title">Health Connect</string>
     <string name="notif_kind_backup_title">Backup</string>
     <string name="notif_kind_sleep_title">Sleep</string>
@@ -394,7 +381,6 @@
     <!-- Notificações: descrições (lista de Ajustes + descrição do canal) -->
     <string name="notif_kind_progress_desc">How much is left to your next daily achievement.</string>
     <string name="notif_kind_achievement_desc">Notifies the achievement you finished the day with.</string>
-    <string name="notif_kind_streak_desc">Alerts when you earn a weekly or monthly bonus.</string>
     <string name="notif_kind_health_desc">Confirms entries synced with Health Connect.</string>
     <string name="notif_kind_backup_desc">Confirms each automatic backup.</string>
     <string name="notif_kind_sleep_desc">Suggests a nap when you haven\'t hit your sleep goal (only between 10 AM and 7 PM).</string>
@@ -423,7 +409,6 @@
 
     <!-- Notificações: corpo dos eventos -->
     <string name="notif_event_achievement_body">%1$s You finished the day as %2$s!</string>
-    <string name="notif_event_streak_body">%1$s Streak complete! +%2$d points.</string>
     <string name="notif_event_health_body_cardio">Logged %1$d min of Cardio (%2$s).</string>
     <string name="notif_event_health_body_workout">Logged %1$d min of Strength (%2$s).</string>
     <string name="notif_event_health_body_sleep">Logged %d h of sleep.</string>

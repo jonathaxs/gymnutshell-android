@@ -46,7 +46,7 @@ import com.jonathaxs.gymnutshell.ui.theme.color
 import kotlinx.coroutines.launch
 
 // Páginas informativas da seção About — portes de ProgressRingInfoView,
-// TierInfoView e StreakBonusInfoView (iOS). Sem contexto de progresso atual
+// TierInfoView (iOS). Sem contexto de progresso atual
 // (no iOS ele só existe quando abertas como sheet a partir da Today).
 
 /** Anel de progresso: o que ele mostra e o significado de cada cor. */
@@ -136,45 +136,6 @@ fun TierInfoContent(
     }
 }
 
-/** Bônus de sequência: os 4 tipos com condição de desbloqueio e pontos. */
-@Composable
-fun StreakBonusInfoScreen(onBack: () -> Unit) {
-    InfoPage(title = stringResource(R.string.settings_about_streak_bonus), onBack = onBack) {
-        StreakBonusInfoContent()
-    }
-}
-
-/** Conteúdo da info de bônus (sem chrome), reutilizado pela página (Settings) e pelo sheet (Progress). */
-@Composable
-fun StreakBonusInfoContent() {
-    // Emojis e pontos idênticos ao StreakBonusEvaluator do :core.
-    val bonuses = listOf(
-        BonusRow("🎖️", R.string.streak_bonus_weekly_l3_title, R.string.streak_bonus_weekly_l3_desc, 400),
-        BonusRow("💀", R.string.streak_bonus_weekly_l4_title, R.string.streak_bonus_weekly_l4_desc, 800),
-        BonusRow("🏆", R.string.streak_bonus_monthly_l3_title, R.string.streak_bonus_monthly_l3_desc, 2000),
-        BonusRow("☠️", R.string.streak_bonus_monthly_l4_title, R.string.streak_bonus_monthly_l4_desc, 5000),
-    )
-
-    IntroText(stringResource(R.string.streak_bonus_info_intro))
-    GroupSection(title = stringResource(R.string.settings_about_streak_bonus)) {
-        bonuses.forEachIndexed { index, bonus ->
-            if (index > 0) GroupRowDivider()
-            GroupRow(
-                title = stringResource(bonus.titleRes),
-                subtitle = stringResource(bonus.descRes),
-                leading = { Text(bonus.emoji, style = MaterialTheme.typography.headlineSmall) },
-                trailing = {
-                    Text(
-                        stringResource(R.string.streak_bonus_points_format, bonus.points),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                },
-            )
-        }
-    }
-}
-
 // ---- Bottom sheets das infos, abertos ao tocar no anel / conquista da Today (porte das sheets do iOS) ----
 
 /** Sheet com a info do anel de progresso (no iOS, ProgressRingInfoView aberta como sheet). */
@@ -188,21 +149,6 @@ fun ProgressRingInfoSheet(onDismiss: () -> Unit, currentPercent: Int? = null) {
             Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(bottom = 24.dp),
         ) {
             ProgressRingInfoContent(currentPercent)
-        }
-    }
-}
-
-/** Sheet com a info de bônus de sequência (aberto ao tocar nos bônus da Progress). */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun StreakBonusInfoSheet(onDismiss: () -> Unit) {
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
-        InfoSheetTitle(stringResource(R.string.settings_about_streak_bonus))
-        Column(
-            Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(bottom = 24.dp),
-        ) {
-            StreakBonusInfoContent()
         }
     }
 }

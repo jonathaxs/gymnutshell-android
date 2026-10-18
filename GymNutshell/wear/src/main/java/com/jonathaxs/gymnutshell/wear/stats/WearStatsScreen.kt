@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -39,12 +37,13 @@ import com.jonathaxs.gymnutshell.core.domain.AppTheme
 import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
 import com.jonathaxs.gymnutshell.core.sync.WearDayEntry
 import com.jonathaxs.gymnutshell.core.sync.WearStatsSummary
+import com.jonathaxs.gymnutshell.core.widget.SegmentedRing
 import com.jonathaxs.gymnutshell.wear.R
 
 /**
- * Página Stats do relógio — porte da WatchStatsView (iOS).
- * Renderiza o resumo sincronizado: pontos/dias, dias por tier, atividade e
- * faixa dos últimos 7 dias. Sem resumo ainda → estado "aguardando sync".
+ * Página Stats do relógio — porte da WatchStatsView 2.0 (iOS).
+ * Seções na mesma ordem do iOS: últimos 7 dias no topo, 5 níveis de conquista
+ * com as cores dos segmentos do anel e atividade. Sem pontos e sem bônus.
  */
 @Composable
 fun WearStatsScreen(viewModel: WearStatsViewModel = viewModel()) {
@@ -66,7 +65,10 @@ fun WearStatsScreen(viewModel: WearStatsViewModel = viewModel()) {
 private fun SyncingState() {
     ScreenScaffold {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
                 Text("📱", fontSize = 26.sp)
                 Spacer(Modifier.height(6.dp))
                 Text(
@@ -86,27 +88,24 @@ private fun StatsContent(s: WearStatsSummary, accent: Color, theme: AppTheme, se
     val listState = rememberScalingLazyListState()
     ScreenScaffold(scrollState = listState) {
         ScalingLazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
-            // Pontos e dias, duas colunas no topo.
-            item {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    StatCard(formatted(s.totalPoints), stringResource(R.string.wear_stats_points), accent)
-                    StatCard("${s.totalDays}", stringResource(R.string.wear_stats_days), accent)
-                }
-            }
+            // 1. Últimos 7 dias no topo, como na WatchStatsView do iOS
+            item { SectionHeader(stringResource(R.string.wear_stats_recent)) }
+            item { RecentDaysStrip(s.last7Days, accent) }
 
-            // Dias por tier.
+            // 2. 5 Níveis com cores dos 5 segmentos do anel
             item { SectionHeader(stringResource(R.string.wear_stats_tiers)) }
             items(DailyAchievement.entries.size) { index ->
                 val tier = DailyAchievement.entries[index]
-                // Emoji e nome vêm do tema + sexo escolhidos no celular (chegam pelo snapshot).
+                val tierColor = Color(SegmentedRing.colorForTier(tier))
                 LabeledDaysRow(
                     emoji = theme.emoji(tier, sex),
                     label = stringResource(theme.tierNameRes(tier, sex)),
                     days = daysFor(tier, s),
+                    color = tierColor,
                 )
             }
 
-            // Atividade.
+            // 3. Atividade nos treinos
             item { SectionHeader(stringResource(R.string.wear_stats_activity)) }
             item {
                 LabeledDaysRow("🏋️", stringResource(R.string.wear_goal_workout), s.workoutDays)
@@ -114,31 +113,11 @@ private fun StatsContent(s: WearStatsSummary, accent: Color, theme: AppTheme, se
             item {
                 LabeledDaysRow("🏃", stringResource(R.string.wear_goal_cardio), s.cardioDays)
             }
-
-            // Últimos 7 dias.
-            item { SectionHeader(stringResource(R.string.wear_stats_recent)) }
-            item { RecentDaysStrip(s.last7Days, accent) }
         }
     }
 }
 
 // MARK: - Componentes
-
-@Composable
-private fun RowScope.StatCard(value: String, label: String, accent: Color) {
-    Column(
-        modifier = Modifier
-            .weight(1f)
-            .clip(RoundedCornerShape(12.dp))
-            .background(Color.Gray.copy(alpha = 0.15f))
-            .padding(vertical = 8.dp)
-            .semantics { contentDescription = "$label, $value" },
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text(value, color = accent, fontWeight = FontWeight.Bold, fontSize = 18.sp, maxLines = 1)
-        Text(label, style = MaterialTheme.typography.labelSmall, color = Color.Gray)
-    }
-}
 
 @Composable
 private fun SectionHeader(title: String) {
@@ -154,18 +133,36 @@ private fun SectionHeader(title: String) {
     )
 }
 
-/** Linha "emoji + rótulo ........ N days" (tiers e atividade). */
+/** Linha "emoji + rótulo ........ N dias" (níveis e atividade). */
 @Composable
-private fun LabeledDaysRow(emoji: String, label: String, days: Int) {
+private fun LabeledDaysRow(
+    emoji: String,
+    label: String,
+    days: Int,
+    color: Color? = null,
+) {
     val daysLabel = stringResource(R.string.wear_stats_days_format, days)
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 3.dp)
             .semantics { contentDescription = "$label, $daysLabel" },
+        horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(emoji, fontSize = 13.sp)
+        if (color != null) {
+            Box(
+                modifier = Modifier
+                    .size(22.dp)
+                    .clip(CircleShape)
+                    .background(color.copy(alpha = 0.20f)),
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(emoji, fontSize = 12.sp)
+            }
+        } else {
+            Text(emoji, fontSize = 13.sp)
+        }
         Spacer(Modifier.width(6.dp))
         Text(label, style = MaterialTheme.typography.labelMedium, maxLines = 1)
         Spacer(Modifier.weight(1f))
@@ -181,6 +178,7 @@ private fun RecentDaysStrip(days: List<WearDayEntry>, accent: Color) {
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         days.forEach { day ->
             Box(
@@ -218,6 +216,3 @@ private fun daysFor(tier: DailyAchievement, s: WearStatsSummary): Int = when (ti
     DailyAchievement.Level4 -> s.level4Days
     DailyAchievement.Level5 -> s.level5Days
 }
-
-private fun formatted(value: Int): String =
-    if (value >= 1000) String.format(java.util.Locale.US, "%.1fk", value / 1000.0) else "$value"

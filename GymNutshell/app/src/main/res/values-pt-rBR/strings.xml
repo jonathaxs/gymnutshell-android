@@ -115,18 +115,6 @@
     <string name="tier_info_section_levels">Conquistas</string>
     <string name="tier_info_change_theme">Alterar Tema</string>
 
-    <!-- Página dos bônus de sequência -->
-    <string name="settings_about_streak_bonus">Bônus de Sequência</string>
-    <string name="streak_bonus_info_intro">Bônus de Sequência são pontos concedidos quando você conquista Nível 3 ou 4 em todos os dias de uma semana ou mês.</string>
-    <string name="streak_bonus_weekly_l3_title">Semana Fitness</string>
-    <string name="streak_bonus_weekly_l4_title">Semana Musculosa</string>
-    <string name="streak_bonus_monthly_l3_title">Mês Fitness</string>
-    <string name="streak_bonus_monthly_l4_title">Mês Musculoso</string>
-    <string name="streak_bonus_weekly_l3_desc">Todos os dias da semana com conquistas nível 3 ou 4.</string>
-    <string name="streak_bonus_weekly_l4_desc">Todos os dias da semana com conquistas nível 4.</string>
-    <string name="streak_bonus_monthly_l3_desc">Todos os dias do mês com conquistas nível 3 ou 4.</string>
-    <string name="streak_bonus_monthly_l4_desc">Todos os dias do mês com conquistas nível 4.</string>
-    <string name="streak_bonus_points_format">+%1$d pts</string>
     <string name="settings_accent_color">Cores de destaque</string>
     <string name="a11y_selected">Selecionado</string>
     <string name="a11y_not_selected">Não selecionado</string>
@@ -371,7 +359,6 @@
     <!-- Notificações: títulos por kind -->
     <string name="notif_kind_progress_title">Progresso</string>
     <string name="notif_kind_achievement_title">Conquista do dia</string>
-    <string name="notif_kind_streak_title">Bônus de sequência</string>
     <string name="notif_kind_health_title">Health Connect</string>
     <string name="notif_kind_backup_title">Backup</string>
     <string name="notif_kind_sleep_title">Sono</string>
@@ -388,7 +375,6 @@
     <!-- Notificações: descrições -->
     <string name="notif_kind_progress_desc">Quanto falta pra sua próxima conquista do dia.</string>
     <string name="notif_kind_achievement_desc">Notifica, à meia-noite, a conquista desbloqueada no dia.</string>
-    <string name="notif_kind_streak_desc">Avisa quando você ganha um bônus semanal ou mensal.</string>
     <string name="notif_kind_health_desc">Confirma registros sincronizados com o Health Connect.</string>
     <string name="notif_kind_backup_desc">Confirma cada backup automático.</string>
     <string name="notif_kind_sleep_desc">Incentiva um cochilo quando a meta de sono ainda não foi atingida (somente entre 10h e 19h).</string>
@@ -417,7 +403,6 @@
 
     <!-- Notificações: corpo dos eventos -->
     <string name="notif_event_achievement_body">%1$s Você fechou o dia como %2$s!</string>
-    <string name="notif_event_streak_body">%1$s Sequência completa! +%2$d pontos.</string>
     <string name="notif_event_health_body_cardio">Foi registrado %1$d min em Cardio (%2$s).</string>
     <string name="notif_event_health_body_workout">Foi registrado %1$d min em Musculação (%2$s).</string>
     <string name="notif_event_health_body_sleep">Foi registrado %d h de sono.</string>

@@ -47,7 +47,7 @@ import java.time.ZoneId
 
 /**
  * Widget "Metas" (Glance, large) — porte do GymNutshellGoalsWidget (iOS).
- * Header com anel + % + pontos + data; abaixo, até 6 metas ativas com barra de progresso individual.
+ * Header com anel de 5 segmentos + % + data; abaixo, até 6 metas ativas com barra de progresso individual.
  * Tocar abre o app na tela Hoje.
  */
 class GoalsWidget : GlanceAppWidget() {
@@ -101,7 +101,6 @@ class GoalsWidget : GlanceAppWidget() {
                         context = context,
                         sizeDp = 72,
                         progress = snapshot.progressNormalized.toFloat(),
-                        ringArgb = ProgressColors.ringArgb(snapshot.progressNormalized),
                         emoji = snapshot.tierEmoji,
                         strokeDp = 10f,
                         borderArgb = widgetBorderArgb(snapshot),
@@ -118,16 +117,10 @@ class GoalsWidget : GlanceAppWidget() {
                     maxLines = 1,
                     style = TextStyle(fontSize = 17.sp, fontWeight = FontWeight.Medium, color = textColor),
                 )
-                Row(verticalAlignment = Alignment.Bottom) {
-                    Text(
-                        "${snapshot.progressPercent}%",
-                        style = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold, color = textColor),
-                    )
-                    Text(
-                        ", ${snapshot.tierPoints} pts",
-                        style = TextStyle(fontSize = 13.sp, fontWeight = FontWeight.Medium, color = textColor),
-                    )
-                }
+                Text(
+                    "${snapshot.progressPercent}%",
+                    style = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold, color = textColor),
+                )
             }
         }
     }

@@ -3,6 +3,7 @@ package com.jonathaxs.gymnutshell.wear.today
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -45,6 +46,7 @@ import androidx.wear.compose.material3.MaterialTheme
 import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.material3.Text
 import com.jonathaxs.gymnutshell.core.domain.ProgressColors
+import com.jonathaxs.gymnutshell.core.widget.SegmentedRing
 import com.jonathaxs.gymnutshell.wear.R
 
 /**
@@ -77,32 +79,53 @@ fun WearTodayScreen(viewModel: WearTodayViewModel = viewModel()) {
     }
 }
 
-// MARK: - Hero (anel + emoji do tier + percentual)
+// MARK: - Hero (anel de 5 segmentos + emoji do tier + percentual na cor do segmento)
 
 @Composable
 private fun WearHero(progress: Float, tierEmoji: String, percent: Int) {
-    val ringColor = Color(ProgressColors.ringArgb(progress.toDouble()))
+    val ringColor = Color(SegmentedRing.colorForProgress(progress.toDouble()))
     val trackColor = Color.Gray.copy(alpha = 0.25f)
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
         Box(Modifier.size(96.dp), contentAlignment = Alignment.Center) {
-            // Anel desenhado na mão (track + arco a partir de -90°), igual à WatchHeroView.
             Canvas(Modifier.fillMaxSize()) {
                 val stroke = 8.dp.toPx()
                 val inset = stroke / 2
                 val arcSize = Size(size.width - stroke, size.height - stroke)
-                drawArc(
-                    color = trackColor,
-                    startAngle = 0f, sweepAngle = 360f, useCenter = false,
-                    topLeft = Offset(inset, inset), size = arcSize,
-                    style = Stroke(stroke),
+                val topLeft = Offset(inset, inset)
+                val radius = arcSize.width / 2f
+
+                val segments = SegmentedRing.segments(
+                    progress = progress.toDouble(),
+                    radius = radius,
+                    strokeWidth = stroke,
                 )
-                drawArc(
-                    color = ringColor,
-                    startAngle = -90f, sweepAngle = 360f * progress.coerceIn(0f, 1f), useCenter = false,
-                    topLeft = Offset(inset, inset), size = arcSize,
-                    style = Stroke(stroke, cap = StrokeCap.Round),
-                )
+
+                for (seg in segments) {
+                    drawArc(
+                        color = trackColor,
+                        startAngle = seg.startAngle,
+                        sweepAngle = seg.sweepTotal,
+                        useCenter = false,
+                        topLeft = topLeft,
+                        size = arcSize,
+                        style = Stroke(stroke, cap = StrokeCap.Round),
+                    )
+                    if (seg.sweepFilled > 0.001f) {
+                        drawArc(
+                            color = Color(seg.colorArgb),
+                            startAngle = seg.startAngle,
+                            sweepAngle = seg.sweepFilled,
+                            useCenter = false,
+                            topLeft = topLeft,
+                            size = arcSize,
+                            style = Stroke(stroke, cap = StrokeCap.Round),
+                        )
+                    }
+                }
             }
             Text(tierEmoji, fontSize = 34.sp)
         }

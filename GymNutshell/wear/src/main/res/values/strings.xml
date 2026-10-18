@@ -21,8 +21,6 @@
     <string name="cd_rest_day">Toggle rest day for %1$s</string>
 
     <!-- Página Stats. -->
-    <string name="wear_stats_points">Points</string>
-    <string name="wear_stats_days">Days</string>
     <string name="wear_stats_tiers">Tiers</string>
     <string name="wear_stats_activity">Activity</string>
     <string name="wear_stats_recent">Last 7 days</string>

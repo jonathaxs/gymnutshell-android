@@ -31,7 +31,6 @@ import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.jonathaxs.gymnutshell.core.domain.AppDateFormatters
 import com.jonathaxs.gymnutshell.core.domain.NotificationRoute
-import com.jonathaxs.gymnutshell.core.domain.ProgressColors
 import com.jonathaxs.gymnutshell.core.widget.WidgetSnapshot
 import com.jonathaxs.gymnutshell.core.widget.WidgetSnapshotBuilder
 import java.time.Instant
@@ -39,7 +38,7 @@ import java.time.ZoneId
 
 /**
  * Widget "Progresso" (Glance) — porte do GymNutshellWidget (iOS): mostra o progresso do dia e o tier.
- * Pequeno (≈2x2): emoji + % + pontos. Médio (≈4x2): anel com emoji + % + pontos + data.
+ * Pequeno (≈2x2): emoji + %. Médio (≈4x2): anel de 5 segmentos com emoji + % + data.
  * Tocar abre o app na tela Hoje (reusa o deep link de EXTRA_ROUTE).
  */
 class ProgressWidget : GlanceAppWidget() {
@@ -102,7 +101,7 @@ class ProgressWidget : GlanceAppWidget() {
         }
     }
 
-    /** Médio: anel (com emoji) à esquerda + nome / "% , pontos" / data à direita (igual ao systemMedium do iOS). */
+    /** Médio: anel (com emoji) à esquerda + nome / % / data à direita (igual ao systemMedium do iOS). */
     @androidx.compose.runtime.Composable
     private fun MediumLayout(context: Context, snapshot: WidgetSnapshot, tierName: String, textColor: ColorProvider) {
         Row(
@@ -116,7 +115,6 @@ class ProgressWidget : GlanceAppWidget() {
                         context = context,
                         sizeDp = 80,
                         progress = snapshot.progressNormalized.toFloat(),
-                        ringArgb = ProgressColors.ringArgb(snapshot.progressNormalized),
                         emoji = snapshot.tierEmoji,
                         borderArgb = widgetBorderArgb(snapshot),
                     ),
@@ -131,16 +129,10 @@ class ProgressWidget : GlanceAppWidget() {
                     maxLines = 1,
                     style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Medium, color = textColor),
                 )
-                Row(verticalAlignment = Alignment.Bottom) {
-                    Text(
-                        "${snapshot.progressPercent}%",
-                        style = TextStyle(fontSize = 34.sp, fontWeight = FontWeight.Bold, color = textColor),
-                    )
-                    Text(
-                        ", ${snapshot.tierPoints} pts",
-                        style = TextStyle(fontSize = 13.sp, fontWeight = FontWeight.Medium, color = textColor),
-                    )
-                }
+                Text(
+                    "${snapshot.progressPercent}%",
+                    style = TextStyle(fontSize = 34.sp, fontWeight = FontWeight.Bold, color = textColor),
+                )
                 Text(dateLabel(snapshot.updatedAtEpochMillis), style = TextStyle(fontSize = 12.sp, color = textColor))
             }
         }

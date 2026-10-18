@@ -22,8 +22,6 @@
     <string name="cd_rest_day">Alternar dia de descanso de %1$s</string>
 
     <!-- Página Stats. -->
-    <string name="wear_stats_points">Pontos</string>
-    <string name="wear_stats_days">Dias</string>
     <string name="wear_stats_tiers">Níveis</string>
     <string name="wear_stats_activity">Atividade</string>
     <string name="wear_stats_recent">Últimos 7 dias</string>
