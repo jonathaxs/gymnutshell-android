@@ -56,28 +56,15 @@
     <string name="edit_record_save">Salvar</string>
 
     <!-- Progress -->
-    <string name="progress_days">Dias</string>
-    <string name="progress_points">Pontos</string>
-    <string name="progress_bonuses">Bônus</string>
     <string name="progress_section_tiers">Conquistas por Níveis</string>
     <string name="progress_section_activity">Atividade nos Treinos</string>
-    <string name="progress_section_bonuses">Bônus de Sequência</string>
     <string name="progress_activity_workout">Dias de Musculação</string>
     <string name="progress_activity_cardio">Dias de Cardio</string>
-    <string name="progress_bonus_weekly_strong">🎖️ Semana Fitness</string>
-    <string name="progress_bonus_weekly_expert">💀 Semana Musculosa</string>
-    <string name="progress_bonus_monthly_strong">🏆 Mês Fitness</string>
-    <string name="progress_bonus_monthly_expert">☠️ Mês Musculoso</string>
-    <string name="progress_bonus_times">%1$d vezes</string>
     <string name="progress_days_count">%1$d dias</string>
     <string name="progress_section_goals">Metas</string>
     <string name="progress_goals_active_label">Metas ativas</string>
     <string name="progress_goals_active">%1$d ativas</string>
     <string name="progress_section_goal">Objetivo</string>
-    <string name="progress_section_physical">Dados Físicos</string>
-    <string name="progress_physical_height">Altura</string>
-    <string name="progress_physical_weight">Peso</string>
-    <string name="progress_physical_age">Idade</string>
     <string name="progress_section_recent">Últimos 7 dias</string>
 
     <!-- Settings -->
@@ -485,11 +472,9 @@
     <string name="a11y_history_row">%1$s, %2$d por cento</string>
     <!-- Dicas de ação dos cards do Progresso (sem o "Toque para", que o TalkBack embute) -->
     <string name="a11y_stats_card_tiers_hint">ver como funcionam os níveis</string>
-    <string name="a11y_stats_card_bonuses_hint">ver como funcionam os bônus de sequência</string>
     <string name="a11y_stats_card_activity_hint">abrir o histórico de atividades</string>
     <string name="a11y_stats_card_goals_hint">gerenciar metas rastreadas</string>
     <string name="a11y_stats_card_usergoal_hint">mudar o objetivo</string>
-    <string name="a11y_stats_card_physical_hint">editar dados físicos</string>
     <string name="a11y_recent_day_hint">abrir este dia no calendário</string>
 
     <!-- Notificações: metas personalizadas -->

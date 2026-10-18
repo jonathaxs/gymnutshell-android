@@ -42,16 +42,19 @@ import java.time.LocalDate
 import kotlin.math.floor
 import kotlin.math.roundToInt
 
+import com.jonathaxs.gymnutshell.core.domain.ControlStyle
+
 /** Estado da tela de edição de um DailyRecord — espelha o cabeçalho + metas da EditTodayView (iOS). */
 data class EditRecordUiState(
     val loaded: Boolean = false,
     val dateLabel: String = "",
     val percent: Int = 0,
-    val tierEmoji: String = "🐓",
-    /** Nível do tier (1–4) recalculado ao vivo conforme o usuário edita. */
+    val tierEmoji: String = "🐈",
+    /** Nível do tier (1–5) recalculado ao vivo conforme o usuário edita. */
     val tierLevel: Int = 1,
     /** Nome do nível no tema atual, recalculado junto com o tier. */
     @param:StringRes val tierNameRes: Int = CoreR.string.tier_gym_level1,
+    val controlStyle: ControlStyle = ControlStyle.Slider,
     val sections: List<TodayCategoryUi> = emptyList(),
     val uncategorizedGoals: List<TodayGoalUi> = emptyList(),
     val accentArgb: Long = 0xFF007AFF,
@@ -84,6 +87,7 @@ class EditRecordViewModel(app: Application) : AndroidViewModel(app) {
     private var customCategories: List<CustomGoalCategory> = emptyList()
     private var config: GoalConfig = GoalConfig()
     private var categoryOrderIds: List<String> = emptyList()
+    private var controlStyle: ControlStyle = ControlStyle.Slider
     private var accentArgb: Long = 0xFF007AFF
 
     // Rascunho sempre em unidade métrica (a conversão p/ fl oz é só de exibição, como na Today).
@@ -102,6 +106,7 @@ class EditRecordViewModel(app: Application) : AndroidViewModel(app) {
             sex = profile.sex
             theme = settingsRepo.theme.first()
             measurement = settingsRepo.measurementSystem.first()
+            controlStyle = settingsRepo.controlStyle.first()
             customGoals = customGoalRepo.all()
             customCategories = customCategoryRepo.all()
             config = goalConfigRepo.goalConfig.first()
@@ -249,8 +254,9 @@ class EditRecordViewModel(app: Application) : AndroidViewModel(app) {
             dateLabel = AppDateFormatters.longDate(LocalDate.ofEpochDay(baseRecord?.date ?: 0L)),
             percent = floor(avg * 100).toInt(),
             tierEmoji = theme.emoji(tier, sex),
-            tierLevel = tier.ordinal + 1,
+            tierLevel = tier.number,
             tierNameRes = theme.tierNameRes(tier, sex),
+            controlStyle = controlStyle,
             sections = sections,
             uncategorizedGoals = uncategorized,
             accentArgb = accentArgb,

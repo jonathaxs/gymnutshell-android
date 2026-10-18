@@ -1,14 +1,17 @@
 package com.jonathaxs.gymnutshell.ui.achievements
 
 import android.app.Application
+import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.jonathaxs.gymnutshell.core.data.DailyRecordRepository
+import com.jonathaxs.gymnutshell.core.data.ProfileRepository
 import com.jonathaxs.gymnutshell.core.data.SettingsRepository
 import com.jonathaxs.gymnutshell.core.domain.AppDateFormatters
+import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -31,13 +34,14 @@ data class CalendarDayUi(
     val isSelected: Boolean,
 )
 
-/** Uma linha do histórico. */
+/** Uma linha do histórico: mascote, data, nível e percentual. */
 data class HistoryItemUi(
     val epochDay: Long,
     val dateLabel: String,
     val emoji: String,
+    @param:StringRes val tierNameRes: Int,
     val percent: Int,
-    /** Editável só dentro da janela de 72h (3 dias), igual ao editWindow do iOS. */
+    /** Editável dentro da janela de 30 dias, igual ao editWindow do iOS. */
     val canEdit: Boolean = false,
 )
 
@@ -47,6 +51,7 @@ enum class AchievementsFilterMode { Calendar, List }
 /** Estado da AchievementsView. */
 data class AchievementsUiState(
     val monthLabel: String = "",
+    val selectedWeekday: String = "",
     val weekdays: List<String> = emptyList(),
     val days: List<CalendarDayUi> = emptyList(),
     val history: List<HistoryItemUi> = emptyList(),
@@ -55,18 +60,19 @@ data class AchievementsUiState(
 )
 
 /**
- * ViewModel da AchievementsView — porte (MVP) da AchievementsView (iOS).
+ * ViewModel da AchievementsView — porte da AchievementsView (iOS).
  * Lê os DailyRecord (Room) e monta o calendário do mês + o histórico, na cor de destaque do usuário.
  */
 class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
 
     private val recordRepo = DailyRecordRepository(app.applicationContext)
     private val settingsRepo = SettingsRepository(app.applicationContext)
+    private val profileRepo = ProfileRepository(app.applicationContext)
 
     private val month = MutableStateFlow(YearMonth.now())
 
     init {
-        // O mês visível acompanha o dia selecionado (inclusive quando a tela de Progresso troca o dia),
+        // O mês visível acompanha o dia selecionado (inclusive quando a tela de Histórico troca o dia),
         // espelhando o onChange(selectedDate) → visibleMonthDate do iOS.
         viewModelScope.launch {
             settingsRepo.achievementsSelectedDay.collect { day ->
@@ -75,19 +81,32 @@ class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    private val themeAndProfile = combine(
+        settingsRepo.theme,
+        profileRepo.profile,
+        settingsRepo.accentColor,
+    ) { theme, profile, accent -> Triple(theme, profile, accent) }
+
     val uiState: StateFlow<AchievementsUiState> = combine(
         recordRepo.records,
         month,
         settingsRepo.achievementsSelectedDay,
-        settingsRepo.accentColor,
         settingsRepo.achievementsFilterMode,
-    ) { records, ym, selected, accent, modeRaw ->
+        themeAndProfile,
+    ) { records, ym, selected, modeRaw, extra ->
+        val (theme, profile, accent) = extra
         val mode = if (modeRaw == "list") AchievementsFilterMode.List else AchievementsFilterMode.Calendar
-        val emojiByDay = records.associate { it.date to it.achievementEmoji }
-        val percentByDay = records.associate { it.date to it.percent }
         val todayEpoch = LocalDate.now().toEpochDay()
         val locale = Locale.getDefault()
         val firstDow = WeekFields.of(locale).firstDayOfWeek
+
+        // Mapeamento de emojis pelo tema ativo, espelhando o iOS (não usa o emoji antigo salvo).
+        val emojiByDay = records.associate { record ->
+            val tier = if (record.achievementEmoji.isNotEmpty()) DailyAchievement.from(record.achievementEmoji)
+            else DailyAchievement.fromPercent(record.percent)
+            record.date to theme.emoji(tier, profile.sex)
+        }
+        val percentByDay = records.associate { it.date to it.percent }
 
         // Grade: começa no primeiro dia da semana que contém o dia 1, vai até o fim do mês.
         val firstOfMonth = ym.atDay(1)
@@ -114,15 +133,24 @@ class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
             firstDow.plus(it).getDisplayName(TextStyle.NARROW, locale).uppercase()
         }
 
+        // Dia da semana do dia selecionado por extenso (ex: "Quinta-feira"), porte do AppDateFormatters.weekday do iOS.
+        val selectedDate = LocalDate.ofEpochDay(selected)
+        val selectedWeekday = selectedDate.dayOfWeek
+            .getDisplayName(TextStyle.FULL, locale)
+            .replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale) else it.toString() }
+
         // No modo Calendário o histórico mostra só o dia selecionado; no modo Lista, todos os registros.
         val historyRecords = records
             .let { all -> if (mode == AchievementsFilterMode.Calendar) all.filter { it.date == selected } else all }
             .sortedByDescending { it.date }
         val history = historyRecords.map { record ->
+            val tier = if (record.achievementEmoji.isNotEmpty()) DailyAchievement.from(record.achievementEmoji)
+            else DailyAchievement.fromPercent(record.percent)
             HistoryItemUi(
                 epochDay = record.date,
                 dateLabel = AppDateFormatters.mediumDate(LocalDate.ofEpochDay(record.date)),
-                emoji = record.achievementEmoji,
+                emoji = theme.emoji(tier, profile.sex),
+                tierNameRes = theme.tierNameRes(tier, profile.sex),
                 percent = record.percent,
                 canEdit = (todayEpoch - record.date) in 0..EDIT_WINDOW_DAYS,
             )
@@ -130,6 +158,7 @@ class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
 
         AchievementsUiState(
             monthLabel = AppDateFormatters.monthYear(ym.atDay(1)),
+            selectedWeekday = selectedWeekday,
             weekdays = weekdays,
             days = days,
             history = history,
@@ -141,7 +170,7 @@ class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
     fun previousMonth() = month.update { it.minusMonths(1) }
     fun nextMonth() = month.update { it.plusMonths(1) }
 
-    // Dia e filtro são persistidos no DataStore (compartilhados com a tela de Progresso, que os pré-define).
+    // Dia e filtro são persistidos no DataStore (compartilhados com a tela de Histórico, que os pré-define).
     fun selectDay(epochDay: Long) {
         viewModelScope.launch { settingsRepo.setAchievementsSelectedDay(epochDay) }
     }
@@ -152,8 +181,14 @@ class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    fun deleteRecord(epochDay: Long) {
+        viewModelScope.launch {
+            recordRepo.deleteByDate(epochDay)
+        }
+    }
+
     private companion object {
-        // Janela de edição: registros dos últimos 3 dias (72h no iOS) são editáveis.
-        const val EDIT_WINDOW_DAYS = 3L
+        // Janela de edição: registros dos últimos 30 dias (1 mês no iOS) são editáveis.
+        const val EDIT_WINDOW_DAYS = 30L
     }
 }

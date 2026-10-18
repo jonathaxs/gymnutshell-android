@@ -55,29 +55,16 @@
     <string name="edit_record_save">Save</string>
 
     <!-- Progress -->
-    <string name="progress_days">Days</string>
-    <string name="progress_points">Points</string>
-    <string name="progress_bonuses">Bonuses</string>
     <string name="progress_section_tiers">Tier Breakdown</string>
     <string name="progress_section_activity">Gym Activity</string>
-    <string name="progress_section_bonuses">Streak Bonuses</string>
     <string name="progress_activity_workout">Workout Days</string>
     <string name="progress_activity_cardio">Cardio Days</string>
-    <string name="progress_bonus_weekly_strong">🎖️ Fitness Week</string>
-    <string name="progress_bonus_weekly_expert">💀 Muscular Week</string>
-    <string name="progress_bonus_monthly_strong">🏆 Fitness Month</string>
-    <string name="progress_bonus_monthly_expert">☠️ Muscular Month</string>
-    <string name="progress_bonus_times">%1$d times</string>
     <string name="progress_days_count">%1$d days</string>
-    <!-- Seção Metas ativas, objetivo fitness, dados físicos e últimos 7 dias (porte da ProgressOverView do iOS). -->
+    <!-- Seções Metas ativas, objetivo fitness e últimos 7 dias (porte da ProgressOverView do iOS). -->
     <string name="progress_section_goals">Goals</string>
     <string name="progress_goals_active_label">Active goals</string>
     <string name="progress_goals_active">%1$d active</string>
     <string name="progress_section_goal">Goal</string>
-    <string name="progress_section_physical">Physical data</string>
-    <string name="progress_physical_height">Height</string>
-    <string name="progress_physical_weight">Weight</string>
-    <string name="progress_physical_age">Age</string>
     <string name="progress_section_recent">Last 7 days</string>
 
     <!-- Settings -->
@@ -494,11 +481,9 @@
       onClick, então o TalkBack anuncia "toque duas vezes para <dica>" (o "Tap to" do iOS já vem embutido).
     -->
     <string name="a11y_stats_card_tiers_hint">see how tiers work</string>
-    <string name="a11y_stats_card_bonuses_hint">see how streak bonuses work</string>
     <string name="a11y_stats_card_activity_hint">open the activity log</string>
     <string name="a11y_stats_card_goals_hint">manage tracked goals</string>
     <string name="a11y_stats_card_usergoal_hint">change goal</string>
-    <string name="a11y_stats_card_physical_hint">edit physical data</string>
     <string name="a11y_recent_day_hint">open this day in the calendar</string>
 
     <!-- Notificações: metas personalizadas -->

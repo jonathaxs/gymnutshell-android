@@ -5,15 +5,15 @@ import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.jonathaxs.gymnutshell.core.data.CustomGoalRepository
+import com.jonathaxs.gymnutshell.core.data.DailyRecord
 import com.jonathaxs.gymnutshell.core.data.DailyRecordRepository
+import com.jonathaxs.gymnutshell.core.data.GoalConfigRepository
 import com.jonathaxs.gymnutshell.core.data.ProfileRepository
 import com.jonathaxs.gymnutshell.core.data.SettingsRepository
 import com.jonathaxs.gymnutshell.core.domain.AppDateFormatters
-import com.jonathaxs.gymnutshell.core.domain.BuiltInGoals
+import com.jonathaxs.gymnutshell.core.domain.AppTheme
 import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
-import com.jonathaxs.gymnutshell.core.domain.GoalsProvider
-import com.jonathaxs.gymnutshell.core.domain.MeasurementSystem
-import com.jonathaxs.gymnutshell.core.domain.Profile
+import com.jonathaxs.gymnutshell.core.domain.GoalOrder
 import com.jonathaxs.gymnutshell.core.domain.UserGoal
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -35,38 +35,21 @@ data class RecentDayUi(
     val isToday: Boolean,
 )
 
-/** Dados físicos do perfil (valores brutos em métrico; formatação fica na UI conforme o measurement). */
-data class PhysicalUi(
-    val heightCm: Int,
-    val weightKg: Double,
-    val age: Int,
-    val sexRaw: String,
-    val measurement: MeasurementSystem,
-)
-
-/** Estado da ProgressView. */
+/** Estado da ProgressView — porte da ProgressOverView 2.0 (sem pontos, sem bônus, sem dados físicos). */
 data class ProgressUiState(
-    val totalDays: Int = 0,
-    val totalPoints: Int = 0,
-    val bonusCount: Int = 0,
     val tierCounts: List<TierCountUi> = emptyList(),
     val workoutDays: Int = 0,
     val cardioDays: Int = 0,
-    val weeklyStrong: Int = 0,
-    val weeklyExpert: Int = 0,
-    val monthlyStrong: Int = 0,
-    val monthlyExpert: Int = 0,
     val activeGoals: Int = 0,
     val userGoal: UserGoal = UserGoal.Maintenance,
-    val physical: PhysicalUi? = null,
     val recentDays: List<RecentDayUi> = emptyList(),
     val accentArgb: Long = 0xFF007AFF,
 )
 
 /**
  * ViewModel da ProgressView — porte da ProgressOverView (iOS).
- * Deriva estatísticas dos DailyRecord + StreakBonus (Room) e do perfil/configurações:
- * resumo, distribuição por tier, bônus, atividade, metas ativas, objetivo, dados físicos e últimos 7 dias.
+ * Deriva estatísticas dos DailyRecord (Room) e do perfil/configurações:
+ * últimos 7 dias, distribuição por tier (5 níveis), atividade e metas ativas.
  */
 class ProgressViewModel(app: Application) : AndroidViewModel(app) {
 
@@ -74,49 +57,45 @@ class ProgressViewModel(app: Application) : AndroidViewModel(app) {
     private val settingsRepo = SettingsRepository(app.applicationContext)
     private val profileRepo = ProfileRepository(app.applicationContext)
     private val customGoalRepo = CustomGoalRepository(app.applicationContext)
+    private val goalConfigRepo = GoalConfigRepository(app.applicationContext)
 
-    // Measurement + perfil + metas personalizadas agrupados num fluxo só (combine de 5 tem limite de aridade).
+    // Perfil + metas customizadas + metas removidas agrupados num fluxo só.
     private val extras = combine(
-        settingsRepo.measurementSystem,
         profileRepo.profile,
         customGoalRepo.goals,
-    ) { measurement, profile, customGoals -> Triple(measurement, profile, customGoals) }
+        goalConfigRepo.removedKeys,
+    ) { profile, customGoals, removedKeys -> Triple(profile, customGoals, removedKeys) }
 
     val uiState: StateFlow<ProgressUiState> =
         combine(
             recordRepo.records,
-            recordRepo.bonuses,
             settingsRepo.theme,
             settingsRepo.accentColor,
             extras,
-        ) { records, bonuses, theme, accent, extra ->
-            val (measurement, profile, customGoals) = extra
-            val countByTier = records.groupingBy { DailyAchievement.from(it.percent / 100.0) }.eachCount()
+        ) { records, theme, accent, extra ->
+            val (profile, customGoals, removedKeys) = extra
+            val countByTier = records.groupingBy {
+                if (it.achievementEmoji.isNotEmpty()) DailyAchievement.from(it.achievementEmoji)
+                else DailyAchievement.fromPercent(it.percent)
+            }.eachCount()
 
-            // Todas as metas built-in estão sempre ativas no Android (sem feature de remoção ainda) + as personalizadas.
-            val activeGoals = BuiltInGoals.forResult(GoalsProvider.goals(profile)).size + customGoals.size
+            // Metas fixas ativas (GoalOrder.DEFAULT menos as removidas) + metas personalizadas (porte do iOS).
+            val activeBuiltinCount = GoalOrder.DEFAULT.count { it !in removedKeys }
+            val activeGoals = activeBuiltinCount + customGoals.size
 
             ProgressUiState(
-                totalDays = records.size,
-                totalPoints = records.sumOf { it.points },
-                bonusCount = bonuses.size,
                 tierCounts = DailyAchievement.entries.map { tier ->
                     TierCountUi(
                         emoji = theme.emoji(tier, profile.sex),
-                        level = tier.ordinal + 1,
+                        level = tier.number,
                         days = countByTier[tier] ?: 0,
                         nameRes = theme.tierNameRes(tier, profile.sex),
                     )
                 },
                 workoutDays = records.count { it.didWorkout },
                 cardioDays = records.count { it.didCardio },
-                weeklyStrong = bonuses.count { it.bonusType == "weekly.level3" },
-                weeklyExpert = bonuses.count { it.bonusType == "weekly.level4" },
-                monthlyStrong = bonuses.count { it.bonusType == "monthly.level3" },
-                monthlyExpert = bonuses.count { it.bonusType == "monthly.level4" },
                 activeGoals = activeGoals,
                 userGoal = profile.goal,
-                physical = physicalOf(profile, measurement),
                 recentDays = recentDaysOf(records, theme, profile.sex),
                 accentArgb = accent.argb,
             )
@@ -135,18 +114,10 @@ class ProgressViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    /** Dados físicos só quando há algo preenchido — espelha o `hasPhysicalData` do iOS. */
-    private fun physicalOf(profile: Profile, measurement: MeasurementSystem): PhysicalUi? {
-        val hasData = profile.heightCm > 0 || profile.weightKg > 0 || profile.age > 0 ||
-            profile.sex == "male" || profile.sex == "female"
-        if (!hasData) return null
-        return PhysicalUi(profile.heightCm, profile.weightKg, profile.age, profile.sex, measurement)
-    }
-
     /** Últimos 7 dias do calendário (mais antigo → hoje), cada um com o emoji do tier daquele dia. */
     private fun recentDaysOf(
-        records: List<com.jonathaxs.gymnutshell.core.data.DailyRecord>,
-        theme: com.jonathaxs.gymnutshell.core.domain.AppTheme,
+        records: List<DailyRecord>,
+        theme: AppTheme,
         sex: String,
     ): List<RecentDayUi> {
         val todayEpoch = LocalDate.now().toEpochDay()
@@ -156,11 +127,15 @@ class ProgressViewModel(app: Application) : AndroidViewModel(app) {
             val date = LocalDate.ofEpochDay(epoch)
             val record = byDate[epoch]
             val hasRecord = record != null && record.percent > 0
+            val tier = record?.let {
+                if (it.achievementEmoji.isNotEmpty()) DailyAchievement.from(it.achievementEmoji)
+                else DailyAchievement.fromPercent(it.percent)
+            }
             RecentDayUi(
                 epochDay = epoch,
                 dayNumber = date.dayOfMonth,
                 weekday = AppDateFormatters.weekdayInitial(date),
-                emoji = if (hasRecord) theme.emoji(DailyAchievement.from(record!!.percent / 100.0), sex) else null,
+                emoji = if (hasRecord && tier != null) theme.emoji(tier, sex) else null,
                 isToday = epoch == todayEpoch,
             )
         }

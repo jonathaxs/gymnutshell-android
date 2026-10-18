@@ -28,6 +28,7 @@ class DailyRecordRepository(private val context: Context) {
 
     suspend fun findByDate(epochDay: Long): DailyRecord? = recordDao.findByDate(epochDay)
     suspend fun upsert(record: DailyRecord) = recordDao.upsert(record)
+    suspend fun deleteByDate(date: Long) = recordDao.deleteByDate(date)
     suspend fun allRecords(): List<DailyRecord> = recordDao.getAll()
 
     /** Substitui todo o histórico (restauração de backup). */

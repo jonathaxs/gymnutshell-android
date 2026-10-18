@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -118,6 +119,8 @@ fun MainScreen(
                 sheetState = sheetState,
                 modifier = Modifier.fillMaxHeight(),
                 dragHandle = null,
+                // Fundo agrupado (como os Ajustes) pra os cards aparecerem, igual ao iOS.
+                containerColor = MaterialTheme.colorScheme.background,
             ) {
                 val sheetNavController = rememberNavController()
                 val sheetStart = when (currentSheet) {
@@ -150,7 +153,6 @@ fun MainScreen(
                             onOpenTheme = { sheetNavController.navigate(SettingsRoutes.THEME) },
                             onOpenGoals = { sheetNavController.navigate(SettingsRoutes.CUSTOM_GOALS) },
                             onOpenUserGoal = { sheetNavController.navigate(SettingsRoutes.GOAL) },
-                            onOpenProfile = { sheetNavController.navigate(SettingsRoutes.PROFILE) },
                             onOpenAchievements = { sheetNavController.navigate(SheetRoutes.ACHIEVEMENTS) },
                         )
                     }
