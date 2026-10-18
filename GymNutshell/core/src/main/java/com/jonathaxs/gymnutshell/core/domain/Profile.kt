@@ -14,6 +14,7 @@ data class Profile(
     val age: Int = 0,
     val sex: String = "male",
     val goal: UserGoal = UserGoal.Maintenance,
+    val favoriteExercise: String = "unknown",
 ) {
     companion object {
         /** Sexo só pode ser "male" ou "female". Qualquer outro valor vira "male". */

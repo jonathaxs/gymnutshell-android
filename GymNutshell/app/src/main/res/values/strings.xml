@@ -178,7 +178,7 @@
     <string name="settings_orientation_both">Use both</string>
     <string name="settings_orientation_footer">Choose how the app should respond to device rotation.</string>
     <string name="unit_metric">Metric (ml)</string>
-    <string name="unit_us">US (fl oz)</string>
+    <string name="unit_us">Imperial (fl oz)</string>
     <string name="settings_custom_goals">Custom goals</string>
     <string name="field_emoji">Emoji</string>
     <string name="field_unit">Unit</string>
@@ -246,37 +246,77 @@
     <string name="cd_move_up">Move up</string>
     <string name="cd_move_down">Move down</string>
 
-    <!-- Welcome / onboarding -->
+    <!-- Welcome / onboarding 2.0 -->
     <string name="welcome_start_title">Hello!</string>
-    <string name="welcome_start_intro">Gym Nutshell is a daily companion in your gym routine.\n\nTrack your nutrition, hydration, sleep, workouts, and other goals throughout the day.\n\nFollow your steps on the achievements and progress screen.</string>
-    <string name="welcome_start_subtitle">Let\'s go!\nStart now.</string>
-    <string name="welcome_start_new">Start now</string>
+    <string name="welcome_start_feature_track">Track your fitness goals throughout the day.</string>
+    <string name="welcome_start_feature_progress">Follow your progress.</string>
+    <string name="welcome_start_feature_theme">Choose a theme to inspire you.</string>
+    <string name="welcome_start_new">Start</string>
+    <string name="welcome_start_restore">Restore backup</string>
     <string name="welcome_restore_error_title">Couldn\'t restore</string>
+    <string name="welcome_step_about_title">About you</string>
+    <string name="welcome_field_sex">Sex</string>
+    <string name="welcome_field_sex_female">Female</string>
+    <string name="welcome_field_sex_male">Male</string>
     <string name="welcome_goal_title">Your goal</string>
     <string name="welcome_goal_bulking_desc">Increase muscle mass with caloric surplus</string>
     <string name="welcome_goal_maintenance_desc">Maintain current weight and composition</string>
     <string name="welcome_goal_cutting_desc">Reduce body fat while preserving muscle</string>
-    <string name="welcome_goal_info_choose">Choose what best describes your current goal.</string>
     <string name="welcome_goal_info_editable">You can change it later in app settings.</string>
-    <string name="welcome_physical_title">Your physical data</string>
-    <string name="welcome_physical_info_calculate">This will be used to auto-calculate your daily goal values.</string>
-    <string name="welcome_physical_info_editable">Values can be adjusted in app settings.</string>
-    <string name="welcome_theme_title">Choose your theme</string>
-    <string name="welcome_theme_subtitle">Pick the emojis that will inspire your progress.</string>
-    <string name="welcome_theme_footer">Your theme can be changed in app settings.</string>
+    <string name="welcome_step_units_title">Your units</string>
+    <string name="welcome_step_units_subtitle">How do you prefer to measure water?</string>
+    <string name="welcome_step_units_note">You can change this later in Settings.</string>
+    <string name="welcome_units_metric_desc">Milliliters, like 250 ml per glass.</string>
+    <string name="welcome_units_imperial_desc">Fluid ounces, like %d fl oz per glass.</string>
     <string name="welcome_summary_title">Your goals</string>
-    <string name="welcome_summary_subtitle">Review your calculated daily goals.</string>
-    <string name="welcome_summary_calculated">These values were calculated based on your physical data and your %1$s goal.</string>
-    <string name="welcome_summary_customize">In app settings you can adjust these goal values and add custom goals.</string>
-    <string name="welcome_summary_optional_badge">Recommended</string>
+    <string name="welcome_summary_subtitle_customize">You can edit these values or add new goals anytime.</string>
     <string name="welcome_option_add">Add</string>
-    <string name="welcome_option_remove">Remove</string>
+    <string name="welcome_step_control_title">Controls</string>
+    <string name="welcome_step_control_subtitle">How do you prefer to log your goals every day?</string>
+    <string name="welcome_control_slider">Slide</string>
+    <string name="welcome_control_slider_desc">Drag the control to the value you want.</string>
+    <string name="welcome_control_stepper">Buttons</string>
+    <string name="welcome_control_stepper_desc">Tap to add or remove one step at a time.</string>
+    <string name="welcome_step_theme_title">Theme</string>
+    <string name="welcome_step_theme_subtitle">Pick the emojis that will inspire your progress.</string>
+    <string name="welcome_step_theme_footer">The theme can be changed later.</string>
+    <string name="welcome_step_ready_title">All set!</string>
+    <string name="welcome_step_ready_subtitle">Turn on what you like.</string>
+    <string name="welcome_ready_notifications_title">Notifications</string>
+    <string name="welcome_ready_notifications_desc">Reminders for water and achievements.</string>
+    <string name="welcome_ready_health_title">Health Connect</string>
+    <string name="welcome_ready_health_desc">Logs your sleep and detects your workouts automatically.</string>
+    <string name="welcome_ready_allow">Allow</string>
+    <string name="welcome_ready_allowed">Allowed</string>
+    <string name="welcome_ready_requested">Requested</string>
+    <string name="welcome_ready_denied">Denied</string>
     <string name="welcome_button_continue">Continue</string>
     <string name="welcome_button_start">Let\'s go!</string>
-    <string name="welcome_progress_format">Step %1$d of %2$d</string>
+    <string name="welcome_button_back">Back</string>
     <string name="a11y_welcome_back">Back to previous step</string>
     <string name="a11y_welcome_optional_add">Add %1$s</string>
     <string name="a11y_welcome_optional_remove">Remove %1$s</string>
+    <string name="a11y_welcome_optional_add_hint">Tap to add this goal.</string>
+    <string name="a11y_welcome_optional_remove_hint">Tap to remove this goal.</string>
+    <string name="a11y_welcome_goal_decrease">Decrease %1$s</string>
+    <string name="a11y_welcome_goal_increase">Increase %1$s</string>
+
+    <!-- Exercício favorito (perfil e onboarding) -->
+    <string name="settings_profile_favorite_exercise">Favorite exercise</string>
+    <string name="favorite_exercise_unknown">Not sure</string>
+    <string name="favorite_exercise_back">Back</string>
+    <string name="favorite_exercise_arms">Arms</string>
+    <string name="favorite_exercise_chest">Chest</string>
+    <string name="favorite_exercise_legs">Legs</string>
+    <string name="favorite_exercise_hamstrings">Hamstrings</string>
+    <string name="favorite_exercise_glutes">Glutes</string>
+    <string name="favorite_exercise_shoulders">Shoulders</string>
+    <string name="favorite_exercise_biceps">Biceps</string>
+    <string name="favorite_exercise_triceps">Triceps</string>
+    <string name="favorite_exercise_abs">Abs</string>
+    <string name="favorite_exercise_traps">Traps</string>
+    <string name="favorite_exercise_forearms">Forearms</string>
+    <string name="favorite_exercise_calves">Calves</string>
     <string name="action_next">Next</string>
     <string name="action_back">Back</string>
     <string name="action_finish">Finish</string>
@@ -446,9 +486,6 @@
     <string name="a11y_stats_card_usergoal_hint">change goal</string>
     <string name="a11y_stats_card_physical_hint">edit physical data</string>
     <string name="a11y_recent_day_hint">open this day in the calendar</string>
-    <!-- Welcome: o campo de nascimento é um botão que abre o seletor de data. -->
-    <string name="a11y_welcome_birthday">%1$s, %2$s</string>
-    <string name="a11y_welcome_birthday_hint">choose the date</string>
 
     <!-- Notificações: metas personalizadas -->
     <string name="notif_custom_desc">Reminders to meet today\'s goal.</string>

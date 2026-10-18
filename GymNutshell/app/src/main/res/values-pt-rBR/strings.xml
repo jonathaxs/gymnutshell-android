@@ -175,7 +175,7 @@
     <string name="settings_orientation_both">Usar ambas</string>
     <string name="settings_orientation_footer">Escolha como o app deve responder à rotação do aparelho.</string>
     <string name="unit_metric">Métrico (ml)</string>
-    <string name="unit_us">EUA (fl oz)</string>
+    <string name="unit_us">Imperial (fl oz)</string>
     <string name="settings_custom_goals">Metas personalizadas</string>
     <string name="field_emoji">Emoji</string>
     <string name="field_unit">Unidade</string>
@@ -243,37 +243,77 @@
     <string name="cd_move_up">Mover para cima</string>
     <string name="cd_move_down">Mover para baixo</string>
 
-    <!-- Welcome / onboarding -->
+    <!-- Welcome / onboarding 2.0 -->
     <string name="welcome_start_title">Olá!</string>
-    <string name="welcome_start_intro">Gym Nutshell é um companheiro diário na sua rotina de academia.\n\nRastreie sua nutrição, hidratação, sono, treinos e outras metas ao longo do dia.\n\nAcompanhe o seu avanço na tela de conquistas e progresso.</string>
-    <string name="welcome_start_subtitle">Vamos lá!\nComece agora.</string>
-    <string name="welcome_start_new">Começar agora</string>
+    <string name="welcome_start_feature_track">Rastreie suas metas fitness ao longo do dia.</string>
+    <string name="welcome_start_feature_progress">Acompanhe o seu avanço.</string>
+    <string name="welcome_start_feature_theme">Escolha um tema para te inspirar.</string>
+    <string name="welcome_start_new">Começar</string>
+    <string name="welcome_start_restore">Restaurar backup</string>
     <string name="welcome_restore_error_title">Não foi possível restaurar</string>
+    <string name="welcome_step_about_title">Sobre você</string>
+    <string name="welcome_field_sex">Sexo</string>
+    <string name="welcome_field_sex_female">Feminino</string>
+    <string name="welcome_field_sex_male">Masculino</string>
     <string name="welcome_goal_title">Seu objetivo</string>
     <string name="welcome_goal_bulking_desc">Ganhar massa muscular com superávit calórico</string>
     <string name="welcome_goal_maintenance_desc">Manter o peso e composição atual</string>
     <string name="welcome_goal_cutting_desc">Reduzir gordura preservando a musculatura</string>
-    <string name="welcome_goal_info_choose">Escolha o que melhor descreve seu objetivo atual.</string>
-    <string name="welcome_goal_info_editable">Você pode mudar depois em ajustes do app.</string>
-    <string name="welcome_physical_title">Seus dados físicos</string>
-    <string name="welcome_physical_info_calculate">Isso será usado para calcular automaticamente os valores das suas metas diárias.</string>
-    <string name="welcome_physical_info_editable">Os valores podem ser alterados em ajustes do app.</string>
-    <string name="welcome_theme_title">Escolha o seu tema</string>
-    <string name="welcome_theme_subtitle">Escolha os emojis que irão inspirar o seu progresso.</string>
-    <string name="welcome_theme_footer">O tema pode ser alterado em ajustes do app.</string>
+    <string name="welcome_goal_info_editable">Você pode mudar depois em Ajustes.</string>
+    <string name="welcome_step_units_title">Suas medidas</string>
+    <string name="welcome_step_units_subtitle">Como você prefere medir a água?</string>
+    <string name="welcome_step_units_note">Você pode mudar depois em Ajustes.</string>
+    <string name="welcome_units_metric_desc">Mililitros, como 250 ml por copo.</string>
+    <string name="welcome_units_imperial_desc">Onças fluidas, como %d fl oz por copo.</string>
     <string name="welcome_summary_title">Suas metas</string>
-    <string name="welcome_summary_subtitle">Deslize até o final.</string>
-    <string name="welcome_summary_calculated">Estes valores foram calculados com base nos seus dados físicos e no seu objetivo de %1$s.</string>
-    <string name="welcome_summary_customize">Em ajustes do app você pode ajustar esses valores de meta e adicionar metas personalizadas.</string>
-    <string name="welcome_summary_optional_badge">Recomendado</string>
+    <string name="welcome_summary_subtitle_customize">Você pode editar esses valores ou adicionar novas metas quando quiser.</string>
     <string name="welcome_option_add">Adicionar</string>
-    <string name="welcome_option_remove">Remover</string>
+    <string name="welcome_step_control_title">Controles</string>
+    <string name="welcome_step_control_subtitle">Como você prefere marcar suas metas no dia a dia?</string>
+    <string name="welcome_control_slider">Deslizar</string>
+    <string name="welcome_control_slider_desc">Arraste o controle até o valor desejado.</string>
+    <string name="welcome_control_stepper">Botões</string>
+    <string name="welcome_control_stepper_desc">Toque para somar ou tirar um passo de cada vez.</string>
+    <string name="welcome_step_theme_title">Tema</string>
+    <string name="welcome_step_theme_subtitle">Escolha os emojis que vão te inspirar.</string>
+    <string name="welcome_step_theme_footer">O tema pode ser alterado depois.</string>
+    <string name="welcome_step_ready_title">Tudo pronto!</string>
+    <string name="welcome_step_ready_subtitle">Ative o que quiser.</string>
+    <string name="welcome_ready_notifications_title">Notificações</string>
+    <string name="welcome_ready_notifications_desc">Lembretes de água e conquistas.</string>
+    <string name="welcome_ready_health_title">Health Connect</string>
+    <string name="welcome_ready_health_desc">Registra seu sono e detecta seus treinos automaticamente.</string>
+    <string name="welcome_ready_allow">Permitir</string>
+    <string name="welcome_ready_allowed">Permitido</string>
+    <string name="welcome_ready_requested">Solicitado</string>
+    <string name="welcome_ready_denied">Negado</string>
     <string name="welcome_button_continue">Continuar</string>
     <string name="welcome_button_start">Vamos lá!</string>
-    <string name="welcome_progress_format">Passo %1$d de %2$d</string>
+    <string name="welcome_button_back">Voltar</string>
     <string name="a11y_welcome_back">Voltar ao passo anterior</string>
     <string name="a11y_welcome_optional_add">Adicionar %1$s</string>
     <string name="a11y_welcome_optional_remove">Remover %1$s</string>
+    <string name="a11y_welcome_optional_add_hint">Toque para adicionar esta meta.</string>
+    <string name="a11y_welcome_optional_remove_hint">Toque para remover esta meta.</string>
+    <string name="a11y_welcome_goal_decrease">Diminuir %1$s</string>
+    <string name="a11y_welcome_goal_increase">Aumentar %1$s</string>
+
+    <!-- Exercício favorito (perfil e onboarding) -->
+    <string name="settings_profile_favorite_exercise">Exercício favorito</string>
+    <string name="favorite_exercise_unknown">Não sei</string>
+    <string name="favorite_exercise_back">Dorsais</string>
+    <string name="favorite_exercise_arms">Braços</string>
+    <string name="favorite_exercise_chest">Peitoral</string>
+    <string name="favorite_exercise_legs">Pernas</string>
+    <string name="favorite_exercise_hamstrings">Posterior de pernas</string>
+    <string name="favorite_exercise_glutes">Glúteos</string>
+    <string name="favorite_exercise_shoulders">Ombros</string>
+    <string name="favorite_exercise_biceps">Bíceps</string>
+    <string name="favorite_exercise_triceps">Tríceps</string>
+    <string name="favorite_exercise_abs">Abdômen</string>
+    <string name="favorite_exercise_traps">Trapézio</string>
+    <string name="favorite_exercise_forearms">Antebraços</string>
+    <string name="favorite_exercise_calves">Panturrilhas</string>
     <string name="action_next">Próximo</string>
     <string name="action_back">Voltar</string>
     <string name="action_finish">Concluir</string>
@@ -436,9 +476,6 @@
     <string name="a11y_stats_card_usergoal_hint">mudar o objetivo</string>
     <string name="a11y_stats_card_physical_hint">editar dados físicos</string>
     <string name="a11y_recent_day_hint">abrir este dia no calendário</string>
-    <!-- Welcome: campo de nascimento -->
-    <string name="a11y_welcome_birthday">%1$s, %2$s</string>
-    <string name="a11y_welcome_birthday_hint">escolher a data</string>
 
     <!-- Notificações: metas personalizadas -->
     <string name="notif_custom_desc">Lembretes pra bater a meta do dia.</string>

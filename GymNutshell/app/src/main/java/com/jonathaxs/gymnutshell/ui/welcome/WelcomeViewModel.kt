@@ -2,27 +2,96 @@ package com.jonathaxs.gymnutshell.ui.welcome
 
 import android.app.Application
 import android.net.Uri
+import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.jonathaxs.gymnutshell.core.backup.BackupService
 import com.jonathaxs.gymnutshell.core.data.GoalConfigRepository
+import com.jonathaxs.gymnutshell.core.data.HealthPreferencesRepository
+import com.jonathaxs.gymnutshell.core.data.NotificationPreferencesRepository
 import com.jonathaxs.gymnutshell.core.data.ProfileRepository
 import com.jonathaxs.gymnutshell.core.data.SettingsRepository
 import com.jonathaxs.gymnutshell.core.domain.AppTheme
+import com.jonathaxs.gymnutshell.core.domain.ControlStyle
+import com.jonathaxs.gymnutshell.core.domain.GoalsCalculator
+import com.jonathaxs.gymnutshell.core.domain.MeasurementSystem
 import com.jonathaxs.gymnutshell.core.domain.Profile
+import com.jonathaxs.gymnutshell.core.domain.UserGoal
 import com.jonathaxs.gymnutshell.core.theme.AccentColor
+import com.jonathaxs.gymnutshell.health.HealthConnectManager
+import com.jonathaxs.gymnutshell.notifications.NotificationScheduler
+import com.jonathaxs.gymnutshell.ui.theme.color
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 /**
- * ViewModel do onboarding — porte de WelcomeView (iOS).
- * Ao concluir, persiste o perfil + tema, define a cor de destaque pelo sexo escolhido,
- * marca como removidas as metas opcionais que o usuário não adicionou e finaliza o onboarding
- * (o RootScreen reage e troca pra MainScreen). Também permite restaurar um backup local logo no início.
+ * Estado completo do onboarding Welcome 2.0 — porte de WelcomeView (iOS).
+ * Reúne seleção de sexo, exercício favorito, objetivo, medidas, metas calculadas/editadas,
+ * controles, tema e permissões.
+ */
+data class WelcomeUiState(
+    val currentStep: WelcomeStep = WelcomeStep.Start,
+    val sex: String = "male",
+    val favoriteExercise: FavoriteExercise = FavoriteExercise.Unknown,
+    val userGoal: UserGoal = UserGoal.Maintenance,
+    val measurementSystem: MeasurementSystem = MeasurementSystem.detectDefault(),
+    val goals: GoalsCalculator.Result = GoalsCalculator.calculate("male", UserGoal.Maintenance),
+    val includeCalories: Boolean = false,
+    val includeFats: Boolean = false,
+    val includeCreatine: Boolean = false,
+    val controlStyle: ControlStyle = ControlStyle.Default,
+    val theme: AppTheme = AppTheme.Gym,
+    val summaryScrolledToEnd: Boolean = false,
+    val notificationsPermissionState: WelcomePermissionState = WelcomePermissionState.Idle,
+    val healthPermissionState: WelcomePermissionState = WelcomePermissionState.Idle,
+    val isHealthAvailable: Boolean = false,
+    val restoreFailed: Boolean = false,
+) {
+    /** Exibe a etapa de unidades só quando o país requer escolha (EUA, GB, etc.). */
+    val showsUnitsStep: Boolean = MeasurementSystem.needsChoice()
+    val visibleSteps: List<WelcomeStep> = WelcomeStep.visible(showsUnitsStep)
+    val currentStepIndex: Int = visibleSteps.indexOf(currentStep).coerceAtLeast(0)
+
+    /** Cor de destaque inicial baseada no sexo. */
+    val sexColor: Color = AccentColor.defaultForSex(sex).color
+
+    /**
+     * Cor da etapa: na etapa de objetivo segue o objetivo escolhido;
+     * nas demais segue o sexo.
+     */
+    val stepColor: Color = if (currentStep == WelcomeStep.Goal) {
+        when (userGoal) {
+            UserGoal.Bulking -> Color(0xFFFF9500)
+            UserGoal.Maintenance -> Color(0xFF007AFF)
+            UserGoal.Cutting -> Color(0xFF34C759)
+        }
+    } else {
+        sexColor
+    }
+
+    /** Validação da etapa atual: no resumo, exige scroll até o final. */
+    val canContinue: Boolean = when (currentStep) {
+        WelcomeStep.Start -> true
+        WelcomeStep.About -> true
+        WelcomeStep.Goal -> true
+        WelcomeStep.Units -> true
+        WelcomeStep.Summary -> summaryScrolledToEnd
+        WelcomeStep.ControlStyle -> true
+        WelcomeStep.Theme -> true
+        WelcomeStep.Ready -> true
+    }
+
+    val isLastStep: Boolean = currentStep == WelcomeStep.Ready
+}
+
+/**
+ * ViewModel do Welcome 2.0 — porte de WelcomeView (iOS) para MVVM com StateFlow.
+ * Gerencia navegação entre etapas, edições das metas, persistência final e restauração de backup.
  */
 class WelcomeViewModel(app: Application) : AndroidViewModel(app) {
 
@@ -30,28 +99,234 @@ class WelcomeViewModel(app: Application) : AndroidViewModel(app) {
     private val settingsRepo = SettingsRepository(app.applicationContext)
     private val goalConfigRepo = GoalConfigRepository(app.applicationContext)
     private val backupService = BackupService(app.applicationContext)
+    private val notificationPrefs = NotificationPreferencesRepository(app.applicationContext)
+    private val notificationScheduler = NotificationScheduler(app.applicationContext)
+    private val healthPrefs = HealthPreferencesRepository(app.applicationContext)
+    private val healthManager = HealthConnectManager(app.applicationContext)
 
-    // Vira true quando uma restauração falha (arquivo inválido), pra mostrar o alerta de erro.
-    private val _restoreFailed = MutableStateFlow(false)
-    val restoreFailed: StateFlow<Boolean> = _restoreFailed.asStateFlow()
+    private val _state = MutableStateFlow(
+        WelcomeUiState(isHealthAvailable = healthManager.isAvailable)
+    )
+    val state: StateFlow<WelcomeUiState> = _state.asStateFlow()
 
-    fun complete(profile: Profile, theme: AppTheme, includeFats: Boolean, includeCreatine: Boolean) {
+    val healthPermissions: Set<String>
+        get() = healthManager.allPermissions
+
+    // MARK: - Navegação
+
+    /** Avança para a próxima etapa visível ou conclui se estiver na etapa final. */
+    fun advance() {
+        val s = _state.value
+        val nextStep = when (s.currentStep) {
+            WelcomeStep.Start -> WelcomeStep.About
+            WelcomeStep.About -> WelcomeStep.Goal
+            WelcomeStep.Goal -> {
+                // Ao sair de objetivo, recalcula as metas padrão pela tabela
+                _state.update {
+                    it.copy(
+                        goals = GoalsCalculator.calculate(it.sex, it.userGoal),
+                        summaryScrolledToEnd = false,
+                    )
+                }
+                if (s.showsUnitsStep) WelcomeStep.Units else WelcomeStep.Summary
+            }
+            WelcomeStep.Units -> WelcomeStep.Summary
+            WelcomeStep.Summary -> WelcomeStep.ControlStyle
+            WelcomeStep.ControlStyle -> WelcomeStep.Theme
+            WelcomeStep.Theme -> WelcomeStep.Ready
+            WelcomeStep.Ready -> {
+                complete()
+                return
+            }
+        }
+        _state.update { it.copy(currentStep = nextStep) }
+    }
+
+    /** Volta para a etapa anterior visível. */
+    fun goBack() {
+        val s = _state.value
+        val idx = s.currentStepIndex
+        if (idx > 0) {
+            val prev = s.visibleSteps[idx - 1]
+            _state.update { it.copy(currentStep = prev) }
+        }
+    }
+
+    // MARK: - Modificadores de Estado
+
+    fun setSex(sex: String) {
+        val normalized = Profile.normalizedSex(sex)
+        _state.update { current ->
+            current.copy(
+                sex = normalized,
+                goals = GoalsCalculator.calculate(normalized, current.userGoal),
+            )
+        }
+    }
+
+    fun setFavoriteExercise(exercise: FavoriteExercise) {
+        _state.update { it.copy(favoriteExercise = exercise) }
+    }
+
+    fun setUserGoal(goal: UserGoal) {
+        _state.update { current ->
+            current.copy(
+                userGoal = goal,
+                goals = GoalsCalculator.calculate(current.sex, goal),
+            )
+        }
+    }
+
+    fun setMeasurementSystem(system: MeasurementSystem) {
+        _state.update { it.copy(measurementSystem = system) }
+    }
+
+    fun setControlStyle(style: ControlStyle) {
+        _state.update { it.copy(controlStyle = style) }
+    }
+
+    fun setTheme(theme: AppTheme) {
+        _state.update { it.copy(theme = theme) }
+    }
+
+    fun setSummaryScrolledToEnd(scrolled: Boolean) {
+        _state.update { it.copy(summaryScrolledToEnd = scrolled) }
+    }
+
+    fun setIncludeCalories(include: Boolean) {
+        _state.update { it.copy(includeCalories = include) }
+    }
+
+    fun setIncludeFats(include: Boolean) {
+        _state.update { it.copy(includeFats = include) }
+    }
+
+    fun setIncludeCreatine(include: Boolean) {
+        _state.update { it.copy(includeCreatine = include) }
+    }
+
+    // MARK: - Ajustes de Metas com − / + (passos e limites do iOS)
+
+    fun adjustSleep(delta: Int) {
+        _state.update { it.copy(goals = it.goals.copy(sleep = (it.goals.sleep + delta).coerceIn(1, 16))) }
+    }
+
+    fun adjustWater(delta: Int) {
+        _state.update { it.copy(goals = it.goals.copy(water = (it.goals.water + delta).coerceIn(250, 10000))) }
+    }
+
+    fun adjustCalories(delta: Int) {
+        _state.update { it.copy(goals = it.goals.copy(calories = (it.goals.calories + delta).coerceIn(500, 10000))) }
+    }
+
+    fun adjustProtein(delta: Int) {
+        _state.update { it.copy(goals = it.goals.copy(protein = (it.goals.protein + delta).coerceIn(10, 500))) }
+    }
+
+    fun adjustCarbs(delta: Int) {
+        _state.update { it.copy(goals = it.goals.copy(carbs = (it.goals.carbs + delta).coerceIn(10, 1000))) }
+    }
+
+    fun adjustFiber(delta: Int) {
+        _state.update { it.copy(goals = it.goals.copy(fiber = (it.goals.fiber + delta).coerceIn(5, 100))) }
+    }
+
+    fun adjustGoodFat(delta: Int) {
+        _state.update { it.copy(goals = it.goals.copy(goodFat = (it.goals.goodFat + delta).coerceIn(5, 300))) }
+    }
+
+    fun adjustWorkout(delta: Int) {
+        _state.update { it.copy(goals = it.goals.copy(workout = (it.goals.workout + delta).coerceIn(5, 300))) }
+    }
+
+    fun adjustCardio(delta: Int) {
+        _state.update { it.copy(goals = it.goals.copy(cardio = (it.goals.cardio + delta).coerceIn(5, 180))) }
+    }
+
+    fun adjustCreatine(delta: Int) {
+        _state.update { it.copy(goals = it.goals.copy(creatine = (it.goals.creatine + delta).coerceIn(1, 20))) }
+    }
+
+    // MARK: - Permissões
+
+    fun onNotificationPermissionResult(granted: Boolean) {
+        _state.update {
+            it.copy(notificationsPermissionState = if (granted) WelcomePermissionState.Allowed else WelcomePermissionState.Denied)
+        }
+        if (granted) {
+            viewModelScope.launch {
+                notificationPrefs.applyDefaultEnabledKindsOnce()
+                notificationScheduler.rescheduleAllActive()
+            }
+        }
+    }
+
+    fun onHealthPermissionResult(granted: Boolean) {
+        _state.update {
+            it.copy(healthPermissionState = if (granted) WelcomePermissionState.Allowed else WelcomePermissionState.Requested)
+        }
         viewModelScope.launch {
-            profileRepo.update(profile)
-            settingsRepo.setTheme(theme)
-            // Cor de destaque inicial sugerida pelo sexo — o usuário pode trocar em Settings > Cores.
-            settingsRepo.setAccentColor(AccentColor.defaultForSex(profile.sex))
-            // Metas opcionais começam desligadas no iOS: removidas se o usuário não tocou em "Adicionar".
-            if (!includeFats) goalConfigRepo.remove("tracking.goodFat")
-            if (!includeCreatine) goalConfigRepo.remove("tracking.creatine")
+            healthPrefs.setSyncSleepEnabled(true)
+            healthPrefs.setAutoWorkoutCheckin(true)
+        }
+    }
+
+    // MARK: - Conclusão do Onboarding
+
+    /**
+     * Salva o perfil, sistema de medidas, as 10 metas calculadas/editadas, o estilo de controle,
+     * o tema, a cor de destaque, marca as opcionais excluídas como removidas e re-agenda as notificações.
+     */
+    fun complete() {
+        val s = _state.value
+        viewModelScope.launch {
+            // Perfil com sexo normalizado e exercício favorito
+            profileRepo.update(
+                Profile(
+                    name = "",
+                    sex = Profile.normalizedSex(s.sex),
+                    goal = s.userGoal,
+                    favoriteExercise = s.favoriteExercise.rawValue,
+                )
+            )
+
+            // Sistema de medidas
+            settingsRepo.setMeasurementSystem(s.measurementSystem)
+
+            // Salva todas as 10 metas diárias
+            goalConfigRepo.setGoalValue("tracking.sleep", s.goals.sleep)
+            goalConfigRepo.setGoalValue("tracking.water", s.goals.water)
+            goalConfigRepo.setGoalValue("tracking.calories", s.goals.calories)
+            goalConfigRepo.setGoalValue("tracking.protein", s.goals.protein)
+            goalConfigRepo.setGoalValue("tracking.carbs", s.goals.carbs)
+            goalConfigRepo.setGoalValue("tracking.fiber", s.goals.fiber)
+            goalConfigRepo.setGoalValue("tracking.goodFat", s.goals.goodFat)
+            goalConfigRepo.setGoalValue("tracking.workout", s.goals.workout)
+            goalConfigRepo.setGoalValue("tracking.cardio", s.goals.cardio)
+            goalConfigRepo.setGoalValue("tracking.creatine", s.goals.creatine)
+
+            // Metas opcionais: se incluídas restaura, se não incluídas remove
+            if (s.includeCalories) goalConfigRepo.restore("tracking.calories") else goalConfigRepo.remove("tracking.calories")
+            if (s.includeFats) goalConfigRepo.restore("tracking.goodFat") else goalConfigRepo.remove("tracking.goodFat")
+            if (s.includeCreatine) goalConfigRepo.restore("tracking.creatine") else goalConfigRepo.remove("tracking.creatine")
+
+            // Estilo de controle e tema
+            settingsRepo.setControlStyle(s.controlStyle)
+            settingsRepo.setTheme(s.theme)
+
+            // Cor de destaque inicial baseada no sexo
+            settingsRepo.setAccentColor(AccentColor.defaultForSex(s.sex))
+
+            // Re-agenda notificações
+            notificationScheduler.rescheduleAllActive()
+
+            // Marca o onboarding como concluído
             profileRepo.setOnboardingComplete()
         }
     }
 
-    /**
-     * Restaura um backup local (JSON) escolhido pelo usuário e finaliza o onboarding em caso de sucesso
-     * — espelha o "Restaurar backup" do WelcomeStartStep (iOS, via arquivo). Em falha, sinaliza o erro.
-     */
+    // MARK: - Restauração de Backup
+
     fun restore(uri: Uri) {
         viewModelScope.launch {
             val ok = runCatching {
@@ -62,11 +337,15 @@ class WelcomeViewModel(app: Application) : AndroidViewModel(app) {
                 }
                 backupService.importJson(text)
             }.isSuccess
-            if (ok) profileRepo.setOnboardingComplete() else _restoreFailed.value = true
+            if (ok) {
+                profileRepo.setOnboardingComplete()
+            } else {
+                _state.update { it.copy(restoreFailed = true) }
+            }
         }
     }
 
     fun clearRestoreError() {
-        _restoreFailed.value = false
+        _state.update { it.copy(restoreFailed = false) }
     }
 }

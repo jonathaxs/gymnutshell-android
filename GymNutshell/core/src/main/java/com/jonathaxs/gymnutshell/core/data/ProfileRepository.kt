@@ -24,6 +24,7 @@ class ProfileRepository(private val context: Context) {
         val age = intPreferencesKey("profile.age")
         val sex = stringPreferencesKey("profile.sex")
         val goal = stringPreferencesKey("profile.userGoal")
+        val favoriteExercise = stringPreferencesKey("profile.favoriteExercise")
         val onboarding = booleanPreferencesKey("profile.didCompleteOnboarding")
     }
 
@@ -43,6 +44,7 @@ class ProfileRepository(private val context: Context) {
             age = prefs[Keys.age] ?: 0,
             sex = Profile.normalizedSex(prefs[Keys.sex]),
             goal = UserGoal.fromRaw(prefs[Keys.goal]) ?: UserGoal.Maintenance,
+            favoriteExercise = prefs[Keys.favoriteExercise] ?: "unknown",
         )
     }
 
@@ -54,6 +56,7 @@ class ProfileRepository(private val context: Context) {
             prefs[Keys.age] = profile.age
             prefs[Keys.sex] = Profile.normalizedSex(profile.sex)
             prefs[Keys.goal] = profile.goal.rawValue
+            prefs[Keys.favoriteExercise] = profile.favoriteExercise
         }
     }
 
