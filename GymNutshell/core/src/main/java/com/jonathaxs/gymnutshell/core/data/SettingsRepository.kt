@@ -22,6 +22,7 @@ class SettingsRepository(private val context: Context) {
     private val themeKey = stringPreferencesKey("app.theme")
     private val measurementKey = stringPreferencesKey("profile.measurementSystem")
     private val controlStyleKey = stringPreferencesKey(ControlStyle.STORAGE_KEY)
+    private val goalsViewModeKey = stringPreferencesKey(com.jonathaxs.gymnutshell.core.domain.TodayGoalsViewMode.STORAGE_KEY)
     private val achievementsFilterKey = stringPreferencesKey("achievements.filterMode")
     private val achievementsSelectedDayKey = longPreferencesKey("achievements.selectedDay")
 
@@ -61,6 +62,15 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setControlStyle(style: ControlStyle) {
         context.appPreferences.edit { prefs -> prefs[controlStyleKey] = style.rawValue }
+    }
+
+    /** Modo de visualização das metas na Today (List ou Grid). Default: List. */
+    val goalsViewMode: Flow<com.jonathaxs.gymnutshell.core.domain.TodayGoalsViewMode> = context.appPreferences.data.map { prefs ->
+        com.jonathaxs.gymnutshell.core.domain.TodayGoalsViewMode.fromRaw(prefs[goalsViewModeKey])
+    }
+
+    suspend fun setGoalsViewMode(mode: com.jonathaxs.gymnutshell.core.domain.TodayGoalsViewMode) {
+        context.appPreferences.edit { prefs -> prefs[goalsViewModeKey] = mode.rawValue }
     }
 
     /** Roda no launch: converte sistema "uk" legado para "metric". */

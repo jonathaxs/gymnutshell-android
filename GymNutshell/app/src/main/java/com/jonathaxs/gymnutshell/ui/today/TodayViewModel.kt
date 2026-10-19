@@ -21,8 +21,10 @@ import com.jonathaxs.gymnutshell.core.data.ProfileRepository
 import com.jonathaxs.gymnutshell.core.data.SettingsRepository
 import com.jonathaxs.gymnutshell.core.data.TodayPreferencesRepository
 import com.jonathaxs.gymnutshell.core.domain.AppDateFormatters
+import com.jonathaxs.gymnutshell.core.domain.AppTheme
 import com.jonathaxs.gymnutshell.core.domain.BuiltInGoals
 import com.jonathaxs.gymnutshell.core.domain.CategoryItem
+import com.jonathaxs.gymnutshell.core.domain.ControlStyle
 import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
 import com.jonathaxs.gymnutshell.core.domain.DailyRecordFactory
 import com.jonathaxs.gymnutshell.core.domain.GoalCategory
@@ -31,6 +33,7 @@ import com.jonathaxs.gymnutshell.core.domain.MeasurementSystem
 import com.jonathaxs.gymnutshell.core.domain.NotificationKind
 import com.jonathaxs.gymnutshell.core.domain.Profile
 import com.jonathaxs.gymnutshell.core.domain.ProgressHelpers
+import com.jonathaxs.gymnutshell.core.domain.TodayGoalsViewMode
 import com.jonathaxs.gymnutshell.core.domain.UnifiedCategoryOrder
 import com.jonathaxs.gymnutshell.core.domain.UnitConverter
 import com.jonathaxs.gymnutshell.core.domain.UserGoal
@@ -66,14 +69,22 @@ data class TodayGoalUi(
     val progress: Double get() = if (isRestDay) 1.0 else ProgressHelpers.normalizedProgress(intake, target)
 }
 
+private data class PreferencesGroup(
+    val measurement: MeasurementSystem,
+    val theme: AppTheme,
+    val controlStyle: ControlStyle,
+    val goalsViewMode: TodayGoalsViewMode,
+)
+
 /**
  * Uma seção da Today: identidade da categoria ("builtin:<raw>"/"custom:<id>"), título (res p/ fixa
- * ou texto p/ personalizada), metas e estado de colapso.
+ * ou texto p/ personalizada), símbolo, metas e estado de colapso.
  */
 data class TodayCategoryUi(
     val id: String,
     @StringRes val titleRes: Int?,
     val title: String?,
+    val symbolName: String? = null,
     val goals: List<TodayGoalUi>,
     val collapsed: Boolean,
 )
@@ -83,10 +94,18 @@ data class TodayUiState(
     val dateLabel: String = "",
     val overallPercent: Int = 0,
     val tierEmoji: String = "🐓",
-    /** Nível do tier (1–4) — controla o tamanho/opacidade do emoji no hero. */
+    /** Nível do tier (1–5) — controla o emoji e conquista no hero. */
     val tierLevel: Int = 1,
-    /** Nome do nível no tema atual (ex.: "Rooster"), exibido sob o emoji do hero. */
+    /** Nome do nível no tema atual (ex.: "Monstro"), exibido sob o emoji do hero. */
     @param:StringRes val tierNameRes: Int = CoreR.string.tier_gym_level1,
+    /** Percentual que falta para alcançar o próximo nível (null se no nível máximo). */
+    val nextLevelPercent: Int? = null,
+    /** Verdadeiro quando o usuário atingiu o nível máximo (nível 5). */
+    val isAtMaxLevel: Boolean = false,
+    /** Estilo global de controle das metas (Slider ou Stepper). */
+    val controlStyle: ControlStyle = ControlStyle.Default,
+    /** Modo de visualização no celular em retrato (Lista ou Grade com balão). */
+    val goalsViewMode: TodayGoalsViewMode = TodayGoalsViewMode.Default,
     val overallProgress: Float = 0f,
     val sections: List<TodayCategoryUi> = emptyList(),
     /** Metas personalizadas sem categoria, exibidas no fim da lista. */
@@ -123,8 +142,8 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
 
     /**
      * Vira o dia (porte de checkIfNewDay/finishSpecificDay do iOS): grava o DailyRecord do último
-     * dia ativo com os intakes atuais, zera os intakes, preenche dias perdidos com Level1 e
-     * avalia os bônus de sequência. No primeiro uso, só marca hoje como dia ativo.
+     * dia ativo com os intakes atuais, zera os intakes e preenche dias perdidos com Level1.
+     * No primeiro uso, só marca hoje como dia ativo.
      */
     private suspend fun rolloverIfNeeded() {
         val today = LocalDate.now().toEpochDay()
@@ -179,8 +198,15 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
             combine(intakeRepo.intakes, intakeRepo.restDays, todayPrefs.collapsedCategories) { i, r, c ->
                 Triple(i, r, c)
             },
-            combine(settingsRepo.measurementSystem, settingsRepo.theme) { m, t -> m to t },
-        ) { (profile, customGoals, customCategories), (config, orderIds), (intakeMap, restDays, collapsed), (measurement, theme) ->
+            combine(
+                settingsRepo.measurementSystem,
+                settingsRepo.theme,
+                settingsRepo.controlStyle,
+                settingsRepo.goalsViewMode,
+            ) { m, t, c, v ->
+                PreferencesGroup(m, t, c, v)
+            },
+        ) { (profile, customGoals, customCategories), (config, orderIds), (intakeMap, restDays, collapsed), prefsGroup ->
             // Enquanto não houver onboarding, usa um perfil-demo se nada foi salvo.
             val effective = if (profile.weightKg <= 0.0) DEMO_PROFILE else profile
 
@@ -195,7 +221,7 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
             // Metas fixas ativas (ordem/removidas/overrides). Água em US é exibida em fl oz (armazenada em ml).
             val builtinGoals = BuiltInGoals.active(GoalsProvider.goals(effective), config).map { g ->
                 val category = GoalCategory.defaultCategory(g.key)
-                val waterUs = g.key == "tracking.water" && measurement == MeasurementSystem.Us
+                val waterUs = g.key == "tracking.water" && prefsGroup.measurement == MeasurementSystem.Us
                 val storedMl = intakeMap[g.key] ?: 0
                 TodayGoalUi(
                     key = g.key,
@@ -234,7 +260,20 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
                         if (goals.isEmpty()) {
                             null
                         } else {
-                            TodayCategoryUi(item.id, categoryTitleRes(item.category), null, goals, item.id in collapsed)
+                            val symbol = when (item.category) {
+                                GoalCategory.Essencial -> "heart.fill"
+                                GoalCategory.Nutricao -> "fork.knife"
+                                GoalCategory.Treino -> "dumbbell.fill"
+                                GoalCategory.Suplemento -> "pills.fill"
+                            }
+                            TodayCategoryUi(
+                                id = item.id,
+                                titleRes = categoryTitleRes(item.category),
+                                title = null,
+                                symbolName = symbol,
+                                goals = goals,
+                                collapsed = item.id in collapsed,
+                            )
                         }
                     }
                     is CategoryItem.Custom -> {
@@ -242,7 +281,14 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
                         if (goals.isEmpty()) {
                             null
                         } else {
-                            TodayCategoryUi(item.id, null, item.category.name, goals, item.id in collapsed)
+                            TodayCategoryUi(
+                                id = item.id,
+                                titleRes = null,
+                                title = item.category.name,
+                                symbolName = item.category.symbolName,
+                                goals = goals,
+                                collapsed = item.id in collapsed,
+                            )
                         }
                     }
                 }
@@ -251,19 +297,40 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
 
             val allGoals = builtinGoals + customGoalsUi
             val avg = if (allGoals.isEmpty()) 0.0 else allGoals.sumOf { it.progress } / allGoals.size
-            val tier = DailyAchievement.from(avg)
+            val percent = floor(avg * 100).toInt()
+            val tier = DailyAchievement.fromPercent(percent)
+            val nextTier = tier.next
+            val nextLevelPercent = nextTier?.let { it.minPercent - percent }
+            val isAtMaxLevel = nextTier == null
 
             TodayUiState(
-                dateLabel = AppDateFormatters.longDate(LocalDate.now()),
-                overallPercent = floor(avg * 100).toInt(),
-                tierEmoji = theme.emoji(tier, profile.sex),
-                tierLevel = tier.ordinal + 1,
-                tierNameRes = theme.tierNameRes(tier, profile.sex),
+                dateLabel = AppDateFormatters.weekdayAndDay(LocalDate.now()),
+                overallPercent = percent,
+                tierEmoji = prefsGroup.theme.emoji(tier, profile.sex),
+                tierLevel = tier.number,
+                tierNameRes = prefsGroup.theme.tierNameRes(tier, profile.sex),
+                nextLevelPercent = nextLevelPercent,
+                isAtMaxLevel = isAtMaxLevel,
+                controlStyle = prefsGroup.controlStyle,
+                goalsViewMode = prefsGroup.goalsViewMode,
                 overallProgress = avg.toFloat(),
                 sections = sections,
                 uncategorizedGoals = uncategorized,
             )
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TodayUiState())
+
+    /** Alterna o modo de visualização das metas entre lista e grade. */
+    fun toggleGoalsViewMode() {
+        viewModelScope.launch {
+            val current = uiState.value.goalsViewMode
+            val next = if (current == TodayGoalsViewMode.List) {
+                TodayGoalsViewMode.Grid
+            } else {
+                TodayGoalsViewMode.List
+            }
+            settingsRepo.setGoalsViewMode(next)
+        }
+    }
 
     // Define o valor da meta (vindo do slider), limitado entre 0 e o alvo.
     // Água em fl oz é convertida pra ml ao salvar (o armazenamento é sempre métrico).

@@ -231,7 +231,7 @@ class EditRecordViewModel(app: Application) : AndroidViewModel(app) {
                     if (goalsInCat.isEmpty()) {
                         null
                     } else {
-                        TodayCategoryUi(item.id, categoryTitleRes(item.category), null, goalsInCat, item.id in collapsedCategories)
+                        TodayCategoryUi(item.id, categoryTitleRes(item.category), null, goals = goalsInCat, collapsed = item.id in collapsedCategories)
                     }
                 }
                 is CategoryItem.Custom -> {
@@ -239,7 +239,7 @@ class EditRecordViewModel(app: Application) : AndroidViewModel(app) {
                     if (goalsInCat.isEmpty()) {
                         null
                     } else {
-                        TodayCategoryUi(item.id, null, item.category.name, goalsInCat, item.id in collapsedCategories)
+                        TodayCategoryUi(item.id, null, item.category.name, symbolName = item.category.symbolName, goals = goalsInCat, collapsed = item.id in collapsedCategories)
                     }
                 }
             }

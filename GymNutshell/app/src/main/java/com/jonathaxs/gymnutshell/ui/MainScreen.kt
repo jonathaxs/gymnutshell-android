@@ -83,6 +83,9 @@ fun MainScreen(
                     onOpenHistory = { router.openSheet(AppSheet.History) },
                     onOpenAchievements = { router.openSheet(AppSheet.Achievements) },
                     onOpenTheme = { navController.navigate(SettingsRoutes.THEME) },
+                    onOpenColors = { navController.navigate(SettingsRoutes.COLOR) },
+                    onOpenControls = { navController.navigate(SettingsRoutes.CONTROLS) },
+                    onOpenGoals = { navController.navigate(SettingsRoutes.CUSTOM_GOALS) },
                 )
             }
             settingsGraph(navController)

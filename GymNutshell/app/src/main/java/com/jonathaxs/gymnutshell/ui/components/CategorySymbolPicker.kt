@@ -14,30 +14,42 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Place
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material.icons.filled.Refresh
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.ThumbUp
+import com.jonathaxs.gymnutshell.ui.icons.Air
+import com.jonathaxs.gymnutshell.ui.icons.AutoAwesome
+import com.jonathaxs.gymnutshell.ui.icons.AvTimer
+import com.jonathaxs.gymnutshell.ui.icons.Bed
+import com.jonathaxs.gymnutshell.ui.icons.Bolt
+import com.jonathaxs.gymnutshell.ui.icons.CalendarMonth
+import com.jonathaxs.gymnutshell.ui.icons.DarkMode
+import com.jonathaxs.gymnutshell.ui.icons.DirectionsBike
+import com.jonathaxs.gymnutshell.ui.icons.DirectionsRun
+import com.jonathaxs.gymnutshell.ui.icons.DirectionsWalk
+import com.jonathaxs.gymnutshell.ui.icons.Eco
+import com.jonathaxs.gymnutshell.ui.icons.EmojiEvents
+import com.jonathaxs.gymnutshell.ui.icons.FitnessCenter
+import com.jonathaxs.gymnutshell.ui.icons.GridView
+import com.jonathaxs.gymnutshell.ui.icons.LocalCafe
+import com.jonathaxs.gymnutshell.ui.icons.LocalFireDepartment
+import com.jonathaxs.gymnutshell.ui.icons.LunchDining
+import com.jonathaxs.gymnutshell.ui.icons.MedicalServices
+import com.jonathaxs.gymnutshell.ui.icons.Medication
+import com.jonathaxs.gymnutshell.ui.icons.MenuBook
+import com.jonathaxs.gymnutshell.ui.icons.Pool
+import com.jonathaxs.gymnutshell.ui.icons.Psychology
+import com.jonathaxs.gymnutshell.ui.icons.Restaurant
+import com.jonathaxs.gymnutshell.ui.icons.SelfImprovement
+import com.jonathaxs.gymnutshell.ui.icons.Spa
+import com.jonathaxs.gymnutshell.ui.icons.SportsBasketball
+import com.jonathaxs.gymnutshell.ui.icons.SportsGymnastics
+import com.jonathaxs.gymnutshell.ui.icons.Timer
+import com.jonathaxs.gymnutshell.ui.icons.TrackChanges
+import com.jonathaxs.gymnutshell.ui.icons.Verified
+import com.jonathaxs.gymnutshell.ui.icons.WaterDrop
+import com.jonathaxs.gymnutshell.ui.icons.WbSunny
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -64,44 +76,47 @@ val CATEGORY_SYMBOLS: List<String> = listOf(
     "book.fill", "pencil", "checkmark.seal.fill", "bell.fill", "calendar", "sparkles",
 )
 
-/** Mapeamento SF Symbol -> ImageVector do Material Icons (set core). */
+/**
+ * Mapeamento SF Symbol -> ImageVector. Os que não existem no set core vem de `ui/icons/`
+ * (copiados do material-icons-extended 1.7.8, Apache 2.0) pra não pesar o APK com o pacote inteiro.
+ */
 private val SYMBOL_ICON_MAP: Map<String, ImageVector> = mapOf(
-    "square.grid.2x2.fill" to Icons.Default.Menu,
-    "star.fill" to Icons.Default.Star,
-    "heart.fill" to Icons.Default.Favorite,
-    "bolt.fill" to Icons.Default.PlayArrow,
-    "flame.fill" to Icons.Default.ThumbUp,
-    "leaf.fill" to Icons.Default.Place,
-    "figure.run" to Icons.Default.Person,
-    "figure.walk" to Icons.Default.AccountCircle,
-    "figure.strengthtraining.traditional" to Icons.Default.Build,
-    "figure.yoga" to Icons.Default.Face,
-    "figure.pool.swim" to Icons.Default.Refresh,
-    "figure.outdoor.cycle" to Icons.Default.Share,
-    "dumbbell.fill" to Icons.Default.Build,
-    "sportscourt.fill" to Icons.Default.Home,
-    "trophy.fill" to Icons.Default.Star,
-    "target" to Icons.Default.CheckCircle,
-    "timer" to Icons.Default.Info,
-    "stopwatch.fill" to Icons.Default.Refresh,
-    "fork.knife" to Icons.Default.ShoppingCart,
-    "cup.and.saucer.fill" to Icons.Default.ShoppingCart,
-    "carrot.fill" to Icons.Default.ShoppingCart,
-    "drop.fill" to Icons.Default.ThumbUp,
-    "pills.fill" to Icons.Default.AddCircle,
-    "cross.case.fill" to Icons.Default.Add,
-    "bed.double.fill" to Icons.Default.Home,
-    "moon.fill" to Icons.Default.AccountBox,
-    "sun.max.fill" to Icons.Default.Star,
-    "brain.head.profile" to Icons.Default.Face,
-    "lungs.fill" to Icons.Default.FavoriteBorder,
-    "figure.mind.and.body" to Icons.Default.Person,
-    "book.fill" to Icons.Default.List,
-    "pencil" to Icons.Default.Edit,
-    "checkmark.seal.fill" to Icons.Default.CheckCircle,
-    "bell.fill" to Icons.Default.Notifications,
-    "calendar" to Icons.Default.DateRange,
-    "sparkles" to Icons.Default.Star,
+    "square.grid.2x2.fill" to Icons.Filled.GridView,
+    "star.fill" to Icons.Filled.Star,
+    "heart.fill" to Icons.Filled.Favorite,
+    "bolt.fill" to Icons.Filled.Bolt,
+    "flame.fill" to Icons.Filled.LocalFireDepartment,
+    "leaf.fill" to Icons.Filled.Eco,
+    "figure.run" to Icons.Filled.DirectionsRun,
+    "figure.walk" to Icons.Filled.DirectionsWalk,
+    "figure.strengthtraining.traditional" to Icons.Filled.SportsGymnastics,
+    "figure.yoga" to Icons.Filled.SelfImprovement,
+    "figure.pool.swim" to Icons.Filled.Pool,
+    "figure.outdoor.cycle" to Icons.Filled.DirectionsBike,
+    "dumbbell.fill" to Icons.Filled.FitnessCenter,
+    "sportscourt.fill" to Icons.Filled.SportsBasketball,
+    "trophy.fill" to Icons.Filled.EmojiEvents,
+    "target" to Icons.Filled.TrackChanges,
+    "timer" to Icons.Filled.Timer,
+    "stopwatch.fill" to Icons.Filled.AvTimer,
+    "fork.knife" to Icons.Filled.Restaurant,
+    "cup.and.saucer.fill" to Icons.Filled.LocalCafe,
+    "carrot.fill" to Icons.Filled.LunchDining,
+    "drop.fill" to Icons.Filled.WaterDrop,
+    "pills.fill" to Icons.Filled.Medication,
+    "cross.case.fill" to Icons.Filled.MedicalServices,
+    "bed.double.fill" to Icons.Filled.Bed,
+    "moon.fill" to Icons.Filled.DarkMode,
+    "sun.max.fill" to Icons.Filled.WbSunny,
+    "brain.head.profile" to Icons.Filled.Psychology,
+    "lungs.fill" to Icons.Filled.Air,
+    "figure.mind.and.body" to Icons.Filled.Spa,
+    "book.fill" to Icons.Filled.MenuBook,
+    "pencil" to Icons.Filled.Edit,
+    "checkmark.seal.fill" to Icons.Filled.Verified,
+    "bell.fill" to Icons.Filled.Notifications,
+    "calendar" to Icons.Filled.CalendarMonth,
+    "sparkles" to Icons.Filled.AutoAwesome,
 )
 
 /**
@@ -110,7 +125,7 @@ private val SYMBOL_ICON_MAP: Map<String, ImageVector> = mapOf(
  */
 fun categoryIcon(symbolName: String?): ImageVector {
     return (if (symbolName != null) SYMBOL_ICON_MAP[symbolName] else null)
-        ?: Icons.Default.Menu
+        ?: Icons.Filled.GridView
 }
 
 /**

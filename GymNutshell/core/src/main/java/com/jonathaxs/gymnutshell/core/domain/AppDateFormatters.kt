@@ -41,6 +41,15 @@ object AppDateFormatters {
         return date.format(DateTimeFormatter.ofPattern(pattern, locale)).capitalizeFirst()
     }
 
+    /**
+     * Data curta com dia da semana e dia ("Segunda-feira, 12" / "Monday, 12") — porte do
+     * AppDateFormatters.weekdayAndDay (iOS), usado no cabeçalho da Today.
+     */
+    fun weekdayAndDay(date: LocalDate, locale: Locale = Locale.getDefault()): String {
+        val weekday = date.format(DateTimeFormatter.ofPattern("EEEE", locale)).capitalizeFirst()
+        return "$weekday, ${date.dayOfMonth}"
+    }
+
     private fun String.capitalizeFirst(): String =
         if (isEmpty()) this else this[0].uppercaseChar() + substring(1)
 }

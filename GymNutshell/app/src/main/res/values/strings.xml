@@ -544,4 +544,28 @@
     <!-- Navegação 2.0 (Batch L2) -->
     <string name="common_close">Close</string>
     <string name="today_history">History</string>
+
+    <!-- Today 2.0 (Parte 1) -->
+    <string name="today_hero_achievement_label">Daily achievement</string>
+    <string name="today_hero_caption_start">Track a goal to get started</string>
+    <string name="today_hero_caption_next_level">%1$d%% to go for the next level</string>
+    <string name="today_hero_caption_max">Maximum level reached today!</string>
+    <string name="today_goals_view_mode_switch_a11y">Switch to %1$s view</string>
+    <string name="today_goals_view_mode_list">List</string>
+    <string name="today_goals_view_mode_grid">Grid</string>
+    <string name="today_category_other">Other</string>
+    <string name="today_edit_theme">Edit theme</string>
+    <string name="today_edit_colors">Edit colors</string>
+    <string name="today_edit_controls">Edit controls</string>
+    <string name="today_edit_goals">Edit goals</string>
+    <string name="today_ring_a11y_label">Progress ring</string>
+    <string name="today_ring_a11y_value">%1$d percent</string>
+    <string name="today_ring_a11y_hint">Double-tap for ring information</string>
+    <string name="today_category_a11y_value">%1$d of %2$d completed</string>
+    <string name="today_hero_bell_a11y_label">Notifications</string>
+    <string name="today_hero_bell_a11y_hint">Double-tap to open notification history</string>
+
+    <!-- Today 2.0 (Parte 2 - Grade de categorias) -->
+    <string name="today_category_tile_a11y_value">%1$d of %2$d goals completed</string>
+    <string name="today_category_tile_a11y_hint">Double-tap to open category controls</string>
 </resources>
