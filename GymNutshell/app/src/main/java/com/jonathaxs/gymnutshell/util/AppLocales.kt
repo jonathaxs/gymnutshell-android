@@ -20,7 +20,7 @@ import java.util.Locale
 object AppLocales {
 
     /** Opções na ordem do seletor. "" = seguir o idioma do sistema. */
-    val OPTIONS = listOf("", "en", "pt-BR")
+    val OPTIONS = listOf("", "en", "en-GB", "pt-BR", "es", "fr", "de", "it", "zh-Hans", "ja", "ko", "tr")
 
     private const val PREFS = "app_locale"
     private const val KEY_TAG = "language_tag"

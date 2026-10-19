@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -71,7 +72,15 @@ class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
 
     private val month = MutableStateFlow(YearMonth.now())
 
+    // Modo local da sheet (igual ao iOS): abre no Calendário, a menos que alguém (ex.: Historico) tenha pedido
+    // a Lista antes de abrir; o pedido é consumido e volta pra "calendar".
+    private val filterMode = MutableStateFlow(AchievementsFilterMode.Calendar)
+
     init {
+        viewModelScope.launch {
+            if (settingsRepo.achievementsFilterMode.first() == "list") filterMode.value = AchievementsFilterMode.List
+            settingsRepo.setAchievementsFilterMode("calendar")
+        }
         // O mês visível acompanha o dia selecionado (inclusive quando a tela de Histórico troca o dia),
         // espelhando o onChange(selectedDate) → visibleMonthDate do iOS.
         viewModelScope.launch {
@@ -91,11 +100,10 @@ class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
         recordRepo.records,
         month,
         settingsRepo.achievementsSelectedDay,
-        settingsRepo.achievementsFilterMode,
+        filterMode,
         themeAndProfile,
-    ) { records, ym, selected, modeRaw, extra ->
+    ) { records, ym, selected, mode, extra ->
         val (theme, profile, accent) = extra
-        val mode = if (modeRaw == "list") AchievementsFilterMode.List else AchievementsFilterMode.Calendar
         val todayEpoch = LocalDate.now().toEpochDay()
         val locale = Locale.getDefault()
         val firstDow = WeekFields.of(locale).firstDayOfWeek
@@ -170,15 +178,13 @@ class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
     fun previousMonth() = month.update { it.minusMonths(1) }
     fun nextMonth() = month.update { it.plusMonths(1) }
 
-    // Dia e filtro são persistidos no DataStore (compartilhados com a tela de Histórico, que os pré-define).
+    // Dia é persistido no DataStore (compartilhados com a tela de Histórico, que os pré-define).
     fun selectDay(epochDay: Long) {
         viewModelScope.launch { settingsRepo.setAchievementsSelectedDay(epochDay) }
     }
 
     fun setFilterMode(mode: AchievementsFilterMode) {
-        viewModelScope.launch {
-            settingsRepo.setAchievementsFilterMode(if (mode == AchievementsFilterMode.List) "list" else "calendar")
-        }
+        filterMode.value = mode
     }
 
     fun deleteRecord(epochDay: Long) {

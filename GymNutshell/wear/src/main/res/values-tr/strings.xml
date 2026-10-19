@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gym Nutshell</string>
+    <string name="wear_goal_workout">Ağırlık Antrenmanı</string>
+    <string name="wear_goal_cardio">Kardiyo</string>
+    <string name="wear_goal_sleep">Uyku</string>
+    <string name="wear_goal_water">Su</string>
+    <string name="wear_goal_calories">Kalori</string>
+    <string name="wear_goal_protein">Protein</string>
+    <string name="wear_goal_carbs">Karbonhidrat</string>
+    <string name="wear_goal_good_fat">Sağlıklı Yağlar</string>
+    <string name="wear_goal_fiber">Lif</string>
+    <string name="wear_goal_creatine">Kreatin</string>
+    <string name="rest_day">Dinlenme günü</string>
+    <string name="cd_increase">%1$s artır</string>
+    <string name="cd_decrease">%1$s azalt</string>
+    <string name="cd_rest_day">%1$s için dinlenme gününü değiştir</string>
+    <string name="wear_stats_tiers">Seviyeler</string>
+    <string name="wear_stats_activity">Aktivite</string>
+    <string name="wear_stats_recent">Son 7 gün</string>
+    <string name="wear_stats_days_format">%1$d gün</string>
+    <string name="wear_stats_syncing">Senkronize etmek için telefonunuzda Gym Nutshell\'ı açın.</string>
+    <string name="wear_notif_empty">Henüz bildirim yok.</string>
+    <string name="wear_notif_today">Bugün</string>
+    <string name="wear_notif_yesterday">Dün</string>
+    <string name="wear_notif_delete">Sil</string>
+</resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gym Nutshell</string>
+    <string name="wear_goal_workout">筋トレ</string>
+    <string name="wear_goal_cardio">有酸素運動</string>
+    <string name="wear_goal_sleep">睡眠</string>
+    <string name="wear_goal_water">水分</string>
+    <string name="wear_goal_calories">カロリー</string>
+    <string name="wear_goal_protein">タンパク質</string>
+    <string name="wear_goal_carbs">炭水化物</string>
+    <string name="wear_goal_good_fat">良質な脂質</string>
+    <string name="wear_goal_fiber">食物繊維</string>
+    <string name="wear_goal_creatine">クレアチン</string>
+    <string name="rest_day">休息日</string>
+    <string name="cd_increase">%1$sを増やす</string>
+    <string name="cd_decrease">%1$sを減らす</string>
+    <string name="cd_rest_day">%1$sの休息日を切り替え</string>
+    <string name="wear_stats_tiers">レベル</string>
+    <string name="wear_stats_activity">アクティビティ</string>
+    <string name="wear_stats_recent">過去7日間</string>
+    <string name="wear_stats_days_format">%1$d日</string>
+    <string name="wear_stats_syncing">同期するにはスマートフォンでGym Nutshellを開いてください。</string>
+    <string name="wear_notif_empty">通知はまだありません。</string>
+    <string name="wear_notif_today">今日</string>
+    <string name="wear_notif_yesterday">昨日</string>
+    <string name="wear_notif_delete">削除</string>
+</resources>

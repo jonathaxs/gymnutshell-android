@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gym Nutshell</string>
+    <string name="wear_goal_workout">근력 운동</string>
+    <string name="wear_goal_cardio">유산소</string>
+    <string name="wear_goal_sleep">수면</string>
+    <string name="wear_goal_water">물</string>
+    <string name="wear_goal_calories">칼로리</string>
+    <string name="wear_goal_protein">단백질</string>
+    <string name="wear_goal_carbs">탄수화물</string>
+    <string name="wear_goal_good_fat">착한 지방</string>
+    <string name="wear_goal_fiber">식이섬유</string>
+    <string name="wear_goal_creatine">크레아틴</string>
+    <string name="rest_day">휴식일</string>
+    <string name="cd_increase">%1$s 증가</string>
+    <string name="cd_decrease">%1$s 감소</string>
+    <string name="cd_rest_day">%1$s 휴식일 토글</string>
+    <string name="wear_stats_tiers">티어</string>
+    <string name="wear_stats_activity">활동</string>
+    <string name="wear_stats_recent">최근 7일</string>
+    <string name="wear_stats_days_format">%1$d일</string>
+    <string name="wear_stats_syncing">동기화하려면 휴대폰에서 Gym Nutshell을 열어주세요.</string>
+    <string name="wear_notif_empty">아직 알림이 없어요.</string>
+    <string name="wear_notif_today">오늘</string>
+    <string name="wear_notif_yesterday">어제</string>
+    <string name="wear_notif_delete">삭제</string>
+</resources>

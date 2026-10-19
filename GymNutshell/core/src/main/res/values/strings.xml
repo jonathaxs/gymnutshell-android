@@ -169,6 +169,9 @@
     <string name="tier_doctor_level3_fem">Graduate</string>
     <string name="tier_doctor_level4_fem">Doctor Who</string>
     <string name="tier_doctor_level5_fem">Chief of Medicine</string>
+    <string name="tier_ninja_level4_fem">Super</string>
     <string name="tier_ninja_level5_fem">Legendary Master</string>
 
+    <!-- Cabeçalho da Today: %1$s = dia da semana, %2$d = dia (ordem muda por idioma). -->
+    <string name="date_weekday_day_format">%1$s, %2$d</string>
 </resources>

@@ -132,7 +132,7 @@ enum class AppTheme(val rawValue: String, val category: ThemeCategory) {
         Horse -> tier.pick(R.string.tier_horse_level1_fem, R.string.tier_horse_level2_fem, R.string.tier_horse_level3_fem, R.string.tier_horse_level4_fem, 0)
         Fire -> tier.pick(0, 0, R.string.tier_fire_level3_fem, R.string.tier_fire_level4_fem, 0)
         Doctor -> tier.pick(0, 0, R.string.tier_doctor_level3_fem, R.string.tier_doctor_level4_fem, R.string.tier_doctor_level5_fem)
-        Ninja -> tier.pick(0, 0, 0, 0, R.string.tier_ninja_level5_fem)
+        Ninja -> tier.pick(0, 0, 0, R.string.tier_ninja_level4_fem, R.string.tier_ninja_level5_fem)
         else -> 0
     }
 

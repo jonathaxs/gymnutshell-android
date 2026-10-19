@@ -28,8 +28,14 @@ object AppDateFormatters {
         date.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(locale))
 
     /** Mês e ano standalone, ex.: "May 2026" / "Maio 2026" (LLLL = standalone, capitaliza certo). */
-    fun monthYear(date: LocalDate, locale: Locale = Locale.getDefault()): String =
-        date.format(DateTimeFormatter.ofPattern("LLLL yyyy", locale)).capitalizeFirst()
+    fun monthYear(date: LocalDate, locale: Locale = Locale.getDefault()): String {
+        // Em chinês, japonês e coreano o padrão do sistema ("2026年10月") fica certo; "LLLL yyyy" não.
+        if (locale.language in setOf("zh", "ja", "ko")) {
+            val pattern = android.text.format.DateFormat.getBestDateTimePattern(locale, "yMMMM")
+            return date.format(DateTimeFormatter.ofPattern(pattern, locale))
+        }
+        return date.format(DateTimeFormatter.ofPattern("LLLL yyyy", locale)).capitalizeFirst()
+    }
 
     /**
      * Data por extenso, sem ano ("Sábado, 16 de maio"). Usa o padrão localizado ICU
@@ -42,12 +48,13 @@ object AppDateFormatters {
     }
 
     /**
-     * Data curta com dia da semana e dia ("Segunda-feira, 12" / "Monday, 12") — porte do
-     * AppDateFormatters.weekdayAndDay (iOS), usado no cabeçalho da Today.
+     * Data curta com dia da semana e dia ("Segunda-feira, 12" / "Monday, 12" / "12日 月曜日") — porte do
+     * AppDateFormatters.weekdayAndDay (iOS), usado no cabeçalho da Today. `format` vem da string
+     * `date_weekday_day_format` (%1$s = dia da semana, %2$d = dia), que muda a ordem por idioma.
      */
-    fun weekdayAndDay(date: LocalDate, locale: Locale = Locale.getDefault()): String {
+    fun weekdayAndDay(date: LocalDate, locale: Locale = Locale.getDefault(), format: String = "%1\$s, %2\$d"): String {
         val weekday = date.format(DateTimeFormatter.ofPattern("EEEE", locale)).capitalizeFirst()
-        return "$weekday, ${date.dayOfMonth}"
+        return String.format(locale, format, weekday, date.dayOfMonth)
     }
 
     private fun String.capitalizeFirst(): String =

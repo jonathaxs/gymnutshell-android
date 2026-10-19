@@ -55,6 +55,15 @@ fun LanguageScreen(onBack: () -> Unit, viewModel: SettingsViewModel = viewModel(
 @Composable
 private fun languageLabel(tag: String): String = when (tag) {
     "en" -> "English"
+    "en-GB" -> "English (UK)"
     "pt-BR" -> "Português (Brasil)"
+    "es" -> "Español"
+    "fr" -> "Français"
+    "de" -> "Deutsch"
+    "it" -> "Italiano"
+    "zh-Hans" -> "简体中文"
+    "ja" -> "日本語"
+    "ko" -> "한국어"
+    "tr" -> "Türkçe"
     else -> stringResource(R.string.language_system_default)
 }

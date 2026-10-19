@@ -17,8 +17,8 @@ android {
         applicationId = "com.jonathaxs.gymnutshell"
         minSdk = 30 // Wear OS 3+
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "2.0"
     }
 
     buildTypes {

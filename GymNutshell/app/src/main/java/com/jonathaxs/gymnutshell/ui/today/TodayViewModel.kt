@@ -304,7 +304,10 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
             val isAtMaxLevel = nextTier == null
 
             TodayUiState(
-                dateLabel = AppDateFormatters.weekdayAndDay(LocalDate.now()),
+                dateLabel = AppDateFormatters.weekdayAndDay(
+                    LocalDate.now(),
+                    format = getApplication<Application>().getString(com.jonathaxs.gymnutshell.core.R.string.date_weekday_day_format),
+                ),
                 overallPercent = percent,
                 tierEmoji = prefsGroup.theme.emoji(tier, profile.sex),
                 tierLevel = tier.number,

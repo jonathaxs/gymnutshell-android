@@ -2,9 +2,6 @@
     <string name="app_name">Gym Nutshell</string>
     <!-- Nome curto exibido na home screen (como o display name "Nutshell" do iOS) -->
     <string name="app_name_home">Nutshell</string>
-    <string name="tab_today">Today</string>
-    <string name="tab_achievements">Achievements</string>
-    <string name="tab_progress">Progress</string>
     <string name="tab_settings">Settings</string>
 
     <!-- Metas da Today -->
@@ -23,8 +20,6 @@
     <string name="rest_day_on">ON</string>
     <string name="rest_day_off">OFF</string>
     <!-- Rótulos do hero (porte de TodayHeroView do iOS): acima do anel e da conquista -->
-    <string name="today_ring_label">Progress</string>
-    <string name="today_tier_label">Achievement</string>
 
     <!-- Categorias de metas -->
     <string name="category_essencial">Essential</string>
@@ -37,7 +32,6 @@
     <string name="cd_decrease">Decrease %1$s</string>
     <string name="state_collapsed">Collapsed</string>
     <string name="state_expanded">Expanded</string>
-    <string name="cd_daily_progress">Daily progress, %1$d percent</string>
     <!-- Porte de today.tier.a11y.label (iOS): anuncia o nome do nível, não o número. -->
     <string name="cd_daily_tier">Daily achievement, %1$s</string>
     <string name="cd_prev_month">Previous month</string>
@@ -69,8 +63,6 @@
 
     <!-- Settings -->
     <!-- Headers das seções da lista raiz (mesma organização da SettingsView do iOS). -->
-    <string name="settings_section_profile">Profile</string>
-    <string name="settings_section_preferences">Preferences</string>
     <string name="settings_section_system">System</string>
     <string name="settings_section_about">About</string>
     <string name="settings_appearance">Appearance</string>
@@ -80,9 +72,7 @@
     <string name="settings_about_title">About the App</string>
     <string name="settings_about_version">Version</string>
     <string name="settings_about_description">Gym Nutshell is your gym daily goals in a nutshell.\n\nSet goals, track them, and watch consistency turn into results.</string>
-    <string name="settings_about_developer_header">Talk to the developer</string>
     <string name="settings_about_feedback">Send Feedback</string>
-    <string name="settings_about_website">Developer Website</string>
     <string name="a11y_app_icon">App icon</string>
 
     <!-- Instruções de instalação no relógio (porte da página Apple Watch do iOS) -->
@@ -136,23 +126,13 @@
     <string name="settings_profile_section_optional">Optional</string>
     <string name="settings_profile_name">Name</string>
     <string name="settings_profile_name_placeholder">Optional</string>
-    <string name="settings_physical_data">Your data</string>
-    <string name="settings_profile_section_physical">Physical data</string>
     <string name="field_name">Name</string>
-    <string name="field_weight_kg">Weight (kg)</string>
-    <string name="field_height_cm">Height (cm)</string>
-    <string name="field_age">Age</string>
-    <string name="field_sex">Sex</string>
-    <string name="field_goal">Goal</string>
     <string name="settings_fitness_goal">Goal</string>
     <!-- Rótulo na lista de Ajustes (a tela em si tem título "Goals" via goals_title) -->
     <string name="settings_daily_goals">Goals</string>
     <!-- Tela de objetivo fitness (picker em cards + prévia das metas recalculadas) -->
     <string name="settings_goalchange_section_pick">Choose your goal</string>
-    <string name="settings_goalchange_pick_header">Choose your goal</string>
-    <string name="settings_goalchange_pick_footer">Changing your goal recalculates the app\'s default goals based on your physical data and your chosen new goal.</string>
     <string name="settings_goalchange_section_preview">Recalculated goals</string>
-    <string name="settings_goalchange_preview_header">Recalculated goals</string>
     <string name="settings_goalchange_save_recalc">Save and recalculate</string>
     <string name="settings_goalchange_save_keep">Save without recalculating</string>
     <string name="settings_preference_control_style">Controls</string>
@@ -161,33 +141,15 @@
     <string name="settings_color_subtitle">Accent colors</string>
     <string name="settings_units">Measurements</string>
     <!-- Orientação (só celular) -->
-    <string name="settings_orientation">Orientation</string>
-    <string name="settings_orientation_portrait">Lock to portrait</string>
-    <string name="settings_orientation_both">Use both</string>
-    <string name="settings_orientation_footer">Choose how the app should respond to device rotation.</string>
     <string name="unit_metric">Metric (ml)</string>
     <string name="unit_us">Imperial (fl oz)</string>
     <string name="settings_custom_goals">Custom goals</string>
     <string name="field_emoji">Emoji</string>
     <string name="field_unit">Unit</string>
     <string name="field_target">Target</string>
-    <string name="field_increment">Increment</string>
-    <string name="custom_goal_add">Add goal</string>
-    <string name="category_none">None</string>
     <string name="cd_delete">Delete</string>
-    <string name="sex_male">Male</string>
-    <string name="sex_female">Female</string>
-    <string name="sex_other">Do not inform</string>
-    <string name="field_birthday">Date of birth</string>
     <!-- Dados físicos: seção pessoal, rótulos cientes de unidade e unidades imperiais (porte do PhysicalDataSettingsView do iOS). -->
-    <string name="settings_profile_section_personal">Personal</string>
-    <string name="field_name_hint">Your name</string>
-    <string name="field_weight_lbs">Weight (lbs)</string>
-    <string name="field_height">Height</string>
-    <string name="unit_feet">ft</string>
-    <string name="unit_inches">in</string>
     <string name="action_ok">OK</string>
-    <string name="action_cancel">Cancel</string>
     <string name="goal_bulking">Bulking</string>
     <string name="goal_maintenance">Maintenance</string>
     <string name="goal_cutting">Cutting</string>
@@ -228,8 +190,6 @@
     <string name="goaldetail_increment_footer">The step is how far the slider advances toward the target value.</string>
     <!-- Acessibilidade / descrições -->
     <string name="a11y_add_goal">New tracking goal</string>
-    <string name="a11y_remove_goal">Remove goal</string>
-    <string name="a11y_restore_goal">Restore goal</string>
     <string name="a11y_edit_category">Edit category</string>
     <string name="a11y_theme_info">More information about %1$s</string>
     <string name="cd_move_up">Move up</string>
@@ -282,11 +242,7 @@
     <string name="welcome_button_continue">Continue</string>
     <string name="welcome_button_start">Let\'s go!</string>
     <string name="welcome_button_back">Back</string>
-    <string name="a11y_welcome_back">Back to previous step</string>
-    <string name="a11y_welcome_optional_add">Add %1$s</string>
     <string name="a11y_welcome_optional_remove">Remove %1$s</string>
-    <string name="a11y_welcome_optional_add_hint">Tap to add this goal.</string>
-    <string name="a11y_welcome_optional_remove_hint">Tap to remove this goal.</string>
     <string name="a11y_welcome_goal_decrease">Decrease %1$s</string>
     <string name="a11y_welcome_goal_increase">Increase %1$s</string>
 
@@ -306,10 +262,6 @@
     <string name="favorite_exercise_traps">Traps</string>
     <string name="favorite_exercise_forearms">Forearms</string>
     <string name="favorite_exercise_calves">Calves</string>
-    <string name="action_next">Next</string>
-    <string name="action_back">Back</string>
-    <string name="action_finish">Finish</string>
-    <string name="action_get_started">Get started</string>
 
     <!-- Temas -->
     <string name="settings_theme">Themes</string>
@@ -432,13 +384,11 @@
     <string name="settings_notifications_section_system">System</string>
     <string name="settings_notifications_section_goals">Goals</string>
     <string name="settings_notifications_section_custom">Custom goals</string>
-    <string name="settings_notifications_authorize_button">Enable notifications</string>
     <string name="settings_notifications_authorize_footer">Allow notifications to receive Gym Nutshell reminders. If you denied them before, enable in system settings.</string>
     <string name="settings_notifications_interval_header">Interval between notifications</string>
     <string name="settings_notifications_interval_value">Every %d min</string>
     <string name="settings_notifications_sound_header">Sound</string>
     <string name="settings_notifications_sound_footer">Default plays the channel\'s sound; Silent posts without sound. You can fine-tune each channel in system settings.</string>
-    <string name="cd_open_notification_settings">Open notification settings for %s</string>
 
     <!-- Notificações: histórico -->
     <string name="notif_history_title">Notification history</string>
@@ -447,7 +397,6 @@
     <string name="notif_history_empty_title">No notifications yet</string>
     <string name="notif_history_empty_desc">Event reminders from the last 3 days show up here.</string>
     <string name="notif_history_clear">Clear</string>
-    <string name="cd_notification_history">Notification history</string>
     <!-- Acessibilidade (TalkBack) — porte das strings a11y.* do iOS, frases enxutas -->
     <string name="a11y_goal_label">%1$s goal</string>
     <string name="a11y_goal_value">%1$d of %2$d %3$s completed</string>
@@ -563,7 +512,6 @@
     <string name="today_ring_a11y_hint">Double-tap for ring information</string>
     <string name="today_category_a11y_value">%1$d of %2$d completed</string>
     <string name="today_hero_bell_a11y_label">Notifications</string>
-    <string name="today_hero_bell_a11y_hint">Double-tap to open notification history</string>
 
     <!-- Today 2.0 (Parte 2 - Grade de categorias) -->
     <string name="today_category_tile_a11y_value">%1$d of %2$d goals completed</string>

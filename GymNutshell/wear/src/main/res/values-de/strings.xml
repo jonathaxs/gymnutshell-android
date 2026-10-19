@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Gym Nutshell</string>
+    <string name="wear_goal_workout">Krafttraining</string>
+    <string name="wear_goal_cardio">Cardio</string>
+    <string name="wear_goal_sleep">Schlaf</string>
+    <string name="wear_goal_water">Wasser</string>
+    <string name="wear_goal_calories">Kalorien</string>
+    <string name="wear_goal_protein">Protein</string>
+    <string name="wear_goal_carbs">Kohlenhydrate</string>
+    <string name="wear_goal_good_fat">Gute Fette</string>
+    <string name="wear_goal_fiber">Ballaststoffe</string>
+    <string name="wear_goal_creatine">Kreatin</string>
+    <string name="rest_day">Ruhetag</string>
+    <string name="cd_increase">%1$s erhöhen</string>
+    <string name="cd_decrease">%1$s verringern</string>
+    <string name="cd_rest_day">Ruhetag für %1$s umschalten</string>
+    <string name="wear_stats_tiers">Stufen</string>
+    <string name="wear_stats_activity">Aktivität</string>
+    <string name="wear_stats_recent">Letzte 7 Tage</string>
+    <string name="wear_stats_days_format">%1$d Tage</string>
+    <string name="wear_stats_syncing">Öffne Gym Nutshell auf deinem Smartphone zum Synchronisieren.</string>
+    <string name="wear_notif_empty">Noch keine Mitteilungen.</string>
+    <string name="wear_notif_today">Heute</string>
+    <string name="wear_notif_yesterday">Gestern</string>
+    <string name="wear_notif_delete">Löschen</string>
+</resources>
