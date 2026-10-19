@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   Preview do widget "Calendário" no seletor (android:previewLayout, API 31+). Estático e aproximado:
-  header com anel + % + pontos e uma grade de mês com dias coloridos, sobre o fundo accent. O widget
+  header com anel + nível + % e uma grade de mês com dias coloridos, sobre o fundo accent. O widget
   real é composto em Glance (CalendarWidget.kt) com o histórico de dias.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,7 +11,7 @@
     android:orientation="vertical"
     android:padding="12dp">
 
-    <!-- Header: anel + data + % + pontos -->
+    <!-- Header: anel + data + nível + % -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="🏋️"
+                android:text="💪"
                 android:textSize="20sp" />
         </FrameLayout>
 
@@ -48,29 +48,20 @@
                 android:textColor="#FFFFFFFF"
                 android:textSize="11sp" />
 
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:text="@string/tier_gym_level4"
+                android:textColor="#FFFFFFFF"
+                android:textSize="15sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="65%"
-                    android:textColor="#FFFFFFFF"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:text="40 pts"
-                    android:textColor="#FFFFFFFF"
-                    android:textSize="12sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="65%"
+                android:textColor="#FFFFFFFF"
+                android:textSize="24sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </LinearLayout>
 

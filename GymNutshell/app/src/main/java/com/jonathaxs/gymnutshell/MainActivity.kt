@@ -10,7 +10,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.app.NotificationManagerCompat
@@ -24,6 +26,7 @@ import com.jonathaxs.gymnutshell.notifications.GymNotifier
 import com.jonathaxs.gymnutshell.notifications.NotificationScheduler
 import com.jonathaxs.gymnutshell.ui.RootScreen
 import com.jonathaxs.gymnutshell.ui.theme.GymNutshellTheme
+import com.jonathaxs.gymnutshell.ui.theme.color
 import com.jonathaxs.gymnutshell.util.AppLocales
 import com.jonathaxs.gymnutshell.wear.PhoneWearSync
 import com.jonathaxs.gymnutshell.widget.GymWidgets
@@ -58,7 +61,9 @@ class MainActivity : ComponentActivity() {
         maybeRequestNotificationsPermission()
         pendingRoute = intent?.getStringExtra(GymNotifier.EXTRA_ROUTE)
         setContent {
-            GymNutshellTheme {
+            val accentFlow = remember { SettingsRepository(applicationContext).accentColor }
+            val accent by accentFlow.collectAsState(initial = null)
+            GymNutshellTheme(accent = accent?.color) {
                 RootScreen(
                     pendingRoute = pendingRoute,
                     onRouteConsumed = { pendingRoute = null },

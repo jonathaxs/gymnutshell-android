@@ -9,6 +9,7 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 // Fundo da tela acinzentado + cards/superfícies brancos (estilo grouped do iOS).
@@ -45,6 +46,8 @@ fun GymNutshellTheme(
     // Desligado: o Gym Nutshell tem identidade visual própria (cores de destaque),
     // então não adotamos a paleta Material You do sistema (Android 12+).
     dynamicColor: Boolean = false,
+    // Cor de destaque escolhida pelo usuario; vira o "tint" dos botoes de texto, switches etc., como no iOS.
+    accent: Color? = null,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -55,7 +58,7 @@ fun GymNutshellTheme(
 
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
-    }
+    }.let { scheme -> if (accent != null) scheme.copy(primary = accent, onPrimary = Color.White) else scheme }
 
     MaterialTheme(
         colorScheme = colorScheme,
