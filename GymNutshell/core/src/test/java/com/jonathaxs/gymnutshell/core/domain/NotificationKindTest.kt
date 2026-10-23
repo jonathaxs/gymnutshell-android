@@ -12,7 +12,7 @@ class NotificationKindTest {
     fun `metas e progresso sao editaveis por intervalo`() {
         for (kind in listOf(
             NotificationKind.Progress, NotificationKind.Sleep, NotificationKind.Water,
-            NotificationKind.Calories, NotificationKind.Protein, NotificationKind.Carbs,
+            NotificationKind.Protein, NotificationKind.Carbs,
             NotificationKind.GoodFat, NotificationKind.Fiber, NotificationKind.Workout,
             NotificationKind.Cardio, NotificationKind.Creatine,
         )) {

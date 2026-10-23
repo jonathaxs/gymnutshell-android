@@ -15,7 +15,6 @@ class GoalsCalculatorTest {
             weightKg = 80.0, heightCm = 180, age = 30, sex = "male", goal = UserGoal.Maintenance,
         )
         val expected = GoalsCalculator.Result(
-            calories = 2650,
             water = 2750,
             protein = 150,
             carbs = 260,
@@ -31,9 +30,8 @@ class GoalsCalculatorTest {
     }
 
     @Test
-    fun `cutting masculino reduz calorias e aumenta proteina`() {
+    fun `cutting masculino reduz carbo e aumenta proteina`() {
         val r = GoalsCalculator.calculate(80.0, 180, 30, "male", UserGoal.Cutting)
-        assertEquals(2100, r.calories)
         assertEquals(165, r.protein)
         assertEquals(2750, r.water)
         assertEquals(190, r.carbs)
@@ -44,7 +42,6 @@ class GoalsCalculatorTest {
     @Test
     fun `perfil feminino em cutting bate valores da tabela`() {
         val r = GoalsCalculator.calculate("female", UserGoal.Cutting)
-        assertEquals(1650, r.calories)
         assertEquals(2250, r.water)
         assertEquals(135, r.protein)
         assertEquals(160, r.carbs)
@@ -56,7 +53,6 @@ class GoalsCalculatorTest {
     fun `perfil feminino e sobrecarga de compatibilidade ignoram dados fisicos`() {
         val r = GoalsCalculator.calculate(60.0, heightCm = 0, age = 0, sex = "female", goal = UserGoal.Maintenance)
         val expected = GoalsCalculator.calculate("female", UserGoal.Maintenance)
-        assertEquals(2050, r.calories)
         assertEquals(2250, r.water)
         assertEquals(125, r.protein)
         assertEquals(220, r.carbs)
@@ -69,7 +65,6 @@ class GoalsCalculatorTest {
     fun `tabela completa para homem e mulher em cutting manutencao e bulking`() {
         // Homem
         val hCut = GoalsCalculator.calculate("male", UserGoal.Cutting)
-        assertEquals(2100, hCut.calories)
         assertEquals(2750, hCut.water)
         assertEquals(165, hCut.protein)
         assertEquals(190, hCut.carbs)
@@ -77,7 +72,6 @@ class GoalsCalculatorTest {
         assertEquals(29, hCut.fiber)
 
         val hManut = GoalsCalculator.calculate("male", UserGoal.Maintenance)
-        assertEquals(2650, hManut.calories)
         assertEquals(2750, hManut.water)
         assertEquals(150, hManut.protein)
         assertEquals(260, hManut.carbs)
@@ -85,7 +79,6 @@ class GoalsCalculatorTest {
         assertEquals(37, hManut.fiber)
 
         val hBulk = GoalsCalculator.calculate("male", UserGoal.Bulking)
-        assertEquals(3050, hBulk.calories)
         assertEquals(2750, hBulk.water)
         assertEquals(150, hBulk.protein)
         assertEquals(340, hBulk.carbs)
@@ -94,7 +87,6 @@ class GoalsCalculatorTest {
 
         // Mulher
         val mCut = GoalsCalculator.calculate("female", UserGoal.Cutting)
-        assertEquals(1650, mCut.calories)
         assertEquals(2250, mCut.water)
         assertEquals(135, mCut.protein)
         assertEquals(160, mCut.carbs)
@@ -102,7 +94,6 @@ class GoalsCalculatorTest {
         assertEquals(23, mCut.fiber)
 
         val mManut = GoalsCalculator.calculate("female", UserGoal.Maintenance)
-        assertEquals(2050, mManut.calories)
         assertEquals(2250, mManut.water)
         assertEquals(125, mManut.protein)
         assertEquals(220, mManut.carbs)
@@ -110,7 +101,6 @@ class GoalsCalculatorTest {
         assertEquals(29, mManut.fiber)
 
         val mBulk = GoalsCalculator.calculate("female", UserGoal.Bulking)
-        assertEquals(2350, mBulk.calories)
         assertEquals(2250, mBulk.water)
         assertEquals(125, mBulk.protein)
         assertEquals(280, mBulk.carbs)
@@ -141,11 +131,11 @@ class GoalsCalculatorTest {
     }
 
     @Test
-    fun `bulking tem mais calorias que cutting`() {
+    fun `bulking tem mais carbo que cutting`() {
         for (sex in listOf("male", "female")) {
             val cut = GoalsCalculator.calculate(sex, UserGoal.Cutting)
             val bulk = GoalsCalculator.calculate(sex, UserGoal.Bulking)
-            assertTrue(bulk.calories > cut.calories)
+            assertTrue(bulk.carbs > cut.carbs)
         }
     }
 
@@ -158,7 +148,6 @@ class GoalsCalculatorTest {
             for (goal in listOf(UserGoal.Bulking, UserGoal.Cutting)) {
                 val r = GoalsCalculator.rescale(base, sex, UserGoal.Maintenance, goal)
                 val t = GoalsCalculator.calculate(sex, goal)
-                assertEquals(t.calories, r.calories)
                 assertEquals(t.protein, r.protein)
                 assertEquals(t.carbs, r.carbs)
                 assertEquals(t.goodFat, r.goodFat)
@@ -169,10 +158,10 @@ class GoalsCalculatorTest {
 
     @Test
     fun `recalculo respeita valor personalizado`() {
-        val mine = GoalsCalculator.calculate("male", UserGoal.Maintenance).copy(calories = 3000)
+        val mine = GoalsCalculator.calculate("male", UserGoal.Maintenance).copy(carbs = 300)
         val r = GoalsCalculator.rescale(mine, "male", UserGoal.Maintenance, UserGoal.Bulking)
-        // 3000 * 3050 / 2650 = 3452 -> 3450 (passo de 50)
-        assertEquals(3450, r.calories)
+        // 300 * 340 / 260 = 392 -> 390 (passo de 10)
+        assertEquals(390, r.carbs)
     }
 
     @Test
@@ -209,11 +198,10 @@ class GoalsCalculatorTest {
     @Test
     fun `recalculo limita aos ranges`() {
         val mine = GoalsCalculator.calculate("male", UserGoal.Maintenance).copy(
-            calories = 10000,
+            carbs = 1000,
             protein = 10,
         )
         val r = GoalsCalculator.rescale(mine, "male", UserGoal.Maintenance, UserGoal.Bulking)
-        assertEquals(10000, r.calories)
         assertEquals(10, r.protein)
     }
 }

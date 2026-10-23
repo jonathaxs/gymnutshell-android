@@ -23,7 +23,6 @@ object BuiltInGoals {
         BuiltInGoal("tracking.sleep", "💤", "h", 1, result.sleep),
         BuiltInGoal("tracking.water", "💧", "ml", 250, result.water),
         // Nutrição
-        BuiltInGoal("tracking.calories", "🔥", "kcal", DefaultGoals.CALORIES_INCREMENT, result.calories),
         BuiltInGoal("tracking.protein", "🍗", "g", 20, result.protein),
         BuiltInGoal("tracking.carbs", "🍞", "g", 20, result.carbs),
         BuiltInGoal("tracking.fiber", "🌾", "g", 5, result.fiber),

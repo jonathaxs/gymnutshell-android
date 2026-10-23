@@ -7,7 +7,6 @@
     <string name="today_cardio">Cardio</string>
     <string name="today_sleep">Sleep</string>
     <string name="today_water">Water</string>
-    <string name="today_calories">Calories</string>
     <string name="today_protein">Protein</string>
     <string name="today_carbs">Carbs</string>
     <string name="today_good_fat">Fats</string>
@@ -75,8 +74,8 @@
     <string name="settings_about_achievement">Achievement</string>
     <string name="tier_info_intro">Your achievement is recorded at the end of the day, at midnight.</string>
     <string name="tier_info_section_levels">Achievements</string>
-    <string name="tier_info_change_theme">Change Theme</string>
-    <string name="settings_accent_color">Accent colours</string>
+    <string name="tier_info_change_theme">Change Emoji</string>
+    <string name="settings_accent_color">Accent colour</string>
     <string name="a11y_selected">Selected</string>
     <string name="a11y_not_selected">Not selected</string>
     <string name="color_red">Red</string>
@@ -102,7 +101,7 @@
     <string name="settings_preference_control_style">Controls</string>
     <string name="settings_control_style_footer">You can switch between list and grid views directly on the Today screen.</string>
     <string name="settings_color_preview">Preview</string>
-    <string name="settings_color_subtitle">Accent colours</string>
+    <string name="settings_color_subtitle">Accent colour</string>
     <string name="settings_units">Measurements</string>
     <string name="unit_metric">Metric (ml)</string>
     <string name="unit_us">Imperial (fl oz)</string>
@@ -120,8 +119,6 @@
     <string name="goals_title">Goals</string>
     <string name="goals_categories_title">Categories</string>
     <string name="goals_category_order">Category order</string>
-    <string name="goal_badge_standard">Standard</string>
-    <string name="goal_badge_recommended">Recommended</string>
     <string name="goal_badge_custom">Custom</string>
     <string name="tracking_goals_edit">Edit</string>
     <string name="tracking_goals_done">Done</string>
@@ -152,9 +149,6 @@
     <string name="cd_move_up">Move up</string>
     <string name="cd_move_down">Move down</string>
     <string name="welcome_start_title">Hello!</string>
-    <string name="welcome_start_feature_track">Track your fitness goals throughout the day.</string>
-    <string name="welcome_start_feature_progress">Follow your progress.</string>
-    <string name="welcome_start_feature_theme">Choose a theme to inspire you.</string>
     <string name="welcome_start_new">Start</string>
     <string name="welcome_start_restore">Restore backup</string>
     <string name="welcome_restore_error_title">Couldn\'t restore</string>
@@ -181,9 +175,9 @@
     <string name="welcome_control_slider_desc">Drag the control to the value you want.</string>
     <string name="welcome_control_stepper">Buttons</string>
     <string name="welcome_control_stepper_desc">Tap to add or remove one step at a time.</string>
-    <string name="welcome_step_theme_title">Theme</string>
+    <string name="welcome_step_theme_title">Emoji</string>
     <string name="welcome_step_theme_subtitle">Pick the emojis that will inspire your progress.</string>
-    <string name="welcome_step_theme_footer">The theme can be changed later.</string>
+    <string name="welcome_step_theme_footer">The emojis can be changed later.</string>
     <string name="welcome_step_ready_title">All set!</string>
     <string name="welcome_step_ready_subtitle">Turn on what you like.</string>
     <string name="welcome_ready_notifications_title">Notifications</string>
@@ -215,11 +209,11 @@
     <string name="favorite_exercise_traps">Traps</string>
     <string name="favorite_exercise_forearms">Forearms</string>
     <string name="favorite_exercise_calves">Calves</string>
-    <string name="settings_theme">Themes</string>
+    <string name="settings_theme">Emojis</string>
     <string name="theme_cat_sport">Sport</string>
     <string name="theme_cat_animals">Animals</string>
     <string name="theme_cat_warrior">Hero</string>
-    <string name="theme_cat_space">Space</string>
+    <string name="theme_cat_space">Cosmos</string>
     <string name="theme_cat_elements">Elements &amp; Nature</string>
     <string name="theme_cat_competition">Progress</string>
     <string name="theme_gym">Gym</string>
@@ -237,7 +231,7 @@
     <string name="theme_ninja">Fighter</string>
     <string name="theme_fire">Fire</string>
     <string name="theme_plant">Forest</string>
-    <string name="theme_astronaut">Exploration</string>
+    <string name="theme_astronaut">Space</string>
     <string name="theme_celestial">Celestial Bodies</string>
     <string name="theme_champion">Medal</string>
     <string name="theme_number">Numbers</string>
@@ -259,7 +253,6 @@
     <string name="notif_kind_backup_title">Backup</string>
     <string name="notif_kind_sleep_title">Sleep</string>
     <string name="notif_kind_water_title">Water</string>
-    <string name="notif_kind_calories_title">Calories</string>
     <string name="notif_kind_protein_title">Protein</string>
     <string name="notif_kind_carbs_title">Carbs</string>
     <string name="notif_kind_goodfat_title">Good Fats</string>
@@ -273,7 +266,6 @@
     <string name="notif_kind_backup_desc">Confirms each automatic backup.</string>
     <string name="notif_kind_sleep_desc">Suggests a nap when you haven\'t hit your sleep goal (only between 10 AM and 7 PM).</string>
     <string name="notif_kind_water_desc">Reminders to drink a glass of water until you hit your daily goal.</string>
-    <string name="notif_kind_calories_desc">Reminders to meet your daily calorie goal.</string>
     <string name="notif_kind_protein_desc">Reminders to meet your daily protein goal.</string>
     <string name="notif_kind_carbs_desc">Reminders to meet your daily carbs goal.</string>
     <string name="notif_kind_goodfat_desc">Reminders to meet your daily good-fat goal.</string>
@@ -284,7 +276,6 @@
     <string name="notif_kind_progress_body">Keep going! Every goal counts toward your next achievement.</string>
     <string name="notif_kind_sleep_body">How about a nap to reach your sleep goal today?</string>
     <string name="notif_kind_water_body">Time for a glass of water? Keep moving toward your daily goal.</string>
-    <string name="notif_kind_calories_body">Time to log your meals to reach today\'s calorie goal.</string>
     <string name="notif_kind_protein_body">Time to add some protein to reach today\'s goal.</string>
     <string name="notif_kind_carbs_body">How about a solid source of carbs to keep your energy up?</string>
     <string name="notif_kind_goodfat_body">Don\'t forget good fats today (olive oil, nuts, avocado).</string>
@@ -300,7 +291,6 @@
     <string name="notif_kind_progress_footer">Periodic reminders showing how much is left to level up today.</string>
     <string name="notif_kind_sleep_footer">Every X minutes the app suggests resting until you meet the daily goal. No reminders are sent before 10 AM or after 7 PM.</string>
     <string name="notif_kind_water_footer">Every X minutes the app reminds you to drink water. Reminders stop once you reach your daily goal.</string>
-    <string name="notif_kind_calories_footer">Periodic reminders stop once you hit your calorie goal.</string>
     <string name="notif_kind_protein_footer">Periodic reminders stop once you hit your protein goal.</string>
     <string name="notif_kind_carbs_footer">Periodic reminders stop once you hit your carbs goal.</string>
     <string name="notif_kind_goodfat_footer">Periodic reminders stop once you hit your good-fat goal.</string>
@@ -395,7 +385,7 @@
     <string name="widget_bg_preview">Preview</string>
     <string name="widget_bg_pick_color">Pick a colour</string>
     <string name="common_close">Close</string>
-    <string name="today_history">History</string>
+    <string name="today_history">Records</string>
     <string name="today_hero_achievement_label">Daily achievement</string>
     <string name="today_hero_caption_start">Track a goal to get started</string>
     <string name="today_hero_caption_next_level">%1$d%% to go for the next level</string>
@@ -404,7 +394,7 @@
     <string name="today_goals_view_mode_list">List</string>
     <string name="today_goals_view_mode_grid">Grid</string>
     <string name="today_category_other">Other</string>
-    <string name="today_edit_theme">Edit theme</string>
+    <string name="today_edit_theme">Edit emoji</string>
     <string name="today_edit_colors">Edit colours</string>
     <string name="today_edit_controls">Edit controls</string>
     <string name="today_edit_goals">Edit goals</string>

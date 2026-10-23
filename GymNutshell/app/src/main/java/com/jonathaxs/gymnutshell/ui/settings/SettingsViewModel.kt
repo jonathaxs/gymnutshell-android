@@ -104,7 +104,6 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app) {
             // Lê do repositório: o StateFlow pode estar no valor inicial vazio.
             val current = profileRepo.profile.first()
             profileRepo.update(current.copy(goal = newGoal))
-            goalConfigRepo.setGoalValue("tracking.calories", rescaledGoals.calories)
             goalConfigRepo.setGoalValue("tracking.protein", rescaledGoals.protein)
             goalConfigRepo.setGoalValue("tracking.carbs", rescaledGoals.carbs)
             goalConfigRepo.setGoalValue("tracking.goodFat", rescaledGoals.goodFat)

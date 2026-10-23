@@ -7,7 +7,6 @@
     <string name="today_cardio">有氧运动</string>
     <string name="today_sleep">睡眠</string>
     <string name="today_water">喝水</string>
-    <string name="today_calories">热量</string>
     <string name="today_protein">蛋白质</string>
     <string name="today_carbs">碳水</string>
     <string name="today_good_fat">优质脂肪</string>
@@ -75,7 +74,7 @@
     <string name="settings_about_achievement">成就</string>
     <string name="tier_info_intro">你的成就将在每天午夜结束时记录。</string>
     <string name="tier_info_section_levels">成就</string>
-    <string name="tier_info_change_theme">更换主题</string>
+    <string name="tier_info_change_theme">更换表情</string>
     <string name="settings_accent_color">强调色</string>
     <string name="a11y_selected">已选择</string>
     <string name="a11y_not_selected">未选择</string>
@@ -120,8 +119,6 @@
     <string name="goals_title">目标</string>
     <string name="goals_categories_title">分类</string>
     <string name="goals_category_order">分类顺序</string>
-    <string name="goal_badge_standard">标准</string>
-    <string name="goal_badge_recommended">推荐</string>
     <string name="goal_badge_custom">自定义</string>
     <string name="tracking_goals_edit">编辑</string>
     <string name="tracking_goals_done">完成</string>
@@ -152,9 +149,6 @@
     <string name="cd_move_up">上移</string>
     <string name="cd_move_down">下移</string>
     <string name="welcome_start_title">你好！</string>
-    <string name="welcome_start_feature_track">全天追踪你的健身目标。</string>
-    <string name="welcome_start_feature_progress">查看你的进步历程。</string>
-    <string name="welcome_start_feature_theme">选择一个激励你的主题。</string>
     <string name="welcome_start_new">开始使用</string>
     <string name="welcome_start_restore">恢复备份</string>
     <string name="welcome_restore_error_title">无法恢复</string>
@@ -181,9 +175,9 @@
     <string name="welcome_control_slider_desc">拖动滑块至目标数值。</string>
     <string name="welcome_control_stepper">按键</string>
     <string name="welcome_control_stepper_desc">轻点单步递增或递减。</string>
-    <string name="welcome_step_theme_title">主题</string>
+    <string name="welcome_step_theme_title">表情符号</string>
     <string name="welcome_step_theme_subtitle">挑选能激励你不断进步的表情符号。</string>
-    <string name="welcome_step_theme_footer">稍后可随时更换主题。</string>
+    <string name="welcome_step_theme_footer">稍后可随时更换表情。</string>
     <string name="welcome_step_ready_title">大功告成！</string>
     <string name="welcome_step_ready_subtitle">开启你需要的权限与功能。</string>
     <string name="welcome_ready_notifications_title">通知</string>
@@ -215,11 +209,11 @@
     <string name="favorite_exercise_traps">斜方肌</string>
     <string name="favorite_exercise_forearms">前臂</string>
     <string name="favorite_exercise_calves">小腿</string>
-    <string name="settings_theme">主题</string>
+    <string name="settings_theme">表情</string>
     <string name="theme_cat_sport">运动</string>
     <string name="theme_cat_animals">动物</string>
     <string name="theme_cat_warrior">英雄</string>
-    <string name="theme_cat_space">太空</string>
+    <string name="theme_cat_space">宇宙</string>
     <string name="theme_cat_elements">元素与自然</string>
     <string name="theme_cat_competition">进阶</string>
     <string name="theme_gym">健身</string>
@@ -237,7 +231,7 @@
     <string name="theme_ninja">格斗士</string>
     <string name="theme_fire">烈焰</string>
     <string name="theme_plant">森林</string>
-    <string name="theme_astronaut">探索</string>
+    <string name="theme_astronaut">太空</string>
     <string name="theme_celestial">天体</string>
     <string name="theme_champion">奖牌</string>
     <string name="theme_number">数字</string>
@@ -259,7 +253,6 @@
     <string name="notif_kind_backup_title">备份</string>
     <string name="notif_kind_sleep_title">睡眠</string>
     <string name="notif_kind_water_title">喝水</string>
-    <string name="notif_kind_calories_title">热量</string>
     <string name="notif_kind_protein_title">蛋白质</string>
     <string name="notif_kind_carbs_title">碳水</string>
     <string name="notif_kind_goodfat_title">优质脂肪</string>
@@ -273,7 +266,6 @@
     <string name="notif_kind_backup_desc">确认每次自动备份。</string>
     <string name="notif_kind_sleep_desc">未达到睡眠目标时建议小憩片刻（仅限上午 10 点至晚上 7 点之间）。</string>
     <string name="notif_kind_water_desc">提醒喝水，直到达成每日目标。</string>
-    <string name="notif_kind_calories_desc">提醒摄入足够热量以达成每日目标。</string>
     <string name="notif_kind_protein_desc">提醒摄入蛋白质以达成每日目标。</string>
     <string name="notif_kind_carbs_desc">提醒摄入碳水以达成每日目标。</string>
     <string name="notif_kind_goodfat_desc">提醒摄入优质脂肪以达成每日目标。</string>
@@ -284,7 +276,6 @@
     <string name="notif_kind_progress_body">加油！每个完成的目标都让你离下一个成就更近一步。</string>
     <string name="notif_kind_sleep_body">要不要小憩一下，达成今天的睡眠目标？</string>
     <string name="notif_kind_water_body">该喝杯水了？继续向每日目标迈进吧。</string>
-    <string name="notif_kind_calories_body">该记录饮食了，快来达成今天的热量目标吧。</string>
     <string name="notif_kind_protein_body">该补充蛋白质了，快来达成今天的目标吧。</string>
     <string name="notif_kind_carbs_body">来点优质碳水补充能量怎么样？</string>
     <string name="notif_kind_goodfat_body">今天别忘了摄入优质脂肪（橄榄油、坚果、牛油果）。</string>
@@ -300,7 +291,6 @@
     <string name="notif_kind_progress_footer">定期发送提醒，显示今天升级还需多少进度。</string>
     <string name="notif_kind_sleep_footer">App 会定期建议你休息，直到达到每日目标。上午 10 点前或晚上 7 点后不会发送提醒。</string>
     <string name="notif_kind_water_footer">App 会定期提醒你喝水。达成每日目标后将停止提醒。</string>
-    <string name="notif_kind_calories_footer">达成热量目标后将停止定期提醒。</string>
     <string name="notif_kind_protein_footer">达成蛋白质目标后将停止定期提醒。</string>
     <string name="notif_kind_carbs_footer">达成碳水目标后将停止定期提醒。</string>
     <string name="notif_kind_goodfat_footer">达成优质脂肪目标后将停止定期提醒。</string>
@@ -395,7 +385,7 @@
     <string name="widget_bg_preview">预览</string>
     <string name="widget_bg_pick_color">选择颜色</string>
     <string name="common_close">关闭</string>
-    <string name="today_history">历史记录</string>
+    <string name="today_history">记录</string>
     <string name="today_hero_achievement_label">每日成就</string>
     <string name="today_hero_caption_start">记录一个目标以开启今天</string>
     <string name="today_hero_caption_next_level">距离下一等级还差 %1$d%%</string>
@@ -404,7 +394,7 @@
     <string name="today_goals_view_mode_list">列表</string>
     <string name="today_goals_view_mode_grid">网格</string>
     <string name="today_category_other">其他</string>
-    <string name="today_edit_theme">编辑主题</string>
+    <string name="today_edit_theme">编辑表情</string>
     <string name="today_edit_colors">编辑颜色</string>
     <string name="today_edit_controls">编辑记录方式</string>
     <string name="today_edit_goals">编辑目标</string>

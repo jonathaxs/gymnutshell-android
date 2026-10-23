@@ -15,8 +15,6 @@ object DefaultGoals {
     const val WATER = 3000
 
     // Energia
-    const val CALORIES = 2000
-    const val CALORIES_INCREMENT = 50
 
     // Macros
     const val PROTEIN = 150

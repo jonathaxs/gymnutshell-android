@@ -88,7 +88,6 @@ fun UserGoalScreen(
     // Metas atuais (tabela base + overrides salvos do usuário)
     val base = GoalsCalculator.calculate(profile.sex, savedGoal)
     val currentGoals = base.copy(
-        calories = overrides["tracking.calories"] ?: base.calories,
         protein = overrides["tracking.protein"] ?: base.protein,
         carbs = overrides["tracking.carbs"] ?: base.carbs,
         goodFat = overrides["tracking.goodFat"] ?: base.goodFat,
@@ -251,13 +250,6 @@ fun UserGoalScreen(
 
                         GroupCard {
                             GoalPreviewRow(
-                                label = stringResource(R.string.today_calories),
-                                old = currentGoals.calories,
-                                new = rescaledGoals.calories,
-                                unit = " kcal",
-                            )
-                            GroupRowDivider(startInset = 16.dp)
-                            GoalPreviewRow(
                                 label = stringResource(R.string.today_protein),
                                 old = currentGoals.protein,
                                 new = rescaledGoals.protein,
@@ -355,7 +347,7 @@ private fun GoalOptionCard(
     }
 }
 
-/** Linha de prévia: "Calorias   2650 → 3050 kcal   +15%". */
+/** Linha de prévia: "Proteína   150 → 165 g   +10%". */
 @Composable
 private fun GoalPreviewRow(
     label: String,

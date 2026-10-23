@@ -1395,7 +1395,6 @@ private fun titleRes(key: String): Int = when (key) {
     "tracking.cardio" -> R.string.today_cardio
     "tracking.sleep" -> R.string.today_sleep
     "tracking.water" -> R.string.today_water
-    "tracking.calories" -> R.string.today_calories
     "tracking.protein" -> R.string.today_protein
     "tracking.carbs" -> R.string.today_carbs
     "tracking.goodFat" -> R.string.today_good_fat

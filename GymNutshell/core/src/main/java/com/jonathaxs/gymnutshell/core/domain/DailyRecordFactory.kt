@@ -14,7 +14,7 @@ object DailyRecordFactory {
     // Metas built-in que NÃO têm coluna própria no DailyRecord, então persistem em customValues
     // (água/proteína/carbo/gordura/fibra/sono já têm coluna; treino/cardio guardam só o booleano).
     private val builtInExtraKeys = listOf(
-        "tracking.calories", "tracking.workout", "tracking.cardio", "tracking.creatine",
+        "tracking.workout", "tracking.cardio", "tracking.creatine",
     )
 
     /** Registro de um dia concluído, com os intakes informados e o emoji do tema escolhido. */

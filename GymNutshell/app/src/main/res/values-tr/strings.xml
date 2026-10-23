@@ -7,7 +7,6 @@
     <string name="today_cardio">Kardiyo</string>
     <string name="today_sleep">Uyku</string>
     <string name="today_water">Su</string>
-    <string name="today_calories">Kalori</string>
     <string name="today_protein">Protein</string>
     <string name="today_carbs">Karbonhidrat</string>
     <string name="today_good_fat">Sağlıklı Yağlar</string>
@@ -75,8 +74,8 @@
     <string name="settings_about_achievement">Başarı</string>
     <string name="tier_info_intro">Başarın günün sonunda, gece yarısında kaydedilir.</string>
     <string name="tier_info_section_levels">Başarılar</string>
-    <string name="tier_info_change_theme">Temayı Değiştir</string>
-    <string name="settings_accent_color">Vurgu renkleri</string>
+    <string name="tier_info_change_theme">Emojiyi Değiştir</string>
+    <string name="settings_accent_color">Vurgu rengi</string>
     <string name="a11y_selected">Seçildi</string>
     <string name="a11y_not_selected">Seçilmedi</string>
     <string name="color_red">Kırmızı</string>
@@ -102,7 +101,7 @@
     <string name="settings_preference_control_style">Denetimler</string>
     <string name="settings_control_style_footer">Bugün ekranından doğrudan liste ve ızgara görünümleri arasında geçiş yapabilirsiniz.</string>
     <string name="settings_color_preview">Önizleme</string>
-    <string name="settings_color_subtitle">Vurgu renkleri</string>
+    <string name="settings_color_subtitle">Vurgu rengi</string>
     <string name="settings_units">Ölçü Birimleri</string>
     <string name="unit_metric">Metrik (ml)</string>
     <string name="unit_us">İngiliz (fl oz)</string>
@@ -120,8 +119,6 @@
     <string name="goals_title">Hedefler</string>
     <string name="goals_categories_title">Kategoriler</string>
     <string name="goals_category_order">Kategori sırası</string>
-    <string name="goal_badge_standard">Standart</string>
-    <string name="goal_badge_recommended">Önerilen</string>
     <string name="goal_badge_custom">Özel</string>
     <string name="tracking_goals_edit">Düzenle</string>
     <string name="tracking_goals_done">Bitti</string>
@@ -152,9 +149,6 @@
     <string name="cd_move_up">Yukarı taşı</string>
     <string name="cd_move_down">Aşağı taşı</string>
     <string name="welcome_start_title">Merhaba!</string>
-    <string name="welcome_start_feature_track">Gün boyunca fitness hedeflerini takip et.</string>
-    <string name="welcome_start_feature_progress">İlerlemeni takip et.</string>
-    <string name="welcome_start_feature_theme">Sana ilham verecek bir tema seç.</string>
     <string name="welcome_start_new">Başla</string>
     <string name="welcome_start_restore">Yedeği geri yükle</string>
     <string name="welcome_restore_error_title">Geri yüklenemedi</string>
@@ -181,9 +175,9 @@
     <string name="welcome_control_slider_desc">Denetimi istediğin değere sürükle.</string>
     <string name="welcome_control_stepper">Düğmeler</string>
     <string name="welcome_control_stepper_desc">Her seferinde bir adım eklemek veya çıkarmak için dokun.</string>
-    <string name="welcome_step_theme_title">Tema</string>
+    <string name="welcome_step_theme_title">Emoji</string>
     <string name="welcome_step_theme_subtitle">İlerlemeni motive edecek emojileri seç.</string>
-    <string name="welcome_step_theme_footer">Tema daha sonra değiştirilebilir.</string>
+    <string name="welcome_step_theme_footer">Emojiler daha sonra değiştirilebilir.</string>
     <string name="welcome_step_ready_title">Her şey hazır!</string>
     <string name="welcome_step_ready_subtitle">İstediklerini aç.</string>
     <string name="welcome_ready_notifications_title">Bildirimler</string>
@@ -215,11 +209,11 @@
     <string name="favorite_exercise_traps">Trapez</string>
     <string name="favorite_exercise_forearms">Ön Kol</string>
     <string name="favorite_exercise_calves">Kalf</string>
-    <string name="settings_theme">Temalar</string>
+    <string name="settings_theme">Emojiler</string>
     <string name="theme_cat_sport">Spor</string>
     <string name="theme_cat_animals">Hayvanlar</string>
     <string name="theme_cat_warrior">Kahraman</string>
-    <string name="theme_cat_space">Uzay</string>
+    <string name="theme_cat_space">Kozmos</string>
     <string name="theme_cat_elements">Elementler ve Doğa</string>
     <string name="theme_cat_competition">İlerleme</string>
     <string name="theme_gym">Spor Salonu</string>
@@ -237,7 +231,7 @@
     <string name="theme_ninja">Dövüşçü</string>
     <string name="theme_fire">Ateş</string>
     <string name="theme_plant">Orman</string>
-    <string name="theme_astronaut">Keşif</string>
+    <string name="theme_astronaut">Uzay</string>
     <string name="theme_celestial">Gök Cisimleri</string>
     <string name="theme_champion">Madalya</string>
     <string name="theme_number">Sayılar</string>
@@ -259,7 +253,6 @@
     <string name="notif_kind_backup_title">Yedekleme</string>
     <string name="notif_kind_sleep_title">Uyku</string>
     <string name="notif_kind_water_title">Su</string>
-    <string name="notif_kind_calories_title">Kalori</string>
     <string name="notif_kind_protein_title">Protein</string>
     <string name="notif_kind_carbs_title">Karbonhidrat</string>
     <string name="notif_kind_goodfat_title">Sağlıklı Yağlar</string>
@@ -273,7 +266,6 @@
     <string name="notif_kind_backup_desc">Her otomatik yedeklemeyi onaylar.</string>
     <string name="notif_kind_sleep_desc">Uyku hedefine henüz ulaşamadığında şekerleme yapmanı önerir (yalnızca 10:00 ile 19:00 arasında).</string>
     <string name="notif_kind_water_desc">Günlük hedefine ulaşana kadar bir bardak su içmen için hatırlatıcılar.</string>
-    <string name="notif_kind_calories_desc">Günlük kalori hedefine ulaşman için hatırlatıcılar.</string>
     <string name="notif_kind_protein_desc">Günlük protein hedefine ulaşman için hatırlatıcılar.</string>
     <string name="notif_kind_carbs_desc">Günlük karbonhidrat hedefine ulaşman için hatırlatıcılar.</string>
     <string name="notif_kind_goodfat_desc">Günlük sağlıklı yağ hedefine ulaşman için hatırlatıcılar.</string>
@@ -284,7 +276,6 @@
     <string name="notif_kind_progress_body">Böyle devam et! Her hedef, bir sonraki başarın için önemli.</string>
     <string name="notif_kind_sleep_body">Bugün uyku hedefine ulaşmak için kısa bir şekerlemeye ne dersin?</string>
     <string name="notif_kind_water_body">Bir bardak su zamanı geldi mi? Günlük hedefine doğru ilerlemeye devam et.</string>
-    <string name="notif_kind_calories_body">Bugünkü kalori hedefine ulaşmak için öğünlerini kaydetme zamanı.</string>
     <string name="notif_kind_protein_body">Bugünkü hedefine ulaşmak için biraz protein alma zamanı.</string>
     <string name="notif_kind_carbs_body">Enerjini yüksek tutmak için iyi bir karbonhidrat kaynağına ne dersin?</string>
     <string name="notif_kind_goodfat_body">Bugün sağlıklı yağları unutma (zeytinyağı, kuruyemiş, avokado).</string>
@@ -300,7 +291,6 @@
     <string name="notif_kind_progress_footer">Bugün seviye atlamak için ne kadar kaldığını gösteren periyodik hatırlatıcılar.</string>
     <string name="notif_kind_sleep_footer">Uygulama, günlük hedefe ulaşana kadar her X dakikada bir dinlenmeyi önerir. Saat 10:00\'dan önce veya 19:00\'dan sonra hatırlatıcı gönderilmez.</string>
     <string name="notif_kind_water_footer">Uygulama her X dakikada bir su içmeni hatırlatır. Günlük hedefine ulaştığında hatırlatıcılar durur.</string>
-    <string name="notif_kind_calories_footer">Kalori hedefine ulaştığında periyodik hatırlatıcılar durur.</string>
     <string name="notif_kind_protein_footer">Protein hedefine ulaştığında periyodik hatırlatıcılar durur.</string>
     <string name="notif_kind_carbs_footer">Karbonhidrat hedefine ulaştığında periyodik hatırlatıcılar durur.</string>
     <string name="notif_kind_goodfat_footer">Sağlıklı yağ hedefine ulaştığında periyodik hatırlatıcılar durur.</string>
@@ -395,7 +385,7 @@
     <string name="widget_bg_preview">Önizleme</string>
     <string name="widget_bg_pick_color">Bir renk seç</string>
     <string name="common_close">Kapat</string>
-    <string name="today_history">Geçmiş</string>
+    <string name="today_history">Kayıtlar</string>
     <string name="today_hero_achievement_label">Günlük başarı</string>
     <string name="today_hero_caption_start">Başlamak için bir hedefi takip et</string>
     <string name="today_hero_caption_next_level">Sonraki seviye için son %1$d%%</string>
@@ -404,7 +394,7 @@
     <string name="today_goals_view_mode_list">Liste</string>
     <string name="today_goals_view_mode_grid">Izgara</string>
     <string name="today_category_other">Diğer</string>
-    <string name="today_edit_theme">Temayı düzenle</string>
+    <string name="today_edit_theme">Emojiyi düzenle</string>
     <string name="today_edit_colors">Renkleri düzenle</string>
     <string name="today_edit_controls">Denetimleri düzenle</string>
     <string name="today_edit_goals">Hedefleri düzenle</string>

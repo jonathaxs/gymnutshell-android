@@ -913,24 +913,8 @@ private fun SummaryStep(
             )
         }
 
-        // 2. Nutrição: Calorias, Proteína, Carbo, Fibra, Gordura boa
+        // 2. Nutrição: Proteína, Carbo, Fibra, Gordura boa
         SummaryCategorySection(title = stringResource(R.string.category_nutricao)) {
-            // Calorias (opcional, começa desligada, passo 50, 500..10000 kcal)
-            SummaryOptionalGoalRow(
-                emoji = "🔥",
-                title = stringResource(R.string.today_calories),
-                valueText = "${goals.calories} kcal",
-                isIncluded = state.includeCalories,
-                accentColor = accent,
-                canDecrease = goals.calories - 50 >= 500,
-                canIncrease = goals.calories + 50 <= 10000,
-                onAdd = { viewModel.setIncludeCalories(true) },
-                onRemove = { viewModel.setIncludeCalories(false) },
-                onDecrease = { viewModel.adjustCalories(-50) },
-                onIncrease = { viewModel.adjustCalories(50) },
-            )
-            HorizontalDivider(Modifier.padding(start = 52.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
-
             // Proteína (passo 5, 10..500 g)
             SummaryGoalRow(
                 emoji = "🍗",

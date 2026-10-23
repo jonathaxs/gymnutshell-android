@@ -53,16 +53,15 @@ class GoalConfigTest {
     }
 
     @Test
-    fun `chaves removiveis incluem calorias gordura boa e creatina`() {
-        assertTrue("tracking.calories" in GoalOrder.REMOVABLE_KEYS)
+    fun `chaves removiveis sao gordura boa e creatina`() {
+        assertTrue("tracking.calories" !in GoalOrder.REMOVABLE_KEYS)
         assertTrue("tracking.goodFat" in GoalOrder.REMOVABLE_KEYS)
         assertTrue("tracking.creatine" in GoalOrder.REMOVABLE_KEYS)
     }
 
     @Test
-    fun `ordem padrao da nutricao e calorias proteina carbs fibra e gordura boa`() {
+    fun `ordem padrao da nutricao e proteina carbs fibra e gordura boa`() {
         val nutritionKeys = listOf(
-            "tracking.calories",
             "tracking.protein",
             "tracking.carbs",
             "tracking.fiber",

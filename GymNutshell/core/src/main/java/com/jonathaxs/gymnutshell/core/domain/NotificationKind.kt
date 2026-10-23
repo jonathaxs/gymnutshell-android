@@ -16,7 +16,6 @@ enum class NotificationKind(val rawValue: String) {
     // Metas
     Sleep("sleep"),
     Water("water"),
-    Calories("calories"),
     Protein("protein"),
     Carbs("carbs"),
     GoodFat("goodFat"),
@@ -31,7 +30,7 @@ enum class NotificationKind(val rawValue: String) {
      */
     val isEditable: Boolean
         get() = when (this) {
-            Progress, Sleep, Water, Calories, Protein, Carbs, GoodFat, Fiber,
+            Progress, Sleep, Water, Protein, Carbs, GoodFat, Fiber,
             Workout, Cardio, Creatine -> true
             Achievement, HealthSync, Backup -> false
         }
@@ -48,7 +47,7 @@ enum class NotificationKind(val rawValue: String) {
             Progress -> 150
             Water -> 120
             Sleep -> 180
-            Calories, Protein, Carbs, GoodFat, Fiber, Workout, Cardio, Creatine -> 120
+            Protein, Carbs, GoodFat, Fiber, Workout, Cardio, Creatine -> 120
             Achievement, HealthSync, Backup -> 0
         }
 
@@ -85,7 +84,6 @@ enum class NotificationKind(val rawValue: String) {
             Cardio -> "🏃"
             Sleep -> "💤"
             Water -> "💧"
-            Calories -> "🔥"
             Protein -> "🍗"
             Carbs -> "🍞"
             GoodFat -> "🧈"
@@ -101,7 +99,6 @@ enum class NotificationKind(val rawValue: String) {
             Cardio -> "tracking.cardio"
             Sleep -> "tracking.sleep"
             Water -> "tracking.water"
-            Calories -> "tracking.calories"
             Protein -> "tracking.protein"
             Carbs -> "tracking.carbs"
             GoodFat -> "tracking.goodFat"

@@ -140,6 +140,19 @@ class BackupCodecTest {
     }
 
     @Test
+    fun `goals sem calorias decodifica e o encode grava 2000 pro Android 1_0`() {
+        val json = """
+            {"version":4,"exportedAt":"2026-09-01T12:00:00Z",
+             "profile":{"name":"Ana","height":0,"weight":0,"age":0,"sex":"female","fitnessGoal":"cutting"},
+             "goals":{"sleep":7,"water":3000,"protein":150,"carbs":300,"fats":80,"fiber":25},
+             "goalsOrder":[],"customGoals":[],"dailyRecords":[]}
+        """.trimIndent()
+        val payload = BackupCodec.decode(json)
+        assertEquals(2000, payload.goals.calories)
+        assertTrue(BackupCodec.encode(payload).contains("\"calories\": 2000"))
+    }
+
+    @Test
     fun `categoria com symbolName personalizado viaja no json`() {
         val original = samplePayload().copy(
             customCategories = listOf(

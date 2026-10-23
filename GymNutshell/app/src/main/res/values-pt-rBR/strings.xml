@@ -13,7 +13,6 @@
     <string name="today_cardio">Cardio</string>
     <string name="today_sleep">Sono</string>
     <string name="today_water">Água</string>
-    <string name="today_calories">Calorias</string>
     <string name="today_protein">Proteína</string>
     <string name="today_carbs">Carboidratos</string>
     <string name="today_good_fat">Gordura Boa</string>
@@ -103,9 +102,9 @@
     <string name="settings_about_achievement">Conquista</string>
     <string name="tier_info_intro">Sua conquista é registrada no fim do dia, à meia-noite.</string>
     <string name="tier_info_section_levels">Conquistas</string>
-    <string name="tier_info_change_theme">Alterar Tema</string>
+    <string name="tier_info_change_theme">Alterar Emoji</string>
 
-    <string name="settings_accent_color">Cores de destaque</string>
+    <string name="settings_accent_color">Cor de destaque</string>
     <string name="a11y_selected">Selecionado</string>
     <string name="a11y_not_selected">Não selecionado</string>
 
@@ -136,7 +135,7 @@
     <string name="settings_preference_control_style">Controles</string>
     <string name="settings_control_style_footer">A forma de exibição (lista ou grade) pode ser trocada na própria tela Hoje.</string>
     <string name="settings_color_preview">Prévia</string>
-    <string name="settings_color_subtitle">Cores de destaque</string>
+    <string name="settings_color_subtitle">Cor de destaque</string>
     <string name="settings_units">Medidas</string>
     <!-- Orientação (só celular) -->
     <string name="unit_metric">Métrico (ml)</string>
@@ -224,9 +223,9 @@
     <string name="welcome_control_slider_desc">Arraste o controle até o valor desejado.</string>
     <string name="welcome_control_stepper">Botões</string>
     <string name="welcome_control_stepper_desc">Toque para somar ou tirar um passo de cada vez.</string>
-    <string name="welcome_step_theme_title">Tema</string>
+    <string name="welcome_step_theme_title">Emoji</string>
     <string name="welcome_step_theme_subtitle">Escolha os emojis que vão te inspirar.</string>
-    <string name="welcome_step_theme_footer">O tema pode ser alterado depois.</string>
+    <string name="welcome_step_theme_footer">Os emojis podem ser alterados depois.</string>
     <string name="welcome_step_ready_title">Tudo pronto!</string>
     <string name="welcome_step_ready_subtitle">Ative o que quiser.</string>
     <string name="welcome_ready_notifications_title">Notificações</string>
@@ -262,11 +261,11 @@
     <string name="favorite_exercise_calves">Panturrilhas</string>
 
     <!-- Temas -->
-    <string name="settings_theme">Temas</string>
+    <string name="settings_theme">Emojis</string>
     <string name="theme_cat_sport">Esporte</string>
     <string name="theme_cat_animals">Animais</string>
     <string name="theme_cat_warrior">Guerreiro</string>
-    <string name="theme_cat_space">Espaço</string>
+    <string name="theme_cat_space">Cosmos</string>
     <string name="theme_cat_elements">Elementos</string>
     <string name="theme_cat_competition">Competição</string>
     <string name="theme_gym">Academia</string>
@@ -284,7 +283,7 @@
     <string name="theme_ninja">Ninja</string>
     <string name="theme_fire">Fogo</string>
     <string name="theme_plant">Planta</string>
-    <string name="theme_astronaut">Astronauta</string>
+    <string name="theme_astronaut">Espaço</string>
     <string name="theme_celestial">Celestial</string>
     <string name="theme_champion">Campeão</string>
     <string name="theme_number">Número</string>
@@ -315,7 +314,6 @@
     <string name="notif_kind_backup_title">Backup</string>
     <string name="notif_kind_sleep_title">Sono</string>
     <string name="notif_kind_water_title">Água</string>
-    <string name="notif_kind_calories_title">Calorias</string>
     <string name="notif_kind_protein_title">Proteínas</string>
     <string name="notif_kind_carbs_title">Carboidratos</string>
     <string name="notif_kind_goodfat_title">Gordura Boa</string>
@@ -331,7 +329,6 @@
     <string name="notif_kind_backup_desc">Confirma cada backup automático.</string>
     <string name="notif_kind_sleep_desc">Incentiva um cochilo quando a meta de sono ainda não foi atingida (somente entre 10h e 19h).</string>
     <string name="notif_kind_water_desc">Lembra de tomar um copo d\'água até você bater a meta do dia.</string>
-    <string name="notif_kind_calories_desc">Lembretes para bater a meta diária de calorias.</string>
     <string name="notif_kind_protein_desc">Lembretes para bater a meta diária de proteínas.</string>
     <string name="notif_kind_carbs_desc">Lembretes para bater a meta diária de carboidratos.</string>
     <string name="notif_kind_goodfat_desc">Lembretes para bater a meta diária de gorduras boas.</string>
@@ -344,7 +341,6 @@
     <string name="notif_kind_progress_body">Continue assim! Cada meta conta pra sua próxima conquista.</string>
     <string name="notif_kind_sleep_body">Que tal um cochilo pra alcançar sua meta de sono hoje?</string>
     <string name="notif_kind_water_body">Bora tomar um copo de água? Continue rumo à sua meta do dia.</string>
-    <string name="notif_kind_calories_body">Hora de registrar suas refeições pra bater a meta de calorias do dia.</string>
     <string name="notif_kind_protein_body">Hora de caprichar na proteína pra bater sua meta do dia.</string>
     <string name="notif_kind_carbs_body">Que tal uma boa fonte de carboidratos pra manter o pique?</string>
     <string name="notif_kind_goodfat_body">Não esqueça das gorduras boas hoje (azeite, castanhas, abacate).</string>
@@ -364,7 +360,6 @@
     <string name="notif_kind_progress_footer">Lembretes periódicos mostrando o quanto falta pra você subir de nível hoje.</string>
     <string name="notif_kind_sleep_footer">A cada X minutos o app sugere um descanso enquanto a meta do dia não for atingida. Nenhum lembrete é enviado antes das 10h nem depois das 19h.</string>
     <string name="notif_kind_water_footer">A cada X minutos o app te lembra de beber água. Os lembretes param assim que você atinge sua meta diária.</string>
-    <string name="notif_kind_calories_footer">Lembretes periódicos param quando você atinge a meta de calorias.</string>
     <string name="notif_kind_protein_footer">Lembretes periódicos param quando você atinge a meta de proteína.</string>
     <string name="notif_kind_carbs_footer">Lembretes periódicos param quando você atinge a meta de carboidratos.</string>
     <string name="notif_kind_goodfat_footer">Lembretes periódicos param quando você atinge a meta de gordura boa.</string>
@@ -483,7 +478,7 @@
 
     <!-- Navegação 2.0 (Batch L2) -->
     <string name="common_close">Fechar</string>
-    <string name="today_history">Histórico</string>
+    <string name="today_history">Registros</string>
 
     <!-- Today 2.0 (Parte 1) -->
     <string name="today_hero_achievement_label">Conquista do dia</string>
@@ -494,7 +489,7 @@
     <string name="today_goals_view_mode_list">Lista</string>
     <string name="today_goals_view_mode_grid">Grade</string>
     <string name="today_category_other">Outras</string>
-    <string name="today_edit_theme">Editar tema</string>
+    <string name="today_edit_theme">Editar emoji</string>
     <string name="today_edit_colors">Editar cores</string>
     <string name="today_edit_controls">Editar controles</string>
     <string name="today_edit_goals">Editar metas</string>

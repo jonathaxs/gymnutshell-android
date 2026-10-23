@@ -14,12 +14,11 @@ data class GoalConfig(
     val incrementOverrides: Map<String, Int> = emptyMap(),
 )
 
-/** Ordem padrão das dez metas fixas — porte de GoalOrderStore.defaultOrder (iOS), na ordem das categorias. */
+/** Ordem padrão das nove metas fixas — porte de GoalOrderStore.defaultOrder (iOS), na ordem das categorias. */
 object GoalOrder {
     val DEFAULT: List<String> = listOf(
         "tracking.sleep",
         "tracking.water",
-        "tracking.calories",
         "tracking.protein",
         "tracking.carbs",
         "tracking.fiber",
@@ -30,7 +29,7 @@ object GoalOrder {
     )
 
     /** Metas opcionais que o usuário pode remover — porte de RemovedItemsStore.removableTrackingKeys (iOS). */
-    val REMOVABLE_KEYS: Set<String> = setOf("tracking.calories", "tracking.goodFat", "tracking.creatine")
+    val REMOVABLE_KEYS: Set<String> = setOf("tracking.goodFat", "tracking.creatine")
 }
 
 /**

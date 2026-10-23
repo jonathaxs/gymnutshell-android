@@ -7,7 +7,6 @@
     <string name="today_cardio">有酸素運動</string>
     <string name="today_sleep">睡眠</string>
     <string name="today_water">水分</string>
-    <string name="today_calories">カロリー</string>
     <string name="today_protein">タンパク質</string>
     <string name="today_carbs">炭水化物</string>
     <string name="today_good_fat">良質な脂質</string>
@@ -75,7 +74,7 @@
     <string name="settings_about_achievement">成果</string>
     <string name="tier_info_intro">成果は1日の終わり（深夜0時）に記録されます。</string>
     <string name="tier_info_section_levels">成果</string>
-    <string name="tier_info_change_theme">テーマを変更</string>
+    <string name="tier_info_change_theme">絵文字を変更</string>
     <string name="settings_accent_color">アクセントカラー</string>
     <string name="a11y_selected">選択中</string>
     <string name="a11y_not_selected">未選択</string>
@@ -120,8 +119,6 @@
     <string name="goals_title">目標</string>
     <string name="goals_categories_title">カテゴリー</string>
     <string name="goals_category_order">カテゴリーの順序</string>
-    <string name="goal_badge_standard">標準</string>
-    <string name="goal_badge_recommended">おすすめ</string>
     <string name="goal_badge_custom">カスタム</string>
     <string name="tracking_goals_edit">編集</string>
     <string name="tracking_goals_done">完了</string>
@@ -152,9 +149,6 @@
     <string name="cd_move_up">上に移動</string>
     <string name="cd_move_down">下に移動</string>
     <string name="welcome_start_title">ようこそ！</string>
-    <string name="welcome_start_feature_track">1日を通じてフィットネス目標を記録。</string>
-    <string name="welcome_start_feature_progress">日々の進捗を確認。</string>
-    <string name="welcome_start_feature_theme">お気に入りのテーマでモチベーションアップ。</string>
     <string name="welcome_start_new">はじめる</string>
     <string name="welcome_start_restore">バックアップから復元</string>
     <string name="welcome_restore_error_title">復元できませんでした</string>
@@ -181,9 +175,9 @@
     <string name="welcome_control_slider_desc">コントロールを希望の値までドラッグします。</string>
     <string name="welcome_control_stepper">ボタン</string>
     <string name="welcome_control_stepper_desc">タップして1ステップずつ増減します。</string>
-    <string name="welcome_step_theme_title">テーマ</string>
+    <string name="welcome_step_theme_title">絵文字</string>
     <string name="welcome_step_theme_subtitle">毎日のモチベーションを高める絵文字を選びましょう。</string>
-    <string name="welcome_step_theme_footer">テーマは後から変更できます。</string>
+    <string name="welcome_step_theme_footer">絵文字は後から変更できます。</string>
     <string name="welcome_step_ready_title">準備完了！</string>
     <string name="welcome_step_ready_subtitle">お好みの機能をオンにしましょう。</string>
     <string name="welcome_ready_notifications_title">通知</string>
@@ -215,11 +209,11 @@
     <string name="favorite_exercise_traps">僧帽筋</string>
     <string name="favorite_exercise_forearms">前腕</string>
     <string name="favorite_exercise_calves">ふくらはぎ</string>
-    <string name="settings_theme">テーマ</string>
+    <string name="settings_theme">絵文字</string>
     <string name="theme_cat_sport">スポーツ</string>
     <string name="theme_cat_animals">動物</string>
     <string name="theme_cat_warrior">ヒーロー</string>
-    <string name="theme_cat_space">宇宙</string>
+    <string name="theme_cat_space">コスモ</string>
     <string name="theme_cat_elements">エレメント＆自然</string>
     <string name="theme_cat_competition">進捗</string>
     <string name="theme_gym">ジム</string>
@@ -237,7 +231,7 @@
     <string name="theme_ninja">格闘家</string>
     <string name="theme_fire">炎</string>
     <string name="theme_plant">森林</string>
-    <string name="theme_astronaut">宇宙探査</string>
+    <string name="theme_astronaut">宇宙</string>
     <string name="theme_celestial">天体</string>
     <string name="theme_champion">メダル</string>
     <string name="theme_number">数字</string>
@@ -259,7 +253,6 @@
     <string name="notif_kind_backup_title">バックアップ</string>
     <string name="notif_kind_sleep_title">睡眠</string>
     <string name="notif_kind_water_title">水分</string>
-    <string name="notif_kind_calories_title">カロリー</string>
     <string name="notif_kind_protein_title">タンパク質</string>
     <string name="notif_kind_carbs_title">炭水化物</string>
     <string name="notif_kind_goodfat_title">良質な脂質</string>
@@ -273,7 +266,6 @@
     <string name="notif_kind_backup_desc">自動バックアップの完了を確認します。</string>
     <string name="notif_kind_sleep_desc">睡眠目標に達していない場合、お昼寝を提案します（午前10時〜午後7時のみ）。</string>
     <string name="notif_kind_water_desc">毎日の目標に達するまで、コップ1杯の水を飲むようリマインドします。</string>
-    <string name="notif_kind_calories_desc">毎日のカロリー目標を達成するためのリマインダー。</string>
     <string name="notif_kind_protein_desc">毎日のタンパク質目標を達成するためのリマインダー。</string>
     <string name="notif_kind_carbs_desc">毎日の炭水化物目標を達成するためのリマインダー。</string>
     <string name="notif_kind_goodfat_desc">毎日の良質な脂質目標を達成するためのリマインダー。</string>
@@ -284,7 +276,6 @@
     <string name="notif_kind_progress_body">その調子！毎日の目標達成が次の成果につながります。</string>
     <string name="notif_kind_sleep_body">睡眠目標を達成するために、少しお昼寝しませんか？</string>
     <string name="notif_kind_water_body">お水を1杯いかがですか？毎日の目標に向かって進みましょう。</string>
-    <string name="notif_kind_calories_body">今日のカロリー目標に向けて、食事を記録しましょう。</string>
     <string name="notif_kind_protein_body">今日の目標達成に向けて、タンパク質を補給しましょう。</string>
     <string name="notif_kind_carbs_body">エネルギーをチャージするために、炭水化物をしっかり摂りましょう！</string>
     <string name="notif_kind_goodfat_body">オリーブオイルやナッツ、アボカドなど、良質な脂質もお忘れなく。</string>
@@ -300,7 +291,6 @@
     <string name="notif_kind_progress_footer">今日のレベルアップに必要な進捗を定期的にお知らせします。</string>
     <string name="notif_kind_sleep_footer">毎日の目標を達成するまで、一定の間隔で休息を提案します。午前10時前または午後7時以降には送信されません。</string>
     <string name="notif_kind_water_footer">一定の間隔で水分補給をリマインドします。毎日の目標を達成すると通知は止まります。</string>
-    <string name="notif_kind_calories_footer">定期リマインダーは、カロリー目標を達成すると停止します。</string>
     <string name="notif_kind_protein_footer">定期リマインダーは、タンパク質目標を達成すると停止します。</string>
     <string name="notif_kind_carbs_footer">定期リマインダーは、炭水化物目標を達成すると停止します。</string>
     <string name="notif_kind_goodfat_footer">定期リマインダーは、良質な脂質の目標を達成すると停止します。</string>
@@ -395,7 +385,7 @@
     <string name="widget_bg_preview">プレビュー</string>
     <string name="widget_bg_pick_color">色を選択</string>
     <string name="common_close">閉じる</string>
-    <string name="today_history">履歴</string>
+    <string name="today_history">記録</string>
     <string name="today_hero_achievement_label">毎日の成果</string>
     <string name="today_hero_caption_start">目標を記録してスタートしましょう</string>
     <string name="today_hero_caption_next_level">次のレベルまであと %1$d%%</string>
@@ -404,7 +394,7 @@
     <string name="today_goals_view_mode_list">リスト</string>
     <string name="today_goals_view_mode_grid">グリッド</string>
     <string name="today_category_other">その他</string>
-    <string name="today_edit_theme">テーマを編集</string>
+    <string name="today_edit_theme">絵文字を編集</string>
     <string name="today_edit_colors">色を編集</string>
     <string name="today_edit_controls">操作方法を編集</string>
     <string name="today_edit_goals">目標を編集</string>

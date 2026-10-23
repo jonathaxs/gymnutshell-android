@@ -2,6 +2,8 @@ package com.jonathaxs.gymnutshell.core.backup
 
 import com.jonathaxs.gymnutshell.core.data.CustomGoalCategory
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.EncodeDefault
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
 
 /**
@@ -42,7 +44,10 @@ data class ProfileSnapshot(
 /** Alvos das metas fixas. `fats` é a chave legada de goodFat. */
 @Serializable
 data class GoalsSnapshot(
-    val calories: Int,
+    // Calorias saíram na 2.0: opcional na leitura; gravado fixo em 2000 porque o Android 1.0 exige o campo.
+    @OptIn(ExperimentalSerializationApi::class)
+    @EncodeDefault
+    val calories: Int = 2000,
     val sleep: Int,
     val water: Int,
     val protein: Int,

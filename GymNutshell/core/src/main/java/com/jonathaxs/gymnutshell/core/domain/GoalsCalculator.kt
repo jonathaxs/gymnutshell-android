@@ -11,7 +11,6 @@ object GoalsCalculator {
 
     /** Todas as metas diárias calculadas pra um perfil. */
     data class Result(
-        val calories: Int,  // kcal
         val water: Int,     // ml
         val protein: Int,   // g
         val carbs: Int,     // g
@@ -24,7 +23,6 @@ object GoalsCalculator {
     )
 
     private data class Row(
-        val calories: Int,
         val water: Int,
         val protein: Int,
         val carbs: Int,
@@ -34,16 +32,16 @@ object GoalsCalculator {
 
     // Homem: cutting / manutenção / bulking.
     private val male: Map<UserGoal, Row> = mapOf(
-        UserGoal.Cutting to Row(calories = 2100, water = 2750, protein = 165, carbs = 190, goodFat = 55, fiber = 29),
-        UserGoal.Maintenance to Row(calories = 2650, water = 2750, protein = 150, carbs = 260, goodFat = 70, fiber = 37),
-        UserGoal.Bulking to Row(calories = 3050, water = 2750, protein = 150, carbs = 340, goodFat = 85, fiber = 43),
+        UserGoal.Cutting to Row(water = 2750, protein = 165, carbs = 190, goodFat = 55, fiber = 29),
+        UserGoal.Maintenance to Row(water = 2750, protein = 150, carbs = 260, goodFat = 70, fiber = 37),
+        UserGoal.Bulking to Row(water = 2750, protein = 150, carbs = 340, goodFat = 85, fiber = 43),
     )
 
     // Mulher: cutting / manutenção / bulking.
     private val female: Map<UserGoal, Row> = mapOf(
-        UserGoal.Cutting to Row(calories = 1650, water = 2250, protein = 135, carbs = 160, goodFat = 45, fiber = 23),
-        UserGoal.Maintenance to Row(calories = 2050, water = 2250, protein = 125, carbs = 220, goodFat = 55, fiber = 29),
-        UserGoal.Bulking to Row(calories = 2350, water = 2250, protein = 125, carbs = 280, goodFat = 70, fiber = 33),
+        UserGoal.Cutting to Row(water = 2250, protein = 135, carbs = 160, goodFat = 45, fiber = 23),
+        UserGoal.Maintenance to Row(water = 2250, protein = 125, carbs = 220, goodFat = 55, fiber = 29),
+        UserGoal.Bulking to Row(water = 2250, protein = 125, carbs = 280, goodFat = 70, fiber = 33),
     )
 
     /**
@@ -54,7 +52,6 @@ object GoalsCalculator {
         val table = if (Profile.normalizedSex(sex) == "female") female else male
         val row = table[goal] ?: table[UserGoal.Maintenance]!!
         return Result(
-            calories = row.calories,
             water = row.water,
             protein = row.protein,
             carbs = row.carbs,
@@ -73,7 +70,7 @@ object GoalsCalculator {
         calculate(sex, goal)
 
     /**
-     * Reescala as metas atuais do usuário ao trocar de objetivo. Cada meta (calorias, proteína, carbo,
+     * Reescala as metas atuais do usuário ao trocar de objetivo. Cada meta (proteína, carbo,
      * gordura boa e fibra) é multiplicada por `tabela(sexo, novo) / tabela(sexo, antigo)`, então o que o
      * usuário personalizou continua proporcional. Arredonda ao passo da Welcome e respeita os mesmos limites.
      * Água, sono, treino, cardio e creatina não mudam.
@@ -91,7 +88,6 @@ object GoalsCalculator {
         }
 
         return current.copy(
-            calories = scaled(current.calories, old.calories, new.calories, 50, 500..10000),
             protein = scaled(current.protein, old.protein, new.protein, 5, 10..500),
             carbs = scaled(current.carbs, old.carbs, new.carbs, 10, 10..1000),
             goodFat = scaled(current.goodFat, old.goodFat, new.goodFat, 5, 5..300),

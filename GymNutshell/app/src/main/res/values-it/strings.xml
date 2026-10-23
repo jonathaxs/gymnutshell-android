@@ -7,7 +7,6 @@
     <string name="today_cardio">Cardio</string>
     <string name="today_sleep">Sonno</string>
     <string name="today_water">Acqua</string>
-    <string name="today_calories">Calorie</string>
     <string name="today_protein">Proteine</string>
     <string name="today_carbs">Carboidrati</string>
     <string name="today_good_fat">Grassi buoni</string>
@@ -75,8 +74,8 @@
     <string name="settings_about_achievement">Traguardo</string>
     <string name="tier_info_intro">Il tuo traguardo viene registrato alla fine della giornata, a mezzanotte.</string>
     <string name="tier_info_section_levels">Traguardi</string>
-    <string name="tier_info_change_theme">Cambia tema</string>
-    <string name="settings_accent_color">Colori in risalto</string>
+    <string name="tier_info_change_theme">Cambia emoji</string>
+    <string name="settings_accent_color">Colore in risalto</string>
     <string name="a11y_selected">Selezionato</string>
     <string name="a11y_not_selected">Non selezionato</string>
     <string name="color_red">Rosso</string>
@@ -102,7 +101,7 @@
     <string name="settings_preference_control_style">Controlli</string>
     <string name="settings_control_style_footer">Puoi passare dalla visualizzazione a elenco a quella a griglia direttamente nella schermata Oggi.</string>
     <string name="settings_color_preview">Anteprima</string>
-    <string name="settings_color_subtitle">Colori in risalto</string>
+    <string name="settings_color_subtitle">Colore in risalto</string>
     <string name="settings_units">Unità di misura</string>
     <string name="unit_metric">Metrico (ml)</string>
     <string name="unit_us">Imperiale (fl oz)</string>
@@ -120,8 +119,6 @@
     <string name="goals_title">Obiettivi</string>
     <string name="goals_categories_title">Categorie</string>
     <string name="goals_category_order">Ordine delle categorie</string>
-    <string name="goal_badge_standard">Standard</string>
-    <string name="goal_badge_recommended">Consigliato</string>
     <string name="goal_badge_custom">Personalizzato</string>
     <string name="tracking_goals_edit">Modifica</string>
     <string name="tracking_goals_done">Fine</string>
@@ -152,9 +149,6 @@
     <string name="cd_move_up">Sposta in alto</string>
     <string name="cd_move_down">Sposta in basso</string>
     <string name="welcome_start_title">Ciao!</string>
-    <string name="welcome_start_feature_track">Monitora i tuoi obiettivi di fitness durante la giornata.</string>
-    <string name="welcome_start_feature_progress">Segui i tuoi progressi nel tempo.</string>
-    <string name="welcome_start_feature_theme">Scegli un tema per trovare la giusta motivazione.</string>
     <string name="welcome_start_new">Inizia</string>
     <string name="welcome_start_restore">Ripristina backup</string>
     <string name="welcome_restore_error_title">Impossibile ripristinare</string>
@@ -181,9 +175,9 @@
     <string name="welcome_control_slider_desc">Trascina il controllo fino al valore desiderato.</string>
     <string name="welcome_control_stepper">Pulsanti</string>
     <string name="welcome_control_stepper_desc">Tocca per aggiungere o togliere un passo alla volta.</string>
-    <string name="welcome_step_theme_title">Tema</string>
+    <string name="welcome_step_theme_title">Emoji</string>
     <string name="welcome_step_theme_subtitle">Scegli le emoji che ispireranno i tuoi progressi.</string>
-    <string name="welcome_step_theme_footer">Puoi cambiare tema in qualsiasi momento.</string>
+    <string name="welcome_step_theme_footer">Puoi cambiare emoji in qualsiasi momento.</string>
     <string name="welcome_step_ready_title">Tutto pronto!</string>
     <string name="welcome_step_ready_subtitle">Attiva ciò che preferisci.</string>
     <string name="welcome_ready_notifications_title">Notifiche</string>
@@ -215,11 +209,11 @@
     <string name="favorite_exercise_traps">Trapezi</string>
     <string name="favorite_exercise_forearms">Avambracci</string>
     <string name="favorite_exercise_calves">Polpacci</string>
-    <string name="settings_theme">Temi</string>
+    <string name="settings_theme">Emoji</string>
     <string name="theme_cat_sport">Sport</string>
     <string name="theme_cat_animals">Animali</string>
     <string name="theme_cat_warrior">Eroe</string>
-    <string name="theme_cat_space">Spazio</string>
+    <string name="theme_cat_space">Cosmo</string>
     <string name="theme_cat_elements">Elementi e natura</string>
     <string name="theme_cat_competition">Progresso</string>
     <string name="theme_gym">Palestra</string>
@@ -237,7 +231,7 @@
     <string name="theme_ninja">Guerriero</string>
     <string name="theme_fire">Fuoco</string>
     <string name="theme_plant">Foresta</string>
-    <string name="theme_astronaut">Esplorazione</string>
+    <string name="theme_astronaut">Spazio</string>
     <string name="theme_celestial">Corpi celesti</string>
     <string name="theme_champion">Medaglia</string>
     <string name="theme_number">Numeri</string>
@@ -259,7 +253,6 @@
     <string name="notif_kind_backup_title">Backup</string>
     <string name="notif_kind_sleep_title">Sonno</string>
     <string name="notif_kind_water_title">Acqua</string>
-    <string name="notif_kind_calories_title">Calorie</string>
     <string name="notif_kind_protein_title">Proteine</string>
     <string name="notif_kind_carbs_title">Carboidrati</string>
     <string name="notif_kind_goodfat_title">Grassi buoni</string>
@@ -273,7 +266,6 @@
     <string name="notif_kind_backup_desc">Conferma ogni backup automatico.</string>
     <string name="notif_kind_sleep_desc">Suggerisce un riposino se non hai ancora raggiunto il tuo obiettivo di sonno (solo tra le 10:00 e le 19:00).</string>
     <string name="notif_kind_water_desc">Promemoria per bere un bicchiere d\'acqua fino al raggiungimento dell\'obiettivo giornaliero.</string>
-    <string name="notif_kind_calories_desc">Promemoria per raggiungere il tuo obiettivo calorico giornaliero.</string>
     <string name="notif_kind_protein_desc">Promemoria per raggiungere il tuo obiettivo di proteine giornaliero.</string>
     <string name="notif_kind_carbs_desc">Promemoria per raggiungere il tuo obiettivo di carboidrati giornaliero.</string>
     <string name="notif_kind_goodfat_desc">Promemoria per raggiungere il tuo obiettivo giornaliero di grassi buoni.</string>
@@ -284,7 +276,6 @@
     <string name="notif_kind_progress_body">Continua così! Ogni obiettivo conta per il tuo prossimo traguardo.</string>
     <string name="notif_kind_sleep_body">Che ne dici di un riposino per raggiungere il tuo obiettivo di sonno oggi?</string>
     <string name="notif_kind_water_body">Tempo per un bicchiere d\'acqua? Continua ad avvicinarti al tuo obiettivo.</string>
-    <string name="notif_kind_calories_body">È ora di registrare i pasti per raggiungere l\'obiettivo calorico di oggi.</string>
     <string name="notif_kind_protein_body">È ora di fare il pieno di proteine per centrare l\'obiettivo di oggi.</string>
     <string name="notif_kind_carbs_body">Che ne dici di una buona fonte di carboidrati per mantenere l\'energia alta?</string>
     <string name="notif_kind_goodfat_body">Non dimenticare i grassi buoni oggi (olio d\'oliva, frutta a guscio, avocado).</string>
@@ -300,7 +291,6 @@
     <string name="notif_kind_progress_footer">Promemoria periodici che mostrano quanto manca per salire di livello oggi.</string>
     <string name="notif_kind_sleep_footer">Ogni X minuti l\'app suggerisce di riposare finché non raggiungi l\'obiettivo giornaliero. Nessun promemoria viene inviato prima delle 10:00 o dopo le 19:00.</string>
     <string name="notif_kind_water_footer">Ogni X minuti l\'app ti ricorda di bere acqua. I promemoria si interrompono una volta raggiunto l\'obiettivo giornaliero.</string>
-    <string name="notif_kind_calories_footer">I promemoria periodici si interrompono una volta raggiunto l\'obiettivo calorico.</string>
     <string name="notif_kind_protein_footer">I promemoria periodici si interrompono una volta raggiunto l\'obiettivo proteico.</string>
     <string name="notif_kind_carbs_footer">I promemoria periodici si interrompono una volta raggiunto l\'obiettivo di carboidrati.</string>
     <string name="notif_kind_goodfat_footer">I promemoria periodici si interrompono una volta raggiunto l\'obiettivo di grassi buoni.</string>
@@ -395,7 +385,7 @@
     <string name="widget_bg_preview">Anteprima</string>
     <string name="widget_bg_pick_color">Scegli un colore</string>
     <string name="common_close">Chiudi</string>
-    <string name="today_history">Cronologia</string>
+    <string name="today_history">Registri</string>
     <string name="today_hero_achievement_label">Traguardo del giorno</string>
     <string name="today_hero_caption_start">Monitora un obiettivo per iniziare</string>
     <string name="today_hero_caption_next_level">Manca il %1$d%% per il livello successivo</string>
@@ -404,7 +394,7 @@
     <string name="today_goals_view_mode_list">Elenco</string>
     <string name="today_goals_view_mode_grid">Griglia</string>
     <string name="today_category_other">Altro</string>
-    <string name="today_edit_theme">Modifica tema</string>
+    <string name="today_edit_theme">Modifica emoji</string>
     <string name="today_edit_colors">Modifica colori</string>
     <string name="today_edit_controls">Modifica controlli</string>
     <string name="today_edit_goals">Modifica obiettivi</string>

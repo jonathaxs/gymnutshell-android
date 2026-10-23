@@ -58,7 +58,7 @@ private val SYSTEM_KINDS = listOf(
     NotificationKind.HealthSync, NotificationKind.Backup,
 )
 private val GOAL_KINDS = listOf(
-    NotificationKind.Sleep, NotificationKind.Water, NotificationKind.Calories, NotificationKind.Protein,
+    NotificationKind.Sleep, NotificationKind.Water, NotificationKind.Protein,
     NotificationKind.Carbs, NotificationKind.GoodFat, NotificationKind.Fiber, NotificationKind.Workout,
     NotificationKind.Cardio, NotificationKind.Creatine,
 )

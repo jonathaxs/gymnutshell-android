@@ -70,7 +70,7 @@ class BackupService(context: Context) {
                 measurementSystem = measurement.rawValue,
             ),
             goals = GoalsSnapshot(
-                calories = goals.calories, sleep = goals.sleep, water = goals.water,
+                sleep = goals.sleep, water = goals.water,
                 protein = goals.protein, carbs = goals.carbs, goodFat = goals.goodFat, fiber = goals.fiber,
             ),
             goalsOrder = emptyList(), // Android ainda não reordena metas → vazio (iOS lê e ignora).

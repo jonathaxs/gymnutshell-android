@@ -16,7 +16,7 @@ enum class GoalCategory(val rawValue: String) {
         /** Categoria padrão de uma chave de meta fixa — espelha defaultCategory(for:) do iOS. */
         fun defaultCategory(key: String): GoalCategory? = when (key) {
             "tracking.sleep", "tracking.water" -> Essencial
-            "tracking.calories", "tracking.protein", "tracking.carbs",
+            "tracking.protein", "tracking.carbs",
             "tracking.goodFat", "tracking.fiber" -> Nutricao
             "tracking.workout", "tracking.cardio" -> Treino
             "tracking.creatine" -> Suplemento

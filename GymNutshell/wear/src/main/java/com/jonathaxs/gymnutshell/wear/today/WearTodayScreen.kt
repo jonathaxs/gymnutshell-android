@@ -302,7 +302,6 @@ private fun goalTitleRes(key: String): Int = when (key) {
     "tracking.cardio" -> R.string.wear_goal_cardio
     "tracking.sleep" -> R.string.wear_goal_sleep
     "tracking.water" -> R.string.wear_goal_water
-    "tracking.calories" -> R.string.wear_goal_calories
     "tracking.protein" -> R.string.wear_goal_protein
     "tracking.carbs" -> R.string.wear_goal_carbs
     "tracking.goodFat" -> R.string.wear_goal_good_fat

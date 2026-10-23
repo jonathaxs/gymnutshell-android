@@ -20,7 +20,6 @@ object NotificationStrings {
         NotificationKind.Backup -> R.string.notif_kind_backup_title
         NotificationKind.Sleep -> R.string.notif_kind_sleep_title
         NotificationKind.Water -> R.string.notif_kind_water_title
-        NotificationKind.Calories -> R.string.notif_kind_calories_title
         NotificationKind.Protein -> R.string.notif_kind_protein_title
         NotificationKind.Carbs -> R.string.notif_kind_carbs_title
         NotificationKind.GoodFat -> R.string.notif_kind_goodfat_title
@@ -38,7 +37,6 @@ object NotificationStrings {
         NotificationKind.Backup -> R.string.notif_kind_backup_desc
         NotificationKind.Sleep -> R.string.notif_kind_sleep_desc
         NotificationKind.Water -> R.string.notif_kind_water_desc
-        NotificationKind.Calories -> R.string.notif_kind_calories_desc
         NotificationKind.Protein -> R.string.notif_kind_protein_desc
         NotificationKind.Carbs -> R.string.notif_kind_carbs_desc
         NotificationKind.GoodFat -> R.string.notif_kind_goodfat_desc
@@ -54,7 +52,6 @@ object NotificationStrings {
         NotificationKind.Progress -> R.string.notif_kind_progress_body
         NotificationKind.Sleep -> R.string.notif_kind_sleep_body
         NotificationKind.Water -> R.string.notif_kind_water_body
-        NotificationKind.Calories -> R.string.notif_kind_calories_body
         NotificationKind.Protein -> R.string.notif_kind_protein_body
         NotificationKind.Carbs -> R.string.notif_kind_carbs_body
         NotificationKind.GoodFat -> R.string.notif_kind_goodfat_body
@@ -72,7 +69,6 @@ object NotificationStrings {
         NotificationKind.Progress -> R.string.notif_kind_progress_footer
         NotificationKind.Sleep -> R.string.notif_kind_sleep_footer
         NotificationKind.Water -> R.string.notif_kind_water_footer
-        NotificationKind.Calories -> R.string.notif_kind_calories_footer
         NotificationKind.Protein -> R.string.notif_kind_protein_footer
         NotificationKind.Carbs -> R.string.notif_kind_carbs_footer
         NotificationKind.GoodFat -> R.string.notif_kind_goodfat_footer

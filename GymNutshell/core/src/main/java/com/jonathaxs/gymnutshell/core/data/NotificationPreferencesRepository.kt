@@ -138,7 +138,7 @@ class NotificationPreferencesRepository(private val context: Context) {
             prefs[enabledKey(NotificationKind.Backup)] = false
             prefs[enabledKey(NotificationKind.Water)] = true
             for (kind in listOf(
-                NotificationKind.Sleep, NotificationKind.Calories, NotificationKind.Protein,
+                NotificationKind.Sleep, NotificationKind.Protein,
                 NotificationKind.Carbs, NotificationKind.GoodFat, NotificationKind.Fiber,
                 NotificationKind.Workout, NotificationKind.Cardio, NotificationKind.Creatine,
             )) {

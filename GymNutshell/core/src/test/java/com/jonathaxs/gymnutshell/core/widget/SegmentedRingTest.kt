@@ -67,29 +67,29 @@ class SegmentedRingTest {
     @Test
     fun `cores dos 5 segmentos sao identicas ao iOS`() {
         assertEquals(5, SegmentedRing.SEGMENT_COLORS.size)
-        assertEquals(0xFFFF3B30L, SegmentedRing.SEGMENT_COLORS[0]) // Vermelho
-        assertEquals(0xFFFFCC00L, SegmentedRing.SEGMENT_COLORS[1]) // Amarelo
-        assertEquals(0xFF34C759L, SegmentedRing.SEGMENT_COLORS[2]) // Verde
-        assertEquals(0xFF007AFFL, SegmentedRing.SEGMENT_COLORS[3]) // Azul
-        assertEquals(0xFFAF52DEL, SegmentedRing.SEGMENT_COLORS[4]) // Violeta/Roxo
+        assertEquals(0xFFFE6E55L, SegmentedRing.SEGMENT_COLORS[0]) // Vermelho
+        assertEquals(0xFFFEC239L, SegmentedRing.SEGMENT_COLORS[1]) // Amarelo
+        assertEquals(0xFF46DA7FL, SegmentedRing.SEGMENT_COLORS[2]) // Verde
+        assertEquals(0xFF3CA6FCL, SegmentedRing.SEGMENT_COLORS[3]) // Azul
+        assertEquals(0xFF47468FL, SegmentedRing.SEGMENT_COLORS[4]) // Violeta/Roxo
     }
 
     @Test
     fun `cor por tier mapeia cada nivel para a cor correspondente`() {
-        assertEquals(0xFFFF3B30L, SegmentedRing.colorForTier(DailyAchievement.Level1))
-        assertEquals(0xFFFFCC00L, SegmentedRing.colorForTier(DailyAchievement.Level2))
-        assertEquals(0xFF34C759L, SegmentedRing.colorForTier(DailyAchievement.Level3))
-        assertEquals(0xFF007AFFL, SegmentedRing.colorForTier(DailyAchievement.Level4))
-        assertEquals(0xFFAF52DEL, SegmentedRing.colorForTier(DailyAchievement.Level5))
+        assertEquals(0xFFFE6E55L, SegmentedRing.colorForTier(DailyAchievement.Level1))
+        assertEquals(0xFFFEC239L, SegmentedRing.colorForTier(DailyAchievement.Level2))
+        assertEquals(0xFF46DA7FL, SegmentedRing.colorForTier(DailyAchievement.Level3))
+        assertEquals(0xFF3CA6FCL, SegmentedRing.colorForTier(DailyAchievement.Level4))
+        assertEquals(0xFF47468FL, SegmentedRing.colorForTier(DailyAchievement.Level5))
     }
 
     @Test
     fun `cor por progresso segue a cor do segmento atual`() {
-        assertEquals(0xFFFF3B30L, SegmentedRing.colorForProgress(0.0))
-        assertEquals(0xFFFFCC00L, SegmentedRing.colorForProgress(0.20))
-        assertEquals(0xFFFFCC00L, SegmentedRing.colorForProgress(0.21))
-        assertEquals(0xFF34C759L, SegmentedRing.colorForProgress(0.50))
-        assertEquals(0xFFAF52DEL, SegmentedRing.colorForProgress(1.0))
+        assertEquals(0xFFFE6E55L, SegmentedRing.colorForProgress(0.0))
+        assertEquals(0xFFFEC239L, SegmentedRing.colorForProgress(0.20))
+        assertEquals(0xFFFEC239L, SegmentedRing.colorForProgress(0.21))
+        assertEquals(0xFF46DA7FL, SegmentedRing.colorForProgress(0.50))
+        assertEquals(0xFF47468FL, SegmentedRing.colorForProgress(1.0))
     }
 
     @Test

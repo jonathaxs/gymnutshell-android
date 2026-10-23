@@ -30,7 +30,8 @@ class GoalConfigRepository(private val context: Context) {
 
     /** Ordem das 10 metas fixas; cai pro padrão se nada salvo ou se o conjunto não bater (integridade). */
     val fixedOrder: Flow<List<String>> = data.map { prefs ->
-        val stored = prefs[fixedOrderKey]?.split(",")?.filter { it.isNotEmpty() }
+        // Filtra chaves que saíram do app (ex.: tracking.calories na 2.0), pra manter o resto da ordem.
+        val stored = prefs[fixedOrderKey]?.split(",")?.filter { it.isNotEmpty() && it in GoalOrder.DEFAULT }
         if (stored != null && stored.toSet() == GoalOrder.DEFAULT.toSet()) stored else GoalOrder.DEFAULT
     }
 

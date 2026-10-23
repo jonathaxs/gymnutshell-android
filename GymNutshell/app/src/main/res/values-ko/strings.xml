@@ -7,7 +7,6 @@
     <string name="today_cardio">유산소</string>
     <string name="today_sleep">수면</string>
     <string name="today_water">물</string>
-    <string name="today_calories">칼로리</string>
     <string name="today_protein">단백질</string>
     <string name="today_carbs">탄수화물</string>
     <string name="today_good_fat">착한 지방</string>
@@ -75,7 +74,7 @@
     <string name="settings_about_achievement">업적</string>
     <string name="tier_info_intro">나의 업적은 하루가 끝나는 자정에 기록돼요.</string>
     <string name="tier_info_section_levels">업적</string>
-    <string name="tier_info_change_theme">테마 변경</string>
+    <string name="tier_info_change_theme">이모지 변경</string>
     <string name="settings_accent_color">포인트 색상</string>
     <string name="a11y_selected">선택됨</string>
     <string name="a11y_not_selected">선택 안 됨</string>
@@ -120,8 +119,6 @@
     <string name="goals_title">목표</string>
     <string name="goals_categories_title">카테고리</string>
     <string name="goals_category_order">카테고리 순서</string>
-    <string name="goal_badge_standard">기본</string>
-    <string name="goal_badge_recommended">추천</string>
     <string name="goal_badge_custom">사용자 지정</string>
     <string name="tracking_goals_edit">편집</string>
     <string name="tracking_goals_done">완료</string>
@@ -152,9 +149,6 @@
     <string name="cd_move_up">위로 이동</string>
     <string name="cd_move_down">아래로 이동</string>
     <string name="welcome_start_title">환영해요!</string>
-    <string name="welcome_start_feature_track">하루 동안 피트니스 목표를 기록해보세요.</string>
-    <string name="welcome_start_feature_progress">나의 성장을 한눈에 확인해보세요.</string>
-    <string name="welcome_start_feature_theme">동기부여를 주는 테마를 선택해보세요.</string>
     <string name="welcome_start_new">시작하기</string>
     <string name="welcome_start_restore">백업 복원</string>
     <string name="welcome_restore_error_title">복원할 수 없음</string>
@@ -181,9 +175,9 @@
     <string name="welcome_control_slider_desc">컨트롤을 원하는 값까지 드래그해요.</string>
     <string name="welcome_control_stepper">버튼</string>
     <string name="welcome_control_stepper_desc">탭해서 조절 단위만큼 더하거나 빼요.</string>
-    <string name="welcome_step_theme_title">테마</string>
+    <string name="welcome_step_theme_title">이모지</string>
     <string name="welcome_step_theme_subtitle">동기부여가 되는 이모지를 골라보세요.</string>
-    <string name="welcome_step_theme_footer">테마는 나중에 언제든 변경할 수 있어요.</string>
+    <string name="welcome_step_theme_footer">이모지는 나중에 언제든 변경할 수 있어요.</string>
     <string name="welcome_step_ready_title">준비 완료!</string>
     <string name="welcome_step_ready_subtitle">원하는 기능을 켜보세요.</string>
     <string name="welcome_ready_notifications_title">알림</string>
@@ -215,11 +209,11 @@
     <string name="favorite_exercise_traps">승모근</string>
     <string name="favorite_exercise_forearms">전완근</string>
     <string name="favorite_exercise_calves">종아리</string>
-    <string name="settings_theme">테마</string>
+    <string name="settings_theme">이모지</string>
     <string name="theme_cat_sport">스포츠</string>
     <string name="theme_cat_animals">동물</string>
     <string name="theme_cat_warrior">히어로</string>
-    <string name="theme_cat_space">우주</string>
+    <string name="theme_cat_space">코스모스</string>
     <string name="theme_cat_elements">자연과 원소</string>
     <string name="theme_cat_competition">성장</string>
     <string name="theme_gym">헬스</string>
@@ -237,7 +231,7 @@
     <string name="theme_ninja">파이터</string>
     <string name="theme_fire">불</string>
     <string name="theme_plant">숲</string>
-    <string name="theme_astronaut">탐험</string>
+    <string name="theme_astronaut">우주</string>
     <string name="theme_celestial">천체</string>
     <string name="theme_champion">메달</string>
     <string name="theme_number">숫자</string>
@@ -259,7 +253,6 @@
     <string name="notif_kind_backup_title">백업</string>
     <string name="notif_kind_sleep_title">수면</string>
     <string name="notif_kind_water_title">물</string>
-    <string name="notif_kind_calories_title">칼로리</string>
     <string name="notif_kind_protein_title">단백질</string>
     <string name="notif_kind_carbs_title">탄수화물</string>
     <string name="notif_kind_goodfat_title">착한 지방</string>
@@ -273,7 +266,6 @@
     <string name="notif_kind_backup_desc">자동 백업 완료 시 알려줘요.</string>
     <string name="notif_kind_sleep_desc">수면 목표를 채우지 못했을 때 낮잠을 권장해요 (오전 10시~오후 7시 사이에만 발송).</string>
     <string name="notif_kind_water_desc">일일 목표를 채울 때까지 물 한 잔 마시기를 알려줘요.</string>
-    <string name="notif_kind_calories_desc">일일 칼로리 목표 달성을 위한 알림이에요.</string>
     <string name="notif_kind_protein_desc">일일 단백질 목표 달성을 위한 알림이에요.</string>
     <string name="notif_kind_carbs_desc">일일 탄수화물 목표 달성을 위한 알림이에요.</string>
     <string name="notif_kind_goodfat_desc">일일 착한 지방 섭취 목표를 위한 알림이에요.</string>
@@ -284,7 +276,6 @@
     <string name="notif_kind_progress_body">조금만 더 힘내세요! 목표를 달성할 때마다 다음 업적에 가까워져요.</string>
     <string name="notif_kind_sleep_body">오늘 수면 목표를 채우기 위해 잠깐 낮잠 한숨 어떠세요?</string>
     <string name="notif_kind_water_body">시원한 물 한 잔 어때요? 오늘의 목표를 향해 달려보세요.</string>
-    <string name="notif_kind_calories_body">오늘의 칼로리 목표를 위해 식사를 기록할 시간이에요.</string>
     <string name="notif_kind_protein_body">오늘의 목표를 채우기 위해 단백질을 챙겨 드세요.</string>
     <string name="notif_kind_carbs_body">에너지를 보충할 좋은 탄수화물 어떠세요?</string>
     <string name="notif_kind_goodfat_body">오늘 착한 지방(올리브유, 견과류, 아보카도)도 잊지 마세요.</string>
@@ -300,7 +291,6 @@
     <string name="notif_kind_progress_footer">오늘 다음 레벨에 도달하기까지 얼마나 남았는지 정기적으로 알려줘요.</string>
     <string name="notif_kind_sleep_footer">일일 목표를 달성할 때까지 정해진 시간마다 휴식을 권장해요. 오전 10시 이전이나 오후 7시 이후에는 알림이 울리지 않아요.</string>
     <string name="notif_kind_water_footer">정해진 시간마다 물 마시기를 알려줘요. 일일 목표를 달성하면 알림이 멈춥니다.</string>
-    <string name="notif_kind_calories_footer">칼로리 목표를 달성하면 정기 알림이 멈춥니다.</string>
     <string name="notif_kind_protein_footer">단백질 목표를 달성하면 정기 알림이 멈춥니다.</string>
     <string name="notif_kind_carbs_footer">탄수화물 목표를 달성하면 정기 알림이 멈춥니다.</string>
     <string name="notif_kind_goodfat_footer">착한 지방 목표를 달성하면 정기 알림이 멈춥니다.</string>
@@ -404,7 +394,7 @@
     <string name="today_goals_view_mode_list">목록</string>
     <string name="today_goals_view_mode_grid">격자</string>
     <string name="today_category_other">기타</string>
-    <string name="today_edit_theme">테마 변경</string>
+    <string name="today_edit_theme">이모지 변경</string>
     <string name="today_edit_colors">색상 변경</string>
     <string name="today_edit_controls">입력 방식 변경</string>
     <string name="today_edit_goals">목표 편집</string>

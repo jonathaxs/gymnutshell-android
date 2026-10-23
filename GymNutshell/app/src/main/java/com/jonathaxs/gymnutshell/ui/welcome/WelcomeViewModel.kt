@@ -42,7 +42,6 @@ data class WelcomeUiState(
     val userGoal: UserGoal = UserGoal.Maintenance,
     val measurementSystem: MeasurementSystem = MeasurementSystem.detectDefault(),
     val goals: GoalsCalculator.Result = GoalsCalculator.calculate("male", UserGoal.Maintenance),
-    val includeCalories: Boolean = false,
     val includeFats: Boolean = false,
     val includeCreatine: Boolean = false,
     val controlStyle: ControlStyle = ControlStyle.Default,
@@ -198,10 +197,6 @@ class WelcomeViewModel(app: Application) : AndroidViewModel(app) {
         _state.update { it.copy(summaryScrolledToEnd = scrolled) }
     }
 
-    fun setIncludeCalories(include: Boolean) {
-        _state.update { it.copy(includeCalories = include) }
-    }
-
     fun setIncludeFats(include: Boolean) {
         _state.update { it.copy(includeFats = include) }
     }
@@ -218,10 +213,6 @@ class WelcomeViewModel(app: Application) : AndroidViewModel(app) {
 
     fun adjustWater(delta: Int) {
         _state.update { it.copy(goals = it.goals.copy(water = (it.goals.water + delta).coerceIn(250, 10000))) }
-    }
-
-    fun adjustCalories(delta: Int) {
-        _state.update { it.copy(goals = it.goals.copy(calories = (it.goals.calories + delta).coerceIn(500, 10000))) }
     }
 
     fun adjustProtein(delta: Int) {
@@ -323,10 +314,9 @@ class WelcomeViewModel(app: Application) : AndroidViewModel(app) {
             // Sistema de medidas
             settingsRepo.setMeasurementSystem(s.measurementSystem)
 
-            // Salva todas as 10 metas diárias
+            // Salva todas as 9 metas diárias
             goalConfigRepo.setGoalValue("tracking.sleep", s.goals.sleep)
             goalConfigRepo.setGoalValue("tracking.water", s.goals.water)
-            goalConfigRepo.setGoalValue("tracking.calories", s.goals.calories)
             goalConfigRepo.setGoalValue("tracking.protein", s.goals.protein)
             goalConfigRepo.setGoalValue("tracking.carbs", s.goals.carbs)
             goalConfigRepo.setGoalValue("tracking.fiber", s.goals.fiber)
@@ -336,7 +326,6 @@ class WelcomeViewModel(app: Application) : AndroidViewModel(app) {
             goalConfigRepo.setGoalValue("tracking.creatine", s.goals.creatine)
 
             // Metas opcionais: se incluídas restaura, se não incluídas remove
-            if (s.includeCalories) goalConfigRepo.restore("tracking.calories") else goalConfigRepo.remove("tracking.calories")
             if (s.includeFats) goalConfigRepo.restore("tracking.goodFat") else goalConfigRepo.remove("tracking.goodFat")
             if (s.includeCreatine) goalConfigRepo.restore("tracking.creatine") else goalConfigRepo.remove("tracking.creatine")
 

@@ -123,7 +123,6 @@ class EditRecordViewModel(app: Application) : AndroidViewModel(app) {
             draftIntakes["tracking.goodFat"] = record.goodFat
             draftIntakes["tracking.fiber"] = record.fiber
             draftIntakes["tracking.sleep"] = record.sleep
-            draftIntakes["tracking.calories"] = stored["tracking.calories"] ?: 0
             draftIntakes["tracking.creatine"] = stored["tracking.creatine"] ?: 0
             // Treino/cardio: usa o valor salvo; em registros antigos (só booleano) cai pro alvo quando marcado.
             draftIntakes["tracking.workout"] =

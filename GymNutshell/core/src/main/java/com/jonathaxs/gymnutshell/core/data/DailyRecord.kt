@@ -45,9 +45,7 @@ data class DailyRecord(
  */
 fun DailyRecord.normalizeAchievement(): DailyRecord {
     val tier = DailyAchievement.fromPercent(percent)
-    val theme = AppTheme.entries.firstOrNull { theme ->
-        DailyAchievement.entries.any { theme.emoji(it) == achievementEmoji }
-    } ?: AppTheme.Cat
+    val theme = AppTheme.ownerOfEmoji(achievementEmoji) ?: AppTheme.Cat
     return copy(
         achievementEmoji = theme.emoji(tier),
         points = tier.points,

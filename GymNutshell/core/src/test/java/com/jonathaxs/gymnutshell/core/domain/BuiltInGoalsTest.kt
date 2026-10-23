@@ -6,11 +6,11 @@ import org.junit.Test
 class BuiltInGoalsTest {
 
     @Test
-    fun `gera as 10 metas fixas usando os alvos do Result`() {
+    fun `gera as 9 metas fixas usando os alvos do Result`() {
         val result = GoalsCalculator.calculate(80.0, 180, 30, "male", UserGoal.Maintenance)
         val goals = BuiltInGoals.forResult(result)
 
-        assertEquals(10, goals.size)
+        assertEquals(9, goals.size)
 
         val water = goals.first { it.key == "tracking.water" }
         assertEquals(result.water, water.target)
@@ -48,18 +48,9 @@ class BuiltInGoalsTest {
         val config = GoalConfig(removedKeys = setOf("tracking.goodFat", "tracking.creatine"))
         val keys = BuiltInGoals.active(result, config).map { it.key }
 
-        assertEquals(8, keys.size)
+        assertEquals(7, keys.size)
         assert("tracking.goodFat" !in keys)
         assert("tracking.creatine" !in keys)
-    }
-
-    @Test
-    fun `active descarta calorias quando removida`() {
-        val config = GoalConfig(removedKeys = setOf("tracking.calories"))
-        val keys = BuiltInGoals.active(result, config).map { it.key }
-
-        assertEquals(9, keys.size)
-        assert("tracking.calories" !in keys)
     }
 
     @Test
@@ -93,7 +84,7 @@ class BuiltInGoalsTest {
         // Ordem salva incompleta (só creatine): as outras 9 vêm depois, na ordem natural.
         val keys = BuiltInGoals.active(result, GoalConfig(fixedOrder = listOf("tracking.creatine"))).map { it.key }
 
-        assertEquals(10, keys.size)
+        assertEquals(9, keys.size)
         assertEquals("tracking.creatine", keys.first())
         assertEquals(
             BuiltInGoals.forResult(result).map { it.key }.filter { it != "tracking.creatine" },

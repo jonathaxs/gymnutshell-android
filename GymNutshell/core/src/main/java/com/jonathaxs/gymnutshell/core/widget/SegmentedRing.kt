@@ -13,14 +13,23 @@ object SegmentedRing {
 
     const val SEGMENT_COUNT = 5
 
-    /** Cores fixas dos 5 segmentos, na ordem do sentido horário (iguais ao iOS). */
-    val SEGMENT_COLORS: List<Long> = listOf(
-        0xFFFF3B30L, // 1º Vermelho (Red)
-        0xFFFFCC00L, // 2º Amarelo (Yellow)
-        0xFF34C759L, // 3º Verde (Green)
-        0xFF007AFFL, // 4º Azul (Blue)
-        0xFFAF52DEL, // 5º Violeta / Roxo (Purple)
+    /** Espessura do anel no ícone do app: 18% do lado (igual ao iconLineWidthRatio do iOS). */
+    const val ICON_LINE_WIDTH_RATIO = 0.18f
+
+    /** Contorno da parte preenchida: 6% da espessura, no mínimo 1 (igual ao iOS). */
+    fun rimWidth(strokeWidth: Float): Float = maxOf(strokeWidth * 0.06f, 1f)
+
+    /** Paleta de cada segmento, medida no ícone do app — porte de RingSegmentPalette (iOS). */
+    val PALETTES: List<RingSegmentPalette> = listOf(
+        RingSegmentPalette(light = 0xFFFD866CL, base = 0xFFFE6E55L, dark = 0xFFF25C48L, rimOnLight = 0xFF7F382BL, rimOnDark = 0xFFFFB9ADL),
+        RingSegmentPalette(light = 0xFFFEDB56L, base = 0xFFFEC239L, dark = 0xFFF6AD2AL, rimOnLight = 0xFF83631BL, rimOnDark = 0xFFFBE29CL),
+        RingSegmentPalette(light = 0xFF6CF4A0L, base = 0xFF46DA7FL, dark = 0xFF38C86EL, rimOnLight = 0xFF267143L, rimOnDark = 0xFFA4EFC0L),
+        RingSegmentPalette(light = 0xFF67CEFDL, base = 0xFF3CA6FCL, dark = 0xFF2D92EAL, rimOnLight = 0xFF1E547FL, rimOnDark = 0xFF9FD4FFL),
+        RingSegmentPalette(light = 0xFF5C57A8L, base = 0xFF47468FL, dark = 0xFF3B3A7EL, rimOnLight = 0xFF272650L, rimOnDark = 0xFFA5A3C8L),
     )
+
+    /** Cor base dos 5 segmentos (também cor dos níveis), no sentido horário: vermelho, amarelo, verde, azul, roxo. */
+    val SEGMENT_COLORS: List<Long> = PALETTES.map { it.base }
 
     /** Retorna a cor ARGB de um segmento pelo índice (0..4). */
     fun colorForIndex(index: Int): Long =
@@ -64,12 +73,12 @@ object SegmentedRing {
     fun fractions(percent: Int): List<Float> = fractions(percent / 100.0)
 
     /**
-     * Espaço entre segmentos em graus — compensa as pontas arredondadas + um respiro visível de 4pt.
-     * Fórmula idêntica ao iOS: `((lineWidth + 4) / max(radius, 1)) * 180 / .pi`.
+     * Espaço entre segmentos em graus — compensa as pontas arredondadas + um respiro de 22% da espessura.
+     * Fórmula idêntica ao iOS: `(lineWidth * 1.22 / max(radius, 1)) * 180 / .pi`.
      */
     fun gapDegrees(radius: Float, strokeWidth: Float): Float {
         val r = maxOf(radius, 1f)
-        return ((strokeWidth + 4f) / r) * (180f / PI.toFloat())
+        return (strokeWidth * 1.22f / r) * (180f / PI.toFloat())
     }
 
     /**
@@ -99,6 +108,15 @@ object SegmentedRing {
         }
     }
 }
+
+/** Cores de um segmento (ARGB cru): gradiente claro -> escuro, base e contorno no claro/escuro. */
+data class RingSegmentPalette(
+    val light: Long,
+    val base: Long,
+    val dark: Long,
+    val rimOnLight: Long,
+    val rimOnDark: Long,
+)
 
 /**
  * Geometria calculada de um segmento do anel para desenho em Canvas.

@@ -34,9 +34,9 @@ enum class AppTheme(val rawValue: String, val category: ThemeCategory) {
     /** Emoji do tema para um tier — valores idênticos ao AppTheme.emoji(for:) do iOS (base). */
     fun emoji(tier: DailyAchievement): String = when (this) {
         Gym -> tier.pick("🐓", "🏋️", "🐀", "💪", "🗿")
-        Running -> tier.pick("🚶", "👟", "🏃", "🏅", "🎽")
-        Cat -> tier.pick("🐱", "🐈", "🐆", "🦁", "🐅")
-        Dog -> tier.pick("🐶", "🐩", "🐕‍🦺", "🐕", "🐺")
+        Running -> tier.pick("🚶", "👟", "🏃", "🎽", "🏅")
+        Cat -> tier.pick("🐱", "🐈", "🐆", "🐅", "🦁")
+        Dog -> tier.pick("🐶", "🐩", "🐕‍🦺", "🐺", "🐕")
         Bear -> tier.pick("🧸", "🐻", "🐻‍❄️", "🦬", "🦣")
         Dino -> tier.pick("🐢", "🐊", "🦖", "🦕", "🦴")
         Dragon -> tier.pick("🥚", "🦎", "🐉", "🐲", "👑")
@@ -48,7 +48,7 @@ enum class AppTheme(val rawValue: String, val category: ThemeCategory) {
         Ninja -> tier.pick("🥋", "⚔️", "🥷", "🦸", "⛩️")
         Fire -> tier.pick("🕯️", "🔥", "🌋", "🌞", "💥")
         Plant -> tier.pick("🌱", "🌿", "🌳", "🎄", "🏞️")
-        Astronaut -> tier.pick("🛰️", "🧑‍🚀", "🚀", "🛸", "👽")
+        Astronaut -> tier.pick("🧑‍🚀", "🚀", "🛸", "👽", "🚪")
         Celestial -> tier.pick("☄️", "🌔", "🌎", "🪐", "🌌")
         Champion -> tier.pick("🥉", "🥈", "🥇", "💎", "🏆")
         Number -> tier.pick("1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣")
@@ -143,6 +143,12 @@ enum class AppTheme(val rawValue: String, val category: ThemeCategory) {
         val Default = Gym
         fun fromRaw(raw: String?): AppTheme = entries.firstOrNull { it.rawValue == raw } ?: Default
         fun inCategory(category: ThemeCategory): List<AppTheme> = entries.filter { it.category == category }
+
+        /** Tema dono de um emoji salvo. Inclui emojis que saíram de uso (🛰️ era o nível 1 do Espaço). */
+        fun ownerOfEmoji(emoji: String): AppTheme? {
+            if (emoji == "🛰️") return Astronaut
+            return entries.firstOrNull { theme -> DailyAchievement.entries.any { theme.emoji(it) == emoji } }
+        }
     }
 }
 
