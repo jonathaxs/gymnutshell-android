@@ -68,8 +68,6 @@ fun ThemeSettingsScreen(onBack: () -> Unit, viewModel: SettingsViewModel = viewM
     val accent = viewModel.accentColor.collectAsStateWithLifecycle().value.color
     // Sexo do perfil define as variantes femininas de emoji/nome (espelha o `sex` do iOS).
     val sex = viewModel.profile.collectAsStateWithLifecycle().value.sex
-    // Tema cujo sheet de níveis está aberto (null = nenhum), igual ao $infoTheme do iOS.
-    var infoTheme by remember { mutableStateOf<AppTheme?>(null) }
 
     Scaffold(topBar = { SettingsTopBar(stringResource(R.string.settings_theme), onBack) }) { padding ->
         LazyColumn(modifier = Modifier.fillMaxSize().padding(padding)) {
@@ -84,7 +82,6 @@ fun ThemeSettingsScreen(onBack: () -> Unit, viewModel: SettingsViewModel = viewM
                                 selected = theme == selected,
                                 accent = accent,
                                 onClick = { viewModel.setTheme(theme) },
-                                onInfo = { infoTheme = theme },
                             )
                         }
                     }
@@ -94,15 +91,12 @@ fun ThemeSettingsScreen(onBack: () -> Unit, viewModel: SettingsViewModel = viewM
         }
     }
 
-    // Sheet com os 4 níveis do tema tocado — porte do ThemeInfoView (iOS, sempre apresentado como sheet).
-    infoTheme?.let { theme ->
-        ThemeInfoSheet(theme = theme, sex = sex, onDismiss = { infoTheme = null })
-    }
 }
 
 /**
- * Linha de tema: nome + prévia dos 4 emojis; checkmark (na cor de destaque) quando selecionado
- * e botão (i) que abre o sheet de níveis. O botão fica fora da área de toque que seleciona o tema.
+ * Linha de tema, no mesmo layout da Welcome: nome em cima, os 5 emojis embaixo (8 de respiro, 14 de margem
+ * vertical); selecionada com um véu claro + check (não mais preenchida com a cor de destaque) e o botão
+ * Detalhes, que abre o balão dos níveis, fora da área que seleciona o tema.
  */
 @Composable
 private fun ThemeRow(
@@ -111,67 +105,38 @@ private fun ThemeRow(
     selected: Boolean,
     accent: Color,
     onClick: () -> Unit,
-    onInfo: () -> Unit,
 ) {
     val themeName = stringResource(themeNameRes(theme, sex))
-    // Linha selecionada ganha fundo na cor de destaque e conteúdo branco — igual ao listRowBackground do iOS.
-    // O Surface do GroupCard já recorta os cantos, então a primeira/última linha herdam o arredondamento.
-    val contentColor = if (selected) Color.White else MaterialTheme.colorScheme.onSurface
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 56.dp)
-            .then(if (selected) Modifier.background(accent) else Modifier)
+            .then(if (selected) Modifier.background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.06f)) else Modifier)
             .clickable(role = Role.Button, onClick = onClick)
-            .padding(start = 20.dp, top = 12.dp, bottom = 12.dp, end = 8.dp),
+            .padding(start = 20.dp, top = 14.dp, bottom = 14.dp, end = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Column(Modifier.weight(1f)) {
-            Text(themeName, style = MaterialTheme.typography.bodyLarge, color = contentColor)
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Text(
+                themeName,
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+                ),
+                color = MaterialTheme.colorScheme.onSurface,
+            )
             // Prévia decorativa: ler a lista de emojis do nível não acrescenta nada ao nome do tema.
             Text(
-                theme.previewEmojis(sex).joinToString("  "),
-                style = MaterialTheme.typography.titleMedium,
+                theme.previewEmojis(sex).joinToString(" "),
+                style = MaterialTheme.typography.bodyLarge,
+                maxLines = 1,
                 modifier = Modifier.clearAndSetSemantics {},
             )
         }
         if (selected) {
             Spacer(Modifier.width(8.dp))
-            GroupCheck(Color.White)
+            GroupCheck(accent)
         }
-        IconButton(onClick = onInfo) {
-            Icon(
-                Icons.Outlined.Info,
-                contentDescription = stringResource(R.string.a11y_theme_info, themeName),
-                tint = if (selected) Color.White else accent,
-            )
-        }
-    }
-}
-
-/** Sheet informativo dos 4 níveis de um tema: emoji + nível + faixa de progresso. Porte do ThemeInfoView (iOS). */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-internal fun ThemeInfoSheet(theme: AppTheme, sex: String, onDismiss: () -> Unit) {
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val rangeSuffix = stringResource(R.string.tier_info_range_suffix)
-    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
-        // Título = nome do tema, como o navigationTitle do ThemeInfoView.
-        InfoSheetTitle(stringResource(themeNameRes(theme, sex)))
-        Column(
-            Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(bottom = 24.dp),
-        ) {
-            GroupSection(title = stringResource(R.string.tier_info_section_levels)) {
-                DailyAchievement.entries.forEachIndexed { index, tier ->
-                    if (index > 0) GroupRowDivider()
-                    GroupRow(
-                        title = stringResource(theme.tierNameRes(tier, sex)),
-                        subtitle = tierRange(tier) + rangeSuffix,
-                        leading = { Text(theme.emoji(tier, sex), style = MaterialTheme.typography.headlineSmall) },
-                    )
-                }
-            }
-        }
+        Spacer(Modifier.width(8.dp))
+        ThemeDetailsButton(theme = theme, sex = sex)
     }
 }
 

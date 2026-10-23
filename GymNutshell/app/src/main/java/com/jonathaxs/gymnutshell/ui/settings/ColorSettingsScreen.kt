@@ -58,8 +58,8 @@ import com.jonathaxs.gymnutshell.ui.welcome.RoundStepButton
 
 /**
  * Tela de escolha de cor de destaque — porte de ColorSettingsView (iOS):
- * Prévia ao vivo no topo (mini Hoje com anel, % na cor, 2 botões de categoria e barra de progresso)
- * e grade com as 8 cores num card agrupado.
+ * grade com as 8 cores num card agrupado e, embaixo, a prévia ao vivo (% na cor, 2 botões de categoria e barra
+ * de progresso com − e +).
  */
 @Composable
 fun ColorSettingsScreen(
@@ -91,25 +91,7 @@ fun ColorSettingsScreen(
                     .padding(vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp),
             ) {
-                // 1. Prévia ao vivo da cor
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    Text(
-                        text = stringResource(R.string.settings_color_preview),
-                        style = MaterialTheme.typography.titleSmall,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(start = GroupInset + 20.dp, end = GroupInset),
-                    )
-
-                    GroupCard {
-                        ColorLivePreview(color = animatedColor)
-                    }
-                }
-
-                // 2. Grade de cores de destaque
+                // 1. Grade de cores de destaque
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -136,13 +118,31 @@ fun ColorSettingsScreen(
                     }
                 }
 
+                // 2. Prévia ao vivo da cor (embaixo da grade, como no iOS)
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.settings_color_preview),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(start = GroupInset + 20.dp, end = GroupInset),
+                    )
+
+                    GroupCard {
+                        ColorLivePreview(color = animatedColor)
+                    }
+                }
+
                 Spacer(Modifier.height(16.dp))
             }
         }
     }
 }
 
-/** Mini-versão da Today com a cor selecionada: anel + %, 2 botões de categoria e barra de progresso com − e +. */
+/** Mini-versão da Today com a cor selecionada: %, 2 botões de categoria e barra de progresso com − e +. */
 @Composable
 private fun ColorLivePreview(color: Color) {
     Column(
@@ -151,45 +151,12 @@ private fun ColorLivePreview(color: Color) {
             .padding(18.dp),
         verticalArrangement = Arrangement.spacedBy(18.dp),
     ) {
-        // Linha superior: anel, texto 62% + Água, e 2 botões de categoria
+        // Linha superior: 62% + Água e 2 botões de categoria (sem anel: as cores do anel são fixas)
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            // Anel de progresso 84x84dp com "💪" no centro
-            Box(
-                modifier = Modifier.size(84.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                Canvas(modifier = Modifier.fillMaxSize()) {
-                    val strokeWidth = 10.dp.toPx()
-                    // Trilho de fundo
-                    drawArc(
-                        color = color.copy(alpha = 0.2f),
-                        startAngle = -90f,
-                        sweepAngle = 360f,
-                        useCenter = false,
-                        style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
-                    )
-                    // Segmento preenchido 62%
-                    drawArc(
-                        color = color,
-                        startAngle = -90f,
-                        sweepAngle = 360f * 0.62f,
-                        useCenter = false,
-                        style = Stroke(width = strokeWidth, cap = StrokeCap.Round),
-                    )
-                }
-                Text(
-                    text = "💪",
-                    fontSize = 28.sp,
-                    modifier = Modifier.clearAndSetSemantics {},
-                )
-            }
-
-            Spacer(Modifier.width(16.dp))
-
             // Rótulo 62% + Água
             Column(
                 modifier = Modifier.weight(1f),
@@ -252,17 +219,15 @@ private fun ColorLivePreview(color: Color) {
                     symbol = "−",
                     contentDescription = "",
                     onClick = {},
-                    enabled = false,
                     color = color,
-                    size = 40.dp,
+                    size = 44.dp,
                 )
                 RoundStepButton(
                     symbol = "+",
                     contentDescription = "",
                     onClick = {},
-                    enabled = false,
                     color = color,
-                    size = 40.dp,
+                    size = 44.dp,
                 )
             }
         }
@@ -283,6 +248,12 @@ private fun CategoryPreviewCircle(color: Color, icon: @Composable () -> Unit) {
     }
 }
 
+/** Ordem de exibição das cores (ordem dos cases de AppAccentColor no iOS). O enum não muda: é salvo pelo nome. */
+private val AccentColorOrder = listOf(
+    AccentColor.Purple, AccentColor.Blue, AccentColor.Green, AccentColor.Red,
+    AccentColor.Pink, AccentColor.Cyan, AccentColor.Yellow, AccentColor.Orange,
+)
+
 /** Grade 4 colunas com as 8 cores de destaque. */
 @Composable
 private fun ColorGrid(selected: AccentColor, onSelect: (AccentColor) -> Unit) {
@@ -290,7 +261,7 @@ private fun ColorGrid(selected: AccentColor, onSelect: (AccentColor) -> Unit) {
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.fillMaxWidth(),
     ) {
-        AccentColor.entries.chunked(4).forEach { rowColors ->
+        AccentColorOrder.chunked(4).forEach { rowColors ->
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),

@@ -1,5 +1,10 @@
 package com.jonathaxs.gymnutshell.ui.settings
 
+import kotlinx.coroutines.launch
+import androidx.compose.ui.draw.scale
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.Animatable
 import android.os.Build
 import android.view.HapticFeedbackConstants
 import android.widget.ImageView
@@ -75,7 +80,15 @@ fun AboutScreen(
     var tapCount by remember { mutableIntStateOf(0) }
     var lastTapTime by remember { mutableLongStateOf(0L) }
 
+    // Cada toque no ícone dá um zoom (1.18 e volta com mola), além do easter egg.
+    val iconScale = remember { Animatable(1f) }
+    val scope = rememberCoroutineScope()
+
     val onIconTap: () -> Unit = {
+        scope.launch {
+            iconScale.animateTo(1.18f, spring(dampingRatio = 0.5f, stiffness = 1000f))
+            iconScale.animateTo(1f, spring(dampingRatio = 0.6f, stiffness = 250f))
+        }
         val now = System.currentTimeMillis()
         if (now - lastTapTime > 2_000L) {
             tapCount = 0
@@ -108,7 +121,7 @@ fun AboutScreen(
             Spacer(Modifier.height(24.dp))
 
             // Ícone do app com suporte a toques do easter egg
-            AppIcon(onTap = onIconTap)
+            AppIcon(onTap = onIconTap, modifier = Modifier.scale(iconScale.value))
 
             Spacer(Modifier.height(12.dp))
             Text(
@@ -164,7 +177,7 @@ fun AboutScreen(
 }
 
 @Composable
-private fun AppIcon(onTap: () -> Unit) {
+private fun AppIcon(onTap: () -> Unit, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     val appIcon = remember {
         runCatching {
@@ -174,7 +187,7 @@ private fun AppIcon(onTap: () -> Unit) {
     val iconDescription = stringResource(R.string.a11y_app_icon)
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .size(80.dp)
             .clip(RoundedCornerShape(18.dp))
             .clickable(

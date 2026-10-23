@@ -34,7 +34,7 @@ import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.ui.components.GroupRow
 import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
 import com.jonathaxs.gymnutshell.ui.components.GroupSection
-import com.jonathaxs.gymnutshell.ui.components.IconBadge
+import com.jonathaxs.gymnutshell.ui.components.GlassIcon
 import com.jonathaxs.gymnutshell.ui.theme.color
 
 /**
@@ -101,7 +101,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_daily_goals),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 painter = painterResource(R.drawable.ic_settings_target),
                                 color = Color(0xFFFF3B30),
                             )
@@ -113,7 +113,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_fitness_goal),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 painter = painterResource(R.drawable.ic_settings_flame),
                                 color = Color(0xFFFF9500),
                             )
@@ -125,7 +125,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_profile_title),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 imageVector = Icons.Default.AccountCircle,
                                 color = Color(0xFF007AFF),
                             )
@@ -143,7 +143,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_theme),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 imageVector = Icons.Default.Face,
                                 color = Color(0xFFAF52DE),
                             )
@@ -155,7 +155,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_accent_color),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 painter = painterResource(R.drawable.ic_settings_palette),
                                 color = Color(0xFFFF2D55),
                             )
@@ -167,7 +167,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_widget_background),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 painter = painterResource(R.drawable.ic_settings_widgets),
                                 color = Color(0xFF5856D6),
                             )
@@ -179,7 +179,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_preference_control_style),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 painter = painterResource(R.drawable.ic_settings_controls),
                                 color = Color(0xFF8E8E93),
                             )
@@ -197,7 +197,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_health),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 imageVector = Icons.Default.Favorite,
                                 color = Color(0xFFFF2D55),
                             )
@@ -209,7 +209,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_notifications),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 imageVector = Icons.Default.Notifications,
                                 color = Color(0xFFFF3B30),
                             )
@@ -221,7 +221,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_units),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 painter = painterResource(R.drawable.ic_settings_ruler),
                                 color = Color(0xFF30B0C7),
                             )
@@ -233,7 +233,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_backup),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 painter = painterResource(R.drawable.ic_settings_backup),
                                 color = Color(0xFF8E8E93),
                             )
@@ -245,7 +245,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_language),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 painter = painterResource(R.drawable.ic_settings_globe),
                                 color = Color(0xFF007AFF),
                             )
@@ -263,7 +263,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_about_link),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 imageVector = Icons.Default.Info,
                                 color = Color(0xFF8E8E93),
                             )
@@ -275,7 +275,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_wear_os),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 painter = painterResource(R.drawable.ic_settings_watch),
                                 color = Color(0xFF34C759),
                             )
@@ -287,7 +287,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_about_progress_ring),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 painter = painterResource(R.drawable.ic_settings_ring),
                                 color = Color(0xFFFF9500),
                             )
@@ -299,7 +299,7 @@ fun SettingsListScreen(
                     GroupRow(
                         title = stringResource(R.string.settings_about_achievement),
                         leading = {
-                            IconBadge(
+                            GlassIcon(
                                 painter = painterResource(R.drawable.ic_settings_trophy),
                                 color = Color(0xFFFFCC00),
                             )

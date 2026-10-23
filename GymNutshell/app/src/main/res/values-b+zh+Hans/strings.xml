@@ -150,6 +150,8 @@
     <string name="cd_move_down">下移</string>
     <string name="welcome_start_title">你好！</string>
     <string name="welcome_start_new">开始使用</string>
+    <string name="settings_goals_remove">删除目标</string>
+    <string name="settings_goals_default_a11y">默认目标</string>
     <string name="welcome_restore_import_json">导入 JSON 备份</string>
     <string name="welcome_theme_preview">详情</string>
     <string name="welcome_start_restore">恢复备份</string>

@@ -142,6 +142,8 @@ fun ProfileSettingsScreen(
                             isSelected = sex == "female",
                             accentColor = femaleColor,
                             onClick = {
+                                // Trocar o sexo leva a cor de destaque pra a padrão dele (como no iOS).
+                                if (sex != "female") viewModel.setAccent(AccentColor.defaultForSex("female"))
                                 sex = "female"
                                 viewModel.saveProfileBasics(name, "female", favoriteExercise.rawValue)
                             },
@@ -173,6 +175,8 @@ fun ProfileSettingsScreen(
                             isSelected = sex == "male",
                             accentColor = maleColor,
                             onClick = {
+                                // Trocar o sexo leva a cor de destaque pra a padrão dele (como no iOS).
+                                if (sex != "male") viewModel.setAccent(AccentColor.defaultForSex("male"))
                                 sex = "male"
                                 viewModel.saveProfileBasics(name, "male", favoriteExercise.rawValue)
                             },

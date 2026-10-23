@@ -1,5 +1,13 @@
 package com.jonathaxs.gymnutshell.ui.settings
 
+import com.jonathaxs.gymnutshell.ui.icons.Verified
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Button
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
@@ -48,7 +56,6 @@ import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
 import com.jonathaxs.gymnutshell.ui.components.GroupSection
 
 // Verde/vermelho estilo iOS pros botões de restaurar (+) e remover (−).
-private val RestoreGreen = Color(0xFF34C759)
 private val RemoveRed = Color(0xFFFF3B30)
 
 /** Hub de Goals — porte de TrackingGoalsSettingsView (iOS). */
@@ -129,6 +136,7 @@ fun GoalsScreen(
                                     onRemove = { viewModel.removeFixed(row.key) },
                                     onRestore = { viewModel.restoreFixed(row.key) },
                                     onClick = { onOpenGoalDetail(row.key) },
+                                    accent = accent,
                                 )
                             }
                             section.customRows.forEachIndexed { idx, row ->
@@ -206,22 +214,35 @@ private fun FixedGoalRow(
     onRemove: () -> Unit,
     onRestore: () -> Unit,
     onClick: () -> Unit,
+    accent: Color,
 ) {
     if (row.removed) {
-        // Meta opcional removida: acinzentada + botão verde pra restaurar (sempre visível).
+        // Meta opcional removida: acinzentada + o botão Adicionar da Welcome (preenchido na cor de destaque).
         GroupRow(
             title = stringResource(row.titleRes),
             titleColor = MaterialTheme.colorScheme.onSurfaceVariant,
             leading = { Text(row.emoji, style = MaterialTheme.typography.titleLarge, modifier = Modifier.alpha(0.4f)) },
             trailing = {
-                IconButton(onClick = onRestore) {
-                    Text("＋", color = RestoreGreen, fontWeight = FontWeight.Bold, fontSize = 22.sp)
+                Button(
+                    onClick = onRestore,
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(containerColor = accent),
+                    contentPadding = PaddingValues(horizontal = 14.dp, vertical = 4.dp),
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
+                    Spacer(Modifier.width(4.dp))
+                    Text(stringResource(R.string.welcome_option_add), fontWeight = FontWeight.SemiBold)
                 }
             },
-            modifier = Modifier.alpha(0.7f),
         )
         return
     }
+    // Segurar uma meta opcional ativa abre o menu com "Excluir meta" (o − vermelho do modo Editar continua).
+    var showMenu by remember { mutableStateOf(false) }
+    val canHold = row.removable && !editMode
+    Box(
+        if (canHold) Modifier.combinedClickable(onClick = onClick, onLongClick = { showMenu = true }) else Modifier,
+    ) {
     GroupRow(
         title = stringResource(row.titleRes),
         subtitle = row.valueDisplay,
@@ -236,16 +257,30 @@ private fun FixedGoalRow(
                     }
                 }
             } else {
-                Text(
-                    stringResource(row.badgeRes),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface,
+                // Selo nas metas fixas ativas: preto/branco nas padrão, cinza nas opcionais adicionadas.
+                val defaultDesc = stringResource(R.string.settings_goals_default_a11y)
+                Icon(
+                    imageVector = Icons.Filled.Verified,
+                    contentDescription = if (row.removable) null else defaultDesc,
+                    tint = if (row.removable) Color(0xFF8E8E93) else MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.size(20.dp),
                 )
             }
         },
         showChevron = !editMode,
-        onClick = if (editMode) null else onClick,
+        onClick = if (editMode || canHold) null else onClick,
     )
+        DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.settings_goals_remove), color = RemoveRed) },
+                leadingIcon = { Icon(Icons.Default.Delete, contentDescription = null, tint = RemoveRed) },
+                onClick = {
+                    showMenu = false
+                    onRemove()
+                },
+            )
+        }
+    }
 }
 
 /** Linha de meta personalizada: emoji + nome + valor; badge "Custom"/chevron, ou setas/excluir no modo editar. */

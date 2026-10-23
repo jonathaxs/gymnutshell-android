@@ -150,6 +150,8 @@
     <string name="cd_move_down">Descendre</string>
     <string name="welcome_start_title">Salut !</string>
     <string name="welcome_start_new">Commencer</string>
+    <string name="settings_goals_remove">Supprimer l’objectif</string>
+    <string name="settings_goals_default_a11y">Objectif par défaut</string>
     <string name="welcome_restore_import_json">Importer une sauvegarde JSON</string>
     <string name="welcome_theme_preview">Détails</string>
     <string name="welcome_start_restore">Restaurer une sauvegarde</string>

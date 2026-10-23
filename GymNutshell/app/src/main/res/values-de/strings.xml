@@ -150,6 +150,8 @@
     <string name="cd_move_down">Nach unten verschieben</string>
     <string name="welcome_start_title">Hallo!</string>
     <string name="welcome_start_new">Starten</string>
+    <string name="settings_goals_remove">Ziel löschen</string>
+    <string name="settings_goals_default_a11y">Standardziel</string>
     <string name="welcome_restore_import_json">JSON-Backup importieren</string>
     <string name="welcome_theme_preview">Details</string>
     <string name="welcome_start_restore">Backup wiederherstellen</string>

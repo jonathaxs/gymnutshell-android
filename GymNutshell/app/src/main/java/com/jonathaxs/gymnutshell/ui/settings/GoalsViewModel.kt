@@ -35,7 +35,6 @@ data class FixedRowUi(
     val emoji: String,
     @StringRes val titleRes: Int,
     val valueDisplay: String,
-    @StringRes val badgeRes: Int,
     val removed: Boolean,
     val removable: Boolean,
 )
@@ -109,7 +108,6 @@ class GoalsViewModel(app: Application) : AndroidViewModel(app) {
                     emoji = g.emoji,
                     titleRes = goalTitleRes(key),
                     valueDisplay = "$shownValue $unit",
-                    badgeRes = if (removable) R.string.goal_badge_recommended else R.string.goal_badge_standard,
                     removed = key in config.removedKeys,
                     removable = removable,
                 )

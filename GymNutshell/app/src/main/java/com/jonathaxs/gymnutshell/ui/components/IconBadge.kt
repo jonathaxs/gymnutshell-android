@@ -1,5 +1,8 @@
 package com.jonathaxs.gymnutshell.ui.components
 
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.border
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
@@ -72,3 +75,42 @@ fun IconBadge(
         )
     }
 }
+
+/**
+ * Ícone de vidro dos Ajustes: o símbolo na cor da página dentro de um círculo translúcido na mesma cor,
+ * como os botões redondos da Hoje. Porte do GlassIcon do iOS (substitui o quadradinho colorido na raiz
+ * dos Ajustes; o [IconBadge] segue nas permissões e no Perfil).
+ */
+@Composable
+fun GlassIcon(
+    painter: Painter,
+    color: Color,
+    modifier: Modifier = Modifier,
+    size: Dp = 34.dp,
+    contentDescription: String? = null,
+) {
+    Box(
+        modifier = modifier
+            .size(size)
+            .clip(CircleShape)
+            .background(color.copy(alpha = 0.14f))
+            .border(0.75.dp, color.copy(alpha = 0.28f), CircleShape),
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(
+            painter = painter,
+            contentDescription = contentDescription,
+            tint = color,
+            modifier = Modifier.size(size * 0.55f),
+        )
+    }
+}
+
+@Composable
+fun GlassIcon(
+    imageVector: ImageVector,
+    color: Color,
+    modifier: Modifier = Modifier,
+    size: Dp = 34.dp,
+    contentDescription: String? = null,
+) = GlassIcon(rememberVectorPainter(imageVector), color, modifier, size, contentDescription)

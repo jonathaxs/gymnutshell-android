@@ -150,6 +150,8 @@
     <string name="cd_move_down">下に移動</string>
     <string name="welcome_start_title">ようこそ！</string>
     <string name="welcome_start_new">はじめる</string>
+    <string name="settings_goals_remove">目標を削除</string>
+    <string name="settings_goals_default_a11y">標準の目標</string>
     <string name="welcome_restore_import_json">JSONバックアップを読み込む</string>
     <string name="welcome_theme_preview">詳細</string>
     <string name="welcome_start_restore">バックアップから復元</string>

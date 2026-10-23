@@ -150,6 +150,8 @@
     <string name="cd_move_down">Move down</string>
     <string name="welcome_start_title">Hello!</string>
     <string name="welcome_start_new">Start</string>
+    <string name="settings_goals_remove">Delete Goal</string>
+    <string name="settings_goals_default_a11y">Default goal</string>
     <string name="welcome_restore_import_json">Import JSON backup</string>
     <string name="welcome_theme_preview">Details</string>
     <string name="welcome_start_restore">Restore backup</string>
