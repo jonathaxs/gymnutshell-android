@@ -386,7 +386,6 @@
     <string name="widget_bg_pick_color">Pick a colour</string>
     <string name="common_close">Close</string>
     <string name="today_history">Records</string>
-    <string name="today_hero_achievement_label">Daily achievement</string>
     <string name="today_hero_caption_start">Track a goal to get started</string>
     <string name="today_hero_caption_next_level">%1$d%% to go for the next level</string>
     <string name="today_hero_caption_max">Maximum level reached today!</string>
@@ -395,8 +394,9 @@
     <string name="today_goals_view_mode_grid">Grid</string>
     <string name="today_category_other">Other</string>
     <string name="today_edit_theme">Edit emoji</string>
-    <string name="today_edit_colors">Edit colours</string>
+    <string name="today_edit_colors">Edit accent colours</string>
     <string name="today_edit_controls">Edit controls</string>
+    <string name="today_edit_quick">Quick edit</string>
     <string name="today_edit_goals">Edit goals</string>
     <string name="today_ring_a11y_label">Progress ring</string>
     <string name="today_ring_a11y_value">%1$d percent</string>

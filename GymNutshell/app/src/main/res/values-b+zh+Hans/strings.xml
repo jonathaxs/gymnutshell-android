@@ -386,7 +386,6 @@
     <string name="widget_bg_pick_color">选择颜色</string>
     <string name="common_close">关闭</string>
     <string name="today_history">记录</string>
-    <string name="today_hero_achievement_label">每日成就</string>
     <string name="today_hero_caption_start">记录一个目标以开启今天</string>
     <string name="today_hero_caption_next_level">距离下一等级还差 %1$d%%</string>
     <string name="today_hero_caption_max">今天已达到最高等级！</string>
@@ -395,8 +394,9 @@
     <string name="today_goals_view_mode_grid">网格</string>
     <string name="today_category_other">其他</string>
     <string name="today_edit_theme">编辑表情</string>
-    <string name="today_edit_colors">编辑颜色</string>
+    <string name="today_edit_colors">编辑强调色</string>
     <string name="today_edit_controls">编辑记录方式</string>
+    <string name="today_edit_quick">快速编辑</string>
     <string name="today_edit_goals">编辑目标</string>
     <string name="today_ring_a11y_label">进度环</string>
     <string name="today_ring_a11y_value">百分之 %1$d</string>

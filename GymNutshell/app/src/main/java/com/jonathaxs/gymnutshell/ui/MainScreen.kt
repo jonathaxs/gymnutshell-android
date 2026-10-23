@@ -78,7 +78,6 @@ fun MainScreen(
             composable(MainRoutes.TODAY) {
                 TodayScreen(
                     accent = accent,
-                    onOpenNotifications = { router.openNotifications() },
                     onOpenSettings = { router.openSettings() },
                     onOpenHistory = { router.openSheet(AppSheet.History) },
                     onOpenAchievements = { router.openSheet(AppSheet.Achievements) },

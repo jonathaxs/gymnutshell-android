@@ -386,7 +386,6 @@
     <string name="widget_bg_pick_color">Bir renk seç</string>
     <string name="common_close">Kapat</string>
     <string name="today_history">Kayıtlar</string>
-    <string name="today_hero_achievement_label">Günlük başarı</string>
     <string name="today_hero_caption_start">Başlamak için bir hedefi takip et</string>
     <string name="today_hero_caption_next_level">Sonraki seviye için son %1$d%%</string>
     <string name="today_hero_caption_max">Bugün maksimum seviyeye ulaşıldı!</string>
@@ -395,8 +394,9 @@
     <string name="today_goals_view_mode_grid">Izgara</string>
     <string name="today_category_other">Diğer</string>
     <string name="today_edit_theme">Emojiyi düzenle</string>
-    <string name="today_edit_colors">Renkleri düzenle</string>
+    <string name="today_edit_colors">Vurgu renklerini düzenle</string>
     <string name="today_edit_controls">Denetimleri düzenle</string>
+    <string name="today_edit_quick">Hızlı düzenleme</string>
     <string name="today_edit_goals">Hedefleri düzenle</string>
     <string name="today_ring_a11y_label">İlerleme halkası</string>
     <string name="today_ring_a11y_value">Yüzde %1$d</string>

@@ -37,6 +37,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.Face
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.semantics.heading
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -60,7 +69,15 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.spring
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalDensity
+import kotlinx.coroutines.delay
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -114,7 +131,6 @@ private val DoneGreenColor = Color(0xFF34C759)
 fun TodayScreen(
     modifier: Modifier = Modifier,
     accent: Color = MaterialTheme.colorScheme.primary,
-    onOpenNotifications: () -> Unit = {},
     onOpenSettings: () -> Unit = {},
     onOpenHistory: () -> Unit = {},
     onOpenAchievements: () -> Unit = {},
@@ -153,7 +169,6 @@ fun TodayScreen(
             !isWide -> TodayPortrait(
                 state = state,
                 accent = accent,
-                onOpenNotifications = onOpenNotifications,
                 onOpenSettings = onOpenSettings,
                 onOpenHistory = onOpenHistory,
                 onOpenAchievements = onOpenAchievements,
@@ -168,7 +183,10 @@ fun TodayScreen(
             isTall -> TodayWideGrid(
                 state = state,
                 accent = accent,
-                onOpenNotifications = onOpenNotifications,
+                onOpenTheme = onOpenTheme,
+                onOpenColors = onOpenColors,
+                onOpenControls = onOpenControls,
+                onOpenGoals = onOpenGoals,
                 onOpenSettings = onOpenSettings,
                 onOpenHistory = onOpenHistory,
                 onOpenAchievements = onOpenAchievements,
@@ -179,7 +197,10 @@ fun TodayScreen(
             else -> TodayWideColumn(
                 state = state,
                 accent = accent,
-                onOpenNotifications = onOpenNotifications,
+                onOpenTheme = onOpenTheme,
+                onOpenColors = onOpenColors,
+                onOpenControls = onOpenControls,
+                onOpenGoals = onOpenGoals,
                 onOpenSettings = onOpenSettings,
                 onOpenHistory = onOpenHistory,
                 onOpenAchievements = onOpenAchievements,
@@ -208,7 +229,6 @@ fun TodayScreen(
 private fun TodayPortrait(
     state: TodayUiState,
     accent: Color,
-    onOpenNotifications: () -> Unit,
     onOpenSettings: () -> Unit,
     onOpenHistory: () -> Unit,
     onOpenAchievements: () -> Unit,
@@ -225,13 +245,10 @@ private fun TodayPortrait(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Top,
     ) {
-        // Barra do topo: sino à esquerda, data no meio e engrenagem à direita
+        // Topo fixo só com a data: os Ajustes ficam na linha de botões abaixo do anel.
         TodayTopBar(
             dateLabel = state.dateLabel,
-            accent = accent,
-            onOpenNotifications = onOpenNotifications,
-            onOpenSettings = onOpenSettings,
-            modifier = Modifier.padding(horizontal = 20.dp, vertical = 8.dp),
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 8.dp),
         )
 
         // Conteúdo rolável: hero -> (grade em modo grid) -> botões -> (lista em modo list) -> atalhos
@@ -239,12 +256,13 @@ private fun TodayPortrait(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp, vertical = 8.dp)
+                // Margem maior que a padrão: metas e botões mais estreitos, na mesma largura (iOS).
+                .padding(horizontal = 32.dp, vertical = 8.dp)
                 .animateContentSize(animationSpec = tween(durationMillis = 300)),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
-            // Hero em card: anel de 5 segmentos + conquista do dia + frase de próximo nível
+            // Hero: anel de 5 segmentos + conquista do dia + frase de próximo nível
             TodayHeroCard(
                 state = state,
                 onRingClick = onRingClick,
@@ -274,10 +292,11 @@ private fun TodayPortrait(
                 )
             }
 
-            // Botões de página: [alternar lista/grade] [Histórico] [troféu Conquistas]
+            // Botões de página: Ajustes, Registros, Conquistas e troca lista/grade
             TodayPageButtons(
                 goalsViewMode = state.goalsViewMode,
                 accent = accent,
+                onOpenSettings = onOpenSettings,
                 onToggleViewMode = { viewModel.toggleGoalsViewMode() },
                 onOpenHistory = onOpenHistory,
                 onOpenAchievements = onOpenAchievements,
@@ -305,82 +324,41 @@ private fun TodayPortrait(
                 )
             }
 
-            // Atalhos rápidos no rodapé: Tema, Cores, Controles e Editar metas
-            TodayEditShortcuts(
+            // Edição rápida no rodapé: um botão só, com o balão de Metas, Controles, Emojis e Cores
+            TodayQuickEditButton(
                 accent = accent,
                 onOpenTheme = onOpenTheme,
                 onOpenColors = onOpenColors,
                 onOpenControls = onOpenControls,
                 onOpenGoals = onOpenGoals,
-                modifier = Modifier
-                    .widthIn(max = TodayPortraitMaxWidth)
-                    .fillMaxWidth()
-                    .padding(top = 8.dp, bottom = 24.dp),
+                modifier = Modifier.padding(
+                    top = if (state.goalsViewMode == TodayGoalsViewMode.List) 12.dp else 0.dp,
+                    bottom = 24.dp,
+                ),
             )
         }
     }
 }
 
-/** Barra superior: sino à esquerda, data no centro e engrenagem à direita (porte do AppTabHeader). */
+/** Topo da Hoje: só a data, centralizada (porte do AppTabHeader sem botões). */
 @Composable
 private fun TodayTopBar(
     dateLabel: String,
-    accent: Color,
-    onOpenNotifications: () -> Unit,
-    onOpenSettings: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    Text(
+        text = dateLabel,
+        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+        textAlign = TextAlign.Center,
+        color = MaterialTheme.colorScheme.onSurface,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        IconButton(
-            onClick = onOpenNotifications,
-            modifier = Modifier
-                .size(44.dp)
-                .clip(CircleShape)
-                .background(accent.copy(alpha = 0.12f)),
-        ) {
-            Icon(
-                imageVector = Icons.Default.Notifications,
-                contentDescription = stringResource(R.string.today_hero_bell_a11y_label),
-                tint = accent,
-                modifier = Modifier.size(24.dp),
-            )
-        }
-
-        Text(
-            text = dateLabel,
-            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurface,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .weight(1f)
-                .padding(horizontal = 8.dp),
-        )
-
-        IconButton(
-            onClick = onOpenSettings,
-            modifier = Modifier
-                .size(44.dp)
-                .clip(CircleShape)
-                .background(accent.copy(alpha = 0.12f)),
-        ) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = stringResource(R.string.tab_settings),
-                tint = accent,
-                modifier = Modifier.size(24.dp),
-            )
-        }
-    }
+    )
 }
 
 /**
- * Hero em Card: anel centralizado com a porcentagem do dia e, a partir do 1º registro, o
+ * Hero: anel: anel centralizado com a porcentagem do dia e, a partir do 1º registro, o
  * painel de Conquista ao lado; abaixo, a frase de próximo nível (porte de TodayHeroView).
  */
 @Composable
@@ -394,19 +372,13 @@ private fun TodayHeroCard(
     val hasStarted = state.overallPercent > 0
     val ringSize = if (verticalLayout) 170.dp else 150.dp
 
-    Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(24.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+    // Sem card desde a 2.0 (como no iOS): o hero fica direto no fundo da tela.
+    Column(
+        modifier = modifier.padding(vertical = if (verticalLayout) 8.dp else 4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp, horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(14.dp),
-        ) {
+        run {
             if (verticalLayout) {
                 // Tablet alto: anel em cima, conquista embaixo
                 TodayProgressRing(
@@ -437,7 +409,8 @@ private fun TodayHeroCard(
                         ringSize = ringSize,
                     )
                     if (hasStarted) {
-                        Spacer(Modifier.width(28.dp))
+                        // Espaço curto: o emoji fica perto do anel (iOS: 8).
+                        Spacer(Modifier.width(8.dp))
                         TodayAchievementPanel(
                             tierEmoji = state.tierEmoji,
                             tierNameRes = state.tierNameRes,
@@ -459,7 +432,7 @@ private fun TodayHeroCard(
     }
 }
 
-/** Painel de conquista ao lado do anel: rótulo "Conquista do dia", emoji grande e nome do nível. */
+/** Painel de conquista ao lado do anel: emoji grande e nome do nível, da altura do anel. */
 @Composable
 private fun TodayAchievementPanel(
     tierEmoji: String,
@@ -473,7 +446,8 @@ private fun TodayAchievementPanel(
 
     Column(
         modifier = modifier
-            .width(130.dp)
+            // Largura só pro nome caber; mais larga, sobra vão e o emoji se afasta do anel.
+            .width(116.dp)
             .height(height)
             .clip(RoundedCornerShape(16.dp))
             .clickable(onClick = onClick)
@@ -485,24 +459,16 @@ private fun TodayAchievementPanel(
         verticalArrangement = Arrangement.Center,
     ) {
         Text(
-            text = stringResource(R.string.today_hero_achievement_label),
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.Medium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
-        Spacer(Modifier.height(4.dp))
-        Text(
             text = tierEmoji,
-            fontSize = 62.sp,
+            fontSize = (height.value * 0.44f).sp,
             textAlign = TextAlign.Center,
             modifier = Modifier.clearAndSetSemantics {},
         )
         Spacer(Modifier.height(4.dp))
         Text(
             text = tierName,
-            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center,
             maxLines = 2,
@@ -542,13 +508,14 @@ private fun TodayHeroCaption(
 }
 
 /**
- * Botões de página da Today: alternar lista/grade (só ícone), Histórico (ícone + texto) e troféu
- * de Conquistas (só ícone). Porte do TodayPageButtons do iOS.
+ * Botões de página da Today, todos redondos e só com ícone, na mesma ordem da coluna do iPad:
+ * Ajustes, Registros, Conquistas e troca lista/grade. Porte do TodayPageButtons do iOS.
  */
 @Composable
 private fun TodayPageButtons(
     goalsViewMode: TodayGoalsViewMode,
     accent: Color,
+    onOpenSettings: () -> Unit,
     onToggleViewMode: () -> Unit,
     onOpenHistory: () -> Unit,
     onOpenAchievements: () -> Unit,
@@ -565,58 +532,38 @@ private fun TodayPageButtons(
         horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        // Botão só ícone: lista / grade (mostra o ícone do destino)
-        OutlinedIconButton(
-            onClick = onToggleViewMode,
-            shape = CircleShape,
-            border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
-            modifier = Modifier.size(42.dp),
-        ) {
+        TodayRoundButton(accent, onOpenSettings) {
+            Icon(Icons.Outlined.Settings, stringResource(R.string.tab_settings), tint = accent, modifier = Modifier.size(22.dp))
+        }
+        TodayRoundButton(accent, onOpenHistory) {
+            Icon(painterResource(R.drawable.ic_records), stringResource(R.string.today_history), tint = accent, modifier = Modifier.size(22.dp))
+        }
+        TodayRoundButton(accent, onOpenAchievements) {
+            Icon(painterResource(R.drawable.ic_settings_trophy), stringResource(R.string.achievements_header_title), tint = accent, modifier = Modifier.size(22.dp))
+        }
+        // Mostra o ícone do modo pra onde vai: em lista, o de grade; em grade, o de lista.
+        TodayRoundButton(accent, onToggleViewMode) {
             Icon(
                 painter = painterResource(if (isList) R.drawable.ic_view_grid else R.drawable.ic_view_list),
                 contentDescription = viewModeDesc,
                 tint = accent,
-                modifier = Modifier.size(20.dp),
-            )
-        }
-
-        // Botão Histórico: ícone + texto
-        OutlinedButton(
-            onClick = onOpenHistory,
-            shape = CircleShape,
-            border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_history),
-                contentDescription = null,
-                tint = accent,
-                modifier = Modifier.size(18.dp),
-            )
-            Spacer(Modifier.width(8.dp))
-            Text(
-                text = stringResource(R.string.today_history),
-                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-        }
-
-        // Botão Conquistas: só o troféu
-        OutlinedIconButton(
-            onClick = onOpenAchievements,
-            shape = CircleShape,
-            border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
-            modifier = Modifier.size(42.dp),
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_settings_trophy),
-                contentDescription = stringResource(R.string.achievements_header_title),
-                tint = accent,
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier.size(22.dp),
             )
         }
     }
+}
+
+/** Botão redondo com contorno na cor de destaque (linha de botões da Hoje). */
+@Composable
+private fun TodayRoundButton(accent: Color, onClick: () -> Unit, content: @Composable () -> Unit) {
+    OutlinedIconButton(
+        onClick = onClick,
+        shape = CircleShape,
+        border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
+        colors = IconButtonDefaults.outlinedIconButtonColors(containerColor = accent.copy(alpha = 0.08f)),
+        modifier = Modifier.size(48.dp),
+        content = content,
+    )
 }
 
 /** Conteúdo das seções de metas em modo lista: cada categoria com cabeçalho + card agrupado de metas. */
@@ -634,9 +581,25 @@ private fun TodayGoalsListContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        // Depois do "Vamos lá" da Welcome as categorias entram vindo de baixo, uma por vez (iOS: 140pt, mola,
+        // 0,12s entre elas, 0,7s depois de abrir, pra esperar a troca de tela).
+        val playEntrance = remember { GoalsEntrance.consume() }
+        val density = LocalDensity.current
+
         // Categorias principais
-        state.sections.forEach { section ->
+        state.sections.forEachIndexed { index, section ->
+            val offset = remember { Animatable(if (playEntrance) 1f else 0f) }
+            if (playEntrance) {
+                LaunchedEffect(Unit) {
+                    delay(700L + index * 120L)
+                    offset.animateTo(0f, spring(dampingRatio = 0.8f, stiffness = 120f))
+                }
+            }
             TodayCategorySectionView(
+                modifier = Modifier.graphicsLayer {
+                    translationY = offset.value * with(density) { 140.dp.toPx() }
+                    alpha = 1f - offset.value
+                },
                 section = section,
                 controlStyle = state.controlStyle,
                 accent = accent,
@@ -1145,9 +1108,13 @@ private fun RoundRestDayButton(
     }
 }
 
-/** Atalhos no rodapé da Today: botões circulares Tema, Cores, Controles e pílula Editar metas. */
+/**
+ * "Edição rápida": um botão só (lápis + texto) que abre um balão com Editar metas, Editar controles,
+ * Editar emoji e Editar cores de destaque, nessa ordem. Porte do editShortcuts + TodayQuickEditPopover do iOS.
+ * O menu abre acima ou abaixo conforme o espaço.
+ */
 @Composable
-private fun TodayEditShortcuts(
+private fun TodayQuickEditButton(
     accent: Color,
     onOpenTheme: () -> Unit,
     onOpenColors: () -> Unit,
@@ -1155,72 +1122,66 @@ private fun TodayEditShortcuts(
     onOpenGoals: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        // Tema
-        OutlinedIconButton(
-            onClick = onOpenTheme,
-            shape = CircleShape,
-            border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
-            modifier = Modifier.size(42.dp),
-        ) {
-            Icon(
-                imageVector = Icons.Default.Face,
-                contentDescription = stringResource(R.string.today_edit_theme),
-                tint = accent,
-                modifier = Modifier.size(20.dp),
-            )
-        }
-
-        // Cores
-        OutlinedIconButton(
-            onClick = onOpenColors,
-            shape = CircleShape,
-            border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
-            modifier = Modifier.size(42.dp),
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_settings_palette),
-                contentDescription = stringResource(R.string.today_edit_colors),
-                tint = accent,
-                modifier = Modifier.size(20.dp),
-            )
-        }
-
-        // Controles
-        OutlinedIconButton(
-            onClick = onOpenControls,
-            shape = CircleShape,
-            border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
-            modifier = Modifier.size(42.dp),
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_settings_controls),
-                contentDescription = stringResource(R.string.today_edit_controls),
-                tint = accent,
-                modifier = Modifier.size(20.dp),
-            )
-        }
-
-        // Editar metas
+    var expanded by remember { mutableStateOf(false) }
+    var buttonWidthPx by remember { mutableIntStateOf(0) }
+    val density = LocalDensity.current
+    val menuWidth = 280.dp
+    Box(modifier) {
         OutlinedButton(
-            onClick = onOpenGoals,
+            onClick = { expanded = true },
+            modifier = Modifier.onSizeChanged { buttonWidthPx = it.width },
             shape = CircleShape,
             border = BorderStroke(1.dp, accent.copy(alpha = 0.35f)),
             contentPadding = PaddingValues(horizontal = 14.dp, vertical = 6.dp),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
+            colors = ButtonDefaults.outlinedButtonColors(
+                containerColor = accent.copy(alpha = 0.08f),
+                contentColor = accent,
+            ),
         ) {
+            Icon(Icons.Outlined.Edit, contentDescription = null, modifier = Modifier.size(16.dp))
+            Spacer(Modifier.width(6.dp))
             Text(
-                text = stringResource(R.string.today_edit_goals),
+                text = stringResource(R.string.today_edit_quick),
                 style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
-                color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,
             )
         }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            shape = RoundedCornerShape(20.dp),
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            // Centralizado sob o botão (o padrão alinha pela borda esquerda).
+            offset = DpOffset(x = with(density) { buttonWidthPx.toDp() } / 2 - menuWidth / 2, y = 0.dp),
+            modifier = Modifier.width(menuWidth),
+        ) {
+            Text(
+                text = stringResource(R.string.today_edit_quick),
+                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp)
+                    .semantics { heading() },
+            )
+            val pick: (() -> Unit) -> () -> Unit = { open -> { expanded = false; open() } }
+            QuickEditItem(painterResource(R.drawable.ic_settings_target), R.string.today_edit_goals, accent, pick(onOpenGoals))
+            QuickEditItem(painterResource(R.drawable.ic_settings_controls), R.string.today_edit_controls, accent, pick(onOpenControls))
+            QuickEditItem(rememberVectorPainter(Icons.Outlined.Face), R.string.today_edit_theme, accent, pick(onOpenTheme))
+            QuickEditItem(painterResource(R.drawable.ic_settings_palette), R.string.today_edit_colors, accent, pick(onOpenColors))
+        }
     }
+}
+
+/** Linha do balão de Edição rápida: ícone na cor de destaque + texto. */
+@Composable
+private fun QuickEditItem(icon: Painter, @StringRes title: Int, accent: Color, onClick: () -> Unit) {
+    DropdownMenuItem(
+        text = { Text(stringResource(title), style = MaterialTheme.typography.bodyLarge) },
+        leadingIcon = { Icon(icon, contentDescription = null, tint = accent, modifier = Modifier.size(24.dp)) },
+        onClick = onClick,
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
+    )
 }
 
 /** Wide + alto (tablet): hero empilhado numa coluna fixa à esquerda + metas em grid à direita. */
@@ -1228,7 +1189,10 @@ private fun TodayEditShortcuts(
 private fun TodayWideGrid(
     state: TodayUiState,
     accent: Color,
-    onOpenNotifications: () -> Unit,
+    onOpenTheme: () -> Unit,
+    onOpenColors: () -> Unit,
+    onOpenControls: () -> Unit,
+    onOpenGoals: () -> Unit,
     onOpenSettings: () -> Unit,
     onOpenHistory: () -> Unit,
     onOpenAchievements: () -> Unit,
@@ -1249,13 +1213,36 @@ private fun TodayWideGrid(
                 .fillMaxHeight(),
             contentAlignment = Alignment.Center,
         ) {
-            TodayHeroCard(
-                state = state,
-                onRingClick = onRingClick,
-                onTierClick = onTierClick,
-                verticalLayout = true,
+            // Coluna do hero (layout largo): botões acima da data, como no iPad em pé; Edição rápida embaixo.
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier.fillMaxWidth(),
-            )
+            ) {
+                TodayPageButtons(
+                    goalsViewMode = state.goalsViewMode,
+                    accent = accent,
+                    onOpenSettings = onOpenSettings,
+                    onToggleViewMode = { viewModel.toggleGoalsViewMode() },
+                    onOpenHistory = onOpenHistory,
+                    onOpenAchievements = onOpenAchievements,
+                )
+                TodayTopBar(dateLabel = state.dateLabel)
+                TodayHeroCard(
+                    state = state,
+                    onRingClick = onRingClick,
+                    onTierClick = onTierClick,
+                    verticalLayout = true,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                TodayQuickEditButton(
+                    accent = accent,
+                    onOpenTheme = onOpenTheme,
+                    onOpenColors = onOpenColors,
+                    onOpenControls = onOpenControls,
+                    onOpenGoals = onOpenGoals,
+                )
+            }
         }
         Spacer(Modifier.width(24.dp))
         TodayGoalsGrid(
@@ -1272,7 +1259,10 @@ private fun TodayWideGrid(
 private fun TodayWideColumn(
     state: TodayUiState,
     accent: Color,
-    onOpenNotifications: () -> Unit,
+    onOpenTheme: () -> Unit,
+    onOpenColors: () -> Unit,
+    onOpenControls: () -> Unit,
+    onOpenGoals: () -> Unit,
     onOpenSettings: () -> Unit,
     onOpenHistory: () -> Unit,
     onOpenAchievements: () -> Unit,
@@ -1291,15 +1281,38 @@ private fun TodayWideColumn(
                 .fillMaxHeight(),
             contentAlignment = Alignment.Center,
         ) {
-            TodayHeroCard(
-                state = state,
-                onRingClick = onRingClick,
-                onTierClick = onTierClick,
-                verticalLayout = false,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp),
-            )
+            // Coluna do hero (layout largo): botões acima da data, como no iPad em pé; Edição rápida embaixo.
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .verticalScroll(rememberScrollState()),
+            ) {
+                TodayPageButtons(
+                    goalsViewMode = state.goalsViewMode,
+                    accent = accent,
+                    onOpenSettings = onOpenSettings,
+                    onToggleViewMode = { viewModel.toggleGoalsViewMode() },
+                    onOpenHistory = onOpenHistory,
+                    onOpenAchievements = onOpenAchievements,
+                )
+                TodayTopBar(dateLabel = state.dateLabel)
+                TodayHeroCard(
+                    state = state,
+                    onRingClick = onRingClick,
+                    onTierClick = onTierClick,
+                    verticalLayout = false,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                TodayQuickEditButton(
+                    accent = accent,
+                    onOpenTheme = onOpenTheme,
+                    onOpenColors = onOpenColors,
+                    onOpenControls = onOpenControls,
+                    onOpenGoals = onOpenGoals,
+                )
+            }
         }
         TodayGoalsListContent(
             state = state,
@@ -1401,4 +1414,11 @@ private fun titleRes(key: String): Int = when (key) {
     "tracking.fiber" -> R.string.today_fiber
     "tracking.creatine" -> R.string.today_creatine
     else -> R.string.app_name
+}
+
+/** Pedido único de animar a entrada das categorias da Hoje (marcado ao concluir a Welcome). */
+object GoalsEntrance {
+    @Volatile var pending: Boolean = false
+
+    fun consume(): Boolean = pending.also { pending = false }
 }

@@ -386,7 +386,6 @@
     <string name="widget_bg_pick_color">Choisir une couleur</string>
     <string name="common_close">Fermer</string>
     <string name="today_history">Registres</string>
-    <string name="today_hero_achievement_label">Succès du jour</string>
     <string name="today_hero_caption_start">Suis un premier objectif pour commencer</string>
     <string name="today_hero_caption_next_level">Plus que %1$d%% pour le niveau suivant</string>
     <string name="today_hero_caption_max">Niveau maximum atteint aujourd\'hui !</string>
@@ -395,8 +394,9 @@
     <string name="today_goals_view_mode_grid">Grille</string>
     <string name="today_category_other">Autres</string>
     <string name="today_edit_theme">Modifier l’emoji</string>
-    <string name="today_edit_colors">Modifier les couleurs</string>
+    <string name="today_edit_colors">Modifier les couleurs d\'accentuation</string>
     <string name="today_edit_controls">Modifier les commandes</string>
+    <string name="today_edit_quick">Modification rapide</string>
     <string name="today_edit_goals">Modifier les objectifs</string>
     <string name="today_ring_a11y_label">Anneau de progression</string>
     <string name="today_ring_a11y_value">%1$d pour cent</string>

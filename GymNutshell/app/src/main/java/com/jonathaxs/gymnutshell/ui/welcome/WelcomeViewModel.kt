@@ -295,10 +295,12 @@ class WelcomeViewModel(app: Application) : AndroidViewModel(app) {
     // MARK: - Conclusão do Onboarding
 
     /**
-     * Salva o perfil, sistema de medidas, as 10 metas calculadas/editadas, o estilo de controle,
+     * Salva o perfil, sistema de medidas, as 9 metas calculadas/editadas, o estilo de controle,
      * o tema, a cor de destaque, marca as opcionais excluídas como removidas e re-agenda as notificações.
      */
     fun complete() {
+        // A Hoje mostra as categorias entrando de baixo, uma vez só, logo depois da Welcome.
+        com.jonathaxs.gymnutshell.ui.today.GoalsEntrance.pending = true
         val s = _state.value
         viewModelScope.launch {
             // Perfil com sexo normalizado e exercício favorito

@@ -386,7 +386,6 @@
     <string name="widget_bg_pick_color">色を選択</string>
     <string name="common_close">閉じる</string>
     <string name="today_history">記録</string>
-    <string name="today_hero_achievement_label">毎日の成果</string>
     <string name="today_hero_caption_start">目標を記録してスタートしましょう</string>
     <string name="today_hero_caption_next_level">次のレベルまであと %1$d%%</string>
     <string name="today_hero_caption_max">本日の最高レベルに到達しました！</string>
@@ -395,8 +394,9 @@
     <string name="today_goals_view_mode_grid">グリッド</string>
     <string name="today_category_other">その他</string>
     <string name="today_edit_theme">絵文字を編集</string>
-    <string name="today_edit_colors">色を編集</string>
+    <string name="today_edit_colors">アクセントカラーを編集</string>
     <string name="today_edit_controls">操作方法を編集</string>
+    <string name="today_edit_quick">クイック編集</string>
     <string name="today_edit_goals">目標を編集</string>
     <string name="today_ring_a11y_label">進捗リング</string>
     <string name="today_ring_a11y_value">%1$dパーセント</string>

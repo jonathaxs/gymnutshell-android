@@ -16,6 +16,9 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -51,6 +54,7 @@ fun SettingsListScreen(
     onOpenControls: () -> Unit,
     onOpenHealth: () -> Unit,
     onOpenNotifications: () -> Unit,
+    onOpenNotificationHistory: () -> Unit,
     onOpenUnits: () -> Unit,
     onOpenBackup: () -> Unit,
     onOpenLanguage: () -> Unit,
@@ -63,7 +67,20 @@ fun SettingsListScreen(
     val accent by viewModel.accentColor.collectAsStateWithLifecycle()
     val dividerInset = 66.dp
 
-    Scaffold(topBar = { SettingsTopBar(stringResource(R.string.tab_settings), onBack = onBack) }) { padding ->
+    Scaffold(
+        topBar = {
+            // Sino no canto direito: histórico de notificações (saiu da Hoje na 2.0, como no iOS).
+            SettingsTopBar(stringResource(R.string.tab_settings), onBack = onBack) {
+                IconButton(onClick = onOpenNotificationHistory) {
+                    Icon(
+                        imageVector = Icons.Outlined.Notifications,
+                        contentDescription = stringResource(R.string.today_hero_bell_a11y_label),
+                        tint = accent.color,
+                    )
+                }
+            }
+        },
+    ) { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()

@@ -386,7 +386,6 @@
     <string name="widget_bg_pick_color">색상 선택</string>
     <string name="common_close">닫기</string>
     <string name="today_history">기록</string>
-    <string name="today_hero_achievement_label">오늘의 업적</string>
     <string name="today_hero_caption_start">목표를 기록하고 시작해보세요</string>
     <string name="today_hero_caption_next_level">다음 레벨까지 %1$d%% 남음</string>
     <string name="today_hero_caption_max">오늘 최고 레벨에 도달했어요!</string>
@@ -395,8 +394,9 @@
     <string name="today_goals_view_mode_grid">격자</string>
     <string name="today_category_other">기타</string>
     <string name="today_edit_theme">이모지 변경</string>
-    <string name="today_edit_colors">색상 변경</string>
+    <string name="today_edit_colors">포인트 색상 변경</string>
     <string name="today_edit_controls">입력 방식 변경</string>
+    <string name="today_edit_quick">빠른 편집</string>
     <string name="today_edit_goals">목표 편집</string>
     <string name="today_ring_a11y_label">진행 링</string>
     <string name="today_ring_a11y_value">%1$d퍼센트</string>

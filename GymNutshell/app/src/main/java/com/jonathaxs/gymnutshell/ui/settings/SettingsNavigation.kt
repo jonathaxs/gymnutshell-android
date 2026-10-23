@@ -1,5 +1,6 @@
 package com.jonathaxs.gymnutshell.ui.settings
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -16,6 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import com.jonathaxs.gymnutshell.R
+import com.jonathaxs.gymnutshell.ui.MainRoutes
 
 /** Rotas da Settings. GRAPH casa com o route da aba (MainTab.Settings). */
 object SettingsRoutes {
@@ -58,6 +60,7 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
                 onOpenControls = { navController.navigate(SettingsRoutes.CONTROLS) },
                 onOpenHealth = { navController.navigate(SettingsRoutes.HEALTH) },
                 onOpenNotifications = { navController.navigate(SettingsRoutes.NOTIFICATIONS) },
+                onOpenNotificationHistory = { navController.navigate(MainRoutes.NOTIFICATIONS) },
                 onOpenUnits = { navController.navigate(SettingsRoutes.UNITS) },
                 onOpenBackup = { navController.navigate(SettingsRoutes.BACKUP) },
                 onOpenLanguage = { navController.navigate(SettingsRoutes.LANGUAGE) },
@@ -169,9 +172,14 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
 /** Top bar das telas de Settings; mostra o botão de voltar quando `onBack` é fornecido. */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsTopBar(title: String, onBack: (() -> Unit)? = null) {
+fun SettingsTopBar(
+    title: String,
+    onBack: (() -> Unit)? = null,
+    actions: @Composable RowScope.() -> Unit = {},
+) {
     TopAppBar(
         title = { Text(title) },
+        actions = actions,
         navigationIcon = {
             if (onBack != null) {
                 IconButton(onClick = onBack) {
