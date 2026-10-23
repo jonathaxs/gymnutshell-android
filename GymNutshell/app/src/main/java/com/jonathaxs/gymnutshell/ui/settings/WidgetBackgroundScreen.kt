@@ -1,5 +1,12 @@
 package com.jonathaxs.gymnutshell.ui.settings
 
+import androidx.compose.foundation.text.TextAutoSize
+import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
+import com.jonathaxs.gymnutshell.core.widget.SegmentedRingPainter
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.foundation.isSystemInDarkTheme
+import android.graphics.RectF
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -68,7 +75,12 @@ private val CUSTOM_PALETTE = listOf(
 fun WidgetBackgroundScreen(
     onBack: () -> Unit,
     viewModel: WidgetBackgroundViewModel = viewModel(),
+    settingsViewModel: SettingsViewModel = viewModel(),
 ) {
+    // Prévia com o emoji do tema e o sexo do usuário em 62% (nível 4), como no iOS.
+    val theme by settingsViewModel.theme.collectAsStateWithLifecycle()
+    val sex = settingsViewModel.profile.collectAsStateWithLifecycle().value.sex
+    val previewEmoji = theme.emoji(DailyAchievement.fromPercent(62), sex)
     val mode by viewModel.mode.collectAsStateWithLifecycle()
     val customArgb by viewModel.customArgb.collectAsStateWithLifecycle()
     val accentArgb by viewModel.accentArgb.collectAsStateWithLifecycle()
@@ -112,12 +124,14 @@ fun WidgetBackgroundScreen(
                         accentArgb = accentArgb,
                         customArgb = customArgb,
                         isWide = false,
+                        emoji = previewEmoji,
                     )
                     WidgetPreviewTile(
                         mode = mode,
                         accentArgb = accentArgb,
                         customArgb = customArgb,
                         isWide = true,
+                        emoji = previewEmoji,
                     )
                 }
 
@@ -222,20 +236,25 @@ private fun WidgetModeOptionCard(
     }
 }
 
-/** Tile de prévia: fundo com cantos 24dp + anel com 62% e emoji. */
+/**
+ * Tile de prévia com os mesmos layouts do widget: pequeno (anel com o emoji + % embaixo) e médio (anel com o
+ * emoji + % e a frase do próximo nível). Em fundo colorido o anel ganha o contorno do widget de verdade.
+ */
 @Composable
 private fun WidgetPreviewTile(
     mode: WidgetBackgroundMode,
     accentArgb: Long,
     customArgb: Long,
     isWide: Boolean,
+    emoji: String,
     modifier: Modifier = Modifier,
 ) {
-    val size = 110.dp
-    val width = if (isWide) 230.dp else 110.dp
+    val height = 130.dp
+    val width = if (isWide) 230.dp else 120.dp
     val isSystem = mode == WidgetBackgroundMode.System
     val sourceArgb = if (mode == WidgetBackgroundMode.Accent) accentArgb else customArgb
     val textColor = if (isSystem) MaterialTheme.colorScheme.onSurface else Color(WidgetBackground.contrastingTextArgb(sourceArgb))
+    val borderArgb = if (isSystem) null else WidgetBackground.contrastingTextArgb(sourceArgb)
     val bgModifier = if (isSystem) {
         Modifier.background(MaterialTheme.colorScheme.surfaceVariant)
     } else {
@@ -244,7 +263,7 @@ private fun WidgetPreviewTile(
 
     Box(
         modifier = modifier
-            .size(width = width, height = size)
+            .size(width = width, height = height)
             .clip(RoundedCornerShape(24.dp))
             .then(bgModifier)
             .border(
@@ -254,77 +273,62 @@ private fun WidgetPreviewTile(
         contentAlignment = Alignment.Center,
     ) {
         if (!isWide) {
-            PreviewRing(size = 68.dp, strokeWidth = 10.dp)
+            Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                PreviewRing(emoji = emoji, borderArgb = borderArgb, size = 74.dp)
+                Text("62%", fontSize = 20.sp, fontWeight = FontWeight.Bold, color = textColor)
+            }
         } else {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(14.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                modifier = Modifier.padding(horizontal = 14.dp),
             ) {
-                PreviewRing(size = 68.dp, strokeWidth = 10.dp)
-                Text(
-                    text = "62%",
-                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                    color = textColor,
-                )
+                PreviewRing(emoji = emoji, borderArgb = borderArgb, size = 86.dp)
+                Column {
+                    Text("62%", fontSize = 32.sp, fontWeight = FontWeight.Bold, color = textColor, maxLines = 1)
+                    Text(
+                        text = stringResource(R.string.today_hero_caption_next_level, 19),
+                        style = MaterialTheme.typography.labelMedium,
+                        color = textColor.copy(alpha = 0.8f),
+                        maxLines = 1,
+                        softWrap = false,
+                        // Numa linha só: encolhe a fonte em vez de quebrar (iOS: até 50%).
+                        autoSize = TextAutoSize.StepBased(minFontSize = 6.sp, maxFontSize = 12.sp),
+                    )
+                }
             }
         }
     }
 }
 
-/** Anel de progresso em 5 segmentos para a prévia do widget com emoji 💪 no centro. */
+/** Anel da prévia do widget: o mesmo desenho do widget ([SegmentedRingPainter]) com o emoji no centro. */
 @Composable
 private fun PreviewRing(
+    emoji: String,
+    borderArgb: Long?,
+    size: Dp,
     progress: Float = 0.62f,
-    size: Dp = 68.dp,
-    strokeWidth: Dp = 10.dp,
     modifier: Modifier = Modifier,
 ) {
-    val trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.18f)
-
+    val isDark = isSystemInDarkTheme()
     Box(modifier = modifier.size(size), contentAlignment = Alignment.Center) {
         Canvas(Modifier.fillMaxSize()) {
-            val stroke = strokeWidth.toPx()
-            val inset = stroke / 2f
-            val arcSize = Size(this.size.width - stroke, this.size.height - stroke)
-            val topLeft = Offset(inset, inset)
-            val radius = arcSize.width / 2f
-
-            val segments = SegmentedRing.segments(
-                progress = progress.toDouble(),
-                radius = radius,
-                strokeWidth = stroke,
-            )
-
-            for (seg in segments) {
-                // Trilho do segmento
-                drawArc(
-                    color = trackColor,
-                    startAngle = seg.startAngle,
-                    sweepAngle = seg.sweepTotal,
-                    useCenter = false,
-                    topLeft = topLeft,
-                    size = arcSize,
-                    style = Stroke(width = stroke, cap = StrokeCap.Round),
+            val stroke = this.size.minDimension * SegmentedRing.ICON_LINE_WIDTH_RATIO
+            val extra = if (borderArgb != null) 2.dp.toPx() else 0f
+            val inset = stroke / 2f + extra
+            drawIntoCanvas { canvas ->
+                SegmentedRingPainter.draw(
+                    canvas = canvas.nativeCanvas,
+                    rect = RectF(inset, inset, this.size.width - inset, this.size.height - inset),
+                    progress = progress.toDouble(),
+                    strokePx = stroke,
+                    isDark = isDark,
+                    borderArgb = borderArgb,
+                    borderExtraPx = extra,
                 )
-                // Parte preenchida na cor do segmento
-                if (seg.sweepFilled > 0.001f) {
-                    drawArc(
-                        color = Color(seg.colorArgb),
-                        startAngle = seg.startAngle,
-                        sweepAngle = seg.sweepFilled,
-                        useCenter = false,
-                        topLeft = topLeft,
-                        size = arcSize,
-                        style = Stroke(width = stroke, cap = StrokeCap.Round),
-                    )
-                }
             }
         }
-        Text(
-            text = "💪",
-            fontSize = 28.sp,
-            textAlign = TextAlign.Center,
-        )
+        Text(text = emoji, fontSize = (size.value * 0.30f).sp, textAlign = TextAlign.Center)
     }
 }
 

@@ -93,33 +93,31 @@ class GoalsWidget : GlanceAppWidget() {
         Row(
             modifier = GlanceModifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            // Mesmo anel da Hoje, com a % no centro; ao lado o emoji e a data / nome do nível (iOS).
             Image(
                 provider = ImageProvider(
                     WidgetRing.bitmap(
                         context = context,
-                        sizeDp = 72,
+                        sizeDp = 86,
                         progress = snapshot.progressNormalized.toFloat(),
-                        emoji = snapshot.tierEmoji,
-                        strokeDp = 10f,
+                        percent = snapshot.progressPercent,
+                        textArgb = widgetTextArgb(context, snapshot),
                         borderArgb = widgetBorderArgb(snapshot),
                     ),
                 ),
                 contentDescription = null,
-                modifier = GlanceModifier.size(72.dp),
+                modifier = GlanceModifier.size(86.dp),
             )
             Spacer(GlanceModifier.width(14.dp))
-            Column {
+            Text(snapshot.tierEmoji, style = TextStyle(fontSize = 40.sp))
+            Spacer(GlanceModifier.width(14.dp))
+            Column(modifier = GlanceModifier.defaultWeight()) {
                 Text(dateLabel(snapshot.updatedAtEpochMillis), style = TextStyle(fontSize = 12.sp, color = textColor))
                 Text(
                     context.getString(snapshot.tierNameRes),
-                    maxLines = 1,
-                    style = TextStyle(fontSize = 17.sp, fontWeight = FontWeight.Medium, color = textColor),
-                )
-                Text(
-                    "${snapshot.progressPercent}%",
-                    style = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold, color = textColor),
+                    maxLines = 2,
+                    style = TextStyle(fontSize = 17.sp, fontWeight = FontWeight.Bold, color = textColor),
                 )
             }
         }

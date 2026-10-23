@@ -46,3 +46,23 @@ fun widgetBorderArgb(snapshot: WidgetSnapshot): Long? = when (snapshot.backgroun
     WidgetBackgroundMode.Accent -> WidgetBackground.contrastingTextArgb(snapshot.accentArgb)
     WidgetBackgroundMode.Custom -> WidgetBackground.contrastingTextArgb(snapshot.customBackgroundArgb)
 }
+
+/** Frase do hero da Hoje: quanto falta pro próximo nível, ou o aviso de nível máximo (widget médio). */
+fun nextLevelText(context: android.content.Context, percent: Int): String {
+    val next = com.jonathaxs.gymnutshell.core.domain.DailyAchievement.fromPercent(percent).next
+        ?: return context.getString(com.jonathaxs.gymnutshell.R.string.today_hero_caption_max)
+    return context.getString(com.jonathaxs.gymnutshell.R.string.today_hero_caption_next_level, next.minPercent - percent)
+}
+
+/**
+ * Cor do texto (ARGB) pro centro do anel desenhado em Bitmap: no fundo do sistema preto/branco conforme o tema;
+ * nos coloridos, a cor contrastante.
+ */
+fun widgetTextArgb(context: android.content.Context, snapshot: WidgetSnapshot): Long = when (snapshot.backgroundMode) {
+    WidgetBackgroundMode.System -> {
+        val night = context.resources.configuration.uiMode and android.content.res.Configuration.UI_MODE_NIGHT_MASK
+        if (night == android.content.res.Configuration.UI_MODE_NIGHT_YES) 0xFFFFFFFF else 0xFF000000
+    }
+    WidgetBackgroundMode.Accent -> WidgetBackground.contrastingTextArgb(snapshot.accentArgb)
+    WidgetBackgroundMode.Custom -> WidgetBackground.contrastingTextArgb(snapshot.customBackgroundArgb)
+}

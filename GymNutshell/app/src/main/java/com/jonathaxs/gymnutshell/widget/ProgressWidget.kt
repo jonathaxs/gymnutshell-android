@@ -22,6 +22,7 @@ import androidx.glance.layout.Column
 import androidx.glance.layout.Row
 import androidx.glance.layout.Spacer
 import androidx.glance.layout.fillMaxSize
+import androidx.glance.layout.height
 import androidx.glance.layout.padding
 import androidx.glance.layout.size
 import androidx.glance.layout.width
@@ -38,7 +39,7 @@ import java.time.ZoneId
 
 /**
  * Widget "Progresso" (Glance) — porte do GymNutshellWidget (iOS): mostra o progresso do dia e o tier.
- * Pequeno (≈2x2): emoji + %. Médio (≈4x2): anel de 5 segmentos com emoji + % + data.
+ * Pequeno (≈2x2): anel com o emoji + % embaixo. Médio (≈4x2): anel com o emoji + % e a frase do próximo nível.
  * Tocar abre o app na tela Hoje (reusa o deep link de EXTRA_ROUTE).
  */
 class ProgressWidget : GlanceAppWidget() {
@@ -60,7 +61,6 @@ class ProgressWidget : GlanceAppWidget() {
     private fun Content(context: Context, snapshot: WidgetSnapshot) {
         val size = LocalSize.current
         val textColor = widgetTextColor(snapshot)
-        val tierName = context.getString(snapshot.tierNameRes)
         Box(
             modifier = GlanceModifier
                 .fillMaxSize()
@@ -72,71 +72,73 @@ class ProgressWidget : GlanceAppWidget() {
             contentAlignment = Alignment.Center,
         ) {
             if (size.width < 200.dp) {
-                SmallLayout(snapshot, tierName, textColor)
+                SmallLayout(context, snapshot, textColor)
             } else {
-                MediumLayout(context, snapshot, tierName, textColor)
+                MediumLayout(context, snapshot, textColor)
             }
         }
     }
 
-    /** Pequeno: nome do tier no topo, emoji grande no meio, % embaixo (igual ao systemSmall do iOS). */
+    /** Pequeno: anel com o emoji dentro, no alto e centralizado; a % centralizada embaixo (systemSmall do iOS). */
     @androidx.compose.runtime.Composable
-    private fun SmallLayout(snapshot: WidgetSnapshot, tierName: String, textColor: ColorProvider) {
+    private fun SmallLayout(context: Context, snapshot: WidgetSnapshot, textColor: ColorProvider) {
         Column(
             modifier = GlanceModifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                tierName,
-                maxLines = 1,
-                style = TextStyle(fontSize = 15.sp, fontWeight = FontWeight.Medium, color = textColor),
+            Image(
+                provider = ImageProvider(ringBitmap(context, snapshot, sizeDp = 90)),
+                contentDescription = null,
+                modifier = GlanceModifier.size(90.dp),
             )
-            Spacer(GlanceModifier.defaultWeight())
-            Text(snapshot.tierEmoji, style = TextStyle(fontSize = 50.sp))
-            Spacer(GlanceModifier.defaultWeight())
+            Spacer(GlanceModifier.height(6.dp))
             Text(
                 "${snapshot.progressPercent}%",
-                style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold, color = textColor),
+                maxLines = 1,
+                style = TextStyle(fontSize = 26.sp, fontWeight = FontWeight.Bold, color = textColor),
             )
         }
     }
 
-    /** Médio: anel (com emoji) à esquerda + nome / % / data à direita (igual ao systemMedium do iOS). */
+    /**
+     * Médio: anel com o emoji dentro à esquerda; ao lado a % e, embaixo dela, quanto falta pro próximo nível
+     * (a mesma frase do hero da Hoje), numa linha só (systemMedium do iOS).
+     */
     @androidx.compose.runtime.Composable
-    private fun MediumLayout(context: Context, snapshot: WidgetSnapshot, tierName: String, textColor: ColorProvider) {
+    private fun MediumLayout(context: Context, snapshot: WidgetSnapshot, textColor: ColorProvider) {
         Row(
-            modifier = GlanceModifier.fillMaxSize(),
+            modifier = GlanceModifier.fillMaxSize().padding(horizontal = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
-                provider = ImageProvider(
-                    WidgetRing.bitmap(
-                        context = context,
-                        sizeDp = 80,
-                        progress = snapshot.progressNormalized.toFloat(),
-                        emoji = snapshot.tierEmoji,
-                        borderArgb = widgetBorderArgb(snapshot),
-                    ),
-                ),
+                provider = ImageProvider(ringBitmap(context, snapshot, sizeDp = 104)),
                 contentDescription = null,
-                modifier = GlanceModifier.size(80.dp),
+                modifier = GlanceModifier.size(104.dp),
             )
-            Spacer(GlanceModifier.width(16.dp))
-            Column(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    tierName,
-                    maxLines = 1,
-                    style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Medium, color = textColor),
-                )
+            Spacer(GlanceModifier.width(14.dp))
+            Column(verticalAlignment = Alignment.CenterVertically, modifier = GlanceModifier.defaultWeight()) {
                 Text(
                     "${snapshot.progressPercent}%",
-                    style = TextStyle(fontSize = 34.sp, fontWeight = FontWeight.Bold, color = textColor),
+                    maxLines = 1,
+                    style = TextStyle(fontSize = 44.sp, fontWeight = FontWeight.Bold, color = textColor),
                 )
-                Text(dateLabel(snapshot.updatedAtEpochMillis), style = TextStyle(fontSize = 12.sp, color = textColor))
+                Text(
+                    nextLevelText(context, snapshot.progressPercent),
+                    maxLines = 1,
+                    style = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Medium, color = textColor),
+                )
             }
         }
     }
+
+    private fun ringBitmap(context: Context, snapshot: WidgetSnapshot, sizeDp: Int) = WidgetRing.bitmap(
+        context = context,
+        sizeDp = sizeDp,
+        progress = snapshot.progressNormalized.toFloat(),
+        emoji = snapshot.tierEmoji,
+        borderArgb = widgetBorderArgb(snapshot),
+    )
 
     /** Data do snapshot formatada (padrão médio do app). */
     private fun dateLabel(epochMillis: Long): String {

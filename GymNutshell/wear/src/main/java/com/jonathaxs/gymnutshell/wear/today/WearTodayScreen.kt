@@ -1,5 +1,10 @@
 package com.jonathaxs.gymnutshell.wear.today
 
+import androidx.compose.ui.text.style.TextAlign
+import com.jonathaxs.gymnutshell.core.widget.SegmentedRingPainter
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import android.graphics.RectF
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -62,7 +67,7 @@ fun WearTodayScreen(viewModel: WearTodayViewModel = viewModel()) {
 
     ScreenScaffold(scrollState = listState) {
         ScalingLazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
-            item { WearHero(state.overallProgress, state.tierEmoji, state.overallPercent) }
+            item { WearHero(state.overallProgress, state.tierEmoji, state.tierNameRes, state.overallPercent) }
             items(state.goals, key = { it.key }) { goal ->
                 WearGoalCard(
                     goal = goal,
@@ -79,63 +84,53 @@ fun WearTodayScreen(viewModel: WearTodayViewModel = viewModel()) {
     }
 }
 
-// MARK: - Hero (anel de 5 segmentos + emoji do tier + percentual na cor do segmento)
+// MARK: - Hero (anel com a % no centro + emoji ao lado, nome do nível embaixo) — porte do WatchHeroView (iOS)
 
 @Composable
-private fun WearHero(progress: Float, tierEmoji: String, percent: Int) {
-    val ringColor = Color(SegmentedRing.colorForProgress(progress.toDouble()))
-    val trackColor = Color.Gray.copy(alpha = 0.25f)
-
+private fun WearHero(progress: Float, tierEmoji: String, @androidx.annotation.StringRes tierNameRes: Int, percent: Int) {
+    val ringSize = 92.dp
     Column(
-        verticalArrangement = Arrangement.Top,
+        verticalArrangement = Arrangement.spacedBy(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Box(Modifier.size(96.dp), contentAlignment = Alignment.Center) {
-            Canvas(Modifier.fillMaxSize()) {
-                val stroke = 8.dp.toPx()
-                val inset = stroke / 2
-                val arcSize = Size(size.width - stroke, size.height - stroke)
-                val topLeft = Offset(inset, inset)
-                val radius = arcSize.width / 2f
-
-                val segments = SegmentedRing.segments(
-                    progress = progress.toDouble(),
-                    radius = radius,
-                    strokeWidth = stroke,
-                )
-
-                for (seg in segments) {
-                    drawArc(
-                        color = trackColor,
-                        startAngle = seg.startAngle,
-                        sweepAngle = seg.sweepTotal,
-                        useCenter = false,
-                        topLeft = topLeft,
-                        size = arcSize,
-                        style = Stroke(stroke, cap = StrokeCap.Round),
-                    )
-                    if (seg.sweepFilled > 0.001f) {
-                        drawArc(
-                            color = Color(seg.colorArgb),
-                            startAngle = seg.startAngle,
-                            sweepAngle = seg.sweepFilled,
-                            useCenter = false,
-                            topLeft = topLeft,
-                            size = arcSize,
-                            style = Stroke(stroke, cap = StrokeCap.Round),
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            Box(Modifier.size(ringSize), contentAlignment = Alignment.Center) {
+                Canvas(Modifier.fillMaxSize()) {
+                    val stroke = size.minDimension * SegmentedRing.ICON_LINE_WIDTH_RATIO
+                    val inset = stroke / 2f
+                    drawIntoCanvas { canvas ->
+                        // O relógio é sempre escuro.
+                        SegmentedRingPainter.draw(
+                            canvas = canvas.nativeCanvas,
+                            rect = RectF(inset, inset, size.width - inset, size.height - inset),
+                            progress = progress.toDouble(),
+                            strokePx = stroke,
+                            isDark = true,
                         )
                     }
                 }
+                Text(
+                    "$percent%",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = if (percent > 0) Color.White else Color.White.copy(alpha = 0.5f),
+                    maxLines = 1,
+                )
             }
             Text(tierEmoji, fontSize = 34.sp)
         }
-        Spacer(Modifier.height(4.dp))
-        Text(
-            "$percent%",
-            color = ringColor,
-            style = MaterialTheme.typography.labelSmall,
-            fontWeight = FontWeight.SemiBold,
-        )
+        if (tierNameRes != 0) {
+            Text(
+                stringResource(tierNameRes),
+                style = MaterialTheme.typography.titleSmall,
+                fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+            )
+        }
     }
 }
 

@@ -47,6 +47,7 @@ data class WearTodayUiState(
     val overallProgress: Float = 0f,
     val overallPercent: Int = 0,
     val tierEmoji: String = "🐓",
+    @androidx.annotation.StringRes val tierNameRes: Int = 0,
     val accentArgb: Long = AccentColor.Default.argb,
     val goals: List<WearGoalUi> = emptyList(),
 )
@@ -136,6 +137,7 @@ class WearTodayViewModel(app: Application) : AndroidViewModel(app) {
                 overallProgress = avg.toFloat(),
                 overallPercent = floor(avg * 100).toInt(),
                 tierEmoji = theme.emoji(DailyAchievement.from(avg), profile.sex),
+                tierNameRes = theme.tierNameRes(DailyAchievement.from(avg), profile.sex),
                 accentArgb = accent.argb,
                 goals = ordered,
             )

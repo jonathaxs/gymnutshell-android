@@ -1,5 +1,6 @@
 package com.jonathaxs.gymnutshell.wear.tile
 
+import com.jonathaxs.gymnutshell.core.widget.SegmentedRing
 import android.content.Context
 import androidx.concurrent.futures.CallbackToFutureAdapter
 import androidx.wear.protolayout.ActionBuilders
@@ -19,7 +20,6 @@ import androidx.wear.tiles.RequestBuilders
 import androidx.wear.tiles.TileBuilders
 import androidx.wear.tiles.TileService
 import com.google.common.util.concurrent.ListenableFuture
-import com.jonathaxs.gymnutshell.core.domain.ProgressColors
 import com.jonathaxs.gymnutshell.core.widget.WidgetSnapshot
 import com.jonathaxs.gymnutshell.core.widget.WidgetSnapshotBuilder
 import kotlinx.coroutines.CoroutineScope
@@ -57,7 +57,8 @@ class ProgressTileService : TileService() {
         }
 
     private fun buildTile(snapshot: WidgetSnapshot, device: DeviceParameters): TileBuilders.Tile {
-        val ringArgb = ProgressColors.ringArgb(snapshot.progressNormalized).toInt()
+        // Tile não desenha arcos próprios: o indicador usa a cor do segmento atual do anel (paleta do ícone).
+        val ringArgb = SegmentedRing.colorForProgress(snapshot.progressNormalized).toInt()
         val trackArgb = 0x33808080.toInt()
 
         // Toque em qualquer lugar do tile abre o app (igual à complication do iOS).
