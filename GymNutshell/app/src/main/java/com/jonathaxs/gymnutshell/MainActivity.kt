@@ -39,11 +39,6 @@ class MainActivity : ComponentActivity() {
     private var pendingRoute by mutableStateOf<String?>(null)
 
     // Resultado do pedido de permissão de notificações (Android 13+). Ao conceder, aplica os defaults.
-    private val requestNotificationsPermission =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-            if (granted) applyNotificationDefaults()
-        }
-
     // Aplica o idioma escolhido no app antes de tudo (Android 12 e abaixo; no 13+ o framework cuida).
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(AppLocales.wrap(newBase))
@@ -88,8 +83,8 @@ class MainActivity : ComponentActivity() {
     }
 
     /**
-     * Pede POST_NOTIFICATIONS no Android 13+; em versões anteriores não há permissão runtime.
-     * (A tela de Ajustes de Notificações será o lugar "oficial" do pedido na fatia 5A-4.)
+     * Com a permissão de notificações já dada, liga os tipos padrão (uma vez só). O pedido em si fica no
+     * Tudo pronto da Welcome e em Ajustes > Notificações, como no iOS: não pede mais ao abrir o app.
      */
     private fun maybeRequestNotificationsPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
@@ -98,11 +93,7 @@ class MainActivity : ComponentActivity() {
         }
         val granted = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
             PackageManager.PERMISSION_GRANTED
-        if (granted) {
-            applyNotificationDefaults()
-        } else {
-            requestNotificationsPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
-        }
+        if (granted) applyNotificationDefaults()
     }
 
     private fun applyNotificationDefaults() {

@@ -56,9 +56,10 @@ import com.jonathaxs.gymnutshell.ui.components.GroupInset
 import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
 import com.jonathaxs.gymnutshell.ui.theme.color
 import com.jonathaxs.gymnutshell.ui.welcome.WelcomeCard
+import com.jonathaxs.gymnutshell.ui.welcome.goalColor
 import kotlin.math.roundToInt
 
-/** Cores dos objetivos fitness: laranja (bulking), destaque do usuário (manutenção) e verde (cutting). */
+/** Cores dos objetivos fitness: laranja (bulking), ciano (manutenção) e verde (cutting). */
 private val GoalBulkingColor = Color(0xFFFF9500)
 private val GoalCuttingColor = Color(0xFF34C759)
 
@@ -214,7 +215,7 @@ fun UserGoalScreen(
                         title = stringResource(R.string.goal_maintenance),
                         description = stringResource(R.string.welcome_goal_maintenance_desc),
                         iconRes = R.drawable.ic_goal_maintenance,
-                        cardColor = accent.color,
+                        cardColor = goalColor(UserGoal.Maintenance),
                         isSelected = selected == UserGoal.Maintenance,
                         onClick = { selected = UserGoal.Maintenance },
                     )

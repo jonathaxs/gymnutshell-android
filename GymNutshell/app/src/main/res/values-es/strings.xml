@@ -150,6 +150,8 @@
     <string name="cd_move_down">Mover hacia abajo</string>
     <string name="welcome_start_title">¡Hola!</string>
     <string name="welcome_start_new">Empezar</string>
+    <string name="welcome_restore_import_json">Importar copia JSON</string>
+    <string name="welcome_theme_preview">Detalles</string>
     <string name="welcome_start_restore">Restaurar copia de seguridad</string>
     <string name="welcome_restore_error_title">No se pudo restaurar</string>
     <string name="welcome_step_about_title">Sobre ti</string>

@@ -1,5 +1,39 @@
 package com.jonathaxs.gymnutshell.ui.welcome
 
+import androidx.compose.animation.scaleOut
+import kotlin.math.cos
+import kotlin.math.PI
+import kotlinx.coroutines.delay
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.scaleIn
+import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.draw.scale
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.heading
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.foundation.layout.offset
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.Animatable
 import android.Manifest
 import android.os.Build
 import androidx.activity.compose.BackHandler
@@ -94,7 +128,7 @@ import com.jonathaxs.gymnutshell.core.domain.ThemeCategory
 import com.jonathaxs.gymnutshell.core.domain.UnitConverter
 import com.jonathaxs.gymnutshell.core.domain.UserGoal
 import com.jonathaxs.gymnutshell.core.theme.AccentColor
-import com.jonathaxs.gymnutshell.ui.settings.ThemeInfoSheet
+import com.jonathaxs.gymnutshell.ui.settings.ThemeDetailsButton
 import com.jonathaxs.gymnutshell.ui.settings.categoryNameRes
 import com.jonathaxs.gymnutshell.ui.settings.themeNameRes
 import com.jonathaxs.gymnutshell.ui.theme.color
@@ -145,6 +179,41 @@ fun WelcomeScreen(viewModel: WelcomeViewModel = viewModel()) {
         viewModel.onHealthPermissionResult(grantedSet.isNotEmpty())
     }
 
+    // Botões do rodapé que viajam: cada etapa com espaço reservado (Início e Tudo pronto) avisa onde ele fica,
+    // e os botões sobem do rodapé até lá. Só vale o aviso da etapa atual (a que sai não puxa os botões).
+    val currentStep by rememberUpdatedState(state.currentStep)
+    val slotTops = remember { mutableStateMapOf<WelcomeStep, Float>() }
+    var footerTop by remember { mutableStateOf<Float?>(null) }
+    var buttonsHeightPx by remember { mutableIntStateOf(0) }
+    val density = LocalDensity.current
+    val slotReporter = remember {
+        WelcomeSlotReporter { step, top -> if (step == currentStep) slotTops[step] = top }
+    }
+    val targetOffset = run {
+        val slot = slotTops[state.currentStep]
+        val rest = footerTop
+        if (slot != null && rest != null) slot - rest else 0f
+    }
+    val buttonsOffset = remember { Animatable(0f) }
+    var didPlaceButtons by remember { mutableStateOf(false) }
+    LaunchedEffect(targetOffset, footerTop) {
+        if (footerTop == null) return@LaunchedEffect
+        if (!didPlaceButtons) {
+            // Até saber onde fica o espaço do Início, os botões não aparecem (evita o pulo ao abrir).
+            buttonsOffset.snapTo(targetOffset)
+            didPlaceButtons = slotTops[state.currentStep] != null || state.currentStep != WelcomeStep.Start
+        } else {
+            buttonsOffset.animateTo(targetOffset, spring(dampingRatio = 0.85f, stiffness = 130f))
+        }
+    }
+    // No Início os botões são mais estreitos (proporção do "Olá!"); ao descer pro rodapé se alargam.
+    val buttonsMaxWidth by animateDpAsState(
+        targetValue = if (state.currentStep == WelcomeStep.Start) 260.dp else 600.dp,
+        animationSpec = spring(dampingRatio = 0.85f, stiffness = 130f),
+        label = "welcome_buttons_width",
+    )
+    var showRestoreOptions by remember { mutableStateOf(false) }
+
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
     ) { padding ->
@@ -182,6 +251,10 @@ fun WelcomeScreen(viewModel: WelcomeViewModel = viewModel()) {
                 )
 
                 // Conteúdo da etapa atual com transição suave
+                CompositionLocalProvider(
+                    LocalWelcomeSlotReporter provides slotReporter,
+                    LocalWelcomeButtonsHeight provides with(density) { buttonsHeightPx.toDp() },
+                ) {
                 AnimatedContent(
                     targetState = state.currentStep,
                     transitionSpec = { fadeIn(tween(300)) togetherWith fadeOut(tween(250)) },
@@ -192,11 +265,7 @@ fun WelcomeScreen(viewModel: WelcomeViewModel = viewModel()) {
                 ) { targetStep ->
                     when (targetStep) {
                         WelcomeStep.Start -> {
-                            StartStep(
-                                accentColor = state.sexColor,
-                                onStart = viewModel::advance,
-                                onRestore = { restoreLauncher.launch(arrayOf("application/json")) },
-                            )
+                            StartStep(accentColor = state.sexColor)
                         }
                         WelcomeStep.About -> {
                             AboutStep(
@@ -223,6 +292,7 @@ fun WelcomeScreen(viewModel: WelcomeViewModel = viewModel()) {
                         WelcomeStep.Summary -> {
                             SummaryStep(
                                 state = state,
+                                accent = state.stepColor,
                                 viewModel = viewModel,
                             )
                         }
@@ -260,22 +330,36 @@ fun WelcomeScreen(viewModel: WelcomeViewModel = viewModel()) {
                     }
                 }
 
-                // Rodapé com botões Continuar e Voltar (exceto na tela de início)
-                if (state.currentStep != WelcomeStep.Start) {
+                }
+
+                // Um só par de botões pra todas as etapas: Começar / Restaurar backup no Início, Continuar / Voltar
+                // nas demais e Vamos lá / Voltar no Tudo pronto (porte do footerButtons do iOS).
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 16.dp)
+                        // Medido sem o deslocamento: é a posição de repouso no rodapé.
+                        .onGloballyPositioned { footerTop = it.positionInRoot().y },
+                    contentAlignment = Alignment.TopCenter,
+                ) {
                     Column(
                         modifier = Modifier
+                            .widthIn(max = buttonsMaxWidth)
                             .fillMaxWidth()
-                            .padding(horizontal = 20.dp, vertical = 12.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                            .onSizeChanged { buttonsHeightPx = it.height }
+                            .offset { IntOffset(0, buttonsOffset.value.roundToInt()) }
+                            .alpha(if (didPlaceButtons) 1f else 0f),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
+                        val isStart = state.currentStep == WelcomeStep.Start
                         Button(
                             onClick = viewModel::advance,
                             enabled = state.canContinue,
                             shape = CircleShape,
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = state.stepColor,
-                                disabledContainerColor = state.stepColor.copy(alpha = 0.35f),
+                                containerColor = animatedStepColor,
+                                disabledContainerColor = animatedStepColor.copy(alpha = 0.35f),
                             ),
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -283,22 +367,48 @@ fun WelcomeScreen(viewModel: WelcomeViewModel = viewModel()) {
                         ) {
                             Text(
                                 text = stringResource(
-                                    if (state.isLastStep) R.string.welcome_button_start
-                                    else R.string.welcome_button_continue
+                                    when {
+                                        isStart -> R.string.welcome_start_new
+                                        state.isLastStep -> R.string.welcome_button_start
+                                        else -> R.string.welcome_button_continue
+                                    }
                                 ),
                                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
                                 color = Color.White,
+                                maxLines = 1,
                             )
                         }
 
-                        TextButton(
-                            onClick = viewModel::goBack,
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(
-                                text = stringResource(R.string.welcome_button_back),
-                                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        Box {
+                            Button(
+                                onClick = { if (isStart) showRestoreOptions = true else viewModel.goBack() },
+                                shape = CircleShape,
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = animatedStepColor.copy(alpha = 0.15f),
+                                    contentColor = animatedStepColor,
+                                ),
+                                elevation = null,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(52.dp),
+                            ) {
+                                Text(
+                                    text = stringResource(
+                                        if (isStart) R.string.welcome_start_restore else R.string.welcome_button_back
+                                    ),
+                                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
+                                    maxLines = 1,
+                                )
+                            }
+                            // Restaurar backup abre um balão logo abaixo, como o Detalhes dos emojis.
+                            WelcomeRestoreMenu(
+                                expanded = showRestoreOptions,
+                                accentColor = animatedStepColor,
+                                onDismiss = { showRestoreOptions = false },
+                                onImportJson = {
+                                    showRestoreOptions = false
+                                    restoreLauncher.launch(arrayOf("application/json"))
+                                },
                             )
                         }
                     }
@@ -325,122 +435,73 @@ fun WelcomeScreen(viewModel: WelcomeViewModel = viewModel()) {
 // 1. Start Step
 // ============================================================================
 
+/** Início: esquilo + "Olá!" e, logo abaixo, o espaço dos botões Começar / Restaurar backup, centralizados. */
 @Composable
-private fun StartStep(
-    accentColor: Color,
-    onStart: () -> Unit,
-    onRestore: () -> Unit,
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 20.dp, vertical = 8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
+private fun StartStep(accentColor: Color) {
+    CenteredStepColumn {
+        // O esquilo que corre atrás da noz (nutshell), como o da Era do Gelo.
         WelcomeStepHeader(
             emoji = "🐿️",
             title = stringResource(R.string.welcome_start_title),
             accentColor = accentColor,
         )
-
-        Spacer(Modifier.height(16.dp))
-
-        // Destaques com ícone na cor de destaque
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(22.dp),
-        ) {
-            StartFeatureRow(
-                icon = Icons.Default.CheckCircle,
-                text = stringResource(R.string.welcome_start_feature_track),
-                color = accentColor,
-            )
-            StartFeatureRow(
-                icon = Icons.Default.DateRange,
-                text = stringResource(R.string.welcome_start_feature_progress),
-                color = accentColor,
-            )
-            StartFeatureRow(
-                icon = Icons.Default.Star,
-                text = stringResource(R.string.welcome_start_feature_theme),
-                color = accentColor,
-            )
-        }
-
-        Spacer(Modifier.weight(1f, fill = true).heightIn(min = 32.dp))
-
-        // Botões de início: Começar e Restaurar backup
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            Button(
-                onClick = onStart,
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(containerColor = accentColor),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.welcome_start_new),
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                    color = Color.White,
-                )
-            }
-
-            OutlinedButton(
-                onClick = onRestore,
-                shape = CircleShape,
-                border = BorderStroke(1.5.dp, accentColor),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.welcome_start_restore),
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
-                    color = accentColor,
-                )
-            }
-        }
+        Spacer(Modifier.height(28.dp))
+        WelcomeButtonsSlot(WelcomeStep.Start)
     }
 }
 
+/** Coluna rolável que centraliza o conteúdo na altura quando ele cabe na tela. */
 @Composable
-private fun StartFeatureRow(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
-    text: String,
-    color: Color,
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        Box(
+private fun CenteredStepColumn(content: @Composable ColumnScope.() -> Unit) {
+    BoxWithConstraints(Modifier.fillMaxSize()) {
+        Column(
             modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape)
-                .background(color.copy(alpha = 0.12f)),
-            contentAlignment = Alignment.Center,
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = null,
-                tint = color,
-                modifier = Modifier.size(22.dp),
-            )
-        }
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .heightIn(min = maxHeight)
+                .padding(horizontal = 20.dp, vertical = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            content = content,
+        )
+    }
+}
+
+/** Balão de Restaurar backup (porte do WelcomeRestorePopover; no Android só há o arquivo JSON). */
+@Composable
+private fun WelcomeRestoreMenu(
+    expanded: Boolean,
+    accentColor: Color,
+    onDismiss: () -> Unit,
+    onImportJson: () -> Unit,
+) {
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = onDismiss,
+        shape = RoundedCornerShape(20.dp),
+        containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+        modifier = Modifier.width(280.dp),
+    ) {
         Text(
-            text = text,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface,
+            text = stringResource(R.string.welcome_start_restore),
+            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 10.dp)
+                .semantics { heading() },
+        )
+        DropdownMenuItem(
+            text = { Text(stringResource(R.string.welcome_restore_import_json), style = MaterialTheme.typography.bodyLarge) },
+            leadingIcon = {
+                Icon(
+                    painter = painterResource(R.drawable.ic_settings_backup),
+                    contentDescription = null,
+                    tint = accentColor,
+                    modifier = Modifier.size(24.dp),
+                )
+            },
+            onClick = onImportJson,
         )
     }
 }
@@ -622,11 +683,7 @@ private fun GoalStep(
     selectedGoal: UserGoal,
     onSelectGoal: (UserGoal) -> Unit,
 ) {
-    val goalColor = when (selectedGoal) {
-        UserGoal.Bulking -> Color(0xFFFF9500)
-        UserGoal.Maintenance -> Color(0xFF007AFF)
-        UserGoal.Cutting -> Color(0xFF34C759)
-    }
+    val selectedColor = goalColor(selectedGoal)
 
     Column(
         modifier = Modifier
@@ -639,7 +696,7 @@ private fun GoalStep(
         WelcomeStepHeader(
             emoji = "🎯",
             title = stringResource(R.string.welcome_goal_title),
-            accentColor = goalColor,
+            accentColor = selectedColor,
         )
 
         // Bulking
@@ -648,7 +705,7 @@ private fun GoalStep(
             title = stringResource(R.string.goal_bulking),
             description = stringResource(R.string.welcome_goal_bulking_desc),
             symbol = "↗",
-            cardColor = Color(0xFFFF9500),
+            cardColor = goalColor(UserGoal.Bulking),
             isSelected = selectedGoal == UserGoal.Bulking,
             onClick = { onSelectGoal(UserGoal.Bulking) },
         )
@@ -659,7 +716,7 @@ private fun GoalStep(
             title = stringResource(R.string.goal_maintenance),
             description = stringResource(R.string.welcome_goal_maintenance_desc),
             symbol = "=",
-            cardColor = Color(0xFF007AFF),
+            cardColor = goalColor(UserGoal.Maintenance),
             isSelected = selectedGoal == UserGoal.Maintenance,
             onClick = { onSelectGoal(UserGoal.Maintenance) },
         )
@@ -670,7 +727,7 @@ private fun GoalStep(
             title = stringResource(R.string.goal_cutting),
             description = stringResource(R.string.welcome_goal_cutting_desc),
             symbol = "↘",
-            cardColor = Color(0xFF34C759),
+            cardColor = goalColor(UserGoal.Cutting),
             isSelected = selectedGoal == UserGoal.Cutting,
             onClick = { onSelectGoal(UserGoal.Cutting) },
         )
@@ -852,6 +909,7 @@ private fun UnitsCard(
 @Composable
 private fun SummaryStep(
     state: WelcomeUiState,
+    accent: Color,
     viewModel: WelcomeViewModel,
 ) {
     val scrollState = rememberScrollState()
@@ -863,8 +921,8 @@ private fun SummaryStep(
         }
     }
 
+    // Metas na cor do objetivo (fundo, barra, botões, Adicionar e os − / +), como no iOS.
     val goals = state.goals
-    val accent = state.sexColor
 
     Column(
         modifier = Modifier
@@ -1153,62 +1211,84 @@ private fun SummaryOptionalGoalRow(
             )
         }
 
-        if (isIncluded) {
+        // Adicionar encolhe e valor, lixeira, − e + surgem um a um com mola (0,06 s entre eles); a lixeira faz o
+        // inverso (somem da direita pra esquerda e o Adicionar volta crescendo). Porte do iOS.
+        var shownCount by remember { mutableIntStateOf(if (isIncluded) 4 else 0) }
+        LaunchedEffect(isIncluded) {
+            if (isIncluded) {
+                while (shownCount < 4) { delay(60); shownCount++ }
+            } else {
+                while (shownCount > 0) { shownCount--; delay(60) }
+            }
+        }
+        val pop = spring<Float>(dampingRatio = 0.6f, stiffness = 500f)
+        Box(contentAlignment = Alignment.CenterEnd) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
             ) {
-                Text(
-                    valueText,
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.padding(end = 4.dp),
-                )
-                // Lixeira vermelha redonda
-                RoundStepButton(
-                    symbol = "",
-                    contentDescription = stringResource(R.string.a11y_welcome_optional_remove, title),
-                    onClick = onRemove,
-                    isTrash = true,
-                )
-                // Botão −
-                RoundStepButton(
-                    symbol = "−",
-                    contentDescription = stringResource(R.string.a11y_welcome_goal_decrease, title),
-                    onClick = onDecrease,
-                    enabled = canDecrease,
-                    color = accentColor,
-                )
-                // Botão +
-                RoundStepButton(
-                    symbol = "+",
-                    contentDescription = stringResource(R.string.a11y_welcome_goal_increase, title),
-                    onClick = onIncrease,
-                    enabled = canIncrease,
-                    color = accentColor,
-                )
-            }
-        } else {
-            Button(
-                onClick = onAdd,
-                shape = CircleShape,
-                colors = ButtonDefaults.buttonColors(containerColor = accentColor),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp),
-                    )
+                AnimatedVisibility(shownCount > 0, enter = scaleIn(pop) + fadeIn(), exit = scaleOut(pop) + fadeOut()) {
                     Text(
-                        text = stringResource(R.string.welcome_option_add),
-                        style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
-                        color = Color.White,
+                        valueText,
+                        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.onSurface,
+                        modifier = Modifier.padding(end = 4.dp),
                     )
+                }
+                // Lixeira vermelha redonda
+                AnimatedVisibility(shownCount > 1, enter = scaleIn(pop) + fadeIn(), exit = scaleOut(pop) + fadeOut()) {
+                    RoundStepButton(
+                        symbol = "",
+                        contentDescription = stringResource(R.string.a11y_welcome_optional_remove, title),
+                        onClick = onRemove,
+                        isTrash = true,
+                    )
+                }
+                AnimatedVisibility(shownCount > 2, enter = scaleIn(pop) + fadeIn(), exit = scaleOut(pop) + fadeOut()) {
+                    RoundStepButton(
+                        symbol = "−",
+                        contentDescription = stringResource(R.string.a11y_welcome_goal_decrease, title),
+                        onClick = onDecrease,
+                        enabled = canDecrease,
+                        color = accentColor,
+                    )
+                }
+                AnimatedVisibility(shownCount > 3, enter = scaleIn(pop) + fadeIn(), exit = scaleOut(pop) + fadeOut()) {
+                    RoundStepButton(
+                        symbol = "+",
+                        contentDescription = stringResource(R.string.a11y_welcome_goal_increase, title),
+                        onClick = onIncrease,
+                        enabled = canIncrease,
+                        color = accentColor,
+                    )
+                }
+            }
+            androidx.compose.animation.AnimatedVisibility(
+                visible = !isIncluded && shownCount == 0,
+                enter = scaleIn(pop) + fadeIn(),
+                exit = scaleOut(pop) + fadeOut(),
+            ) {
+                Button(
+                    onClick = onAdd,
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(containerColor = accentColor),
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                        )
+                        Text(
+                            text = stringResource(R.string.welcome_option_add),
+                            style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                            color = Color.White,
+                        )
+                    }
                 }
             }
         }
@@ -1248,19 +1328,7 @@ private fun ControlStyleStep(
             accentColor = accentColor,
             onClick = { onSelectStyle(ControlStyle.Slider) },
         ) {
-            Slider(
-                value = 0.45f,
-                onValueChange = {},
-                enabled = false,
-                colors = SliderDefaults.colors(
-                    disabledThumbColor = accentColor,
-                    disabledActiveTrackColor = accentColor,
-                    disabledInactiveTrackColor = accentColor.copy(alpha = 0.25f),
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp),
-            )
+            SliderPreview(accentColor)
         }
 
         // Opção Botões (Stepper)
@@ -1271,40 +1339,86 @@ private fun ControlStyleStep(
             accentColor = accentColor,
             onClick = { onSelectStyle(ControlStyle.Stepper) },
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                LinearProgressIndicator(
-                    progress = { 0.45f },
-                    color = accentColor,
-                    trackColor = accentColor.copy(alpha = 0.25f),
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(8.dp)
-                        .clip(CircleShape),
+            StepperPreview(accentColor)
+        }
+    }
+}
+
+/** Slider que vai e volta sozinho (onda de 4 s entre 15% e 85%), sem toque. */
+@Composable
+private fun SliderPreview(color: Color) {
+    val phase by rememberInfiniteTransition(label = "slider_preview").animateFloat(
+        initialValue = 0f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(4000, easing = LinearEasing)),
+        label = "slider_phase",
+    )
+    Slider(
+        value = 0.5f - 0.35f * cos(phase * 2f * PI.toFloat()),
+        onValueChange = {},
+        enabled = false,
+        colors = SliderDefaults.colors(
+            disabledThumbColor = color,
+            disabledActiveTrackColor = color,
+            disabledInactiveTrackColor = color.copy(alpha = 0.25f),
+        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .clearAndSetSemantics {},
+    )
+}
+
+/** Barra com − / +: o + é "tocado" 3 vezes enchendo a barra, depois o − 3 vezes, em loop. */
+@Composable
+private fun StepperPreview(color: Color) {
+    var pressedPlus by remember { mutableStateOf<Boolean?>(null) }
+    val value = remember { Animatable(0.25f) }
+    LaunchedEffect(Unit) {
+        var tap = 0
+        while (true) {
+            delay(700)
+            val plus = (tap / 3) % 2 == 0
+            pressedPlus = plus
+            delay(150)
+            pressedPlus = null
+            value.animateTo(value.value + if (plus) 0.2f else -0.2f, tween(300))
+            tap++
+        }
+    }
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp)
+            .clearAndSetSemantics {},
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        LinearProgressIndicator(
+            progress = { value.value.coerceIn(0f, 1f) },
+            color = color,
+            trackColor = color.copy(alpha = 0.25f),
+            modifier = Modifier
+                .weight(1f)
+                .height(8.dp)
+                .clip(CircleShape),
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+            listOf(false to "−", true to "+").forEach { (plus, symbol) ->
+                val scale by animateFloatAsState(
+                    targetValue = if (pressedPlus == plus) 0.85f else 1f,
+                    animationSpec = spring(dampingRatio = 0.6f, stiffness = 900f),
+                    label = "stepper_press",
                 )
-                Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    RoundStepButton(
-                        symbol = "−",
-                        contentDescription = "",
-                        onClick = {},
-                        enabled = false,
-                        color = accentColor,
-                        size = 38.dp,
-                    )
-                    RoundStepButton(
-                        symbol = "+",
-                        contentDescription = "",
-                        onClick = {},
-                        enabled = false,
-                        color = accentColor,
-                        size = 38.dp,
-                    )
-                }
+                RoundStepButton(
+                    symbol = symbol,
+                    contentDescription = "",
+                    // Ativo só pra ficar na cor (o toque não faz nada; a prévia é decorativa).
+                    onClick = {},
+                    color = color,
+                    size = 40.dp,
+                    modifier = Modifier.scale(scale),
+                )
             }
         }
     }
@@ -1352,7 +1466,14 @@ private fun ControlStyleCard(
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            preview()
+            // Só o cartão escolhido mostra a prévia, abrindo com animação.
+            AnimatedVisibility(
+                visible = isSelected,
+                enter = fadeIn(tween(250)) + expandVertically(tween(300)) + scaleIn(initialScale = 0.9f, transformOrigin = TransformOrigin(0.5f, 0f)),
+                exit = fadeOut(tween(200)) + shrinkVertically(tween(250)),
+            ) {
+                preview()
+            }
         }
     }
 }
@@ -1368,8 +1489,6 @@ private fun ThemeStep(
     accentColor: Color,
     onSelectTheme: (AppTheme) -> Unit,
 ) {
-    var infoTheme by remember { mutableStateOf<AppTheme?>(null) }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -1417,7 +1536,6 @@ private fun ThemeStep(
                                 isSelected = theme == selectedTheme,
                                 accentColor = accentColor,
                                 onClick = { onSelectTheme(theme) },
-                                onInfo = { infoTheme = theme },
                             )
                         }
                     }
@@ -1426,10 +1544,6 @@ private fun ThemeStep(
         }
     }
 
-    // Sheet de informações dos níveis do tema (reutiliza ThemeInfoSheet do app)
-    infoTheme?.let { theme ->
-        ThemeInfoSheet(theme = theme, sex = sex, onDismiss = { infoTheme = null })
-    }
 }
 
 @Composable
@@ -1439,30 +1553,34 @@ private fun ThemeOptionRow(
     isSelected: Boolean,
     accentColor: Color,
     onClick: () -> Unit,
-    onInfo: () -> Unit,
 ) {
     val themeName = stringResource(themeNameRes(theme, sex))
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 56.dp)
             .background(if (isSelected) accentColor.copy(alpha = 0.10f) else Color.Transparent)
             .clickable(role = Role.Button, onClick = onClick)
-            .padding(start = 16.dp, end = 8.dp, top = 8.dp, bottom = 8.dp),
+            .padding(start = 16.dp, end = 12.dp, top = 14.dp, bottom = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Column(modifier = Modifier.weight(1f)) {
+        // Nome em cima e os 5 emojis numa linha só embaixo
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
             Text(
                 text = themeName,
                 style = MaterialTheme.typography.bodyLarge.copy(
-                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal,
                 ),
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Text(
-                text = theme.previewEmojis(sex).joinToString("  "),
-                style = MaterialTheme.typography.titleMedium,
+                text = theme.previewEmojis(sex).joinToString(" "),
+                style = MaterialTheme.typography.bodyLarge,
+                maxLines = 1,
                 modifier = Modifier.clearAndSetSemantics {},
             )
         }
@@ -1472,24 +1590,11 @@ private fun ThemeOptionRow(
                 imageVector = Icons.Default.Check,
                 contentDescription = null,
                 tint = accentColor,
-                modifier = Modifier
-                    .size(20.dp)
-                    .padding(end = 4.dp),
+                modifier = Modifier.size(20.dp),
             )
         }
 
-        // Botão (i) com área de toque mínima de 48dp
-        IconButton(
-            onClick = onInfo,
-            modifier = Modifier.size(48.dp),
-        ) {
-            Icon(
-                imageVector = Icons.Default.Info,
-                contentDescription = stringResource(R.string.a11y_theme_info, themeName),
-                tint = accentColor,
-                modifier = Modifier.size(24.dp),
-            )
-        }
+        ThemeDetailsButton(theme = theme, sex = sex)
     }
 }
 
@@ -1504,16 +1609,10 @@ private fun ReadyStep(
     onRequestNotifications: () -> Unit,
     onRequestHealth: () -> Unit,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 20.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
+    // Conteúdo centralizado na tela; Vamos lá / Voltar sobem pra logo abaixo das permissões.
+    CenteredStepColumn {
         WelcomeStepHeader(
-            emoji = "🚀",
+            emoji = "🚶",
             title = stringResource(R.string.welcome_step_ready_title),
             subtitle = stringResource(R.string.welcome_step_ready_subtitle),
             accentColor = accentColor,
@@ -1521,6 +1620,7 @@ private fun ReadyStep(
 
         // Permissão de Notificações
         PermissionCard(
+            modifier = Modifier.padding(top = 16.dp),
             icon = Icons.Default.Notifications,
             iconBackgroundColor = Color(0xFFFF3B30),
             title = stringResource(R.string.welcome_ready_notifications_title),
@@ -1533,6 +1633,7 @@ private fun ReadyStep(
         // Permissão de Saúde (Health Connect, se disponível no aparelho)
         if (state.isHealthAvailable) {
             PermissionCard(
+                modifier = Modifier.padding(top = 16.dp),
                 icon = Icons.Default.Favorite,
                 iconBackgroundColor = Color(0xFFFF2D55),
                 title = stringResource(R.string.welcome_ready_health_title),
@@ -1542,5 +1643,7 @@ private fun ReadyStep(
                 onAllow = onRequestHealth,
             )
         }
+        Spacer(Modifier.height(16.dp))
+        WelcomeButtonsSlot(WelcomeStep.Ready)
     }
 }

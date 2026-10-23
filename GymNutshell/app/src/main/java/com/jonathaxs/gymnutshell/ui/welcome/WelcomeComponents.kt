@@ -1,5 +1,9 @@
 package com.jonathaxs.gymnutshell.ui.welcome
 
+import androidx.compose.ui.layout.positionInRoot
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
@@ -258,3 +262,33 @@ fun RoundStepButton(
 
 /** Reexporta o estado e cartão de permissão compartilhados de ui.components. */
 typealias WelcomePermissionState = com.jonathaxs.gymnutshell.ui.components.PermissionCardState
+
+// ============================================================================
+// Espaço reservado pros botões do rodapé
+// ============================================================================
+
+/** Avisa a WelcomeScreen onde a etapa reservou o espaço dos botões (topo, em px na raiz). */
+fun interface WelcomeSlotReporter {
+    fun report(step: WelcomeStep, top: Float)
+}
+
+val LocalWelcomeSlotReporter = staticCompositionLocalOf { WelcomeSlotReporter { _, _ -> } }
+
+/** Altura do par de botões do rodapé, pra a etapa reservar o mesmo espaço. */
+val LocalWelcomeButtonsHeight = compositionLocalOf { 114.dp }
+
+/**
+ * Espaço vazio do tamanho dos botões. Os botões de verdade ficam no rodapé da WelcomeScreen e deslizam
+ * até aqui (Início e Tudo pronto). Porte do WelcomeButtonsSlot do iOS.
+ */
+@Composable
+fun WelcomeButtonsSlot(step: WelcomeStep) {
+    val reporter = LocalWelcomeSlotReporter.current
+    Spacer(
+        Modifier
+            .fillMaxWidth()
+            .height(LocalWelcomeButtonsHeight.current)
+            .onGloballyPositioned { reporter.report(step, it.positionInRoot().y) }
+            .clearAndSetSemantics {},
+    )
+}

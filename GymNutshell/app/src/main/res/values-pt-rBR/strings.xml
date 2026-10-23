@@ -194,10 +194,9 @@
 
     <!-- Welcome / onboarding 2.0 -->
     <string name="welcome_start_title">Olá!</string>
-    <string name="welcome_start_feature_track">Rastreie suas metas fitness ao longo do dia.</string>
-    <string name="welcome_start_feature_progress">Acompanhe o seu avanço.</string>
-    <string name="welcome_start_feature_theme">Escolha um tema para te inspirar.</string>
     <string name="welcome_start_new">Começar</string>
+    <string name="welcome_restore_import_json">Importar backup JSON</string>
+    <string name="welcome_theme_preview">Detalhes</string>
     <string name="welcome_start_restore">Restaurar backup</string>
     <string name="welcome_restore_error_title">Não foi possível restaurar</string>
     <string name="welcome_step_about_title">Sobre você</string>

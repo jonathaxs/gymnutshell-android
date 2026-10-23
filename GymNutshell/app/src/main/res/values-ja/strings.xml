@@ -150,6 +150,8 @@
     <string name="cd_move_down">下に移動</string>
     <string name="welcome_start_title">ようこそ！</string>
     <string name="welcome_start_new">はじめる</string>
+    <string name="welcome_restore_import_json">JSONバックアップを読み込む</string>
+    <string name="welcome_theme_preview">詳細</string>
     <string name="welcome_start_restore">バックアップから復元</string>
     <string name="welcome_restore_error_title">復元できませんでした</string>
     <string name="welcome_step_about_title">あなたについて</string>

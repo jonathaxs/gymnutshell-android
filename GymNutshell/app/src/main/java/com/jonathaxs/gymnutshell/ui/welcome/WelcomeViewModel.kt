@@ -61,15 +61,11 @@ data class WelcomeUiState(
     val sexColor: Color = AccentColor.defaultForSex(sex).color
 
     /**
-     * Cor da etapa: na etapa de objetivo segue o objetivo escolhido;
-     * nas demais segue o sexo.
+     * Cor da etapa: nas etapas de objetivo e de metas segue o objetivo escolhido;
+     * nas demais segue o sexo. Pinta o fundo, a barra de progresso e os botões do rodapé.
      */
-    val stepColor: Color = if (currentStep == WelcomeStep.Goal) {
-        when (userGoal) {
-            UserGoal.Bulking -> Color(0xFFFF9500)
-            UserGoal.Maintenance -> Color(0xFF007AFF)
-            UserGoal.Cutting -> Color(0xFF34C759)
-        }
+    val stepColor: Color = if (currentStep == WelcomeStep.Goal || currentStep == WelcomeStep.Summary) {
+        goalColor(userGoal)
     } else {
         sexColor
     }
@@ -369,4 +365,11 @@ class WelcomeViewModel(app: Application) : AndroidViewModel(app) {
     fun clearRestoreError() {
         _state.update { it.copy(restoreFailed = false) }
     }
+}
+
+/** Cor de cada objetivo: ganhar massa laranja, se manter ciano, emagrecer verde (iOS). */
+fun goalColor(goal: UserGoal): Color = when (goal) {
+    UserGoal.Bulking -> Color(0xFFFF9500)
+    UserGoal.Maintenance -> Color(0xFF32ADE6)
+    UserGoal.Cutting -> Color(0xFF34C759)
 }

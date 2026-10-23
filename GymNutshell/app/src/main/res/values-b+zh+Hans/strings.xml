@@ -150,6 +150,8 @@
     <string name="cd_move_down">下移</string>
     <string name="welcome_start_title">你好！</string>
     <string name="welcome_start_new">开始使用</string>
+    <string name="welcome_restore_import_json">导入 JSON 备份</string>
+    <string name="welcome_theme_preview">详情</string>
     <string name="welcome_start_restore">恢复备份</string>
     <string name="welcome_restore_error_title">无法恢复</string>
     <string name="welcome_step_about_title">关于你</string>

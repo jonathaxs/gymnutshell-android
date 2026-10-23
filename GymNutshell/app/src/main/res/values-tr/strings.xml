@@ -150,6 +150,8 @@
     <string name="cd_move_down">Aşağı taşı</string>
     <string name="welcome_start_title">Merhaba!</string>
     <string name="welcome_start_new">Başla</string>
+    <string name="welcome_restore_import_json">JSON yedeğini içe aktar</string>
+    <string name="welcome_theme_preview">Ayrıntılar</string>
     <string name="welcome_start_restore">Yedeği geri yükle</string>
     <string name="welcome_restore_error_title">Geri yüklenemedi</string>
     <string name="welcome_step_about_title">Senin hakkında</string>

@@ -1,5 +1,17 @@
 package com.jonathaxs.gymnutshell.ui.settings
 
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.heading
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -218,4 +230,74 @@ internal fun themeNameRes(theme: AppTheme): Int = when (theme) {
     AppTheme.Celestial -> R.string.theme_celestial
     AppTheme.Champion -> R.string.theme_champion
     AppTheme.Number -> R.string.theme_number
+}
+
+/**
+ * Botão "Detalhes" (cinza) que abre, logo abaixo, um balão com os 5 níveis do tema: emoji, nome e faixa.
+ * Porte do Visualizar + ThemeLevelsPopover do iOS (Welcome e Ajustes > Emojis).
+ */
+@Composable
+internal fun ThemeDetailsButton(theme: AppTheme, sex: String, modifier: Modifier = Modifier) {
+    var expanded by remember { mutableStateOf(false) }
+    val themeName = stringResource(themeNameRes(theme, sex))
+    val rangeSuffix = stringResource(R.string.tier_info_range_suffix)
+    Box(modifier) {
+        FilledTonalButton(
+            onClick = { expanded = true },
+            shape = CircleShape,
+            colors = ButtonDefaults.filledTonalButtonColors(
+                containerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.08f),
+                contentColor = MaterialTheme.colorScheme.onSurface,
+            ),
+            contentPadding = PaddingValues(horizontal = 14.dp, vertical = 6.dp),
+        ) {
+            Text(
+                text = stringResource(R.string.welcome_theme_preview),
+                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                maxLines = 1,
+            )
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            shape = RoundedCornerShape(20.dp),
+            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh,
+            modifier = Modifier.width(300.dp),
+        ) {
+            Text(
+                text = themeName,
+                style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 10.dp)
+                    .semantics { heading() },
+            )
+            DailyAchievement.entries.forEach { tier ->
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .semantics(mergeDescendants = true) {},
+                ) {
+                    Text(
+                        text = theme.emoji(tier, sex),
+                        style = MaterialTheme.typography.headlineSmall,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.width(36.dp).clearAndSetSemantics {},
+                    )
+                    Column {
+                        Text(stringResource(theme.tierNameRes(tier, sex)), style = MaterialTheme.typography.bodyLarge)
+                        Text(
+                            text = tierRange(tier) + rangeSuffix,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+            }
+        }
+    }
 }

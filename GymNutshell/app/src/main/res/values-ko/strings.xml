@@ -150,6 +150,8 @@
     <string name="cd_move_down">아래로 이동</string>
     <string name="welcome_start_title">환영해요!</string>
     <string name="welcome_start_new">시작하기</string>
+    <string name="welcome_restore_import_json">JSON 백업 가져오기</string>
+    <string name="welcome_theme_preview">자세히</string>
     <string name="welcome_start_restore">백업 복원</string>
     <string name="welcome_restore_error_title">복원할 수 없음</string>
     <string name="welcome_step_about_title">기본 정보</string>
