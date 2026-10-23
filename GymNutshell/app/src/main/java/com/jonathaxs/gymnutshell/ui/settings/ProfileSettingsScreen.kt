@@ -113,8 +113,8 @@ fun ProfileSettingsScreen(
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .widthIn(max = 600.dp)
+                    .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
                     .padding(vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp),

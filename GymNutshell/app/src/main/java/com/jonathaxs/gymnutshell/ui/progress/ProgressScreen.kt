@@ -92,8 +92,8 @@ fun ProgressScreen(
         if (isWide) {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .widthIn(max = 860.dp)
+                    .fillMaxWidth()
                     .fillMaxHeight()
                     .align(Alignment.TopCenter)
                     .verticalScroll(rememberScrollState())

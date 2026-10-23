@@ -137,8 +137,8 @@ fun UserGoalScreen(
                             disabledContainerColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f),
                         ),
                         modifier = Modifier
-                            .fillMaxWidth()
                             .widthIn(max = 600.dp)
+                            .fillMaxWidth()
                             .height(52.dp),
                     ) {
                         Text(
@@ -159,8 +159,8 @@ fun UserGoalScreen(
                         border = if (hasChanged) BorderStroke(1.5.dp, accent.color)
                         else BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
                         modifier = Modifier
-                            .fillMaxWidth()
                             .widthIn(max = 600.dp)
+                            .fillMaxWidth()
                             .height(52.dp),
                     ) {
                         Text(
@@ -181,8 +181,8 @@ fun UserGoalScreen(
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .widthIn(max = 600.dp)
+                    .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
                     .padding(vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp),

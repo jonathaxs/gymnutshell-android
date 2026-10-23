@@ -84,8 +84,8 @@ fun AchievementsScreen(
         val isWide = maxWidth >= Breakpoints.WideThreshold
         val contentMod = if (isWide) {
             Modifier
-                .fillMaxWidth()
                 .widthIn(max = 860.dp)
+                .fillMaxWidth()
                 .fillMaxHeight()
                 .align(Alignment.TopCenter)
         } else {

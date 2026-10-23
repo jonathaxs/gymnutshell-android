@@ -95,8 +95,8 @@ fun SettingsListScreen(
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .widthIn(max = 700.dp)
+                    .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
             ) {
                 // 1. Seção "Seus dados": Metas, Objetivo e Perfil

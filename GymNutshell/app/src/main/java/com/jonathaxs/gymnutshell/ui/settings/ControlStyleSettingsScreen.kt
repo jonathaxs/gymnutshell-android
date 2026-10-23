@@ -70,8 +70,8 @@ fun ControlStyleSettingsScreen(
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .widthIn(max = 600.dp)
+                    .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
                     .padding(horizontal = GroupInset, vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),

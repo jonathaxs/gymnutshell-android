@@ -88,8 +88,11 @@ fun WearTodayScreen(viewModel: WearTodayViewModel = viewModel()) {
 
 @Composable
 private fun WearHero(progress: Float, tierEmoji: String, @androidx.annotation.StringRes tierNameRes: Int, percent: Int) {
-    val ringSize = 92.dp
+    // Menor que os 92 pt do Apple Watch: a tela redonda corta as laterais no topo da lista.
+    val ringSize = 72.dp
     Column(
+        // Espaço pro relógio do sistema no topo da tela.
+        modifier = Modifier.padding(top = 20.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
@@ -114,13 +117,13 @@ private fun WearHero(progress: Float, tierEmoji: String, @androidx.annotation.St
                 }
                 Text(
                     "$percent%",
-                    fontSize = 18.sp,
+                    fontSize = 15.sp,
                     fontWeight = FontWeight.Bold,
                     color = if (percent > 0) Color.White else Color.White.copy(alpha = 0.5f),
                     maxLines = 1,
                 )
             }
-            Text(tierEmoji, fontSize = 34.sp)
+            Text(tierEmoji, fontSize = 28.sp)
         }
         if (tierNameRes != 0) {
             Text(

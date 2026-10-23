@@ -1,5 +1,6 @@
 package com.jonathaxs.gymnutshell.ui.welcome
 
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.animation.scaleOut
 import kotlin.math.cos
 import kotlin.math.PI
@@ -238,9 +239,11 @@ fun WelcomeScreen(viewModel: WelcomeViewModel = viewModel()) {
             )
 
             Column(
+                // Limite antes de preencher: com fillMaxSize primeiro a largura mínima já é a tela toda e o 640 some.
                 modifier = Modifier
-                    .fillMaxSize()
-                    .widthIn(max = 640.dp),
+                    .fillMaxHeight()
+                    .widthIn(max = 640.dp)
+                    .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 // Barra de progresso fixa no topo (etapa atual peso 3f, outras peso 1f)
