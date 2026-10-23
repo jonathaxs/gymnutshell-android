@@ -78,8 +78,11 @@ fun GoalsScreen(
             TopAppBar(
                 title = { Text(stringResource(R.string.goals_title)) },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
+                    // No painel da tela larga dos Ajustes não há seta de voltar.
+                    if (!LocalSettingsInPane.current) {
+                        IconButton(onClick = onBack) {
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
+                        }
                     }
                 },
                 actions = {

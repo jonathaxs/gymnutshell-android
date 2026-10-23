@@ -1,5 +1,21 @@
 package com.jonathaxs.gymnutshell.ui.today
 
+import com.jonathaxs.gymnutshell.ui.util.rememberIsTablet
+import com.jonathaxs.gymnutshell.ui.util.rememberFoldInfo
+import com.jonathaxs.gymnutshell.ui.util.FoldInfo
+import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.LookaheadScope
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.animateBounds
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.BoundsTransform
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
@@ -162,9 +178,14 @@ fun TodayScreen(
     val onRingClick = { showRingInfo = true }
     val onTierClick = { showTierInfo = true }
 
-    BoxWithConstraints(modifier.fillMaxSize()) {
-        val isWide = maxWidth >= Breakpoints.WideThreshold
-        val isTall = maxHeight >= Breakpoints.TallThreshold
+    // Dobra (Pixel Fold e afins) e onde a Hoje está na janela, pra levar a faixa da dobra pras coordenadas locais.
+    val foldInfo = rememberFoldInfo()
+    var boxOrigin by remember { mutableStateOf(Offset.Zero) }
+    val density = LocalDensity.current
+
+    BoxWithConstraints(modifier.fillMaxSize().onGloballyPositioned { boxOrigin = it.positionInWindow() }) {
+        // Largo a partir de 700 dp, ou já a partir de 560 dp em tablet/dobrável aberto (igual à regra do iOS).
+        val isWide = maxWidth >= Breakpoints.WideThreshold || (maxWidth >= 560.dp && rememberIsTablet())
         when {
             !isWide -> TodayPortrait(
                 state = state,
@@ -180,23 +201,12 @@ fun TodayScreen(
                 onOpenGoals = onOpenGoals,
                 viewModel = viewModel,
             )
-            isTall -> TodayWideGrid(
+            else -> TodayWide(
                 state = state,
                 accent = accent,
-                onOpenTheme = onOpenTheme,
-                onOpenColors = onOpenColors,
-                onOpenControls = onOpenControls,
-                onOpenGoals = onOpenGoals,
-                onOpenSettings = onOpenSettings,
-                onOpenHistory = onOpenHistory,
-                onOpenAchievements = onOpenAchievements,
-                onRingClick = onRingClick,
-                onTierClick = onTierClick,
-                viewModel = viewModel,
-            )
-            else -> TodayWideColumn(
-                state = state,
-                accent = accent,
+                width = maxWidth,
+                height = maxHeight,
+                fold = foldBand(foldInfo, boxOrigin, density),
                 onOpenTheme = onOpenTheme,
                 onOpenColors = onOpenColors,
                 onOpenControls = onOpenControls,
@@ -1184,81 +1194,50 @@ private fun QuickEditItem(icon: Painter, @StringRes title: Int, accent: Color, o
     )
 }
 
-/** Wide + alto (tablet): hero empilhado numa coluna fixa à esquerda + metas em grid à direita. */
-@Composable
-private fun TodayWideGrid(
-    state: TodayUiState,
-    accent: Color,
-    onOpenTheme: () -> Unit,
-    onOpenColors: () -> Unit,
-    onOpenControls: () -> Unit,
-    onOpenGoals: () -> Unit,
-    onOpenSettings: () -> Unit,
-    onOpenHistory: () -> Unit,
-    onOpenAchievements: () -> Unit,
-    onRingClick: () -> Unit,
-    onTierClick: () -> Unit,
-    viewModel: TodayViewModel,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 24.dp, vertical = 16.dp),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.Top,
-    ) {
-        Box(
-            modifier = Modifier
-                .width(360.dp)
-                .fillMaxHeight(),
-            contentAlignment = Alignment.Center,
-        ) {
-            // Coluna do hero (layout largo): botões acima da data, como no iPad em pé; Edição rápida embaixo.
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                TodayPageButtons(
-                    goalsViewMode = state.goalsViewMode,
-                    accent = accent,
-                    onOpenSettings = onOpenSettings,
-                    onToggleViewMode = { viewModel.toggleGoalsViewMode() },
-                    onOpenHistory = onOpenHistory,
-                    onOpenAchievements = onOpenAchievements,
-                )
-                TodayTopBar(dateLabel = state.dateLabel)
-                TodayHeroCard(
-                    state = state,
-                    onRingClick = onRingClick,
-                    onTierClick = onTierClick,
-                    verticalLayout = true,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-                TodayQuickEditButton(
-                    accent = accent,
-                    onOpenTheme = onOpenTheme,
-                    onOpenColors = onOpenColors,
-                    onOpenControls = onOpenControls,
-                    onOpenGoals = onOpenGoals,
-                )
-            }
-        }
-        Spacer(Modifier.width(24.dp))
-        TodayGoalsGrid(
-            cells = todayGridCells(state, accent, viewModel),
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight(),
+/** Faixa da dobra em dp, nas coordenadas da Hoje (null sem dobra). */
+private data class FoldBand(val left: Dp, val top: Dp, val right: Dp, val bottom: Dp, val halfOpened: Boolean, val vertical: Boolean)
+
+private fun foldBand(info: FoldInfo?, origin: Offset, density: Density): FoldBand? = info?.let {
+    with(density) {
+        FoldBand(
+            left = (it.bounds.left - origin.x).toDp(),
+            top = (it.bounds.top - origin.y).toDp(),
+            right = (it.bounds.right - origin.x).toDp(),
+            bottom = (it.bounds.bottom - origin.y).toDp(),
+            halfOpened = it.halfOpened,
+            vertical = it.vertical,
         )
     }
 }
 
-/** Wide + baixo (celular landscape): hero horizontal à esquerda + metas em coluna única à direita. */
+/** Como o hero e as metas se dividem no layout largo. */
+private sealed interface WideArrangement {
+    /** Lado a lado: hero com largura fixa à esquerda, metas no resto. */
+    data class Side(val heroWidth: Dp, val gap: Dp) : WideArrangement
+    /** Empilhado: hero em cima com altura fixa, metas embaixo. */
+    data class Stacked(val heroHeight: Dp, val gap: Dp) : WideArrangement
+}
+
+/** Margem de cada lado da dobra: o vinco não é lugar pra botão (iOS: faixa de 40 + 20 de cada lado). */
+private val FoldMargin = 24.dp
+
+/**
+ * Layout largo (tablet, dobrável aberto) — porte do wideLayout do iOS. Coluna do hero (botões, data, anel e Edição
+ * rápida) + coluna das metas (grade de categorias, metas em grid quando sobra altura, ou lista de até 330).
+ * Com a dobra meio aberta: livro (dobra em pé) = hero na metade esquerda e metas na direita, a faixa vazia; mesa
+ * (dobra deitada) = hero colado no topo da metade de cima e metas embaixo. Aberto reto em pé = mesmo empilhado,
+ * com o hero centralizado. As views são as mesmas em todos os casos (`animateBounds` num `LookaheadScope`), então
+ * dobrar e desdobrar anima as colunas esticando e deslizando em vez de trocar de tela.
+ * Tablet deitado sem dobra: os botões vão pra uma coluna de vidro à direita.
+ */
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-private fun TodayWideColumn(
+private fun TodayWide(
     state: TodayUiState,
     accent: Color,
+    width: Dp,
+    height: Dp,
+    fold: FoldBand?,
     onOpenTheme: () -> Unit,
     onOpenColors: () -> Unit,
     onOpenControls: () -> Unit,
@@ -1270,62 +1249,235 @@ private fun TodayWideColumn(
     onTierClick: () -> Unit,
     viewModel: TodayViewModel,
 ) {
-    Row(
-        modifier = Modifier.fillMaxSize(),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Box(
-            modifier = Modifier
-                .width(340.dp)
-                .fillMaxHeight(),
-            contentAlignment = Alignment.Center,
+    val isTall = height >= Breakpoints.TallThreshold
+    // Abaixo de 744 dp o hero encolhe e as margens somem, pra sobrar espaço pras metas.
+    val compact = width < 744.dp
+    val landscape = width > height
+    // Tipo de dobra que vale agora (só faz sentido com a faixa dentro da tela).
+    val book = fold != null && fold.halfOpened && fold.vertical
+    val tabletop = fold != null && fold.halfOpened && !fold.vertical
+    val flatPortrait = fold != null && !fold.halfOpened && !landscape
+    val stacked = tabletop || flatPortrait
+    // Coluna de vidro: tablet deitado sem dobra meio aberta.
+    val sideRail = landscape && !book && !stacked
+    val railWidth = if (sideRail) 72.dp else 0.dp
+    val padding = 16.dp
+
+    val arrangement: WideArrangement = when {
+        book -> WideArrangement.Side(
+            heroWidth = (fold!!.left - FoldMargin - padding).coerceAtLeast(0.dp),
+            gap = (fold.right - fold.left) + FoldMargin * 2,
+        )
+        tabletop -> WideArrangement.Stacked(
+            heroHeight = (fold!!.top - FoldMargin - padding).coerceAtLeast(0.dp),
+            gap = (fold.bottom - fold.top) + FoldMargin * 2,
+        )
+        flatPortrait -> WideArrangement.Stacked(heroHeight = height / 2 - 16.dp - padding, gap = 16.dp)
+        else -> WideArrangement.Side(heroWidth = if (compact) 320.dp else 360.dp, gap = if (compact) 16.dp else 24.dp)
+    }
+    val isList = state.goalsViewMode == TodayGoalsViewMode.List
+    val bounds = BoundsTransform { _, _ -> spring(dampingRatio = 0.85f, stiffness = 130f) }
+
+    Row(Modifier.fillMaxSize().padding(padding), verticalAlignment = Alignment.CenterVertically) {
+        LookaheadScope {
+            WideArrangedLayout(arrangement, Modifier.weight(1f).fillMaxHeight()) {
+                // Coluna do hero
+                Column(
+                    modifier = Modifier
+                        .animateBounds(this@LookaheadScope, boundsTransform = bounds)
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    // Mesa: colado no topo (longe da dobra); nos outros, centralizado na altura.
+                    verticalArrangement = if (tabletop) Arrangement.spacedBy(12.dp, Alignment.Top)
+                    else Arrangement.spacedBy(12.dp, Alignment.CenterVertically),
+                ) {
+                    if (!sideRail) {
+                        TodayPageButtons(
+                            goalsViewMode = state.goalsViewMode,
+                            accent = accent,
+                            onOpenSettings = onOpenSettings,
+                            onToggleViewMode = { viewModel.toggleGoalsViewMode() },
+                            onOpenHistory = onOpenHistory,
+                            onOpenAchievements = onOpenAchievements,
+                            modifier = Modifier.padding(bottom = 4.dp),
+                        )
+                    }
+                    TodayTopBar(dateLabel = state.dateLabel)
+                    TodayHeroCard(
+                        state = state,
+                        onRingClick = onRingClick,
+                        onTierClick = onTierClick,
+                        // Anel maior só com altura e largura sobrando (não empilhado, que tem meia tela).
+                        verticalLayout = isTall && !compact && !stacked,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    // Na lista a Edição rápida fica abaixo do hero; na grade vai pra baixo das categorias.
+                    if (isList) {
+                        TodayQuickEditButton(
+                            accent = accent,
+                            onOpenTheme = onOpenTheme,
+                            onOpenColors = onOpenColors,
+                            onOpenControls = onOpenControls,
+                            onOpenGoals = onOpenGoals,
+                        )
+                    }
+                }
+                // Coluna das metas
+                Box(
+                    modifier = Modifier.animateBounds(this@LookaheadScope, boundsTransform = bounds),
+                    contentAlignment = Alignment.TopCenter,
+                ) {
+                    when {
+                        !isList -> Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .verticalScroll(rememberScrollState()),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(24.dp, Alignment.CenterVertically),
+                        ) {
+                            TodayCategoryGrid(
+                                sections = state.sections,
+                                uncategorizedGoals = state.uncategorizedGoals,
+                                controlStyle = state.controlStyle,
+                                accent = accent,
+                                onSetIntake = { goal, value -> viewModel.updateIntake(goal, value) },
+                                onToggleRest = { goal -> viewModel.toggleRestDay(goal) },
+                                modifier = Modifier.widthIn(max = 560.dp),
+                            )
+                            TodayQuickEditButton(
+                                accent = accent,
+                                onOpenTheme = onOpenTheme,
+                                onOpenColors = onOpenColors,
+                                onOpenControls = onOpenControls,
+                                onOpenGoals = onOpenGoals,
+                            )
+                        }
+                        // Altura sobrando e lado a lado (inclusive o livro): metas em grid de colunas, ocupando a
+                        // largura toda. Mesmo componente com e sem dobra, pra a troca animar em vez de recriar.
+                        isTall && !stacked -> TodayGoalsGrid(
+                            cells = todayGridCells(state, accent, viewModel),
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                        // Lista numa coluna centralizada, perto da largura do hero.
+                        else -> TodayGoalsListContent(
+                            state = state,
+                            accent = accent,
+                            onToggleCategory = { viewModel.toggleCategory(it) },
+                            onSetIntake = { goal, value -> viewModel.updateIntake(goal, value) },
+                            onToggleRest = { goal -> viewModel.toggleRestDay(goal) },
+                            modifier = Modifier
+                                .widthIn(max = 330.dp)
+                                .fillMaxHeight()
+                                .verticalScroll(rememberScrollState())
+                                .padding(vertical = 8.dp),
+                        )
+                    }
+                }
+            }
+        }
+        // Coluna de vidro à direita, centralizada na altura (iPad deitado no iOS).
+        AnimatedVisibility(
+            visible = sideRail,
+            enter = fadeIn() + slideInHorizontally { it },
+            exit = fadeOut() + slideOutHorizontally { it },
         ) {
-            // Coluna do hero (layout largo): botões acima da data, como no iPad em pé; Edição rápida embaixo.
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier.fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .verticalScroll(rememberScrollState()),
-            ) {
-                TodayPageButtons(
-                    goalsViewMode = state.goalsViewMode,
-                    accent = accent,
-                    onOpenSettings = onOpenSettings,
-                    onToggleViewMode = { viewModel.toggleGoalsViewMode() },
-                    onOpenHistory = onOpenHistory,
-                    onOpenAchievements = onOpenAchievements,
-                )
-                TodayTopBar(dateLabel = state.dateLabel)
-                TodayHeroCard(
-                    state = state,
-                    onRingClick = onRingClick,
-                    onTierClick = onTierClick,
-                    verticalLayout = false,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-                TodayQuickEditButton(
-                    accent = accent,
-                    onOpenTheme = onOpenTheme,
-                    onOpenColors = onOpenColors,
-                    onOpenControls = onOpenControls,
-                    onOpenGoals = onOpenGoals,
+            TodaySideRail(
+                goalsViewMode = state.goalsViewMode,
+                accent = accent,
+                onOpenSettings = onOpenSettings,
+                onToggleViewMode = { viewModel.toggleGoalsViewMode() },
+                onOpenHistory = onOpenHistory,
+                onOpenAchievements = onOpenAchievements,
+                modifier = Modifier.padding(start = 16.dp).width(railWidth - 16.dp),
+            )
+        }
+    }
+}
+
+/** Mede e posiciona as duas colunas (hero e metas) conforme o arranjo, mantendo as mesmas views. */
+@Composable
+private fun WideArrangedLayout(
+    arrangement: WideArrangement,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Layout(content = content, modifier = modifier) { measurables, constraints ->
+        val w = constraints.maxWidth
+        val h = constraints.maxHeight
+        when (arrangement) {
+            is WideArrangement.Side -> {
+                val heroW = arrangement.heroWidth.roundToPx().coerceIn(0, w)
+                val gap = arrangement.gap.roundToPx()
+                val goalsW = (w - heroW - gap).coerceAtLeast(0)
+                val hero = measurables[0].measure(Constraints.fixed(heroW, h))
+                val goals = measurables[1].measure(Constraints.fixed(goalsW, h))
+                layout(w, h) {
+                    hero.place(0, 0)
+                    goals.place(heroW + gap, 0)
+                }
+            }
+            is WideArrangement.Stacked -> {
+                val heroH = arrangement.heroHeight.roundToPx().coerceIn(0, h)
+                val gap = arrangement.gap.roundToPx()
+                val goalsH = (h - heroH - gap).coerceAtLeast(0)
+                val hero = measurables[0].measure(Constraints.fixed(w, heroH))
+                val goals = measurables[1].measure(Constraints.fixed(w, goalsH))
+                layout(w, h) {
+                    hero.place(0, 0)
+                    goals.place(0, heroH + gap)
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Coluna de vidro com Ajustes, Registros, Conquistas e troca lista/grade, na vertical — porte do TodaySideRail
+ * (iOS, iPad deitado), no estilo da barra vertical do iPhone Duo.
+ */
+@Composable
+private fun TodaySideRail(
+    goalsViewMode: TodayGoalsViewMode,
+    accent: Color,
+    onOpenSettings: () -> Unit,
+    onToggleViewMode: () -> Unit,
+    onOpenHistory: () -> Unit,
+    onOpenAchievements: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val isList = goalsViewMode == TodayGoalsViewMode.List
+    val nextModeName = stringResource(
+        if (isList) R.string.today_goals_view_mode_grid else R.string.today_goals_view_mode_list,
+    )
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(32.dp),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f),
+        border = BorderStroke(0.5.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.12f)),
+        shadowElevation = 4.dp,
+    ) {
+        Column(
+            modifier = Modifier.padding(vertical = 10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            IconButton(onClick = onOpenSettings) {
+                Icon(Icons.Filled.Settings, stringResource(R.string.tab_settings), tint = accent)
+            }
+            IconButton(onClick = onOpenHistory) {
+                Icon(painterResource(R.drawable.ic_records), stringResource(R.string.today_history), tint = accent)
+            }
+            IconButton(onClick = onOpenAchievements) {
+                Icon(painterResource(R.drawable.ic_settings_trophy), stringResource(R.string.achievements_header_title), tint = accent)
+            }
+            IconButton(onClick = onToggleViewMode) {
+                Icon(
+                    painter = painterResource(if (isList) R.drawable.ic_view_grid else R.drawable.ic_view_list),
+                    contentDescription = stringResource(R.string.today_goals_view_mode_switch_a11y, nextModeName),
+                    tint = accent,
                 )
             }
         }
-        TodayGoalsListContent(
-            state = state,
-            accent = accent,
-            onToggleCategory = { viewModel.toggleCategory(it) },
-            onSetIntake = { goal, value -> viewModel.updateIntake(goal, value) },
-            onToggleRest = { goal -> viewModel.toggleRestDay(goal) },
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxHeight()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-        )
     }
 }
 

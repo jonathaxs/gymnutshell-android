@@ -1,5 +1,23 @@
 package com.jonathaxs.gymnutshell.ui.settings
 
+import com.jonathaxs.gymnutshell.ui.util.rememberIsTablet
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.Modifier
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.material3.VerticalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -49,51 +67,58 @@ object SettingsRoutes {
 fun NavGraphBuilder.settingsGraph(navController: NavController) {
     navigation(startDestination = SettingsRoutes.LIST, route = SettingsRoutes.GRAPH) {
         composable(SettingsRoutes.LIST) {
-            SettingsListScreen(
-                onBack = { navController.popBackStack() },
-                onOpenCustomGoals = { navController.navigate(SettingsRoutes.CUSTOM_GOALS) },
-                onOpenGoal = { navController.navigate(SettingsRoutes.GOAL) },
-                onOpenProfile = { navController.navigate(SettingsRoutes.PROFILE) },
-                onOpenTheme = { navController.navigate(SettingsRoutes.THEME) },
-                onOpenColor = { navController.navigate(SettingsRoutes.COLOR) },
-                onOpenWidgetBackground = { navController.navigate(SettingsRoutes.WIDGET_BG) },
-                onOpenControls = { navController.navigate(SettingsRoutes.CONTROLS) },
-                onOpenHealth = { navController.navigate(SettingsRoutes.HEALTH) },
-                onOpenNotifications = { navController.navigate(SettingsRoutes.NOTIFICATIONS) },
-                onOpenNotificationHistory = { navController.navigate(MainRoutes.NOTIFICATIONS) },
-                onOpenUnits = { navController.navigate(SettingsRoutes.UNITS) },
-                onOpenBackup = { navController.navigate(SettingsRoutes.BACKUP) },
-                onOpenLanguage = { navController.navigate(SettingsRoutes.LANGUAGE) },
-                onOpenAbout = { navController.navigate(SettingsRoutes.ABOUT) },
-                onOpenWear = { navController.navigate(SettingsRoutes.WEAR) },
-                onOpenRingInfo = { navController.navigate(SettingsRoutes.RING_INFO) },
-                onOpenTierInfo = { navController.navigate(SettingsRoutes.TIER_INFO) },
-            )
+            // Tela larga (mesma regra da Hoje): lista à esquerda e a página escolhida à direita, como os Ajustes do
+            // iPad. Subpáginas (ex.: Metas -> detalhe) empilham em tela cheia.
+            BoxWithConstraints(Modifier.fillMaxSize()) {
+                val wide = maxWidth >= 700.dp || (maxWidth >= 560.dp && rememberIsTablet())
+                val listWidth = if (maxWidth < 744.dp) 300.dp else 340.dp
+                var selected by rememberSaveable { mutableStateOf(SettingsRoutes.CUSTOM_GOALS) }
+                val open: (String) -> Unit = { route -> if (wide) selected = route else navController.navigate(route) }
+                val list = @Composable {
+                    SettingsListScreen(
+                        onBack = { navController.popBackStack() },
+                        onOpenCustomGoals = { open(SettingsRoutes.CUSTOM_GOALS) },
+                        onOpenGoal = { open(SettingsRoutes.GOAL) },
+                        onOpenProfile = { open(SettingsRoutes.PROFILE) },
+                        onOpenTheme = { open(SettingsRoutes.THEME) },
+                        onOpenColor = { open(SettingsRoutes.COLOR) },
+                        onOpenWidgetBackground = { open(SettingsRoutes.WIDGET_BG) },
+                        onOpenControls = { open(SettingsRoutes.CONTROLS) },
+                        onOpenHealth = { open(SettingsRoutes.HEALTH) },
+                        onOpenNotifications = { open(SettingsRoutes.NOTIFICATIONS) },
+                        onOpenNotificationHistory = { navController.navigate(MainRoutes.NOTIFICATIONS) },
+                        onOpenUnits = { open(SettingsRoutes.UNITS) },
+                        onOpenBackup = { open(SettingsRoutes.BACKUP) },
+                        onOpenLanguage = { open(SettingsRoutes.LANGUAGE) },
+                        onOpenAbout = { open(SettingsRoutes.ABOUT) },
+                        onOpenWear = { open(SettingsRoutes.WEAR) },
+                        onOpenRingInfo = { open(SettingsRoutes.RING_INFO) },
+                        onOpenTierInfo = { open(SettingsRoutes.TIER_INFO) },
+                        selectedRoute = if (wide) selected else null,
+                    )
+                }
+                if (wide) {
+                    Row(Modifier.fillMaxSize()) {
+                        Box(Modifier.width(listWidth).fillMaxHeight()) { list() }
+                        VerticalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
+                        Box(Modifier.weight(1f).fillMaxHeight()) {
+                            CompositionLocalProvider(LocalSettingsInPane provides true) {
+                                // key: cada página com o próprio estado (e ViewModel) ao trocar.
+                                key(selected) { SettingsPage(selected, navController) }
+                            }
+                        }
+                    }
+                } else {
+                    list()
+                }
+            }
         }
-        composable(SettingsRoutes.COLOR) {
-            ColorSettingsScreen(onBack = { navController.popBackStack() })
-        }
-        composable(SettingsRoutes.PROFILE) {
-            ProfileSettingsScreen(onBack = { navController.popBackStack() })
-        }
-        composable(SettingsRoutes.GOAL) {
-            UserGoalScreen(onBack = { navController.popBackStack() })
-        }
-        composable(SettingsRoutes.THEME) {
-            ThemeSettingsScreen(onBack = { navController.popBackStack() })
-        }
-        composable(SettingsRoutes.CONTROLS) {
-            ControlStyleSettingsScreen(onBack = { navController.popBackStack() })
-        }
-        composable(SettingsRoutes.CUSTOM_GOALS) {
-            GoalsScreen(
-                onBack = { navController.popBackStack() },
-                onAddGoal = { navController.navigate(SettingsRoutes.ADD_GOAL) },
-                onEditGoal = { id -> navController.navigate("${SettingsRoutes.ADD_GOAL}?goalId=$id") },
-                onOpenGoalDetail = { key -> navController.navigate("${SettingsRoutes.GOAL_DETAIL}/$key") },
-                onOpenCategories = { navController.navigate(SettingsRoutes.CATEGORIES) },
-            )
-        }
+        composable(SettingsRoutes.COLOR) { SettingsPage(SettingsRoutes.COLOR, navController) }
+        composable(SettingsRoutes.PROFILE) { SettingsPage(SettingsRoutes.PROFILE, navController) }
+        composable(SettingsRoutes.GOAL) { SettingsPage(SettingsRoutes.GOAL, navController) }
+        composable(SettingsRoutes.THEME) { SettingsPage(SettingsRoutes.THEME, navController) }
+        composable(SettingsRoutes.CONTROLS) { SettingsPage(SettingsRoutes.CONTROLS, navController) }
+        composable(SettingsRoutes.CUSTOM_GOALS) { SettingsPage(SettingsRoutes.CUSTOM_GOALS, navController) }
         composable(
             route = "${SettingsRoutes.ADD_GOAL}?goalId={goalId}",
             arguments = listOf(
@@ -118,45 +143,17 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
                 onBack = { navController.popBackStack() },
             )
         }
-        composable(SettingsRoutes.CATEGORIES) {
-            CategoriesScreen(onBack = { navController.popBackStack() })
-        }
-        composable(SettingsRoutes.UNITS) {
-            MeasurementScreen(onBack = { navController.popBackStack() })
-        }
-        composable(SettingsRoutes.NOTIFICATIONS) {
-            NotificationsSettingsScreen(
-                onBack = { navController.popBackStack() },
-                onEditTarget = { target -> navController.navigate("${SettingsRoutes.NOTIF_EDIT}/$target") },
-            )
-        }
-        composable(SettingsRoutes.HEALTH) {
-            HealthSettingsScreen(onBack = { navController.popBackStack() })
-        }
-        composable(SettingsRoutes.BACKUP) {
-            BackupScreen(onBack = { navController.popBackStack() })
-        }
-        composable(SettingsRoutes.LANGUAGE) {
-            LanguageScreen(onBack = { navController.popBackStack() })
-        }
-        composable(SettingsRoutes.WIDGET_BG) {
-            WidgetBackgroundScreen(onBack = { navController.popBackStack() })
-        }
-        composable(SettingsRoutes.ABOUT) {
-            AboutScreen(onBack = { navController.popBackStack() })
-        }
-        composable(SettingsRoutes.WEAR) {
-            WearInstructionsScreen(onBack = { navController.popBackStack() })
-        }
-        composable(SettingsRoutes.RING_INFO) {
-            ProgressRingInfoScreen(onBack = { navController.popBackStack() })
-        }
-        composable(SettingsRoutes.TIER_INFO) {
-            TierInfoScreen(
-                onBack = { navController.popBackStack() },
-                onOpenTheme = { navController.navigate(SettingsRoutes.THEME) },
-            )
-        }
+        composable(SettingsRoutes.CATEGORIES) { SettingsPage(SettingsRoutes.CATEGORIES, navController) }
+        composable(SettingsRoutes.UNITS) { SettingsPage(SettingsRoutes.UNITS, navController) }
+        composable(SettingsRoutes.NOTIFICATIONS) { SettingsPage(SettingsRoutes.NOTIFICATIONS, navController) }
+        composable(SettingsRoutes.HEALTH) { SettingsPage(SettingsRoutes.HEALTH, navController) }
+        composable(SettingsRoutes.BACKUP) { SettingsPage(SettingsRoutes.BACKUP, navController) }
+        composable(SettingsRoutes.LANGUAGE) { SettingsPage(SettingsRoutes.LANGUAGE, navController) }
+        composable(SettingsRoutes.WIDGET_BG) { SettingsPage(SettingsRoutes.WIDGET_BG, navController) }
+        composable(SettingsRoutes.ABOUT) { SettingsPage(SettingsRoutes.ABOUT, navController) }
+        composable(SettingsRoutes.WEAR) { SettingsPage(SettingsRoutes.WEAR, navController) }
+        composable(SettingsRoutes.RING_INFO) { SettingsPage(SettingsRoutes.RING_INFO, navController) }
+        composable(SettingsRoutes.TIER_INFO) { SettingsPage(SettingsRoutes.TIER_INFO, navController) }
         composable(
             route = "${SettingsRoutes.NOTIF_EDIT}/{target}",
             arguments = listOf(navArgument("target") { type = NavType.StringType }),
@@ -168,6 +165,83 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
         }
     }
 }
+
+/** Página de Ajustes por rota — a mesma na pilha (celular) e na direita da lista (tela larga). */
+@Composable
+fun SettingsPage(route: String, navController: NavController) {
+    // No painel da tela larga não há pra onde voltar (a seta some); páginas que voltam sozinhas depois de salvar
+    // ficam onde estão.
+    val inPane = LocalSettingsInPane.current
+    val back: () -> Unit = { if (!inPane) navController.popBackStack() }
+    when (route) {
+        SettingsRoutes.COLOR -> {
+        ColorSettingsScreen(onBack = back)
+        }
+        SettingsRoutes.PROFILE -> {
+        ProfileSettingsScreen(onBack = back)
+        }
+        SettingsRoutes.GOAL -> {
+        UserGoalScreen(onBack = back)
+        }
+        SettingsRoutes.THEME -> {
+        ThemeSettingsScreen(onBack = back)
+        }
+        SettingsRoutes.CONTROLS -> {
+        ControlStyleSettingsScreen(onBack = back)
+        }
+        SettingsRoutes.CUSTOM_GOALS -> {
+        GoalsScreen(
+            onBack = back,
+            onAddGoal = { navController.navigate(SettingsRoutes.ADD_GOAL) },
+            onEditGoal = { id -> navController.navigate("${SettingsRoutes.ADD_GOAL}?goalId=$id") },
+            onOpenGoalDetail = { key -> navController.navigate("${SettingsRoutes.GOAL_DETAIL}/$key") },
+            onOpenCategories = { navController.navigate(SettingsRoutes.CATEGORIES) },
+        )
+        }
+        SettingsRoutes.CATEGORIES -> {
+        CategoriesScreen(onBack = back)
+        }
+        SettingsRoutes.UNITS -> {
+        MeasurementScreen(onBack = back)
+        }
+        SettingsRoutes.NOTIFICATIONS -> {
+        NotificationsSettingsScreen(
+            onBack = back,
+            onEditTarget = { target -> navController.navigate("${SettingsRoutes.NOTIF_EDIT}/$target") },
+        )
+        }
+        SettingsRoutes.HEALTH -> {
+        HealthSettingsScreen(onBack = back)
+        }
+        SettingsRoutes.BACKUP -> {
+        BackupScreen(onBack = back)
+        }
+        SettingsRoutes.LANGUAGE -> {
+        LanguageScreen(onBack = back)
+        }
+        SettingsRoutes.WIDGET_BG -> {
+        WidgetBackgroundScreen(onBack = back)
+        }
+        SettingsRoutes.ABOUT -> {
+        AboutScreen(onBack = back)
+        }
+        SettingsRoutes.WEAR -> {
+        WearInstructionsScreen(onBack = back)
+        }
+        SettingsRoutes.RING_INFO -> {
+        ProgressRingInfoScreen(onBack = back)
+        }
+        SettingsRoutes.TIER_INFO -> {
+        TierInfoScreen(
+            onBack = back,
+            onOpenTheme = { navController.navigate(SettingsRoutes.THEME) },
+        )
+        }
+    }
+}
+
+/** true dentro do painel da direita da tela larga: as páginas não mostram a seta de voltar. */
+val LocalSettingsInPane = staticCompositionLocalOf { false }
 
 /** Top bar das telas de Settings; mostra o botão de voltar quando `onBack` é fornecido. */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -181,7 +255,7 @@ fun SettingsTopBar(
         title = { Text(title) },
         actions = actions,
         navigationIcon = {
-            if (onBack != null) {
+            if (onBack != null && !LocalSettingsInPane.current) {
                 IconButton(onClick = onBack) {
                     Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.cd_back))
                 }

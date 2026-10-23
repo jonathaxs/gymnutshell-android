@@ -1,5 +1,6 @@
 package com.jonathaxs.gymnutshell.ui.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -62,9 +63,14 @@ fun SettingsListScreen(
     onOpenWear: () -> Unit,
     onOpenRingInfo: () -> Unit,
     onOpenTierInfo: () -> Unit,
+    /** Página aberta à direita na tela larga (linha marcada); null no celular. */
+    selectedRoute: String? = null,
     viewModel: SettingsViewModel = viewModel(),
 ) {
     val accent by viewModel.accentColor.collectAsStateWithLifecycle()
+    val highlight: (String) -> Modifier = { route ->
+        if (route == selectedRoute) Modifier.background(accent.color.copy(alpha = 0.18f)) else Modifier
+    }
     val dividerInset = 66.dp
 
     Scaffold(
@@ -107,6 +113,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.CUSTOM_GOALS),
                         onClick = onOpenCustomGoals,
                     )
                     GroupRowDivider(startInset = dividerInset)
@@ -119,6 +126,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.GOAL),
                         onClick = onOpenGoal,
                     )
                     GroupRowDivider(startInset = dividerInset)
@@ -131,6 +139,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.PROFILE),
                         onClick = onOpenProfile,
                     )
                 }
@@ -149,6 +158,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.THEME),
                         onClick = onOpenTheme,
                     )
                     GroupRowDivider(startInset = dividerInset)
@@ -161,6 +171,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.COLOR),
                         onClick = onOpenColor,
                     )
                     GroupRowDivider(startInset = dividerInset)
@@ -173,6 +184,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.WIDGET_BG),
                         onClick = onOpenWidgetBackground,
                     )
                     GroupRowDivider(startInset = dividerInset)
@@ -185,6 +197,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.CONTROLS),
                         onClick = onOpenControls,
                     )
                 }
@@ -203,6 +216,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.HEALTH),
                         onClick = onOpenHealth,
                     )
                     GroupRowDivider(startInset = dividerInset)
@@ -215,6 +229,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.NOTIFICATIONS),
                         onClick = onOpenNotifications,
                     )
                     GroupRowDivider(startInset = dividerInset)
@@ -227,6 +242,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.UNITS),
                         onClick = onOpenUnits,
                     )
                     GroupRowDivider(startInset = dividerInset)
@@ -239,6 +255,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.BACKUP),
                         onClick = onOpenBackup,
                     )
                     GroupRowDivider(startInset = dividerInset)
@@ -251,6 +268,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.LANGUAGE),
                         onClick = onOpenLanguage,
                     )
                 }
@@ -269,6 +287,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.ABOUT),
                         onClick = onOpenAbout,
                     )
                     GroupRowDivider(startInset = dividerInset)
@@ -281,6 +300,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.WEAR),
                         onClick = onOpenWear,
                     )
                     GroupRowDivider(startInset = dividerInset)
@@ -293,6 +313,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.RING_INFO),
                         onClick = onOpenRingInfo,
                     )
                     GroupRowDivider(startInset = dividerInset)
@@ -305,6 +326,7 @@ fun SettingsListScreen(
                             )
                         },
                         showChevron = true,
+                        modifier = highlight(SettingsRoutes.TIER_INFO),
                         onClick = onOpenTierInfo,
                     )
                 }

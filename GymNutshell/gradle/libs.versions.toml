@@ -24,6 +24,8 @@ protolayout = "1.4.0"
 concurrentFutures = "1.2.0"
 
 [libraries]
+# Dobra do Pixel Fold e afins (FoldingFeature); mesma versão que já vinha transitiva.
+androidx-window = { group = "androidx.window", name = "window", version = "1.5.0" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
