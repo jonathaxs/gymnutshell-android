@@ -60,12 +60,13 @@
     <string name="wear_sheet_step3">Toca Instalar</string>
     <string name="wear_sheet_note">También puedes abrir la página de Gym Nutshell en la Play Store de tu teléfono e instalarlo en tu reloj desde allí.</string>
     <string name="settings_about_progress_ring">Anillo de progreso</string>
-    <string name="ring_info_intro">El anillo muestra el porcentaje medio de las metas que has completado.</string>
-    <string name="ring_info_section_colors">Colores del anillo</string>
+    <string name="ring_info_intro" formatted="false">El anillo muestra el porcentaje promedio de metas completadas. Cada segmento de color equivale al 20%.</string>
+    <string name="ring_info_section_colors">Segmentos del anillo</string>
     <string name="ring_info_color_red">Empezando</string>
     <string name="ring_info_color_orange">En camino</string>
     <string name="ring_info_color_green">Muy bien</string>
     <string name="ring_info_color_cyan">Casi listo</string>
+    <string name="ring_info_color_purple">Recta final</string>
     <string name="ring_info_color_blue">Meta completada</string>
     <string name="tier_info_range_suffix">\" de progreso\"</string>
     <string name="info_next_prefix">\"Faltan \"</string>
@@ -221,6 +222,7 @@
     <string name="theme_cat_elements">Elementos y naturaleza</string>
     <string name="theme_cat_competition">Progreso</string>
     <string name="theme_gym">Gimnasio</string>
+    <string name="theme_gym_fem">Gimnasio</string>
     <string name="theme_running">Carrera</string>
     <string name="theme_cat">Gato</string>
     <string name="theme_dog">Perro</string>
@@ -233,6 +235,7 @@
     <string name="theme_bird">Pájaro</string>
     <string name="theme_doctor">Médico</string>
     <string name="theme_ninja">Luchador</string>
+    <string name="theme_ninja_fem">Luchadora</string>
     <string name="theme_fire">Fuego</string>
     <string name="theme_plant">Bosque</string>
     <string name="theme_astronaut">Espacio</string>

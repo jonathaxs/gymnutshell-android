@@ -60,12 +60,13 @@
     <string name="wear_sheet_step3">Yükle\'ye dokunun</string>
     <string name="wear_sheet_note">Ayrıca telefonunuzdaki Play Store\'dan Gym Nutshell sayfasını açıp oradan saatinize yükleyebilirsiniz.</string>
     <string name="settings_about_progress_ring">İlerleme Halkası</string>
-    <string name="ring_info_intro">Halka, hedeflerinizin tamamlanma yüzdesinin ortalamasını gösterir.</string>
-    <string name="ring_info_section_colors">Halka renkleri</string>
+    <string name="ring_info_intro" formatted="false">Halka, hedeflerinin ortalama yüzde kaçını tamamladığını gösterir. Her renkli dilim %20 değerindedir.</string>
+    <string name="ring_info_section_colors">Halka dilimleri</string>
     <string name="ring_info_color_red">Yeni başlıyor</string>
     <string name="ring_info_color_orange">Yolda</string>
     <string name="ring_info_color_green">Harika gidiyor</string>
     <string name="ring_info_color_cyan">Neredeyse bitti</string>
+    <string name="ring_info_color_purple">Son düzlük</string>
     <string name="ring_info_color_blue">Hedef tamamlandı</string>
     <string name="tier_info_range_suffix">\" ilerleme\"</string>
     <string name="info_next_prefix">\"Kalan \"</string>
@@ -221,6 +222,7 @@
     <string name="theme_cat_elements">Elementler ve Doğa</string>
     <string name="theme_cat_competition">İlerleme</string>
     <string name="theme_gym">Spor Salonu</string>
+    <string name="theme_gym_fem">Spor Salonu</string>
     <string name="theme_running">Koşu</string>
     <string name="theme_cat">Kedi</string>
     <string name="theme_dog">Köpek</string>
@@ -233,6 +235,7 @@
     <string name="theme_bird">Kuş</string>
     <string name="theme_doctor">Doktor</string>
     <string name="theme_ninja">Dövüşçü</string>
+    <string name="theme_ninja_fem">Dövüşçü</string>
     <string name="theme_fire">Ateş</string>
     <string name="theme_plant">Orman</string>
     <string name="theme_astronaut">Uzay</string>

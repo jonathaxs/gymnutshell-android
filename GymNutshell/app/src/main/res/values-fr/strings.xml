@@ -60,12 +60,13 @@
     <string name="wear_sheet_step3">Touche Installer</string>
     <string name="wear_sheet_note">Tu peux aussi ouvrir la page de Gym Nutshell sur le Play Store de ton téléphone et l\'installer sur ta montre à partir de là.</string>
     <string name="settings_about_progress_ring">Anneau de progression</string>
-    <string name="ring_info_intro">L\'anneau indique le pourcentage moyen de tes objectifs atteints.</string>
-    <string name="ring_info_section_colors">Couleurs de l\'anneau</string>
+    <string name="ring_info_intro" formatted="false">L\'anneau indique le pourcentage moyen de tes objectifs atteints. Chaque segment coloré vaut 20 %.</string>
+    <string name="ring_info_section_colors">Segments de l\'anneau</string>
     <string name="ring_info_color_red">Démarrage</string>
     <string name="ring_info_color_orange">En route</string>
     <string name="ring_info_color_green">Très bien</string>
     <string name="ring_info_color_cyan">Presque atteint</string>
+    <string name="ring_info_color_purple">Dernière ligne droite</string>
     <string name="ring_info_color_blue">Objectif atteint</string>
     <string name="tier_info_range_suffix">\" de progression\"</string>
     <string name="info_next_prefix">\"Il reste \"</string>
@@ -221,6 +222,7 @@
     <string name="theme_cat_elements">Éléments et nature</string>
     <string name="theme_cat_competition">Progression</string>
     <string name="theme_gym">Muscu</string>
+    <string name="theme_gym_fem">Muscu</string>
     <string name="theme_running">Course</string>
     <string name="theme_cat">Chat</string>
     <string name="theme_dog">Chien</string>
@@ -233,6 +235,7 @@
     <string name="theme_bird">Oiseau</string>
     <string name="theme_doctor">Docteur</string>
     <string name="theme_ninja">Combattant</string>
+    <string name="theme_ninja_fem">Combattante</string>
     <string name="theme_fire">Feu</string>
     <string name="theme_plant">Forêt</string>
     <string name="theme_astronaut">Espace</string>

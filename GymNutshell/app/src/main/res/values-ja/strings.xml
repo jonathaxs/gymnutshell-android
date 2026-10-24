@@ -60,12 +60,13 @@
     <string name="wear_sheet_step3">「インストール」をタップします</string>
     <string name="wear_sheet_note">スマートフォンのPlay ストアでGym Nutshellのページを開き、そこからスマートウォッチにインストールすることもできます。</string>
     <string name="settings_about_progress_ring">進捗リング</string>
-    <string name="ring_info_intro">リングは目標の平均達成率を示します。</string>
-    <string name="ring_info_section_colors">リングの色</string>
+    <string name="ring_info_intro" formatted="false">リングは達成した目標の平均パーセンテージを示します。各カラーセグメントは20%に相当します。</string>
+    <string name="ring_info_section_colors">リングセグメント</string>
     <string name="ring_info_color_red">スタート直後</string>
     <string name="ring_info_color_orange">順調なペース</string>
     <string name="ring_info_color_green">好調</string>
     <string name="ring_info_color_cyan">あと少し</string>
+    <string name="ring_info_color_purple">ラストスパート</string>
     <string name="ring_info_color_blue">目標達成</string>
     <string name="tier_info_range_suffix">\" の進捗\"</string>
     <string name="info_next_prefix">\"あと \"</string>
@@ -221,6 +222,7 @@
     <string name="theme_cat_elements">エレメント＆自然</string>
     <string name="theme_cat_competition">進捗</string>
     <string name="theme_gym">ジム</string>
+    <string name="theme_gym_fem">ジム</string>
     <string name="theme_running">ランニング</string>
     <string name="theme_cat">ネコ</string>
     <string name="theme_dog">イヌ</string>
@@ -233,6 +235,7 @@
     <string name="theme_bird">トリ</string>
     <string name="theme_doctor">ドクター</string>
     <string name="theme_ninja">格闘家</string>
+    <string name="theme_ninja_fem">格闘家</string>
     <string name="theme_fire">炎</string>
     <string name="theme_plant">森林</string>
     <string name="theme_astronaut">宇宙</string>

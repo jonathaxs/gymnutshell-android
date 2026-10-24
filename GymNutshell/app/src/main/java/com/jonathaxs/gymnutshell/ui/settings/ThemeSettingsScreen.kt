@@ -161,12 +161,14 @@ internal fun categoryNameRes(category: ThemeCategory, sex: String): Int =
 internal fun themeNameRes(theme: AppTheme, sex: String): Int {
     if (sex != "male") {
         val fem = when (theme) {
+            AppTheme.Gym -> R.string.theme_gym_fem
             AppTheme.Cat -> R.string.theme_cat_fem
             AppTheme.Dog -> R.string.theme_dog_fem
             AppTheme.Bear -> R.string.theme_bear_fem
             AppTheme.Dragon -> R.string.theme_dragon_fem
             AppTheme.Horse -> R.string.theme_horse_fem
             AppTheme.Doctor -> R.string.theme_doctor_fem
+            AppTheme.Ninja -> R.string.theme_ninja_fem
             else -> 0
         }
         if (fem != 0) return fem

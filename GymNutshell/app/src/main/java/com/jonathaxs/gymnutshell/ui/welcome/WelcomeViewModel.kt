@@ -297,6 +297,8 @@ class WelcomeViewModel(app: Application) : AndroidViewModel(app) {
     fun complete() {
         // A Hoje mostra as categorias entrando de baixo, uma vez só, logo depois da Welcome.
         com.jonathaxs.gymnutshell.ui.today.GoalsEntrance.pending = true
+        // E o anel do hero enche passando pelas cores e volta ao progresso real.
+        com.jonathaxs.gymnutshell.ui.today.RingCelebration.pending = true
         val s = _state.value
         viewModelScope.launch {
             // Perfil com sexo normalizado e exercício favorito

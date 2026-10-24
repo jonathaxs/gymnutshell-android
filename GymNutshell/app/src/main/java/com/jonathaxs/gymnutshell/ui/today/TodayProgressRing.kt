@@ -1,5 +1,6 @@
 package com.jonathaxs.gymnutshell.ui.today
 
+import android.provider.Settings
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.animateFloatAsState
@@ -19,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -28,6 +30,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -51,6 +54,8 @@ import kotlinx.coroutines.delay
  *
  * Usa [SegmentedRing] do :core pra geometria e paleta. Espessura = 18% do lado. No centro, a % do dia
  * (apagada em 0%). Quando o progresso entra numa cor nova, o anel inteiro pulsa uma vez.
+ *
+ * `celebratesAfterOnboarding` (só no hero): logo depois da Welcome, o anel enche, pulsa e volta ao progresso real.
  */
 @Composable
 fun TodayProgressRing(
@@ -59,9 +64,25 @@ fun TodayProgressRing(
     modifier: Modifier = Modifier,
     onClick: (() -> Unit)? = null,
     ringSize: Dp = 150.dp,
+    celebratesAfterOnboarding: Boolean = false,
 ) {
     val strokeWidth = ringSize * SegmentedRing.ICON_LINE_WIDTH_RATIO
-    val clampedProgress = progress.coerceIn(0f, 1f)
+    val context = LocalContext.current
+
+    // Progresso forçado durante a comemoração pós-Welcome (null = mostra o progresso real).
+    var celebrationProgress by remember { mutableStateOf<Float?>(null) }
+    LaunchedEffect(Unit) {
+        if (!celebratesAfterOnboarding || !RingCelebration.consume()) return@LaunchedEffect
+        // Animações desligadas no sistema (equivale ao Reduzir Movimento do iOS): sem comemoração.
+        val animationsOff = Settings.Global.getFloat(context.contentResolver, Settings.Global.ANIMATOR_DURATION_SCALE, 1f) == 0f
+        if (animationsOff) return@LaunchedEffect
+        delay(800)
+        celebrationProgress = 1f
+        delay(1800)
+        celebrationProgress = null
+    }
+
+    val clampedProgress = (celebrationProgress ?: progress).coerceIn(0f, 1f)
     val hasStarted = percent > 0
     val isDark = isSystemInDarkTheme()
     val view = LocalView.current
@@ -147,4 +168,11 @@ internal fun DrawScope.drawSegmentedRing(progress: Double, strokePx: Float, isDa
             isDark = isDark,
         )
     }
+}
+
+/** Pedido único da comemoração do anel (marcado ao concluir a Welcome) — porte do `pendingRingCelebration` do iOS. */
+object RingCelebration {
+    @Volatile var pending: Boolean = false
+
+    fun consume(): Boolean = pending.also { pending = false }
 }

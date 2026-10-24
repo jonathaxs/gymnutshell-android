@@ -60,12 +60,13 @@
     <string name="wear_sheet_step3">轻点“安装”</string>
     <string name="wear_sheet_note">你也可以在手机的 Play 商店中打开 Gym Nutshell 页面，直接安装到手表上。</string>
     <string name="settings_about_progress_ring">进度环</string>
-    <string name="ring_info_intro">圆环显示你已完成目标的平均百分比。</string>
-    <string name="ring_info_section_colors">圆环颜色</string>
+    <string name="ring_info_intro" formatted="false">进度环显示你已完成目标的平均百分比。每个彩色弧段代表 20%。</string>
+    <string name="ring_info_section_colors">环段说明</string>
     <string name="ring_info_color_red">刚刚开始</string>
     <string name="ring_info_color_orange">渐入佳境</string>
     <string name="ring_info_color_green">状态良好</string>
     <string name="ring_info_color_cyan">胜利在望</string>
+    <string name="ring_info_color_purple">最后冲刺</string>
     <string name="ring_info_color_blue">目标达成</string>
     <string name="tier_info_range_suffix">\" 进度\"</string>
     <string name="info_next_prefix">\"还差 \"</string>
@@ -221,6 +222,7 @@
     <string name="theme_cat_elements">元素与自然</string>
     <string name="theme_cat_competition">进阶</string>
     <string name="theme_gym">健身</string>
+    <string name="theme_gym_fem">健身</string>
     <string name="theme_running">跑步</string>
     <string name="theme_cat">猫咪</string>
     <string name="theme_dog">狗狗</string>
@@ -233,6 +235,7 @@
     <string name="theme_bird">飞鸟</string>
     <string name="theme_doctor">医生</string>
     <string name="theme_ninja">格斗士</string>
+    <string name="theme_ninja_fem">格斗士</string>
     <string name="theme_fire">烈焰</string>
     <string name="theme_plant">森林</string>
     <string name="theme_astronaut">太空</string>

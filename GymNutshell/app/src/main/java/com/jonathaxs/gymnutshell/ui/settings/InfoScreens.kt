@@ -1,6 +1,8 @@
 package com.jonathaxs.gymnutshell.ui.settings
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +23,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -37,7 +40,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.domain.AppTheme
 import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
-import com.jonathaxs.gymnutshell.core.domain.ProgressColors
+import com.jonathaxs.gymnutshell.core.widget.SegmentedRing
+import com.jonathaxs.gymnutshell.ui.today.drawSegmentedRing
 import com.jonathaxs.gymnutshell.ui.components.GroupInset
 import com.jonathaxs.gymnutshell.ui.components.GroupRow
 import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
@@ -63,15 +67,25 @@ fun ProgressRingInfoScreen(onBack: () -> Unit) {
  */
 @Composable
 fun ProgressRingInfoContent(currentPercent: Int? = null) {
-    // Mesmas cores e faixas do ProgressColors do :core (única fonte da escala).
+    // Os 5 segmentos no sentido horário, 20% cada, nas mesmas cores do anel (SegmentedRing do :core).
     val rangeSuffix = stringResource(R.string.tier_info_range_suffix)
-    val colors = listOf(
-        Triple(stringResource(R.string.ring_info_color_red), Color(0xFFFF3B30), "0 – 32%"),
-        Triple(stringResource(R.string.ring_info_color_orange), Color(0xFFFF9500), "33 – 65%"),
-        Triple(stringResource(R.string.ring_info_color_green), Color(0xFF34C759), "66 – 89%"),
-        Triple(stringResource(R.string.ring_info_color_cyan), Color(0xFF32ADE6), "90 – 99%"),
-        Triple(stringResource(R.string.ring_info_color_blue), Color(0xFF007AFF), "100%"),
+    val labels = listOf(
+        R.string.ring_info_color_red, R.string.ring_info_color_orange, R.string.ring_info_color_green,
+        R.string.ring_info_color_cyan, R.string.ring_info_color_purple,
     )
+    val ranges = listOf("0 – 20%", "21 – 40%", "41 – 60%", "61 – 80%", "81 – 100%")
+    val colors = labels.mapIndexed { i, res ->
+        Triple(stringResource(res), Color(SegmentedRing.SEGMENT_COLORS[i]), ranges[i])
+    }
+    // Prévia do anel sempre cheio, com as 5 cores (decorativa).
+    val isDark = isSystemInDarkTheme()
+    Box(Modifier.fillMaxWidth().padding(top = 16.dp), contentAlignment = Alignment.Center) {
+        val ringSize = 96.dp
+        val stroke = ringSize * SegmentedRing.ICON_LINE_WIDTH_RATIO
+        Canvas(Modifier.size(ringSize).padding(stroke / 2f)) {
+            drawSegmentedRing(1.0, stroke.toPx(), isDark)
+        }
+    }
     IntroText(stringResource(R.string.ring_info_intro))
     RingNextLevelPhrase(currentPercent)
     GroupSection(title = stringResource(R.string.ring_info_section_colors)) {
@@ -257,10 +271,12 @@ private fun RingNextLevelPhrase(percent: Int?) {
         MaxLevelPhrase()
         return
     }
+    // Próximo segmento a alcançar, de 20 em 20% (igual ao ProgressRingInfoView do iOS).
     val (remaining, nameRes) = when {
-        p < 33 -> (33 - p) to R.string.ring_info_color_orange
-        p < 66 -> (66 - p) to R.string.ring_info_color_green
-        p < 90 -> (90 - p) to R.string.ring_info_color_cyan
+        p < 20 -> (20 - p) to R.string.ring_info_color_orange
+        p < 40 -> (40 - p) to R.string.ring_info_color_green
+        p < 60 -> (60 - p) to R.string.ring_info_color_cyan
+        p < 80 -> (80 - p) to R.string.ring_info_color_purple
         else -> (100 - p) to R.string.ring_info_color_blue
     }
     NextLevelPhrase(remaining, stringResource(nameRes))

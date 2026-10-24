@@ -60,12 +60,13 @@
     <string name="wear_sheet_step3">Tippe auf Installieren</string>
     <string name="wear_sheet_note">Du kannst auch die Seite von Gym Nutshell im Play Store auf deinem Smartphone öffnen und die App von dort aus auf deiner Uhr installieren.</string>
     <string name="settings_about_progress_ring">Fortschrittsring</string>
-    <string name="ring_info_intro">Der Ring zeigt den durchschnittlichen Prozentsatz deiner erreichten Ziele an.</string>
-    <string name="ring_info_section_colors">Ringfarben</string>
+    <string name="ring_info_intro" formatted="false">Der Ring zeigt den durchschnittlichen Prozentsatz deiner erreichten Ziele. Jedes farbige Segment entspricht 20 %.</string>
+    <string name="ring_info_section_colors">Ringsegmente</string>
     <string name="ring_info_color_red">Aller Anfang</string>
     <string name="ring_info_color_orange">Auf dem Weg</string>
     <string name="ring_info_color_green">Sehr gut</string>
     <string name="ring_info_color_cyan">Fast geschafft</string>
+    <string name="ring_info_color_purple">Zielgerade</string>
     <string name="ring_info_color_blue">Ziel erreicht</string>
     <string name="tier_info_range_suffix">\" Fortschritt\"</string>
     <string name="info_next_prefix">\"Noch \"</string>
@@ -221,6 +222,7 @@
     <string name="theme_cat_elements">Elemente &amp; Natur</string>
     <string name="theme_cat_competition">Fortschritt</string>
     <string name="theme_gym">Gym</string>
+    <string name="theme_gym_fem">Gym</string>
     <string name="theme_running">Laufen</string>
     <string name="theme_cat">Katze</string>
     <string name="theme_dog">Hund</string>
@@ -233,6 +235,7 @@
     <string name="theme_bird">Vogel</string>
     <string name="theme_doctor">Arzt</string>
     <string name="theme_ninja">Kämpfer</string>
+    <string name="theme_ninja_fem">Kämpferin</string>
     <string name="theme_fire">Feuer</string>
     <string name="theme_plant">Wald</string>
     <string name="theme_astronaut">Weltraum</string>

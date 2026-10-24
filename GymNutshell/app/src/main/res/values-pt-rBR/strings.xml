@@ -84,12 +84,13 @@
 
     <!-- Página do anel de progresso -->
     <string name="settings_about_progress_ring">Anel de Progresso</string>
-    <string name="ring_info_intro">O anel apresenta a média de quantos % você completou das suas metas.</string>
-    <string name="ring_info_section_colors">Cores do anel</string>
+    <string name="ring_info_intro" formatted="false">O anel apresenta a média de quantos % você completou das suas metas. Cada segmento colorido vale 20%.</string>
+    <string name="ring_info_section_colors">Segmentos do anel</string>
     <string name="ring_info_color_red">Começando</string>
     <string name="ring_info_color_orange">No caminho</string>
     <string name="ring_info_color_green">Muito bem</string>
     <string name="ring_info_color_cyan">Quase lá</string>
+    <string name="ring_info_color_purple">Reta final</string>
     <string name="ring_info_color_blue">Meta concluída</string>
     <string name="tier_info_range_suffix">" de progresso"</string>
     <!-- Frase de progresso "faltam X% pro próximo nível" nas sheets do anel/conquista (abertas pela Today).
@@ -263,11 +264,12 @@
     <string name="settings_theme">Emojis</string>
     <string name="theme_cat_sport">Esporte</string>
     <string name="theme_cat_animals">Animais</string>
-    <string name="theme_cat_warrior">Guerreiro</string>
+    <string name="theme_cat_warrior">Herói</string>
     <string name="theme_cat_space">Cosmos</string>
-    <string name="theme_cat_elements">Elementos</string>
-    <string name="theme_cat_competition">Competição</string>
+    <string name="theme_cat_elements">Elementos &amp; Natureza</string>
+    <string name="theme_cat_competition">Progresso</string>
     <string name="theme_gym">Academia</string>
+    <string name="theme_gym_fem">Academia</string>
     <string name="theme_running">Corrida</string>
     <string name="theme_cat">Gato</string>
     <string name="theme_dog">Cachorro</string>
@@ -275,19 +277,20 @@
     <string name="theme_dino">Dino</string>
     <string name="theme_dragon">Dragão</string>
     <string name="theme_horse">Cavalo</string>
-    <string name="theme_ocean">Oceano</string>
+    <string name="theme_ocean">Peixes</string>
     <string name="theme_monkey">Primata</string>
     <string name="theme_bird">Pássaro</string>
     <string name="theme_doctor">Médico</string>
-    <string name="theme_ninja">Ninja</string>
+    <string name="theme_ninja">Lutador</string>
+    <string name="theme_ninja_fem">Lutadora</string>
     <string name="theme_fire">Fogo</string>
-    <string name="theme_plant">Planta</string>
+    <string name="theme_plant">Floresta</string>
     <string name="theme_astronaut">Espaço</string>
-    <string name="theme_celestial">Celestial</string>
-    <string name="theme_champion">Campeão</string>
-    <string name="theme_number">Número</string>
+    <string name="theme_celestial">Corpos Celestes</string>
+    <string name="theme_champion">Medalha</string>
+    <string name="theme_number">Números</string>
     <!-- Formas femininas do nome do tema/categoria (sex != "male") — porte de app.theme.*.fem do iOS. -->
-    <string name="theme_cat_warrior_fem">Guerreira</string>
+    <string name="theme_cat_warrior_fem">Heroína</string>
     <string name="theme_cat_fem">Gata</string>
     <string name="theme_dog_fem">Cachorra</string>
     <string name="theme_bear_fem">Ursa</string>

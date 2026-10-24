@@ -60,12 +60,13 @@
     <string name="wear_sheet_step3">Tocca Installa</string>
     <string name="wear_sheet_note">Puoi anche aprire la pagina di Gym Nutshell sul Play Store dello smartphone e installarla sull\'orologio da lì.</string>
     <string name="settings_about_progress_ring">Anello di avanzamento</string>
-    <string name="ring_info_intro">L\'anello mostra la percentuale media dei tuoi obiettivi completati.</string>
-    <string name="ring_info_section_colors">Colori dell\'anello</string>
+    <string name="ring_info_intro" formatted="false">L\'anello mostra la percentuale media degli obiettivi completati. Ogni segmento colorato vale il 20%.</string>
+    <string name="ring_info_section_colors">Segmenti dell\'anello</string>
     <string name="ring_info_color_red">All\'inizio</string>
     <string name="ring_info_color_orange">In cammino</string>
     <string name="ring_info_color_green">Alla grande</string>
     <string name="ring_info_color_cyan">Quasi fatta</string>
+    <string name="ring_info_color_purple">Traguardo vicino</string>
     <string name="ring_info_color_blue">Obiettivo completato</string>
     <string name="tier_info_range_suffix">\" di progresso\"</string>
     <string name="info_next_prefix">\"Mancano \"</string>
@@ -221,6 +222,7 @@
     <string name="theme_cat_elements">Elementi e natura</string>
     <string name="theme_cat_competition">Progresso</string>
     <string name="theme_gym">Palestra</string>
+    <string name="theme_gym_fem">Palestra</string>
     <string name="theme_running">Corsa</string>
     <string name="theme_cat">Gatto</string>
     <string name="theme_dog">Cane</string>
@@ -233,6 +235,7 @@
     <string name="theme_bird">Uccellino</string>
     <string name="theme_doctor">Dottore</string>
     <string name="theme_ninja">Guerriero</string>
+    <string name="theme_ninja_fem">Guerriera</string>
     <string name="theme_fire">Fuoco</string>
     <string name="theme_plant">Foresta</string>
     <string name="theme_astronaut">Spazio</string>

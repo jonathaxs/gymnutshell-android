@@ -396,6 +396,7 @@ private fun TodayHeroCard(
                     percent = state.overallPercent,
                     onClick = onRingClick,
                     ringSize = ringSize,
+                    celebratesAfterOnboarding = true,
                 )
                 if (hasStarted) {
                     TodayAchievementPanel(
@@ -417,6 +418,7 @@ private fun TodayHeroCard(
                         percent = state.overallPercent,
                         onClick = onRingClick,
                         ringSize = ringSize,
+                        celebratesAfterOnboarding = true,
                     )
                     if (hasStarted) {
                         // Espaço curto: o emoji fica perto do anel (iOS: 8).

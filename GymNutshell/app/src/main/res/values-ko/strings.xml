@@ -60,12 +60,13 @@
     <string name="wear_sheet_step3">설치 탭</string>
     <string name="wear_sheet_note">휴대폰의 Play 스토어에서 Gym Nutshell 페이지를 열어 시계에 바로 설치할 수도 있어요.</string>
     <string name="settings_about_progress_ring">진행 링</string>
-    <string name="ring_info_intro">링은 달성한 목표의 평균 백분율을 보여줘요.</string>
-    <string name="ring_info_section_colors">링 색상</string>
+    <string name="ring_info_intro" formatted="false">진행 링은 달성한 목표의 평균 백분율을 보여줘요. 각 색상 구간은 20%를 나타냅니다.</string>
+    <string name="ring_info_section_colors">링 구간</string>
     <string name="ring_info_color_red">시작 단계</string>
     <string name="ring_info_color_orange">진행 중</string>
     <string name="ring_info_color_green">순항 중</string>
     <string name="ring_info_color_cyan">거의 다 왔어요</string>
+    <string name="ring_info_color_purple">마지막 스퍼트</string>
     <string name="ring_info_color_blue">목표 달성</string>
     <string name="tier_info_range_suffix">\" 진행률\"</string>
     <string name="info_next_prefix">\"도달까지 \"</string>
@@ -221,6 +222,7 @@
     <string name="theme_cat_elements">자연과 원소</string>
     <string name="theme_cat_competition">성장</string>
     <string name="theme_gym">헬스</string>
+    <string name="theme_gym_fem">헬스</string>
     <string name="theme_running">러닝</string>
     <string name="theme_cat">고양이</string>
     <string name="theme_dog">강아지</string>
@@ -233,6 +235,7 @@
     <string name="theme_bird">새</string>
     <string name="theme_doctor">의사</string>
     <string name="theme_ninja">파이터</string>
+    <string name="theme_ninja_fem">파이터</string>
     <string name="theme_fire">불</string>
     <string name="theme_plant">숲</string>
     <string name="theme_astronaut">우주</string>

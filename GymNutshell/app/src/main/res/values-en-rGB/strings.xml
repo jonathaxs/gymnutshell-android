@@ -60,12 +60,13 @@
     <string name="wear_sheet_step3">Tap Install</string>
     <string name="wear_sheet_note">You can also open the Gym Nutshell page in the Play Store on your phone and install it on your watch from there.</string>
     <string name="settings_about_progress_ring">Progress Ring</string>
-    <string name="ring_info_intro">The ring shows the average percentage of your goals that you have completed.</string>
-    <string name="ring_info_section_colors">Ring colours</string>
+    <string name="ring_info_intro" formatted="false">The ring shows the average percentage of your goals that you have completed. Each coloured segment is worth 20%.</string>
+    <string name="ring_info_section_colors">Ring segments</string>
     <string name="ring_info_color_red">Just starting</string>
     <string name="ring_info_color_orange">On your way</string>
     <string name="ring_info_color_green">Doing great</string>
     <string name="ring_info_color_cyan">Almost there</string>
+    <string name="ring_info_color_purple">Final stretch</string>
     <string name="ring_info_color_blue">Goal complete</string>
     <string name="tier_info_range_suffix">\" of progress\"</string>
     <string name="info_next_prefix">\"Remaining \"</string>
@@ -221,6 +222,7 @@
     <string name="theme_cat_elements">Elements &amp; Nature</string>
     <string name="theme_cat_competition">Progress</string>
     <string name="theme_gym">Gym</string>
+    <string name="theme_gym_fem">Gym</string>
     <string name="theme_running">Running</string>
     <string name="theme_cat">Cat</string>
     <string name="theme_dog">Dog</string>
@@ -233,6 +235,7 @@
     <string name="theme_bird">Bird</string>
     <string name="theme_doctor">Doctor</string>
     <string name="theme_ninja">Fighter</string>
+    <string name="theme_ninja_fem">Fighter</string>
     <string name="theme_fire">Fire</string>
     <string name="theme_plant">Forest</string>
     <string name="theme_astronaut">Space</string>
