@@ -1,5 +1,7 @@
 # <img src="appicons/gymnutshell-tinted-circle.png" width="56" align="absmiddle" alt="Ícone do Gym Nutshell">&nbsp;&nbsp;Gym&nbsp;Nutshell&nbsp;&nbsp;<img src="appicons/android.svg" width="28" height="28" align="absmiddle" alt="Android">
 
+**[Read in English](#en-gymnutshell)**
+
 _Rastreie metas de nutrição, sono, suplementos e libere conquistas._
 
 O Nutshell nasceu da minha rotina de academia. Eu precisava lembrar de bater as metas de proteínas, carboidratos, água, sono e outros em um só lugar, mas não achei nenhum app que fizesse tudo isso junto.
@@ -168,3 +170,178 @@ O Gym Nutshell não exige cadastro e não coleta dados. As informações ficam n
 ## Autor
 
 Desenvolvido por **Jonathas Motta** ([@jonathaxs](https://github.com/jonathaxs)).
+
+---
+
+# <img src="appicons/gymnutshell-tinted-circle.png" width="56" align="absmiddle" alt="Gym Nutshell icon">&nbsp;&nbsp;(EN) Gym&nbsp;Nutshell&nbsp;&nbsp;<img src="appicons/android.svg" width="28" height="28" align="absmiddle" alt="Android">
+
+**[Leia em português](#gymnutshell)**
+
+_Track nutrition, sleep and supplement goals and unlock achievements._
+
+Nutshell grew out of my gym routine. I needed to remember to hit my protein, carbs, water, sleep and other goals in one place, but I couldn't find an app that did all of that together.
+
+During the day, you track each goal with a simple slider, including the default goals and your own custom ones, and get notifications throughout the day.
+
+To make the app a bit more fun, every completed day becomes a themed achievement, with streaks and a calendar of your progress.
+
+It has the same features as the [iOS version](https://github.com/jonathaxs/gymnutshell-ios) and is free, with no ads, no subscription and no sign-up.
+
+**Available as an [APK](https://jonathasmotta.com/downloads/GymNutshell-1.0.apk)** for Android, with support for tablets and Wear OS.
+
+## Features - Version 1.0
+_(Some features are being removed and others improved in the upcoming Version 2.0. For questions or suggestions, [get in touch](https://jonathasmotta.com).)_
+
+**Today**
+- The day's goals with quick logging and an overall progress ring.
+- Rest day button, which counts the goal as done on days off.
+- Goals in the Essential, Nutrition, Training and Supplement categories, in an order you choose.
+
+**Goals**
+- Ready-made goals: weight training, cardio, sleep, water, calories, protein, carbs, healthy fats, fiber and creatine.
+- Recommended values calculated from weight, height, age, sex and goal, with calories from the Mifflin-St Jeor equation.
+- Custom goals and categories created by the user.
+- Metric or imperial units.
+
+**Achievements and themes**
+- Four achievement levels per day, based on the average progress of the goals.
+- 19 themes in six categories (sports, animals, fighters, elements, space and competition), each with its own emojis and level names, including feminine versions.
+- Monthly achievement calendar, with editable history.
+- Weekly and monthly streak bonuses for keeping the highest levels every day.
+
+**Progress**
+- Logged days, points and bonuses earned.
+- Number of days at each level and a summary of goals and body data.
+
+**Wear OS**
+- Its own app with three pages: the day's progress, stats and notifications.
+- Two-way sync with the phone.
+- Tile with the day's progress.
+
+**Widgets**
+- Progress, Calendar and Goals, with a configurable background.
+
+**Health Connect**
+- Reads workouts to check off weight training and cardio automatically.
+- Saves sleep hours.
+- Permissions are requested on demand, only for what the user turns on.
+
+**Reminders**
+- Local notifications per goal, with a configurable interval and limited to daytime hours.
+- History of received notifications.
+
+**Data and personalization**
+- JSON backup to export and import, compatible with the iOS version.
+- Automatic Android system backup.
+- Configurable accent colors and screen orientation lock.
+- Interface in Brazilian Portuguese and English, with a language switch inside the app.
+- Support for TalkBack, light mode and dark mode.
+- Layout adapted to wide screens, with side navigation on tablets and on phones in landscape.
+
+## Architecture
+
+```mermaid
+flowchart LR
+    subgraph App[":app (phone)"]
+        Screens["Compose screens + ViewModels"]
+        Glance["Glance widgets"]
+        System["Notifications and Health Connect"]
+    end
+
+    subgraph Wear[":wear (watch)"]
+        WearScreens["Compose for Wear OS screens"]
+        Tile["Tile"]
+    end
+
+    subgraph Core[":core"]
+        Domain["Goal, achievement and bonus rules"]
+        Data["Room and DataStore"]
+        Backup["JSON backup"]
+        Sync["Watch and widget snapshots"]
+    end
+
+    Screens --> Domain
+    Screens --> Data
+    Glance --> Sync
+    System --> Data
+    WearScreens --> Sync
+    Tile --> Sync
+    Screens <-->|Wear Data Layer| WearScreens
+    Data --> DB[("Room")]
+    System <--> HC[("Health Connect")]
+    Backup --> File["JSON file"]
+```
+
+- **Kotlin** and **Jetpack Compose** with **Material 3** throughout the interface, using the **MVVM** pattern: each screen has its own ViewModel, and state flows through `StateFlow`.
+- **Three Gradle modules**:
+  - `:core` holds the domain and persistence, with no UI;
+  - `:app` is the phone app, with the widgets;
+  - `:wear` is the watch app.
+- Every rule that can be tested without UI lives in `:core`. That way the watch and the widgets reuse the same logic.
+- **Room** for daily records and custom goals; **DataStore** for preferences. The keys are the same as on iOS, which keeps the backup compatible across platforms.
+- **kotlinx.serialization** for the backup and the watch sync.
+- **WorkManager** for reminders, **Glance** for widgets, **Health Connect** for health integration and **Wear Data Layer** for syncing with the watch.
+- Unit tests with JUnit, focused on `:core`, and instrumented accessibility tests with Compose.
+
+### From check-in to achievement
+
+```mermaid
+flowchart LR
+    Metas["Active goals for the day"] --> Media["Average progress"]
+    Media --> N1["Level 1: up to 33%"]
+    Media --> N2["Level 2: up to 66%"]
+    Media --> N3["Level 3: up to 90%"]
+    Media --> N4["Level 4: above 90%"]
+    N1 & N2 & N3 & N4 --> Emoji["Theme emoji on the calendar"]
+    Emoji --> Bonus["Weekly and monthly streak bonus"]
+```
+
+## Repository structure
+
+```text
+GymNutshell/
+├── core/                      Domain and persistence, with no UI
+│   └── src/main/java/.../core/
+│       ├── domain/            Goals, goal calculation, achievements, themes and bonuses
+│       ├── data/              Room database, DAOs and repositories over DataStore
+│       ├── backup/            JSON backup format and parsing
+│       ├── sync/              Snapshot sent to the watch
+│       ├── theme/             Accent colors
+│       └── widget/            Widget snapshot and background
+├── app/                       Phone app
+│   └── src/main/java/.../
+│       ├── ui/                Screens by area: Today, Achievements, Progress, Settings and welcome
+│       ├── widget/            Glance widgets
+│       ├── notifications/     Reminders with WorkManager
+│       ├── health/            Health Connect integration
+│       └── wear/              Watch sync
+├── wear/                      Wear OS app, with Tile
+└── gradle/libs.versions.toml  Centralized dependency versions
+```
+
+## Requirements
+
+- Android 10 (API 29) or later on the phone.
+- Wear OS 3 (API 30) or later on the watch.
+- Android Studio with Android Gradle Plugin 9 and Kotlin 2.2.
+
+To build from the terminal, use the JDK that comes with Android Studio:
+
+```bash
+cd GymNutshell
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+./gradlew :app:assembleDebug
+./gradlew :core:testDebugUnitTest
+```
+
+## Installation
+
+The app is not on Google Play yet. Version 1.0 is distributed as a signed APK, to install directly on the device: [download GymNutshell-1.0.apk](https://jonathasmotta.com/downloads/GymNutshell-1.0.apk).
+
+## Privacy
+
+Gym Nutshell requires no sign-up and collects no data. Information stays on the device and in the user's Android system backup. Health data stays in Health Connect and is only read or written with the user's permission. There are no servers of its own, no analytics and no ads.
+
+## Author
+
+Developed by **Jonathas Motta** ([@jonathaxs](https://github.com/jonathaxs)).
