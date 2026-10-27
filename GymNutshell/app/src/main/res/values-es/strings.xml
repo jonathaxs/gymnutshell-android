@@ -412,4 +412,19 @@
     <string name="today_hero_bell_a11y_label">Notificaciones</string>
     <string name="today_category_tile_a11y_value">%1$d de %2$d metas completadas</string>
     <string name="today_category_tile_a11y_hint">Toca dos veces para abrir los controles de la categoría</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="settings_category_kind">Tipo</string>
+    <string name="category_kind_standard">Estándar</string>
+    <string name="category_kind_rest_day">Con descanso</string>
+    <string name="category_kind_check_in">Check-in</string>
+    <string name="category_kind_standard_footer">Registra las metas poco a poco con el control deslizante o los botones − / +.</string>
+    <string name="category_kind_rest_day_footer">Como Estándar, con un botón ON/OFF para marcar el día de descanso.</string>
+    <string name="category_kind_check_in_footer">Cada meta se marca una vez al día: Pendiente o Hecho.</string>
+    <string name="addgoal_section_dose">Dosis</string>
+    <string name="addgoal_dose_footer">Al marcar Hecho, la meta del día se completa con esta cantidad.</string>
+    <string name="today_checkin_pending">Pendiente</string>
+    <string name="today_checkin_done">Hecho</string>
+    <string name="a11y_checkin_hint_mark_done">Toca para marcar como hecho.</string>
+    <string name="a11y_checkin_hint_mark_pending">Toca para volver a pendiente.</string>
 </resources>

@@ -412,4 +412,19 @@
     <string name="today_hero_bell_a11y_label">Bildirimler</string>
     <string name="today_category_tile_a11y_value">%2$d hedeften %1$d tanesi tamamlandı</string>
     <string name="today_category_tile_a11y_hint">Kategori denetimlerini açmak için çift dokunun</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="settings_category_kind">Tür</string>
+    <string name="category_kind_standard">Standart</string>
+    <string name="category_kind_rest_day">Dinlenme günlü</string>
+    <string name="category_kind_check_in">Check-in</string>
+    <string name="category_kind_standard_footer">Hedefleri kaydırıcı veya − / + düğmeleriyle azar azar kaydedin.</string>
+    <string name="category_kind_rest_day_footer">Standart gibi, dinlenme günü için AÇIK/KAPALI düğmesiyle.</string>
+    <string name="category_kind_check_in_footer">Her hedef günde bir kez işaretlenir: Bekliyor veya Yapıldı.</string>
+    <string name="addgoal_section_dose">Doz</string>
+    <string name="addgoal_dose_footer">Yapıldı olarak işaretlenince günün hedefi bu miktarla tamamlanır.</string>
+    <string name="today_checkin_pending">Bekliyor</string>
+    <string name="today_checkin_done">Yapıldı</string>
+    <string name="a11y_checkin_hint_mark_done">Yapıldı olarak işaretlemek için dokun.</string>
+    <string name="a11y_checkin_hint_mark_pending">Bekliyor durumuna döndürmek için dokun.</string>
 </resources>

@@ -23,4 +23,10 @@
     <string name="wear_notif_today">今天</string>
     <string name="wear_notif_yesterday">昨天</string>
     <string name="wear_notif_delete">删除</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="today_checkin_pending">待完成</string>
+    <string name="today_checkin_done">已完成</string>
+    <string name="a11y_checkin_hint_mark_done">轻点标记为已完成。</string>
+    <string name="a11y_checkin_hint_mark_pending">轻点改回待完成。</string>
 </resources>

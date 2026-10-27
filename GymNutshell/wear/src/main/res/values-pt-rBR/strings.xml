@@ -32,4 +32,10 @@
     <string name="wear_notif_today">Hoje</string>
     <string name="wear_notif_yesterday">Ontem</string>
     <string name="wear_notif_delete">Apagar</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="today_checkin_pending">Pendente</string>
+    <string name="today_checkin_done">Feito</string>
+    <string name="a11y_checkin_hint_mark_done">Toque para marcar como feito.</string>
+    <string name="a11y_checkin_hint_mark_pending">Toque para voltar para pendente.</string>
 </resources>

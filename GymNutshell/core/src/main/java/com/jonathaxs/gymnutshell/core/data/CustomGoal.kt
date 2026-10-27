@@ -2,6 +2,8 @@ package com.jonathaxs.gymnutshell.core.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.jonathaxs.gymnutshell.core.domain.CategoryKind
+import com.jonathaxs.gymnutshell.core.domain.GoalCategory
 
 /**
  * Meta de rastreio criada pelo usuário — porte de CustomTrackingGoal (iOS, era Codable em UserDefaults).
@@ -23,4 +25,15 @@ data class CustomGoal(
 ) {
     /** Chave usada nos intakes/Today (ex.: "custom:3"). */
     val intakeKey: String get() = "custom:$id"
+
+    /**
+     * Tipo herdado da categoria — porte de CustomTrackingGoal.kind(in:) (iOS): personalizada (procurada em
+     * [categories]) ou fixa (`GoalCategory.kind`). Sem categoria, ou personalizada apagada, cai no padrão.
+     */
+    fun kind(categories: List<CustomGoalCategory>): CategoryKind {
+        if (customCategoryId != null) {
+            return categories.firstOrNull { it.id == customCategoryId }?.kind ?: CategoryKind.Standard
+        }
+        return GoalCategory.fromRaw(categoryRaw)?.kind ?: CategoryKind.Standard
+    }
 }

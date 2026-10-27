@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
+import com.jonathaxs.gymnutshell.core.domain.CategoryKind
+import com.jonathaxs.gymnutshell.core.domain.GoalCategory
 import com.jonathaxs.gymnutshell.ui.components.GroupRow
 import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
 import com.jonathaxs.gymnutshell.ui.components.GroupSection
@@ -52,8 +54,9 @@ fun GoalDetailScreen(goalKey: String, onBack: () -> Unit, viewModel: GoalDetailV
         }
     }
 
+    val isCheckIn = GoalCategory.defaultCategory(goalKey)?.kind == CategoryKind.CheckIn
     val title = "${state.emoji} ${stringResource(state.titleRes)}".trim()
-    val canSave = value >= increment && increment >= 1
+    val canSave = if (isCheckIn) value >= 1 else (value >= increment && increment >= 1)
 
     Scaffold(
         topBar = {
@@ -80,34 +83,49 @@ fun GoalDetailScreen(goalKey: String, onBack: () -> Unit, viewModel: GoalDetailV
             modifier = Modifier.fillMaxSize().padding(padding),
             contentPadding = PaddingValues(bottom = 32.dp),
         ) {
-            item {
-                GroupSection(footer = stringResource(R.string.goaldetail_footer)) {
-                    StepperRow(
-                        label = stringResource(R.string.goaldetail_stepper),
-                        valueText = "$value ${state.unit}",
-                        canDecrement = value - increment >= increment,
-                        canIncrement = value + increment <= 99999,
-                        onDecrement = { value = (value - increment).coerceAtLeast(increment) },
-                        onIncrement = { value = (value + increment).coerceAtMost(99999) },
-                    )
-                    GroupRowDivider()
-                    StepperRow(
-                        label = stringResource(R.string.goaldetail_increment_stepper),
-                        valueText = "$increment ${state.unit}",
-                        canDecrement = increment > 1,
-                        canIncrement = increment < 99999,
-                        onDecrement = { increment = (increment - 1).coerceAtLeast(1) },
-                        onIncrement = { increment = (increment + 1).coerceAtMost(99999) },
+            if (isCheckIn) {
+                item {
+                    GroupSection(footer = stringResource(R.string.addgoal_dose_footer)) {
+                        StepperRow(
+                            label = stringResource(R.string.addgoal_section_dose),
+                            valueText = "$value ${state.unit}",
+                            canDecrement = value > 1,
+                            canIncrement = value < 99999,
+                            onDecrement = { value = (value - 1).coerceAtLeast(1) },
+                            onIncrement = { value = (value + 1).coerceAtMost(99999) },
+                        )
+                    }
+                }
+            } else {
+                item {
+                    GroupSection(footer = stringResource(R.string.goaldetail_footer)) {
+                        StepperRow(
+                            label = stringResource(R.string.goaldetail_stepper),
+                            valueText = "$value ${state.unit}",
+                            canDecrement = value - increment >= increment,
+                            canIncrement = value + increment <= 99999,
+                            onDecrement = { value = (value - increment).coerceAtLeast(increment) },
+                            onIncrement = { value = (value + increment).coerceAtMost(99999) },
+                        )
+                        GroupRowDivider()
+                        StepperRow(
+                            label = stringResource(R.string.goaldetail_increment_stepper),
+                            valueText = "$increment ${state.unit}",
+                            canDecrement = increment > 1,
+                            canIncrement = increment < 99999,
+                            onDecrement = { increment = (increment - 1).coerceAtLeast(1) },
+                            onIncrement = { increment = (increment + 1).coerceAtMost(99999) },
+                        )
+                    }
+                }
+                item {
+                    Text(
+                        stringResource(R.string.goaldetail_increment_footer),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(horizontal = 36.dp, vertical = 8.dp),
                     )
                 }
-            }
-            item {
-                Text(
-                    stringResource(R.string.goaldetail_increment_footer),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 36.dp, vertical = 8.dp),
-                )
             }
         }
     }

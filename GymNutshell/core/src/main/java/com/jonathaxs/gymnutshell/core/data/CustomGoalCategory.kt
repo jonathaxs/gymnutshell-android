@@ -3,11 +3,15 @@ package com.jonathaxs.gymnutshell.core.data
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.jonathaxs.gymnutshell.core.domain.CategoryKind
+import com.jonathaxs.gymnutshell.core.domain.CategoryKindSerializer
 import kotlinx.serialization.Serializable
 
 /**
  * Categoria de meta criada pelo usuário — porte de CustomGoalCategory (iOS, era Codable em UserDefaults).
- * `supportsRestDay` liga o botão ON/OFF de "dia de descanso" em todas as metas que pertencerem a ela.
+ * `kind` define o controle das metas na Hoje (padrão, com descanso ou check-in) e pode ser trocado depois.
+ * `supportsRestDay` é a coluna antiga do Room e o campo da 1.0 no backup; fica sempre igual a `kind == RestDay`
+ * (use [withKind] pra trocar o tipo). `kind` não vai pro Room: fica no DataStore, igual ao `symbolName`.
  * A ordem de exibição vive na ordem unificada de categorias (GoalConfigRepository), não nesta tabela.
  * `symbolName`: chave do ícone (SF Symbol no iOS, default "square.grid.2x2.fill").
  */
@@ -18,6 +22,9 @@ data class CustomGoalCategory(
     val name: String,
     val supportsRestDay: Boolean = false,
     @Ignore val symbolName: String = DEFAULT_SYMBOL_NAME,
+    // Sem `kind` no JSON (backup da 1.0 ou do Android antigo), o tipo sai do supportsRestDay.
+    @Ignore @Serializable(with = CategoryKindSerializer::class)
+    val kind: CategoryKind = if (supportsRestDay) CategoryKind.RestDay else CategoryKind.Standard,
 ) {
     // Construtor usado pelo Room (sem symbolName pra não quebrar schema sem migração configurada)
     constructor(id: String, name: String, supportsRestDay: Boolean) : this(
@@ -35,6 +42,10 @@ data class CustomGoalCategory(
         supportsRestDay = supportsRestDay,
         symbolName = symbolName,
     )
+
+    /** Troca o tipo mantendo `supportsRestDay` coerente (Room e backup antigo leem só ele). */
+    fun withKind(newKind: CategoryKind): CustomGoalCategory =
+        copy(kind = newKind, supportsRestDay = newKind == CategoryKind.RestDay)
 
     companion object {
         const val DEFAULT_SYMBOL_NAME = "square.grid.2x2.fill"

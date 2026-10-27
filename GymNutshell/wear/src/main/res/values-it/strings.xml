@@ -23,4 +23,10 @@
     <string name="wear_notif_today">Oggi</string>
     <string name="wear_notif_yesterday">Ieri</string>
     <string name="wear_notif_delete">Elimina</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="today_checkin_pending">In sospeso</string>
+    <string name="today_checkin_done">Fatto</string>
+    <string name="a11y_checkin_hint_mark_done">Tocca per segnare come fatto.</string>
+    <string name="a11y_checkin_hint_mark_pending">Tocca per rimettere in sospeso.</string>
 </resources>

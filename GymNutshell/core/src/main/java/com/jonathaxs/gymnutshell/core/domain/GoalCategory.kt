@@ -10,6 +10,14 @@ enum class GoalCategory(val rawValue: String) {
     Treino("treino"),
     Suplemento("suplemento");
 
+    /** Tipo fixo da categoria (não pode ser trocado): Treino sempre com descanso, Suplemento sempre check-in. */
+    val kind: CategoryKind
+        get() = when (this) {
+            Essencial, Nutricao -> CategoryKind.Standard
+            Treino -> CategoryKind.RestDay
+            Suplemento -> CategoryKind.CheckIn
+        }
+
     companion object {
         fun fromRaw(raw: String?): GoalCategory? = entries.firstOrNull { it.rawValue == raw }
 

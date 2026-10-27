@@ -31,4 +31,10 @@
     <string name="wear_notif_today">Today</string>
     <string name="wear_notif_yesterday">Yesterday</string>
     <string name="wear_notif_delete">Delete</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="today_checkin_pending">Pending</string>
+    <string name="today_checkin_done">Done</string>
+    <string name="a11y_checkin_hint_mark_done">Tap to mark as done.</string>
+    <string name="a11y_checkin_hint_mark_pending">Tap to mark as pending.</string>
 </resources>

@@ -412,4 +412,19 @@
     <string name="today_hero_bell_a11y_label">알림</string>
     <string name="today_category_tile_a11y_value">%2$d개 목표 중 %1$d개 완료</string>
     <string name="today_category_tile_a11y_hint">이중 탭하여 카테고리 입력 방식 열기</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="settings_category_kind">유형</string>
+    <string name="category_kind_standard">기본</string>
+    <string name="category_kind_rest_day">휴식일 포함</string>
+    <string name="category_kind_check_in">체크인</string>
+    <string name="category_kind_standard_footer">슬라이더나 − / + 버튼으로 조금씩 기록합니다.</string>
+    <string name="category_kind_rest_day_footer">기본과 같고, 휴식일을 표시하는 ON/OFF 버튼이 있습니다.</string>
+    <string name="category_kind_check_in_footer">각 목표는 하루 한 번 체크합니다: 대기 또는 완료.</string>
+    <string name="addgoal_section_dose">용량</string>
+    <string name="addgoal_dose_footer">완료로 표시하면 이 양으로 오늘 목표가 달성됩니다.</string>
+    <string name="today_checkin_pending">대기</string>
+    <string name="today_checkin_done">완료</string>
+    <string name="a11y_checkin_hint_mark_done">탭하여 완료로 표시합니다.</string>
+    <string name="a11y_checkin_hint_mark_pending">탭하여 대기로 되돌립니다.</string>
 </resources>

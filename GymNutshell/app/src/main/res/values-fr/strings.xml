@@ -412,4 +412,19 @@
     <string name="today_hero_bell_a11y_label">Notifications</string>
     <string name="today_category_tile_a11y_value">%1$d sur %2$d objectifs complétés</string>
     <string name="today_category_tile_a11y_hint">Touche deux fois pour ouvrir les commandes de la catégorie</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="settings_category_kind">Type</string>
+    <string name="category_kind_standard">Standard</string>
+    <string name="category_kind_rest_day">Avec repos</string>
+    <string name="category_kind_check_in">Check-in</string>
+    <string name="category_kind_standard_footer">Enregistrez les objectifs petit à petit avec le curseur ou les boutons − / +.</string>
+    <string name="category_kind_rest_day_footer">Comme Standard, avec un bouton ON/OFF pour marquer un jour de repos.</string>
+    <string name="category_kind_check_in_footer">Chaque objectif se coche une fois par jour : En attente ou Fait.</string>
+    <string name="addgoal_section_dose">Dose</string>
+    <string name="addgoal_dose_footer">En marquant Fait, l\'objectif du jour est atteint avec cette quantité.</string>
+    <string name="today_checkin_pending">En attente</string>
+    <string name="today_checkin_done">Fait</string>
+    <string name="a11y_checkin_hint_mark_done">Touche pour marquer comme fait.</string>
+    <string name="a11y_checkin_hint_mark_pending">Touche pour remettre en attente.</string>
 </resources>

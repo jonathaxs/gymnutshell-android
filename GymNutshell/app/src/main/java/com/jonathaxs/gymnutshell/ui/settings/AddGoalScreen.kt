@@ -2,7 +2,6 @@ package com.jonathaxs.gymnutshell.ui.settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -20,7 +19,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -30,7 +28,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -41,7 +38,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.data.CustomGoalCategory
+import com.jonathaxs.gymnutshell.core.domain.CategoryKind
 import com.jonathaxs.gymnutshell.core.domain.GoalCategory
+import com.jonathaxs.gymnutshell.ui.components.CategoryKindPicker
 import com.jonathaxs.gymnutshell.ui.components.CategorySymbolPicker
 import java.text.BreakIterator
 
@@ -61,7 +60,7 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
     var incrementText by remember { mutableStateOf("") }
     var creatingNewCategory by remember { mutableStateOf(false) }
     var newCategoryName by remember { mutableStateOf("") }
-    var newCategoryRestDay by remember { mutableStateOf(false) }
+    var newCategoryKind by remember { mutableStateOf(CategoryKind.Standard) }
     var newCategorySymbol by remember { mutableStateOf(CustomGoalCategory.DEFAULT_SYMBOL_NAME) }
 
     // Pré-preenche uma vez quando a meta em edição termina de carregar.
@@ -83,6 +82,18 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
     val accent = Color(data.accentArgb)
     val builtinNames = GoalCategory.entries.associateWith { stringResource(GoalsViewModel.categoryTitleRes(it)) }
 
+    // Tipo efetivo da categoria selecionada (ou da nova categoria sendo criada).
+    val effectiveCategoryKind = if (creatingNewCategory) {
+        newCategoryKind
+    } else {
+        when (val sel = selectedCategory) {
+            is CategorySelection.Builtin -> sel.category.kind
+            is CategorySelection.Custom ->
+                data.customCategories.firstOrNull { it.id == sel.id }?.kind ?: CategoryKind.Standard
+        }
+    }
+    val isCheckIn = effectiveCategoryKind == CategoryKind.CheckIn
+
     // Validações (espelham o iOS).
     val trimmedEmoji = firstGrapheme(emoji)
     val emojiConflict = trimmedEmoji.isNotEmpty() &&
@@ -98,11 +109,12 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
             data.customCategories.any { it.name.lowercase() == newCatLower })
     val goalValue = goalText.toIntOrNull()
     val stepValue = incrementText.toIntOrNull()
-    val stepTooLarge = goalValue != null && goalValue > 0 && stepValue != null && stepValue > 0 && stepValue > goalValue
+    val stepTooLarge = !isCheckIn && goalValue != null && goalValue > 0 &&
+        stepValue != null && stepValue > 0 && stepValue > goalValue
+    val stepValid = isCheckIn || (stepValue != null && stepValue > 0 && goalValue != null && stepValue <= goalValue)
 
     val isValid = trimmedEmoji.isNotEmpty() && name.isNotBlank() && !emojiConflict && !nameConflict &&
-        unit.isNotBlank() && goalValue != null && goalValue > 0 &&
-        stepValue != null && stepValue > 0 && stepValue <= goalValue &&
+        unit.isNotBlank() && goalValue != null && goalValue > 0 && stepValid &&
         (!creatingNewCategory || (newCategoryName.isNotBlank() && !categoryNameConflict))
 
     val title = data.editing?.let { "${it.emoji} ${it.name}" } ?: stringResource(R.string.addgoal_title_new)
@@ -120,15 +132,17 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
                     TextButton(
                         enabled = isValid,
                         onClick = {
+                            val savedTarget = goalValue ?: 1
+                            val savedIncrement = if (isCheckIn) savedTarget else (stepValue ?: 1)
                             viewModel.save(
                                 emoji = trimmedEmoji,
                                 name = name,
                                 unit = unit,
-                                target = goalValue ?: 1,
-                                increment = stepValue ?: 1,
+                                target = savedTarget,
+                                increment = savedIncrement,
                                 selection = selectedCategory,
                                 newCategory = if (creatingNewCategory && newCategoryName.isNotBlank()) {
-                                    Triple(newCategoryName, newCategoryRestDay, newCategorySymbol)
+                                    Triple(newCategoryName, newCategoryKind, newCategorySymbol)
                                 } else {
                                     null
                                 },
@@ -162,7 +176,7 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
                     creatingNewCategory = !creatingNewCategory
                     if (!creatingNewCategory) {
                         newCategoryName = ""
-                        newCategoryRestDay = false
+                        newCategoryKind = CategoryKind.Standard
                         newCategorySymbol = CustomGoalCategory.DEFAULT_SYMBOL_NAME
                     }
                 },
@@ -175,10 +189,10 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
 
             // Nova categoria (inline).
             if (creatingNewCategory) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(stringResource(R.string.addgoal_category_new_rest_day), modifier = Modifier.weight(1f))
-                    Switch(checked = newCategoryRestDay, onCheckedChange = { newCategoryRestDay = it })
-                }
+                CategoryKindPicker(
+                    selected = newCategoryKind,
+                    onSelect = { newCategoryKind = it },
+                )
                 OutlinedTextField(
                     value = newCategoryName,
                     onValueChange = { newCategoryName = it },
@@ -233,29 +247,42 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            // Alvo.
+            // Alvo (ou Dose em categorias check-in).
             OutlinedTextField(
                 value = goalText,
                 onValueChange = { goalText = it.filter(Char::isDigit) },
-                label = { Text(stringResource(R.string.field_target)) },
+                label = {
+                    Text(
+                        stringResource(
+                            if (isCheckIn) R.string.addgoal_section_dose else R.string.field_target,
+                        ),
+                    )
+                },
                 placeholder = { Text(stringResource(R.string.addgoal_goal_placeholder)) },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                supportingText = if (isCheckIn) {
+                    { Text(stringResource(R.string.addgoal_dose_footer)) }
+                } else {
+                    null
+                },
                 modifier = Modifier.fillMaxWidth(),
             )
 
-            // Passo.
-            OutlinedTextField(
-                value = incrementText,
-                onValueChange = { incrementText = it.filter(Char::isDigit) },
-                label = { Text(stringResource(R.string.addgoal_section_step)) },
-                placeholder = { Text(stringResource(R.string.addgoal_increment_placeholder)) },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                isError = stepTooLarge,
-                supportingText = errorText(stepTooLarge, R.string.addgoal_warning_step),
-                modifier = Modifier.fillMaxWidth(),
-            )
+            // Passo (oculto em categorias check-in, onde o incremento salvo é a própria dose).
+            if (!isCheckIn) {
+                OutlinedTextField(
+                    value = incrementText,
+                    onValueChange = { incrementText = it.filter(Char::isDigit) },
+                    label = { Text(stringResource(R.string.addgoal_section_step)) },
+                    placeholder = { Text(stringResource(R.string.addgoal_increment_placeholder)) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    isError = stepTooLarge,
+                    supportingText = errorText(stepTooLarge, R.string.addgoal_warning_step),
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
         }
     }
 }

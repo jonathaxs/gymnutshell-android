@@ -504,4 +504,19 @@
     <!-- Today 2.0 (Parte 2 - Grade de categorias) -->
     <string name="today_category_tile_a11y_value">%1$d de %2$d metas concluídas</string>
     <string name="today_category_tile_a11y_hint">Toque duas vezes para abrir os controles da categoria</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="settings_category_kind">Tipo</string>
+    <string name="category_kind_standard">Padrão</string>
+    <string name="category_kind_rest_day">Com descanso</string>
+    <string name="category_kind_check_in">Check-in</string>
+    <string name="category_kind_standard_footer">As metas são registradas aos poucos, com o slider ou os botões − / +.</string>
+    <string name="category_kind_rest_day_footer">Igual ao padrão, com um botão ON/OFF pra marcar dia de descanso.</string>
+    <string name="category_kind_check_in_footer">Cada meta é marcada uma vez por dia: Pendente ou Feito.</string>
+    <string name="addgoal_section_dose">Dose</string>
+    <string name="addgoal_dose_footer">Ao marcar Feito, a meta do dia fica completa com esse valor.</string>
+    <string name="today_checkin_pending">Pendente</string>
+    <string name="today_checkin_done">Feito</string>
+    <string name="a11y_checkin_hint_mark_done">Toque para marcar como feito.</string>
+    <string name="a11y_checkin_hint_mark_pending">Toque para voltar para pendente.</string>
 </resources>

@@ -56,8 +56,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
+import com.jonathaxs.gymnutshell.core.domain.CategoryKind
 import com.jonathaxs.gymnutshell.core.domain.ControlStyle
 import com.jonathaxs.gymnutshell.core.domain.ProgressColors
+import com.jonathaxs.gymnutshell.ui.today.CheckInSelector
 import com.jonathaxs.gymnutshell.ui.today.TodayCategoryUi
 import com.jonathaxs.gymnutshell.ui.today.TodayGoalUi
 import com.jonathaxs.gymnutshell.ui.welcome.RoundStepButton
@@ -214,7 +216,7 @@ private fun EditCategoryHeader(
     }
 }
 
-/** Linha de meta com suporte a Stepper (-/+) com RoundStepButton ou Slider conforme controlStyle. */
+/** Linha de meta com suporte a Check-in, Stepper (-/+) com RoundStepButton ou Slider conforme controlStyle. */
 @Composable
 private fun EditGoalRow(
     goal: TodayGoalUi,
@@ -232,6 +234,14 @@ private fun EditGoalRow(
 
     val progressFraction = if (goal.target > 0) (shownValue.toFloat() / goal.target.toFloat()).coerceIn(0f, 1f) else 0f
     val progressColor = Color(ProgressColors.ringArgb(progressFraction.toDouble()))
+    val checkInDone = CategoryKind.isCheckInDone(goal.intake, goal.target)
+    val checkInStateLabel = stringResource(if (checkInDone) R.string.today_checkin_done else R.string.today_checkin_pending)
+    val valueDesc = when {
+        goal.isCheckIn -> "$checkInStateLabel, ${goal.target} ${goal.unit}"
+        goal.isRestDay -> stringResource(R.string.a11y_goal_restday)
+        else -> stringResource(R.string.a11y_goal_value, shownValue, goal.target, goal.unit)
+    }
+    val headerDesc = "${stringResource(R.string.a11y_goal_label, title)}, $valueDesc"
 
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
@@ -245,26 +255,37 @@ private fun EditGoalRow(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Row(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .semantics(mergeDescendants = true) { contentDescription = headerDesc },
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(goal.emoji, style = MaterialTheme.typography.titleLarge)
+                    Text(goal.emoji, style = MaterialTheme.typography.titleLarge, modifier = Modifier.clearAndSetSemantics {})
                     Spacer(Modifier.width(12.dp))
                     Text(title, modifier = Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
                     Text(
-                        text = "$shownValue/${goal.target} ${goal.unit}",
+                        text = if (goal.isCheckIn) "${goal.target} ${goal.unit}" else "$shownValue/${goal.target} ${goal.unit}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-                if (goal.supportsRestDay) {
+                if (!goal.isCheckIn && goal.supportsRestDay) {
                     Spacer(Modifier.width(10.dp))
                     EditRestDayToggle(isRestDay = goal.isRestDay, accent = accent, onClick = onToggleRest)
                 }
             }
 
-            if (goal.isRestDay) {
+            if (goal.isCheckIn) {
+                CheckInSelector(
+                    title = title,
+                    done = checkInDone,
+                    accent = accent,
+                    onSelect = { newDone ->
+                        onSet(CategoryKind.checkInValue(done = newDone, goal = goal.target))
+                    },
+                )
+            } else if (goal.isRestDay) {
                 Text(
                     restLabel,
                     style = MaterialTheme.typography.bodyMedium,

@@ -5,6 +5,7 @@ import com.jonathaxs.gymnutshell.core.widget.SegmentedRingPainter
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import android.graphics.RectF
+import android.view.HapticFeedbackConstants
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,6 +36,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -78,6 +80,7 @@ fun WearTodayScreen(viewModel: WearTodayViewModel = viewModel()) {
                     },
                     onAdjust = { direction -> viewModel.adjustIntake(goal, direction) },
                     onToggleRestDay = { viewModel.toggleRestDay(goal) },
+                    onToggleCheckIn = { viewModel.toggleCheckIn(goal) },
                 )
             }
         }
@@ -147,11 +150,21 @@ private fun WearGoalCard(
     onToggleExpand: () -> Unit,
     onAdjust: (Int) -> Unit,
     onToggleRestDay: () -> Unit,
+    onToggleCheckIn: () -> Unit,
 ) {
     val title = goal.title ?: stringResource(goalTitleRes(goal.key))
+    val view = LocalView.current
     Column {
-        GoalPill(goal, title, expanded, onToggleExpand)
-        if (expanded) {
+        if (goal.isCheckIn) {
+            // Check-in: o toque na pílula já marca Feito/Pendente, sem abrir os controles.
+            GoalPill(goal, title, expanded = false, accent = accent) {
+                if (!goal.isCheckInDone) view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
+                onToggleCheckIn()
+            }
+        } else {
+            GoalPill(goal, title, expanded, accent, onToggleExpand)
+        }
+        if (expanded && !goal.isCheckIn) {
             Spacer(Modifier.height(4.dp))
             GoalControls(goal, title, accent, onAdjust, onToggleRestDay)
         }
@@ -160,19 +173,38 @@ private fun WearGoalCard(
 
 /** Pílula da meta: fundo cinza + preenchimento proporcional na cor do progresso. */
 @Composable
-private fun GoalPill(goal: WearGoalUi, title: String, expanded: Boolean, onToggleExpand: () -> Unit) {
+private fun GoalPill(
+    goal: WearGoalUi,
+    title: String,
+    expanded: Boolean,
+    accent: Color,
+    onClick: () -> Unit,
+) {
     val fillColor = Color(ProgressColors.ringArgb(goal.progress)).copy(alpha = 0.45f)
     val shape = RoundedCornerShape(50)
+    val checkInState = stringResource(
+        if (goal.isCheckInDone) R.string.today_checkin_done else R.string.today_checkin_pending,
+    )
+    val checkInHint = stringResource(
+        if (goal.isCheckInDone) R.string.a11y_checkin_hint_mark_pending else R.string.a11y_checkin_hint_mark_done,
+    )
     // TalkBack lê "Treino, 0 / 50 min" como um único botão (mesma locução do iOS).
-    val valueLabel = if (goal.isRestDay) stringResource(R.string.rest_day)
-    else "${goal.intake} / ${goal.target} ${goal.unit}"
+    val valueLabel = when {
+        goal.isRestDay -> stringResource(R.string.rest_day)
+        goal.isCheckIn -> "$checkInState, ${goal.target} ${goal.unit}"
+        else -> "${goal.intake} / ${goal.target} ${goal.unit}"
+    }
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .clip(shape)
             .background(Color.Gray.copy(alpha = 0.18f))
-            .clickable(role = Role.Button, onClick = onToggleExpand)
+            .clickable(
+                role = Role.Button,
+                onClickLabel = if (goal.isCheckIn) checkInHint else null,
+                onClick = onClick,
+            )
             .semantics { contentDescription = "$title, $valueLabel" },
     ) {
         Box(Modifier.matchParentSize()) {
@@ -191,19 +223,43 @@ private fun GoalPill(goal: WearGoalUi, title: String, expanded: Boolean, onToggl
         ) {
             Text(goal.emoji, fontSize = 16.sp)
             Spacer(Modifier.width(8.dp))
-            Text(
-                if (goal.isRestDay) stringResource(R.string.rest_day)
-                else "${goal.intake} / ${goal.target} ${goal.unit}",
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1,
-            )
-            Spacer(Modifier.weight(1f))
-            Text(
-                if (expanded) "▴" else "▾",
-                style = MaterialTheme.typography.labelSmall,
-                color = Color.Gray,
-            )
+            if (goal.isCheckIn) {
+                // Estado + dose; o círculo à direita vira check quando feito.
+                Text(
+                    checkInState,
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                )
+                Spacer(Modifier.width(6.dp))
+                Text(
+                    "${goal.target} ${goal.unit}",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.Gray,
+                    maxLines = 1,
+                )
+                Spacer(Modifier.weight(1f))
+                Text(
+                    if (goal.isCheckInDone) "✓" else "○",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = if (goal.isCheckInDone) accent else Color.Gray,
+                )
+            } else {
+                Text(
+                    if (goal.isRestDay) stringResource(R.string.rest_day)
+                    else "${goal.intake} / ${goal.target} ${goal.unit}",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1,
+                )
+                Spacer(Modifier.weight(1f))
+                Text(
+                    if (expanded) "▴" else "▾",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.Gray,
+                )
+            }
         }
     }
 }

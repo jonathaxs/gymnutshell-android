@@ -412,4 +412,19 @@
     <string name="today_hero_bell_a11y_label">Mitteilungen</string>
     <string name="today_category_tile_a11y_value">%1$d von %2$d Zielen abgeschlossen</string>
     <string name="today_category_tile_a11y_hint">Doppeltippen, um die Steuerelemente der Kategorie zu öffnen</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="settings_category_kind">Typ</string>
+    <string name="category_kind_standard">Standard</string>
+    <string name="category_kind_rest_day">Mit Ruhetag</string>
+    <string name="category_kind_check_in">Check-in</string>
+    <string name="category_kind_standard_footer">Ziele schrittweise mit dem Schieberegler oder den Tasten − / + erfassen.</string>
+    <string name="category_kind_rest_day_footer">Wie Standard, mit einem AN/AUS-Schalter für Ruhetage.</string>
+    <string name="category_kind_check_in_footer">Jedes Ziel wird einmal täglich abgehakt: Offen oder Erledigt.</string>
+    <string name="addgoal_section_dose">Dosis</string>
+    <string name="addgoal_dose_footer">Mit „Erledigt“ ist das Tagesziel mit dieser Menge erreicht.</string>
+    <string name="today_checkin_pending">Offen</string>
+    <string name="today_checkin_done">Erledigt</string>
+    <string name="a11y_checkin_hint_mark_done">Tippen, um als erledigt zu markieren.</string>
+    <string name="a11y_checkin_hint_mark_pending">Tippen, um wieder auf offen zu setzen.</string>
 </resources>

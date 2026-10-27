@@ -24,6 +24,7 @@ import com.jonathaxs.gymnutshell.core.domain.AppDateFormatters
 import com.jonathaxs.gymnutshell.core.domain.AppTheme
 import com.jonathaxs.gymnutshell.core.domain.BuiltInGoals
 import com.jonathaxs.gymnutshell.core.domain.CategoryItem
+import com.jonathaxs.gymnutshell.core.domain.CategoryKind
 import com.jonathaxs.gymnutshell.core.domain.ControlStyle
 import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
 import com.jonathaxs.gymnutshell.core.domain.DailyRecordFactory
@@ -57,6 +58,7 @@ data class TodayGoalUi(
     val target: Int,
     val isRestDay: Boolean = false,
     val supportsRestDay: Boolean = false,
+    val isCheckIn: Boolean = false,
     val category: GoalCategory? = null,
     /** Categoria personalizada à qual a meta pertence (null quando é fixa do app ou builtin). */
     val customCategoryId: String? = null,
@@ -210,12 +212,12 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
             // Enquanto não houver onboarding, usa um perfil-demo se nada foi salvo.
             val effective = if (profile.weightKg <= 0.0) DEMO_PROFILE else profile
 
-            // Resolve se uma meta suporta dia de descanso: Treino (fixa) ou categoria custom com o toggle ligado.
+            // Resolve se uma meta suporta dia de descanso pelo tipo da categoria (RestDay).
             fun supportsRest(category: GoalCategory?, customCategoryId: String?): Boolean =
                 if (customCategoryId != null) {
-                    customCategories.firstOrNull { it.id == customCategoryId }?.supportsRestDay ?: false
+                    customCategories.firstOrNull { it.id == customCategoryId }?.kind == CategoryKind.RestDay
                 } else {
-                    category == GoalCategory.Treino
+                    category?.kind == CategoryKind.RestDay
                 }
 
             // Metas fixas ativas (ordem/removidas/overrides). Água em US é exibida em fl oz (armazenada em ml).
@@ -231,7 +233,8 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
                     intake = if (waterUs) UnitConverter.mlToFlOz(storedMl.toDouble()).roundToInt() else storedMl,
                     target = if (waterUs) UnitConverter.mlToFlOz(g.target.toDouble()).roundToInt() else g.target,
                     isRestDay = g.key in restDays,
-                    supportsRestDay = category == GoalCategory.Treino,
+                    supportsRestDay = category?.kind == CategoryKind.RestDay,
+                    isCheckIn = category?.kind == CategoryKind.CheckIn,
                     category = category,
                     unitIsFlOz = waterUs,
                 )
@@ -244,6 +247,7 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
                     intake = intakeMap[c.intakeKey] ?: 0, target = c.target,
                     isRestDay = c.intakeKey in restDays,
                     supportsRestDay = supportsRest(category, c.customCategoryId),
+                    isCheckIn = c.kind(customCategories) == CategoryKind.CheckIn,
                     category = category,
                     customCategoryId = c.customCategoryId,
                     title = c.name,

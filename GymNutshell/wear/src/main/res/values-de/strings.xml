@@ -23,4 +23,10 @@
     <string name="wear_notif_today">Heute</string>
     <string name="wear_notif_yesterday">Gestern</string>
     <string name="wear_notif_delete">Löschen</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="today_checkin_pending">Offen</string>
+    <string name="today_checkin_done">Erledigt</string>
+    <string name="a11y_checkin_hint_mark_done">Tippen, um als erledigt zu markieren.</string>
+    <string name="a11y_checkin_hint_mark_pending">Tippen, um wieder auf offen zu setzen.</string>
 </resources>

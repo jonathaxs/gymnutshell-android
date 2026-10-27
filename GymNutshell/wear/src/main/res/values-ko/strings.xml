@@ -23,4 +23,10 @@
     <string name="wear_notif_today">오늘</string>
     <string name="wear_notif_yesterday">어제</string>
     <string name="wear_notif_delete">삭제</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="today_checkin_pending">대기</string>
+    <string name="today_checkin_done">완료</string>
+    <string name="a11y_checkin_hint_mark_done">탭하여 완료로 표시합니다.</string>
+    <string name="a11y_checkin_hint_mark_pending">탭하여 대기로 되돌립니다.</string>
 </resources>

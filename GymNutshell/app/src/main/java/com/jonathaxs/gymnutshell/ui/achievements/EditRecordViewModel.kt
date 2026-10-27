@@ -18,6 +18,7 @@ import com.jonathaxs.gymnutshell.core.domain.AppDateFormatters
 import com.jonathaxs.gymnutshell.core.domain.AppTheme
 import com.jonathaxs.gymnutshell.core.domain.BuiltInGoals
 import com.jonathaxs.gymnutshell.core.domain.CategoryItem
+import com.jonathaxs.gymnutshell.core.domain.CategoryKind
 import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
 import com.jonathaxs.gymnutshell.core.domain.DailyRecordCodec
 import com.jonathaxs.gymnutshell.core.domain.DailyRecordFactory
@@ -184,9 +185,9 @@ class EditRecordViewModel(app: Application) : AndroidViewModel(app) {
 
         fun supportsRest(category: GoalCategory?, customCategoryId: String?): Boolean =
             if (customCategoryId != null) {
-                customCategories.firstOrNull { it.id == customCategoryId }?.supportsRestDay ?: false
+                customCategories.firstOrNull { it.id == customCategoryId }?.kind == CategoryKind.RestDay
             } else {
-                category == GoalCategory.Treino
+                category?.kind == CategoryKind.RestDay
             }
 
         // Metas fixas ativas (ordem/removidas/overrides), iguais à Today.
@@ -202,7 +203,8 @@ class EditRecordViewModel(app: Application) : AndroidViewModel(app) {
                 intake = if (waterUs) UnitConverter.mlToFlOz(storedMl.toDouble()).roundToInt() else storedMl,
                 target = if (waterUs) UnitConverter.mlToFlOz(g.target.toDouble()).roundToInt() else g.target,
                 isRestDay = g.key in draftRestDays,
-                supportsRestDay = category == GoalCategory.Treino,
+                supportsRestDay = category?.kind == CategoryKind.RestDay,
+                isCheckIn = category?.kind == CategoryKind.CheckIn,
                 category = category,
                 unitIsFlOz = waterUs,
             )
@@ -214,6 +216,7 @@ class EditRecordViewModel(app: Application) : AndroidViewModel(app) {
                 intake = draftIntakes[c.intakeKey] ?: 0, target = c.target,
                 isRestDay = c.intakeKey in draftRestDays,
                 supportsRestDay = supportsRest(category, c.customCategoryId),
+                isCheckIn = c.kind(customCategories) == CategoryKind.CheckIn,
                 category = category,
                 customCategoryId = c.customCategoryId,
                 title = c.name,

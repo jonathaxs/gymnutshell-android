@@ -9,6 +9,7 @@ import com.jonathaxs.gymnutshell.core.data.ProfileRepository
 import com.jonathaxs.gymnutshell.core.data.SettingsRepository
 import com.jonathaxs.gymnutshell.core.domain.BuiltInGoals
 import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
+import com.jonathaxs.gymnutshell.core.domain.CategoryKind
 import com.jonathaxs.gymnutshell.core.domain.GoalCategory
 import com.jonathaxs.gymnutshell.core.domain.GoalsProvider
 import com.jonathaxs.gymnutshell.core.domain.Profile
@@ -37,7 +38,11 @@ data class WearGoalUi(
     val target: Int,
     val isRestDay: Boolean,
     val supportsRestDay: Boolean,
+    /** Categoria check-in (ex.: Creatina em Suplemento): o toque alterna Pendente ↔ Feito, sem − / +. */
+    val isCheckIn: Boolean = false,
 ) {
+    val isCheckInDone: Boolean get() = CategoryKind.isCheckInDone(intake, target)
+
     // Em dia de descanso a meta conta como 100%, igual ao celular.
     val progress: Double get() = if (isRestDay) 1.0 else ProgressHelpers.normalizedProgress(intake, target)
 }
@@ -108,7 +113,8 @@ class WearTodayViewModel(app: Application) : AndroidViewModel(app) {
                     intake = intakeMap[g.key] ?: 0,
                     target = g.target,
                     isRestDay = g.key in restDays,
-                    supportsRestDay = category == GoalCategory.Treino,
+                    supportsRestDay = category?.kind == CategoryKind.RestDay,
+                    isCheckIn = category?.kind == CategoryKind.CheckIn,
                 ) to category
             }
             val custom = customGoals.map { c ->
@@ -122,7 +128,9 @@ class WearTodayViewModel(app: Application) : AndroidViewModel(app) {
                     intake = intakeMap[c.intakeKey] ?: 0,
                     target = c.target,
                     isRestDay = c.intakeKey in restDays,
-                    supportsRestDay = category == GoalCategory.Treino,
+                    // O relógio não conhece as categorias personalizadas: só as fixas definem o tipo aqui.
+                    supportsRestDay = c.customCategoryId == null && category?.kind == CategoryKind.RestDay,
+                    isCheckIn = c.customCategoryId == null && category?.kind == CategoryKind.CheckIn,
                 ) to category
             }
             // Lista achatada na mesma ordem do celular: categoria a categoria, custom sem categoria no fim.
@@ -153,6 +161,16 @@ class WearTodayViewModel(app: Application) : AndroidViewModel(app) {
             intakeRepo.setIntake(goal.key, next)
             WatchWearSync.sendIntake(getApplication(), goal.key, next)
             // Tile acompanha incrementos feitos no próprio relógio (igual à complication do iOS).
+            ProgressTileService.requestUpdate(getApplication())
+        }
+    }
+
+    /** Check-in: Feito grava a meta inteira, Pendente volta pra 0; publica pro celular igual ao − / +. */
+    fun toggleCheckIn(goal: WearGoalUi) {
+        val next = CategoryKind.checkInValue(done = !goal.isCheckInDone, goal = goal.target)
+        viewModelScope.launch {
+            intakeRepo.setIntake(goal.key, next)
+            WatchWearSync.sendIntake(getApplication(), goal.key, next)
             ProgressTileService.requestUpdate(getApplication())
         }
     }

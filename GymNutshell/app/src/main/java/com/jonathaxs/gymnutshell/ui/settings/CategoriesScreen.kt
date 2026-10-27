@@ -27,7 +27,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -45,6 +44,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.data.CustomGoalCategory
+import com.jonathaxs.gymnutshell.ui.components.CategoryKindPicker
 import com.jonathaxs.gymnutshell.ui.components.CategorySymbolPicker
 import com.jonathaxs.gymnutshell.ui.components.GroupRow
 import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
@@ -138,7 +138,7 @@ private fun ReorderArrows(canUp: Boolean, canDown: Boolean, onMoveUp: () -> Unit
     }
 }
 
-/** Sheet de editar categoria personalizada (nome + toggle dia-off + ícone) — porte de EditCustomGoalCategoryView (iOS). */
+/** Sheet de editar categoria personalizada (nome + tipo + ícone) — porte de EditCustomGoalCategoryView (iOS). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun EditCategorySheet(
@@ -149,7 +149,7 @@ private fun EditCategorySheet(
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var name by remember { mutableStateOf(category.name) }
-    var restDay by remember { mutableStateOf(category.supportsRestDay) }
+    var kind by remember { mutableStateOf(category.kind) }
     var symbol by remember { mutableStateOf(category.symbolName) }
 
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
@@ -164,14 +164,10 @@ private fun EditCategorySheet(
             horizontalAlignment = Alignment.Start,
         ) {
             Text(stringResource(R.string.addgoal_category_new_section), style = MaterialTheme.typography.titleMedium)
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-            ) {
-                Text(stringResource(R.string.addgoal_category_new_rest_day), modifier = Modifier.weight(1f))
-                Switch(checked = restDay, onCheckedChange = { restDay = it })
-            }
+            CategoryKindPicker(
+                selected = kind,
+                onSelect = { kind = it },
+            )
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
@@ -186,7 +182,7 @@ private fun EditCategorySheet(
                 accentColor = accent,
             )
             Button(
-                onClick = { onSave(category.copy(name = name.trim(), supportsRestDay = restDay, symbolName = symbol)) },
+                onClick = { onSave(category.copy(name = name.trim(), symbolName = symbol).withKind(kind)) },
                 enabled = name.isNotBlank(),
                 modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
             ) { Text(stringResource(R.string.action_save)) }

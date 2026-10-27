@@ -412,4 +412,19 @@
     <string name="today_hero_bell_a11y_label">Notifiche</string>
     <string name="today_category_tile_a11y_value">%1$d di %2$d obiettivi completati</string>
     <string name="today_category_tile_a11y_hint">Tocca due volte per aprire i controlli della categoria</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="settings_category_kind">Tipo</string>
+    <string name="category_kind_standard">Standard</string>
+    <string name="category_kind_rest_day">Con riposo</string>
+    <string name="category_kind_check_in">Check-in</string>
+    <string name="category_kind_standard_footer">Registra gli obiettivi poco a poco con lo slider o i pulsanti − / +.</string>
+    <string name="category_kind_rest_day_footer">Come Standard, con un pulsante ON/OFF per segnare il giorno di riposo.</string>
+    <string name="category_kind_check_in_footer">Ogni obiettivo si spunta una volta al giorno: In sospeso o Fatto.</string>
+    <string name="addgoal_section_dose">Dose</string>
+    <string name="addgoal_dose_footer">Segnando Fatto, l\'obiettivo del giorno è completato con questa quantità.</string>
+    <string name="today_checkin_pending">In sospeso</string>
+    <string name="today_checkin_done">Fatto</string>
+    <string name="a11y_checkin_hint_mark_done">Tocca per segnare come fatto.</string>
+    <string name="a11y_checkin_hint_mark_pending">Tocca per rimettere in sospeso.</string>
 </resources>

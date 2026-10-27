@@ -412,4 +412,19 @@
     <string name="today_hero_bell_a11y_label">通知</string>
     <string name="today_category_tile_a11y_value">%2$d件中 %1$d件の目標を達成</string>
     <string name="today_category_tile_a11y_hint">ダブルタップしてカテゴリーの操作を開く</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="settings_category_kind">種類</string>
+    <string name="category_kind_standard">標準</string>
+    <string name="category_kind_rest_day">休息日あり</string>
+    <string name="category_kind_check_in">チェックイン</string>
+    <string name="category_kind_standard_footer">スライダーまたは − / + ボタンで少しずつ記録します。</string>
+    <string name="category_kind_rest_day_footer">標準と同じで、休息日を記録する ON/OFF ボタン付き。</string>
+    <string name="category_kind_check_in_footer">各目標は1日1回チェック：未完了 または 完了。</string>
+    <string name="addgoal_section_dose">用量</string>
+    <string name="addgoal_dose_footer">完了にすると、この量でその日の目標が達成されます。</string>
+    <string name="today_checkin_pending">未完了</string>
+    <string name="today_checkin_done">完了</string>
+    <string name="a11y_checkin_hint_mark_done">タップして完了にします。</string>
+    <string name="a11y_checkin_hint_mark_pending">タップして未完了に戻します。</string>
 </resources>

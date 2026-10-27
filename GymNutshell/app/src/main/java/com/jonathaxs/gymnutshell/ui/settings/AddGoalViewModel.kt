@@ -8,6 +8,7 @@ import com.jonathaxs.gymnutshell.core.data.CustomGoalCategory
 import com.jonathaxs.gymnutshell.core.data.CustomGoalCategoryRepository
 import com.jonathaxs.gymnutshell.core.data.CustomGoalRepository
 import com.jonathaxs.gymnutshell.core.data.SettingsRepository
+import com.jonathaxs.gymnutshell.core.domain.CategoryKind
 import com.jonathaxs.gymnutshell.core.domain.GoalCategory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -67,18 +68,17 @@ class AddGoalViewModel(app: Application) : AndroidViewModel(app) {
         target: Int,
         increment: Int,
         selection: CategorySelection,
-        newCategory: Triple<String, Boolean, String>?,
+        newCategory: Triple<String, CategoryKind, String>?,
         editingId: Long?,
     ) {
         viewModelScope.launch {
             var resolved = selection
-            newCategory?.let { (catName, restDay, symbol) ->
+            newCategory?.let { (catName, kind, symbol) ->
                 val category = CustomGoalCategory(
                     id = UUID.randomUUID().toString(),
                     name = catName.trim(),
-                    supportsRestDay = restDay,
                     symbolName = symbol,
-                )
+                ).withKind(kind)
                 customCategoryRepo.upsert(category)
                 resolved = CategorySelection.Custom(category.id)
             }

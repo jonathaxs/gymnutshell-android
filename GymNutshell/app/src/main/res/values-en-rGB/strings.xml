@@ -412,4 +412,19 @@
     <string name="today_hero_bell_a11y_label">Notifications</string>
     <string name="today_category_tile_a11y_value">%1$d of %2$d goals completed</string>
     <string name="today_category_tile_a11y_hint">Double-tap to open category controls</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="settings_category_kind">Type</string>
+    <string name="category_kind_standard">Standard</string>
+    <string name="category_kind_rest_day">With day off</string>
+    <string name="category_kind_check_in">Check-in</string>
+    <string name="category_kind_standard_footer">Log goals bit by bit with the slider or the − / + buttons.</string>
+    <string name="category_kind_rest_day_footer">Like Standard, plus an ON/OFF button to mark a day off.</string>
+    <string name="category_kind_check_in_footer">Each goal is checked once a day: Pending or Done.</string>
+    <string name="addgoal_section_dose">Dose</string>
+    <string name="addgoal_dose_footer">Marking Done completes the day\'s goal with this amount.</string>
+    <string name="today_checkin_pending">Pending</string>
+    <string name="today_checkin_done">Done</string>
+    <string name="a11y_checkin_hint_mark_done">Tap to mark as done.</string>
+    <string name="a11y_checkin_hint_mark_pending">Tap to mark as pending.</string>
 </resources>

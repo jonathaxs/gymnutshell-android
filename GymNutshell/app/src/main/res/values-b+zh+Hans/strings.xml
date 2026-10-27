@@ -412,4 +412,19 @@
     <string name="today_hero_bell_a11y_label">通知</string>
     <string name="today_category_tile_a11y_value">已完成 %1$d/%2$d 个目标</string>
     <string name="today_category_tile_a11y_hint">轻点两下打开该分类的记录方式</string>
+
+    <!-- Categoria check-in (2.0) -->
+    <string name="settings_category_kind">类型</string>
+    <string name="category_kind_standard">标准</string>
+    <string name="category_kind_rest_day">含休息日</string>
+    <string name="category_kind_check_in">打卡</string>
+    <string name="category_kind_standard_footer">用滑块或 − / + 按钮逐步记录。</string>
+    <string name="category_kind_rest_day_footer">与标准相同，另有标记休息日的开/关按钮。</string>
+    <string name="category_kind_check_in_footer">每个目标每天打卡一次：待完成 或 已完成。</string>
+    <string name="addgoal_section_dose">剂量</string>
+    <string name="addgoal_dose_footer">标记为已完成后，当天目标即以此用量完成。</string>
+    <string name="today_checkin_pending">待完成</string>
+    <string name="today_checkin_done">已完成</string>
+    <string name="a11y_checkin_hint_mark_done">轻点标记为已完成。</string>
+    <string name="a11y_checkin_hint_mark_pending">轻点改回待完成。</string>
 </resources>

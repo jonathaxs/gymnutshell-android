@@ -16,9 +16,12 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.animateBounds
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.BoundsTransform
+import android.view.HapticFeedbackConstants
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -40,6 +43,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -93,6 +97,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalView
 import kotlinx.coroutines.delay
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -106,6 +111,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.text.font.FontWeight
@@ -119,6 +125,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
+import com.jonathaxs.gymnutshell.core.domain.CategoryKind
 import com.jonathaxs.gymnutshell.core.domain.ControlStyle
 import com.jonathaxs.gymnutshell.core.domain.GoalCategory
 import com.jonathaxs.gymnutshell.core.domain.ProgressColors
@@ -842,11 +849,13 @@ internal fun GoalRow(
 
     val progressFraction = if (goal.target > 0) (shownValue.toFloat() / goal.target).coerceIn(0f, 1f) else 0f
     val progressColor = Color(ProgressColors.ringArgb(progressFraction.toDouble()))
+    val checkInDone = CategoryKind.isCheckInDone(goal.intake, goal.target)
+    val checkInStateLabel = stringResource(if (checkInDone) R.string.today_checkin_done else R.string.today_checkin_pending)
 
-    val valueDesc = if (goal.isRestDay) {
-        stringResource(R.string.a11y_goal_restday)
-    } else {
-        stringResource(R.string.a11y_goal_value, shownValue, goal.target, goal.unit)
+    val valueDesc = when {
+        goal.isCheckIn -> "$checkInStateLabel, ${goal.target} ${goal.unit}"
+        goal.isRestDay -> stringResource(R.string.a11y_goal_restday)
+        else -> stringResource(R.string.a11y_goal_value, shownValue, goal.target, goal.unit)
     }
     val headerDesc = "${stringResource(R.string.a11y_goal_label, title)}, $valueDesc"
     val sliderLabel = stringResource(R.string.a11y_slider_label, title)
@@ -887,7 +896,7 @@ internal fun GoalRow(
                 )
                 Spacer(Modifier.width(8.dp))
                 Text(
-                    text = "$shownValue/${goal.target} ${goal.unit}",
+                    text = if (goal.isCheckIn) "${goal.target} ${goal.unit}" else "$shownValue/${goal.target} ${goal.unit}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     maxLines = 1,
@@ -895,7 +904,7 @@ internal fun GoalRow(
             }
 
             // No modo Slider, o toggle ON/OFF pequeno fica à direita no cabeçalho
-            if (goal.supportsRestDay && controlStyle == ControlStyle.Slider) {
+            if (!goal.isCheckIn && goal.supportsRestDay && controlStyle == ControlStyle.Slider) {
                 Spacer(Modifier.width(8.dp))
                 RestDayTogglePill(
                     isRestDay = goal.isRestDay,
@@ -905,8 +914,17 @@ internal fun GoalRow(
             }
         }
 
-        // Linha de controle: Slider ou Barra com Steppers -/+
-        if (goal.isRestDay) {
+        // Linha de controle: seletor Check-in, Slider ou Barra com Steppers -/+
+        if (goal.isCheckIn) {
+            CheckInSelector(
+                title = title,
+                done = checkInDone,
+                accent = accent,
+                onSelect = { newDone ->
+                    onSet(CategoryKind.checkInValue(done = newDone, goal = goal.target))
+                },
+            )
+        } else if (goal.isRestDay) {
             // Em descanso: exibe texto centralizado e, se no modo stepper, o botão ON/OFF redondo à direita
             Row(
                 modifier = Modifier
@@ -1041,6 +1059,121 @@ internal fun GoalRow(
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+/**
+ * Seletor Pendente | Feito em cápsula com pílula deslizante — porte do checkInControl (iOS).
+ * Usado nas metas de categoria CheckIn tanto na Hoje quanto na edição de registro.
+ */
+@Composable
+internal fun CheckInSelector(
+    title: String,
+    done: Boolean,
+    accent: Color,
+    onSelect: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val view = LocalView.current
+    val pendingText = stringResource(R.string.today_checkin_pending)
+    val doneText = stringResource(R.string.today_checkin_done)
+    val pillColor by animateColorAsState(
+        targetValue = if (done) accent else MaterialTheme.colorScheme.surface,
+        animationSpec = tween(durationMillis = 200),
+        label = "checkin_pill_color",
+    )
+    val trackPadding = 3.dp
+
+    BoxWithConstraints(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(44.dp)
+            .clip(CircleShape)
+            .background(MaterialTheme.colorScheme.surfaceVariant)
+            .padding(trackPadding)
+            .semantics { contentDescription = title },
+    ) {
+        val segmentWidth = maxWidth / 2
+        val pillOffset by animateDpAsState(
+            targetValue = if (done) segmentWidth else 0.dp,
+            animationSpec = spring(dampingRatio = 0.85f, stiffness = 400f),
+            label = "checkin_pill_offset",
+        )
+
+        // Pílula deslizante do estado selecionado
+        Box(
+            modifier = Modifier
+                .offset(x = pillOffset)
+                .width(segmentWidth)
+                .fillMaxHeight()
+                .shadow(if (done) 2.dp else 1.dp, CircleShape)
+                .clip(CircleShape)
+                .background(pillColor),
+        )
+
+        Row(modifier = Modifier.fillMaxSize()) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .clip(CircleShape)
+                    .clickable(
+                        role = Role.Tab,
+                        onClick = {
+                            if (done) {
+                                view.performHapticFeedback(HapticFeedbackConstants.CLOCK_TICK)
+                            }
+                            onSelect(false)
+                        },
+                    )
+                    .semantics { selected = !done },
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = pendingText,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = if (!done) FontWeight.SemiBold else FontWeight.Medium,
+                    ),
+                    color = if (!done) {
+                        MaterialTheme.colorScheme.onSurface
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    },
+                    maxLines = 1,
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .clip(CircleShape)
+                    .clickable(
+                        role = Role.Tab,
+                        onClick = {
+                            if (!done) {
+                                view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
+                            }
+                            onSelect(true)
+                        },
+                    )
+                    .semantics { selected = done },
+                contentAlignment = Alignment.Center,
+            ) {
+                Text(
+                    text = doneText,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = if (done) FontWeight.SemiBold else FontWeight.Medium,
+                    ),
+                    color = if (done) {
+                        Color.White
+                    } else {
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                    },
+                    maxLines = 1,
+                )
             }
         }
     }
