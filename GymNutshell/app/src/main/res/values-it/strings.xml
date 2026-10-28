@@ -396,6 +396,10 @@
     <string name="today_hero_caption_start">Monitora un obiettivo per iniziare</string>
     <string name="today_hero_caption_next_level">Manca il %1$d%% per il livello successivo</string>
     <string name="today_hero_caption_max">Livello massimo raggiunto oggi!</string>
+    <!-- Balões da Hoje (porte de TodayInfoPopovers do iOS): nível da conquista e fim do dia. -->
+    <string name="today_info_level_format">Livello %1$d</string>
+    <string name="today_info_tier_row_a11y">%1$s, %2$s, livello %3$d</string>
+    <string name="today_day_remaining">Il giorno finisce tra %1$s</string>
     <string name="today_goals_view_mode_switch_a11y">Passa alla visualizzazione a %1$s</string>
     <string name="today_goals_view_mode_list">Elenco</string>
     <string name="today_goals_view_mode_grid">Griglia</string>

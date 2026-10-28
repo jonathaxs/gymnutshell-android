@@ -396,6 +396,10 @@
     <string name="today_hero_caption_start">目標を記録してスタートしましょう</string>
     <string name="today_hero_caption_next_level">次のレベルまであと %1$d%%</string>
     <string name="today_hero_caption_max">本日の最高レベルに到達しました！</string>
+    <!-- Balões da Hoje (porte de TodayInfoPopovers do iOS): nível da conquista e fim do dia. -->
+    <string name="today_info_level_format">レベル %1$d</string>
+    <string name="today_info_tier_row_a11y">%1$s、%2$s、レベル %3$d</string>
+    <string name="today_day_remaining">今日の終わりまで%1$s</string>
     <string name="today_goals_view_mode_switch_a11y">%1$s表示に切り替え</string>
     <string name="today_goals_view_mode_list">リスト</string>
     <string name="today_goals_view_mode_grid">グリッド</string>

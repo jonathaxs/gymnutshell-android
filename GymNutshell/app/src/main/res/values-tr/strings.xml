@@ -396,6 +396,10 @@
     <string name="today_hero_caption_start">Başlamak için bir hedefi takip et</string>
     <string name="today_hero_caption_next_level">Sonraki seviye için son %1$d%%</string>
     <string name="today_hero_caption_max">Bugün maksimum seviyeye ulaşıldı!</string>
+    <!-- Balões da Hoje (porte de TodayInfoPopovers do iOS): nível da conquista e fim do dia. -->
+    <string name="today_info_level_format">Seviye %1$d</string>
+    <string name="today_info_tier_row_a11y">%1$s, %2$s, seviye %3$d</string>
+    <string name="today_day_remaining">Günün bitmesine %1$s kaldı</string>
     <string name="today_goals_view_mode_switch_a11y">%1$s görünümüne geç</string>
     <string name="today_goals_view_mode_list">Liste</string>
     <string name="today_goals_view_mode_grid">Izgara</string>

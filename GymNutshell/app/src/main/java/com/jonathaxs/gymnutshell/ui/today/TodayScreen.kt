@@ -48,6 +48,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -131,8 +132,6 @@ import com.jonathaxs.gymnutshell.core.domain.GoalCategory
 import com.jonathaxs.gymnutshell.core.domain.ProgressColors
 import com.jonathaxs.gymnutshell.core.domain.TodayGoalsViewMode
 import com.jonathaxs.gymnutshell.ui.components.categoryIcon
-import com.jonathaxs.gymnutshell.ui.settings.ProgressRingInfoSheet
-import com.jonathaxs.gymnutshell.ui.settings.TierInfoSheet
 import com.jonathaxs.gymnutshell.ui.util.Breakpoints
 import com.jonathaxs.gymnutshell.ui.welcome.RoundStepButton
 import kotlin.math.roundToInt
@@ -178,13 +177,6 @@ fun TodayScreen(
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
-    // Sheets de informação do anel e dos níveis (abertas pelo toque no hero)
-    var showRingInfo by remember { mutableStateOf(false) }
-    var showTierInfo by remember { mutableStateOf(false) }
-
-    val onRingClick = { showRingInfo = true }
-    val onTierClick = { showTierInfo = true }
-
     // Dobra (Pixel Fold e afins) e onde a Hoje está na janela, pra levar a faixa da dobra pras coordenadas locais.
     val foldInfo = rememberFoldInfo()
     var boxOrigin by remember { mutableStateOf(Offset.Zero) }
@@ -200,8 +192,6 @@ fun TodayScreen(
                 onOpenSettings = onOpenSettings,
                 onOpenHistory = onOpenHistory,
                 onOpenAchievements = onOpenAchievements,
-                onRingClick = onRingClick,
-                onTierClick = onTierClick,
                 onOpenTheme = onOpenTheme,
                 onOpenColors = onOpenColors,
                 onOpenControls = onOpenControls,
@@ -221,23 +211,9 @@ fun TodayScreen(
                 onOpenSettings = onOpenSettings,
                 onOpenHistory = onOpenHistory,
                 onOpenAchievements = onOpenAchievements,
-                onRingClick = onRingClick,
-                onTierClick = onTierClick,
                 viewModel = viewModel,
             )
         }
-    }
-
-    // Sheets informativas
-    if (showRingInfo) {
-        ProgressRingInfoSheet(onDismiss = { showRingInfo = false }, currentPercent = state.overallPercent)
-    }
-    if (showTierInfo) {
-        TierInfoSheet(
-            onDismiss = { showTierInfo = false },
-            onOpenTheme = onOpenTheme,
-            currentPercent = state.overallPercent,
-        )
     }
 }
 
@@ -249,8 +225,6 @@ private fun TodayPortrait(
     onOpenSettings: () -> Unit,
     onOpenHistory: () -> Unit,
     onOpenAchievements: () -> Unit,
-    onRingClick: () -> Unit,
-    onTierClick: () -> Unit,
     onOpenTheme: () -> Unit,
     onOpenColors: () -> Unit,
     onOpenControls: () -> Unit,
@@ -282,8 +256,7 @@ private fun TodayPortrait(
             // Hero: anel de 5 segmentos + conquista do dia + frase de próximo nível
             TodayHeroCard(
                 state = state,
-                onRingClick = onRingClick,
-                onTierClick = onTierClick,
+                onOpenTheme = onOpenTheme,
                 modifier = Modifier
                     .widthIn(max = TodayPortraitMaxWidth)
                     .fillMaxWidth(),
@@ -357,37 +330,60 @@ private fun TodayPortrait(
     }
 }
 
-/** Topo da Hoje: só a data, centralizada (porte do AppTabHeader sem botões). */
+/** Topo da Hoje: só a data, centralizada; toque abre o balão com a data completa e o tempo restante. */
 @Composable
 private fun TodayTopBar(
     dateLabel: String,
     modifier: Modifier = Modifier,
 ) {
-    Text(
-        text = dateLabel,
-        style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-        textAlign = TextAlign.Center,
-        color = MaterialTheme.colorScheme.onSurface,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
+    var showDayInfo by remember { mutableStateOf(false) }
+
+    Box(
         modifier = modifier.fillMaxWidth(),
-    )
+        contentAlignment = Alignment.Center,
+    ) {
+        Box {
+            Text(
+                text = dateLabel,
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable { showDayInfo = true }
+                    .padding(horizontal = 8.dp, vertical = 2.dp)
+                    .semantics {
+                        role = Role.Button
+                        heading()
+                    },
+            )
+            if (showDayInfo) {
+                DayInfoPopover(onDismiss = { showDayInfo = false })
+            }
+        }
+    }
 }
 
 /**
- * Hero: anel: anel centralizado com a porcentagem do dia e, a partir do 1º registro, o
+ * Hero: anel centralizado com a porcentagem do dia e, a partir do 1º registro, o
  * painel de Conquista ao lado; abaixo, a frase de próximo nível (porte de TodayHeroView).
  */
 @Composable
 private fun TodayHeroCard(
     state: TodayUiState,
-    onRingClick: () -> Unit,
-    onTierClick: () -> Unit,
+    onOpenTheme: () -> Unit,
     modifier: Modifier = Modifier,
     verticalLayout: Boolean = false,
 ) {
     val hasStarted = state.overallPercent > 0
     val ringSize = if (verticalLayout) 170.dp else 150.dp
+
+    // Balões de informação do anel e dos níveis (abertos pelo toque no hero)
+    var showRingInfo by remember { mutableStateOf(false) }
+    var showTierInfo by remember { mutableStateOf(false) }
 
     // Sem card desde a 2.0 (como no iOS): o hero fica direto no fundo da tela.
     Column(
@@ -398,20 +394,36 @@ private fun TodayHeroCard(
         run {
             if (verticalLayout) {
                 // Tablet alto: anel em cima, conquista embaixo
-                TodayProgressRing(
-                    progress = state.overallProgress,
-                    percent = state.overallPercent,
-                    onClick = onRingClick,
-                    ringSize = ringSize,
-                    celebratesAfterOnboarding = true,
-                )
-                if (hasStarted) {
-                    TodayAchievementPanel(
-                        tierEmoji = state.tierEmoji,
-                        tierNameRes = state.tierNameRes,
-                        onClick = onTierClick,
-                        height = ringSize,
+                Box {
+                    TodayProgressRing(
+                        progress = state.overallProgress,
+                        percent = state.overallPercent,
+                        onClick = { showRingInfo = true },
+                        ringSize = ringSize,
+                        celebratesAfterOnboarding = true,
                     )
+                    if (showRingInfo) {
+                        RingInfoPopover(onDismiss = { showRingInfo = false })
+                    }
+                }
+                if (hasStarted) {
+                    Box {
+                        TodayAchievementPanel(
+                            tierEmoji = state.tierEmoji,
+                            tierNameRes = state.tierNameRes,
+                            onClick = { showTierInfo = true },
+                            height = ringSize,
+                        )
+                        if (showTierInfo) {
+                            TierInfoPopover(
+                                onDismiss = { showTierInfo = false },
+                                onChangeTheme = {
+                                    showTierInfo = false
+                                    onOpenTheme()
+                                },
+                            )
+                        }
+                    }
                 }
             } else {
                 // Celular retrato/landscape: anel à esquerda, conquista ao lado
@@ -420,22 +432,38 @@ private fun TodayHeroCard(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    TodayProgressRing(
-                        progress = state.overallProgress,
-                        percent = state.overallPercent,
-                        onClick = onRingClick,
-                        ringSize = ringSize,
-                        celebratesAfterOnboarding = true,
-                    )
+                    Box {
+                        TodayProgressRing(
+                            progress = state.overallProgress,
+                            percent = state.overallPercent,
+                            onClick = { showRingInfo = true },
+                            ringSize = ringSize,
+                            celebratesAfterOnboarding = true,
+                        )
+                        if (showRingInfo) {
+                            RingInfoPopover(onDismiss = { showRingInfo = false })
+                        }
+                    }
                     if (hasStarted) {
                         // Espaço curto: o emoji fica perto do anel (iOS: 8).
                         Spacer(Modifier.width(8.dp))
-                        TodayAchievementPanel(
-                            tierEmoji = state.tierEmoji,
-                            tierNameRes = state.tierNameRes,
-                            onClick = onTierClick,
-                            height = ringSize,
-                        )
+                        Box {
+                            TodayAchievementPanel(
+                                tierEmoji = state.tierEmoji,
+                                tierNameRes = state.tierNameRes,
+                                onClick = { showTierInfo = true },
+                                height = ringSize,
+                            )
+                            if (showTierInfo) {
+                                TierInfoPopover(
+                                    onDismiss = { showTierInfo = false },
+                                    onChangeTheme = {
+                                        showTierInfo = false
+                                        onOpenTheme()
+                                    },
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -445,7 +473,7 @@ private fun TodayHeroCard(
                 hasStarted = hasStarted,
                 nextLevelPercent = state.nextLevelPercent,
                 isAtMaxLevel = state.isAtMaxLevel,
-                onClick = onTierClick,
+                onClick = if (hasStarted) ({ showTierInfo = true }) else null,
             )
         }
     }
@@ -497,13 +525,13 @@ private fun TodayAchievementPanel(
     }
 }
 
-/** Frase abaixo do anel e da conquista. Toque abre os detalhes dos níveis. */
+/** Frase abaixo do anel e da conquista. Quando o dia começou, toque abre o balão dos níveis. */
 @Composable
 private fun TodayHeroCaption(
     hasStarted: Boolean,
     nextLevelPercent: Int?,
     isAtMaxLevel: Boolean,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     val captionText = when {
@@ -521,7 +549,7 @@ private fun TodayHeroCaption(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
-            .clickable(onClick = onClick)
+            .then(if (onClick != null) Modifier.clickable(onClick = onClick) else Modifier)
             .padding(vertical = 4.dp),
     )
 }
@@ -1380,8 +1408,6 @@ private fun TodayWide(
     onOpenSettings: () -> Unit,
     onOpenHistory: () -> Unit,
     onOpenAchievements: () -> Unit,
-    onRingClick: () -> Unit,
-    onTierClick: () -> Unit,
     viewModel: TodayViewModel,
 ) {
     val isTall = height >= Breakpoints.TallThreshold
@@ -1440,8 +1466,7 @@ private fun TodayWide(
                     TodayTopBar(dateLabel = state.dateLabel)
                     TodayHeroCard(
                         state = state,
-                        onRingClick = onRingClick,
-                        onTierClick = onTierClick,
+                        onOpenTheme = onOpenTheme,
                         // Anel maior só com altura e largura sobrando (não empilhado, que tem meia tela).
                         verticalLayout = isTall && !compact && !stacked,
                         modifier = Modifier.fillMaxWidth(),

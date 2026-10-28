@@ -396,6 +396,10 @@
     <string name="today_hero_caption_start">목표를 기록하고 시작해보세요</string>
     <string name="today_hero_caption_next_level">다음 레벨까지 %1$d%% 남음</string>
     <string name="today_hero_caption_max">오늘 최고 레벨에 도달했어요!</string>
+    <!-- Balões da Hoje (porte de TodayInfoPopovers do iOS): nível da conquista e fim do dia. -->
+    <string name="today_info_level_format">레벨 %1$d</string>
+    <string name="today_info_tier_row_a11y">%1$s, %2$s, 레벨 %3$d</string>
+    <string name="today_day_remaining">하루가 끝나기까지 %1$s</string>
     <string name="today_goals_view_mode_switch_a11y">%1$s 보기로 전환</string>
     <string name="today_goals_view_mode_list">목록</string>
     <string name="today_goals_view_mode_grid">격자</string>

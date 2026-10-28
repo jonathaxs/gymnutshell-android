@@ -396,6 +396,10 @@
     <string name="today_hero_caption_start">记录一个目标以开启今天</string>
     <string name="today_hero_caption_next_level">距离下一等级还差 %1$d%%</string>
     <string name="today_hero_caption_max">今天已达到最高等级！</string>
+    <!-- Balões da Hoje (porte de TodayInfoPopovers do iOS): nível da conquista e fim do dia. -->
+    <string name="today_info_level_format">等级 %1$d</string>
+    <string name="today_info_tier_row_a11y">%1$s，%2$s，等级 %3$d</string>
+    <string name="today_day_remaining">距离今天结束还有%1$s</string>
     <string name="today_goals_view_mode_switch_a11y">切换为%1$s视图</string>
     <string name="today_goals_view_mode_list">列表</string>
     <string name="today_goals_view_mode_grid">网格</string>

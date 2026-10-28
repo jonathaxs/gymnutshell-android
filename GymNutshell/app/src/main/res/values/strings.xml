@@ -495,6 +495,10 @@
     <string name="today_hero_caption_start">Track a goal to get started</string>
     <string name="today_hero_caption_next_level">%1$d%% to go for the next level</string>
     <string name="today_hero_caption_max">Maximum level reached today!</string>
+    <!-- Balões da Hoje (porte de TodayInfoPopovers do iOS): nível da conquista e fim do dia. -->
+    <string name="today_info_level_format">Level %1$d</string>
+    <string name="today_info_tier_row_a11y">%1$s, %2$s, level %3$d</string>
+    <string name="today_day_remaining">Day ends in %1$s</string>
     <string name="today_goals_view_mode_switch_a11y">Switch to %1$s view</string>
     <string name="today_goals_view_mode_list">List</string>
     <string name="today_goals_view_mode_grid">Grid</string>

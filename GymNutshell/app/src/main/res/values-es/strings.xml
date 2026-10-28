@@ -396,6 +396,10 @@
     <string name="today_hero_caption_start">Registra una meta para empezar</string>
     <string name="today_hero_caption_next_level">Faltan %1$d%% para el siguiente nivel</string>
     <string name="today_hero_caption_max">¡Nivel máximo alcanzado hoy!</string>
+    <!-- Balões da Hoje (porte de TodayInfoPopovers do iOS): nível da conquista e fim do dia. -->
+    <string name="today_info_level_format">Nivel %1$d</string>
+    <string name="today_info_tier_row_a11y">%1$s, %2$s, nivel %3$d</string>
+    <string name="today_day_remaining">El día termina en %1$s</string>
     <string name="today_goals_view_mode_switch_a11y">Cambiar a vista de %1$s</string>
     <string name="today_goals_view_mode_list">Lista</string>
     <string name="today_goals_view_mode_grid">Cuadrícula</string>
