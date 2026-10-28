@@ -1,5 +1,6 @@
 package com.jonathaxs.gymnutshell.core.backup
 
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 
 /**
@@ -12,6 +13,7 @@ object BackupCodec {
     /** Versão atual do formato (compatível com o v4 do iOS). */
     const val CURRENT_VERSION = 4
 
+    @OptIn(ExperimentalSerializationApi::class)
     private val json = Json {
         prettyPrint = true
         prettyPrintIndent = "  "

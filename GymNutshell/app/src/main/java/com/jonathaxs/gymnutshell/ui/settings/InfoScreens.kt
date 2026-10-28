@@ -150,22 +150,7 @@ fun TierInfoContent(
     }
 }
 
-// ---- Bottom sheets das infos, abertos ao tocar no anel / conquista da Today (porte das sheets do iOS) ----
-
-/** Sheet com a info do anel de progresso (no iOS, ProgressRingInfoView aberta como sheet). */
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ProgressRingInfoSheet(onDismiss: () -> Unit, currentPercent: Int? = null) {
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
-        InfoSheetTitle(stringResource(R.string.settings_about_progress_ring))
-        Column(
-            Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(bottom = 24.dp),
-        ) {
-            ProgressRingInfoContent(currentPercent)
-        }
-    }
-}
+// ---- Bottom sheet da info de conquistas (porte da sheet do iOS) ----
 
 /** Sheet com a info de conquistas (no iOS, TierInfoView aberta como sheet). */
 @OptIn(ExperimentalMaterial3Api::class)
@@ -204,8 +189,6 @@ internal fun InfoSheetTitle(title: String) {
         modifier = Modifier.padding(start = 24.dp, end = 24.dp, top = 4.dp, bottom = 8.dp),
     )
 }
-
-private data class BonusRow(val emoji: String, val titleRes: Int, val descRes: Int, val points: Int)
 
 /** Faixa de porcentagem de cada tier, igual ao rangeLabel do iOS. */
 internal fun tierRange(tier: DailyAchievement): String = tier.percentRange

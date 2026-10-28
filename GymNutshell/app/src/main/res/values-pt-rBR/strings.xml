@@ -177,7 +177,6 @@
     <string name="addgoal_category_new_button">Nova categoria</string>
     <string name="addgoal_category_new_section">Categoria personalizada</string>
     <string name="addgoal_category_new_name_placeholder">ex: Alongamento</string>
-    <string name="addgoal_category_new_rest_day">Botão de descanso (ON/OFF)</string>
     <string name="settings_category_icon_section">Ícone</string>
     <!-- Detalhe de meta fixa (valor + passo) -->
     <string name="goaldetail_stepper">Ajustar valor</string>
@@ -187,7 +186,6 @@
     <!-- Acessibilidade / descrições -->
     <string name="a11y_add_goal">Nova meta de rastreio</string>
     <string name="a11y_edit_category">Editar categoria</string>
-    <string name="a11y_theme_info">Mais informações sobre %1$s</string>
     <string name="cd_move_up">Mover para cima</string>
     <string name="cd_move_down">Mover para baixo</string>
 
@@ -521,6 +519,4 @@
     <string name="addgoal_dose_footer">Ao marcar Feito, a meta do dia fica completa com esse valor.</string>
     <string name="today_checkin_pending">Pendente</string>
     <string name="today_checkin_done">Feito</string>
-    <string name="a11y_checkin_hint_mark_done">Toque para marcar como feito.</string>
-    <string name="a11y_checkin_hint_mark_pending">Toque para voltar para pendente.</string>
 </resources>

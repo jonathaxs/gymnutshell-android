@@ -138,7 +138,6 @@
     <string name="addgoal_category_new_button">Nouvelle catégorie</string>
     <string name="addgoal_category_new_section">Catégorie personnalisée</string>
     <string name="addgoal_category_new_name_placeholder">ex. : Étirements</string>
-    <string name="addgoal_category_new_rest_day">Bouton jour de repos (ON/OFF)</string>
     <string name="settings_category_icon_section">Icône</string>
     <string name="goaldetail_stepper">Ajuster la valeur</string>
     <string name="goaldetail_increment_stepper">Ajuster le pas</string>
@@ -146,7 +145,6 @@
     <string name="goaldetail_increment_footer">Le pas correspond à l\'incrément de la valeur vers l\'objectif.</string>
     <string name="a11y_add_goal">Nouvel objectif de suivi</string>
     <string name="a11y_edit_category">Modifier la catégorie</string>
-    <string name="a11y_theme_info">Plus d\'informations sur %1$s</string>
     <string name="cd_move_up">Monter</string>
     <string name="cd_move_down">Descendre</string>
     <string name="welcome_start_title">Salut !</string>
@@ -429,6 +427,4 @@
     <string name="addgoal_dose_footer">En marquant Fait, l\'objectif du jour est atteint avec cette quantité.</string>
     <string name="today_checkin_pending">En attente</string>
     <string name="today_checkin_done">Fait</string>
-    <string name="a11y_checkin_hint_mark_done">Touche pour marquer comme fait.</string>
-    <string name="a11y_checkin_hint_mark_pending">Touche pour remettre en attente.</string>
 </resources>

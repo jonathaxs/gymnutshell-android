@@ -7,6 +7,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Typeface
+import androidx.core.graphics.createBitmap
 import com.jonathaxs.gymnutshell.core.widget.SegmentedRing
 import com.jonathaxs.gymnutshell.core.widget.SegmentedRingPainter
 
@@ -30,7 +31,7 @@ object WidgetRing {
     ): Bitmap {
         val density = context.resources.displayMetrics.density
         val sizePx = (sizeDp * density).toInt().coerceAtLeast(1)
-        val bmp = Bitmap.createBitmap(sizePx, sizePx, Bitmap.Config.ARGB_8888)
+        val bmp = createBitmap(sizePx, sizePx, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bmp)
         val isDark = (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
             Configuration.UI_MODE_NIGHT_YES

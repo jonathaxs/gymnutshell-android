@@ -10,17 +10,15 @@ import com.jonathaxs.gymnutshell.R
 enum class WelcomeStep(
     val emoji: String,
     @StringRes val titleRes: Int,
-    @StringRes val subtitleRes: Int? = null,
-    @StringRes val noteRes: Int? = null,
 ) {
     Start("🐿️", R.string.welcome_start_title),
     About("👤", R.string.welcome_step_about_title),
     Goal("🎯", R.string.welcome_goal_title),
-    Units("📏", R.string.welcome_step_units_title, R.string.welcome_step_units_subtitle, R.string.welcome_step_units_note),
+    Units("📏", R.string.welcome_step_units_title),
     Summary("💪", R.string.welcome_summary_title),
-    ControlStyle("🎛️", R.string.welcome_step_control_title, R.string.welcome_step_control_subtitle),
-    Theme("🎭", R.string.welcome_step_theme_title, R.string.welcome_step_theme_subtitle, R.string.welcome_step_theme_footer),
-    Ready("🚀", R.string.welcome_step_ready_title, R.string.welcome_step_ready_subtitle);
+    ControlStyle("🎛️", R.string.welcome_step_control_title),
+    Theme("🎭", R.string.welcome_step_theme_title),
+    Ready("🚀", R.string.welcome_step_ready_title);
 
     companion object {
         fun visible(includeUnits: Boolean): List<WelcomeStep> =

@@ -42,9 +42,9 @@ fun PermissionCard(
     title: String,
     description: String,
     state: PermissionCardState,
-    accentColor: Color = MaterialTheme.colorScheme.primary,
     onAllow: () -> Unit,
     modifier: Modifier = Modifier,
+    accentColor: Color = MaterialTheme.colorScheme.primary,
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),

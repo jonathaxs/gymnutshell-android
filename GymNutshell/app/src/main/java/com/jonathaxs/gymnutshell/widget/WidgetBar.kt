@@ -3,6 +3,7 @@ package com.jonathaxs.gymnutshell.widget
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
+import androidx.core.graphics.createBitmap
 
 /**
  * Desenha a barra de progresso de uma meta como Bitmap — o Glance não tem largura fracionária
@@ -15,7 +16,7 @@ object WidgetBar {
     fun bitmap(percent: Int, fillArgb: Long, trackArgb: Int = 0x33808080): Bitmap {
         val w = 300
         val h = 24
-        val bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
+        val bmp = createBitmap(w, h, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bmp)
 
         val track = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = trackArgb }

@@ -138,7 +138,6 @@
     <string name="addgoal_category_new_button">Yeni kategori</string>
     <string name="addgoal_category_new_section">Özel kategori</string>
     <string name="addgoal_category_new_name_placeholder">örnek: Esneme</string>
-    <string name="addgoal_category_new_rest_day">Dinlenme günü anahtarı (AÇIK/KAPALI)</string>
     <string name="settings_category_icon_section">Simge</string>
     <string name="goaldetail_stepper">Değeri ayarla</string>
     <string name="goaldetail_increment_stepper">Adımı ayarla</string>
@@ -146,7 +145,6 @@
     <string name="goaldetail_increment_footer">Adım, kaydırıcının hedef değere doğru ne kadar ilerleyeceğini belirler.</string>
     <string name="a11y_add_goal">Yeni takip hedefi</string>
     <string name="a11y_edit_category">Kategoriyi düzenle</string>
-    <string name="a11y_theme_info">%1$s hakkında daha fazla bilgi</string>
     <string name="cd_move_up">Yukarı taşı</string>
     <string name="cd_move_down">Aşağı taşı</string>
     <string name="welcome_start_title">Merhaba!</string>
@@ -429,6 +427,4 @@
     <string name="addgoal_dose_footer">Yapıldı olarak işaretlenince günün hedefi bu miktarla tamamlanır.</string>
     <string name="today_checkin_pending">Bekliyor</string>
     <string name="today_checkin_done">Yapıldı</string>
-    <string name="a11y_checkin_hint_mark_done">Yapıldı olarak işaretlemek için dokun.</string>
-    <string name="a11y_checkin_hint_mark_pending">Bekliyor durumuna döndürmek için dokun.</string>
 </resources>

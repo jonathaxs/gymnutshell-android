@@ -81,10 +81,6 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch { settingsRepo.setMeasurementSystem(system) }
     }
 
-    fun saveProfile(profile: Profile) {
-        viewModelScope.launch { profileRepo.update(profile) }
-    }
-
     fun saveProfileBasics(name: String, sex: String, favoriteExercise: String) {
         viewModelScope.launch {
             // Lê do repositório: o StateFlow pode estar no valor inicial vazio.

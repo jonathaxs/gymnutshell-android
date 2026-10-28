@@ -63,10 +63,10 @@ val WelcomeCardRadius = 24.dp
 fun WelcomeStepHeader(
     emoji: String,
     title: String,
+    modifier: Modifier = Modifier,
     subtitle: String? = null,
     note: String? = null,
     accentColor: Color = MaterialTheme.colorScheme.primary,
-    modifier: Modifier = Modifier,
 ) {
     val animatedAccent by animateColorAsState(accentColor, tween(300), label = "header_accent")
     Column(

@@ -31,19 +31,12 @@ object SegmentedRing {
     /** Cor base dos 5 segmentos (também cor dos níveis), no sentido horário: vermelho, amarelo, verde, azul, roxo. */
     val SEGMENT_COLORS: List<Long> = PALETTES.map { it.base }
 
-    /** Retorna a cor ARGB de um segmento pelo índice (0..4). */
-    fun colorForIndex(index: Int): Long =
-        SEGMENT_COLORS[index.coerceIn(0, SEGMENT_COUNT - 1)]
-
     /** Cor do segmento em que o progresso está (0.0..1.0), igual ao ringColor do WatchHeroView (iOS). */
     fun colorForProgress(progress: Double): Long {
         val clamped = progress.coerceIn(0.0, 1.0)
         val index = (clamped * SEGMENT_COUNT).toInt().coerceIn(0, SEGMENT_COUNT - 1)
         return SEGMENT_COLORS[index]
     }
-
-    /** Retorna a cor ARGB do segmento correspondente a uma porcentagem (0..100). */
-    fun colorForPercent(percent: Int): Long = colorForProgress(percent / 100.0)
 
     /** Retorna a cor ARGB do nível de conquista (Level 1..5). */
     fun colorForTier(tier: DailyAchievement): Long = SEGMENT_COLORS[tier.number - 1]

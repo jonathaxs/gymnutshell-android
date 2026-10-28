@@ -20,19 +20,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.materialPath
 import androidx.compose.ui.graphics.vector.ImageVector
-import kotlin.Deprecated
 
-@Deprecated(
-    "Use the AutoMirrored version at Icons.AutoMirrored.Filled.MenuBook",
-    ReplaceWith( "Icons.AutoMirrored.Filled.MenuBook",
-            "androidx.compose.material.icons.automirrored.filled.MenuBook"),
-)
-public val Icons.Filled.MenuBook: ImageVector
+public val Icons.AutoMirrored.Filled.MenuBook: ImageVector
     get() {
         if (_menuBook != null) {
             return _menuBook!!
         }
-        _menuBook = materialIcon(name = "Filled.MenuBook") {
+        _menuBook = materialIcon(name = "AutoMirrored.Filled.MenuBook", autoMirror = true) {
             materialPath {
                 moveTo(21.0f, 5.0f)
                 curveToRelative(-1.11f, -0.35f, -2.33f, -0.5f, -3.5f, -0.5f)

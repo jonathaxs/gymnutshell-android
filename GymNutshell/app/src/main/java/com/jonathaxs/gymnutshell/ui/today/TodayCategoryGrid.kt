@@ -46,8 +46,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -119,15 +120,15 @@ fun TodayCategoryGrid(
     onToggleRest: (TodayGoalUi) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = androidx.compose.ui.platform.LocalContext.current
+    val resources = LocalResources.current
     val otherTitle = stringResource(R.string.today_category_other)
 
     // Monta os blocos a partir das seções com metas visíveis
-    val tiles = remember(sections, uncategorizedGoals, accent, otherTitle) {
+    val tiles = remember(sections, uncategorizedGoals, accent, otherTitle, resources) {
         val list = mutableListOf<TodayCategoryTileUi>()
         sections.forEach { section ->
             if (section.goals.isNotEmpty()) {
-                val title = section.titleRes?.let { context.getString(it) } ?: section.title.orEmpty()
+                val title = section.titleRes?.let { resources.getString(it) } ?: section.title.orEmpty()
                 val completed = section.goals.count { it.progress >= 1.0 }
                 val total = section.goals.size
                 val avg = section.goals.map { it.progress }.average()
@@ -374,8 +375,9 @@ private fun CategoryPopover(
     onToggleRest: (TodayGoalUi) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val configuration = LocalConfiguration.current
-    val maxAvailableWidth = (configuration.screenWidthDp - 32).coerceAtLeast(260).dp
+    val density = LocalDensity.current
+    val windowWidthDp = with(density) { LocalWindowInfo.current.containerSize.width.toDp() }
+    val maxAvailableWidth = (windowWidthDp - 32.dp).coerceAtLeast(260.dp)
     val popoverWidth = minOf(340.dp, maxAvailableWidth)
 
     Surface(

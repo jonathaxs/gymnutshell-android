@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.LinearGradient
 import android.graphics.Paint
 import android.graphics.Shader
+import androidx.core.graphics.createBitmap
 import com.jonathaxs.gymnutshell.core.widget.WidgetBackground
 
 /**
@@ -15,7 +16,7 @@ import com.jonathaxs.gymnutshell.core.widget.WidgetBackground
 object WidgetGradient {
 
     fun bitmap(baseArgb: Long, sizePx: Int = 512): Bitmap {
-        val bmp = Bitmap.createBitmap(sizePx, sizePx, Bitmap.Config.ARGB_8888)
+        val bmp = createBitmap(sizePx, sizePx, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bmp)
         val shader = LinearGradient(
             0f, 0f, sizePx.toFloat(), sizePx.toFloat(),

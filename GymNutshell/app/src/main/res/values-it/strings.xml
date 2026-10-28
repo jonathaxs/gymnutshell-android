@@ -138,7 +138,6 @@
     <string name="addgoal_category_new_button">Nuova categoria</string>
     <string name="addgoal_category_new_section">Categoria personalizzata</string>
     <string name="addgoal_category_new_name_placeholder">es: Stretching</string>
-    <string name="addgoal_category_new_rest_day">Pulsante giorno di riposo (ON/OFF)</string>
     <string name="settings_category_icon_section">Icona</string>
     <string name="goaldetail_stepper">Modifica valore</string>
     <string name="goaldetail_increment_stepper">Modifica passo</string>
@@ -146,7 +145,6 @@
     <string name="goaldetail_increment_footer">Il passo indica di quanto avanza il cursore verso il target.</string>
     <string name="a11y_add_goal">Nuovo obiettivo di monitoraggio</string>
     <string name="a11y_edit_category">Modifica categoria</string>
-    <string name="a11y_theme_info">Maggiori informazioni su %1$s</string>
     <string name="cd_move_up">Sposta in alto</string>
     <string name="cd_move_down">Sposta in basso</string>
     <string name="welcome_start_title">Ciao!</string>
@@ -429,6 +427,4 @@
     <string name="addgoal_dose_footer">Segnando Fatto, l\'obiettivo del giorno è completato con questa quantità.</string>
     <string name="today_checkin_pending">In sospeso</string>
     <string name="today_checkin_done">Fatto</string>
-    <string name="a11y_checkin_hint_mark_done">Tocca per segnare come fatto.</string>
-    <string name="a11y_checkin_hint_mark_pending">Tocca per rimettere in sospeso.</string>
 </resources>

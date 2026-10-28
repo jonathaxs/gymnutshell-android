@@ -25,6 +25,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -45,6 +46,7 @@ import kotlin.math.roundToInt
 @Composable
 fun NotificationIntervalEditScreen(target: String, onBack: () -> Unit) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val scope = rememberCoroutineScope()
     val prefs = remember { NotificationPreferencesRepository(context.applicationContext) }
     val scheduler = remember { NotificationScheduler(context.applicationContext) }
@@ -67,7 +69,7 @@ fun NotificationIntervalEditScreen(target: String, onBack: () -> Unit) {
             kind != null -> {
                 minutes = prefs.intervalMinutes(kind)
                 sound = prefs.sound(kind)
-                title = context.getString(NotificationStrings.titleRes(kind))
+                title = resources.getString(NotificationStrings.titleRes(kind))
             }
             customId != null -> {
                 minutes = prefs.customIntervalMinutes(customId)

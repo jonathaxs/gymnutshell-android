@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey
 /**
  * Um bônus de sequência ganho pelo usuário — porte do @Model StreakBonus (SwiftData → Room).
  *
+ * Tabela mantida só para compatibilidade do banco com a versão 1.0 (o bônus de sequência saiu na 2.0).
  * Concedido por completar uma semana (sábado) ou um mês inteiro no nível 3 ou 4.
  * `id` autogerado (o iOS permitia 2 bônus na mesma data: semanal + mensal coincidentes),
  * `anchorDate` é epoch-day (sábado p/ semanal; último dia do mês p/ mensal).

@@ -16,6 +16,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.animateBounds
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.BoundsTransform
+import android.os.Build
 import android.view.HapticFeedbackConstants
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
@@ -96,6 +97,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalView
@@ -862,11 +864,11 @@ private fun TodayCategoryHeaderView(
 @Composable
 internal fun GoalRow(
     goal: TodayGoalUi,
+    modifier: Modifier = Modifier,
     controlStyle: ControlStyle = ControlStyle.Default,
     accent: Color = MaterialTheme.colorScheme.primary,
     onSet: (Int) -> Unit = {},
     onToggleRest: () -> Unit = {},
-    modifier: Modifier = Modifier,
 ) {
     val title = goal.title ?: stringResource(titleRes(goal.key))
     val restLabel = stringResource(R.string.rest_day)
@@ -1133,7 +1135,7 @@ internal fun CheckInSelector(
         // Pílula deslizante do estado selecionado
         Box(
             modifier = Modifier
-                .offset(x = pillOffset)
+                .offset { IntOffset(pillOffset.roundToPx(), 0) }
                 .width(segmentWidth)
                 .fillMaxHeight()
                 .shadow(if (done) 2.dp else 1.dp, CircleShape)
@@ -1182,7 +1184,12 @@ internal fun CheckInSelector(
                         role = Role.Tab,
                         onClick = {
                             if (!done) {
-                                view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
+                                val haptic = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                                    HapticFeedbackConstants.CONFIRM
+                                } else {
+                                    HapticFeedbackConstants.VIRTUAL_KEY
+                                }
+                                view.performHapticFeedback(haptic)
                             }
                             onSelect(true)
                         },
@@ -1426,11 +1433,11 @@ private fun TodayWide(
 
     val arrangement: WideArrangement = when {
         book -> WideArrangement.Side(
-            heroWidth = (fold!!.left - FoldMargin - padding).coerceAtLeast(0.dp),
+            heroWidth = (fold.left - FoldMargin - padding).coerceAtLeast(0.dp),
             gap = (fold.right - fold.left) + FoldMargin * 2,
         )
         tabletop -> WideArrangement.Stacked(
-            heroHeight = (fold!!.top - FoldMargin - padding).coerceAtLeast(0.dp),
+            heroHeight = (fold.top - FoldMargin - padding).coerceAtLeast(0.dp),
             gap = (fold.bottom - fold.top) + FoldMargin * 2,
         )
         flatPortrait -> WideArrangement.Stacked(heroHeight = height / 2 - 16.dp - padding, gap = 16.dp)

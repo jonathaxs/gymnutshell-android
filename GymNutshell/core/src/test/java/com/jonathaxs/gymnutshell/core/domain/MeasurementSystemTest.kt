@@ -21,13 +21,13 @@ class MeasurementSystemTest {
     fun `detectDefault identifica Us apenas em paises do sistema americano`() {
         assertEquals(MeasurementSystem.Us, MeasurementSystem.detectDefault(Locale.US))
         assertEquals(MeasurementSystem.Metric, MeasurementSystem.detectDefault(Locale.UK))
-        assertEquals(MeasurementSystem.Metric, MeasurementSystem.detectDefault(Locale("pt", "BR")))
+        assertEquals(MeasurementSystem.Metric, MeasurementSystem.detectDefault(Locale.forLanguageTag("pt-BR")))
     }
 
     @Test
     fun `needsChoice retorna true para US e UK e false para Brasil`() {
         assertTrue(MeasurementSystem.needsChoice(Locale.US))
         assertTrue(MeasurementSystem.needsChoice(Locale.UK))
-        assertFalse(MeasurementSystem.needsChoice(Locale("pt", "BR")))
+        assertFalse(MeasurementSystem.needsChoice(Locale.forLanguageTag("pt-BR")))
     }
 }

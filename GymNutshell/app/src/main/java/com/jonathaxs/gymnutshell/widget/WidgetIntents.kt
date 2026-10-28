@@ -2,7 +2,7 @@ package com.jonathaxs.gymnutshell.widget
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
+import androidx.core.net.toUri
 import com.jonathaxs.gymnutshell.MainActivity
 import com.jonathaxs.gymnutshell.core.domain.NotificationRoute
 import com.jonathaxs.gymnutshell.notifications.GymNotifier
@@ -17,7 +17,7 @@ import com.jonathaxs.gymnutshell.notifications.GymNotifier
 internal fun appIntent(context: Context, route: NotificationRoute): Intent =
     Intent(context, MainActivity::class.java).apply {
         action = Intent.ACTION_VIEW
-        data = Uri.parse("gymnutshell://${route.rawValue}")
+        data = "gymnutshell://${route.rawValue}".toUri()
         putExtra(GymNotifier.EXTRA_ROUTE, route.rawValue)
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
     }

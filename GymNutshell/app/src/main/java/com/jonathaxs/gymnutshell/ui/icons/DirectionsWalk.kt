@@ -20,19 +20,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.materialPath
 import androidx.compose.ui.graphics.vector.ImageVector
-import kotlin.Deprecated
 
-@Deprecated(
-    "Use the AutoMirrored version at Icons.AutoMirrored.Filled.DirectionsWalk",
-    ReplaceWith( "Icons.AutoMirrored.Filled.DirectionsWalk",
-            "androidx.compose.material.icons.automirrored.filled.DirectionsWalk"),
-)
-public val Icons.Filled.DirectionsWalk: ImageVector
+public val Icons.AutoMirrored.Filled.DirectionsWalk: ImageVector
     get() {
         if (_directionsWalk != null) {
             return _directionsWalk!!
         }
-        _directionsWalk = materialIcon(name = "Filled.DirectionsWalk") {
+        _directionsWalk = materialIcon(name = "AutoMirrored.Filled.DirectionsWalk", autoMirror = true) {
             materialPath {
                 moveTo(13.5f, 5.5f)
                 curveToRelative(1.1f, 0.0f, 2.0f, -0.9f, 2.0f, -2.0f)

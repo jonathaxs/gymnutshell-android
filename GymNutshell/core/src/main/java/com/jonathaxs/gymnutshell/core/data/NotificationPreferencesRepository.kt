@@ -39,10 +39,6 @@ class NotificationPreferencesRepository(private val context: Context) {
             .toMap()
     }
 
-    /** Se o kind está ativo (Flow reativo pra UI). */
-    fun isEnabledFlow(kind: NotificationKind): Flow<Boolean> =
-        context.appPreferences.data.map { it[enabledKey(kind)] ?: false }
-
     /** Leitura pontual de "ativo" (worker/eventos). */
     suspend fun isEnabled(kind: NotificationKind): Boolean =
         context.appPreferences.data.first()[enabledKey(kind)] ?: false
@@ -50,12 +46,6 @@ class NotificationPreferencesRepository(private val context: Context) {
     suspend fun setEnabled(enabled: Boolean, kind: NotificationKind) {
         context.appPreferences.edit { it[enabledKey(kind)] = enabled }
     }
-
-    /** Intervalo em minutos (Flow); cai pro default do kind se nada salvo. */
-    fun intervalMinutesFlow(kind: NotificationKind): Flow<Int> =
-        context.appPreferences.data.map { prefs ->
-            prefs[intervalKey(kind)]?.takeIf { it > 0 } ?: kind.defaultIntervalMinutes
-        }
 
     suspend fun intervalMinutes(kind: NotificationKind): Int {
         val stored = context.appPreferences.data.first()[intervalKey(kind)] ?: 0
@@ -66,10 +56,6 @@ class NotificationPreferencesRepository(private val context: Context) {
         context.appPreferences.edit { it[intervalKey(kind)] = minutes }
     }
 
-    /** Som do kind (Flow); cai pra Default se nada salvo. */
-    fun soundFlow(kind: NotificationKind): Flow<NotificationSound> =
-        context.appPreferences.data.map { NotificationSound.fromRaw(it[soundKey(kind)]) }
-
     suspend fun sound(kind: NotificationKind): NotificationSound =
         NotificationSound.fromRaw(context.appPreferences.data.first()[soundKey(kind)])
 
@@ -79,20 +65,12 @@ class NotificationPreferencesRepository(private val context: Context) {
 
     // MARK: - Metas personalizadas (por id)
 
-    fun isCustomEnabledFlow(id: Long): Flow<Boolean> =
-        context.appPreferences.data.map { it[customEnabledKey(id)] ?: false }
-
     suspend fun isCustomEnabled(id: Long): Boolean =
         context.appPreferences.data.first()[customEnabledKey(id)] ?: false
 
     suspend fun setCustomEnabled(enabled: Boolean, id: Long) {
         context.appPreferences.edit { it[customEnabledKey(id)] = enabled }
     }
-
-    fun customIntervalMinutesFlow(id: Long, fallback: Int = 120): Flow<Int> =
-        context.appPreferences.data.map { prefs ->
-            prefs[customIntervalKey(id)]?.takeIf { it > 0 } ?: fallback
-        }
 
     suspend fun customIntervalMinutes(id: Long, fallback: Int = 120): Int {
         val stored = context.appPreferences.data.first()[customIntervalKey(id)] ?: 0
@@ -102,9 +80,6 @@ class NotificationPreferencesRepository(private val context: Context) {
     suspend fun setCustomIntervalMinutes(minutes: Int, id: Long) {
         context.appPreferences.edit { it[customIntervalKey(id)] = minutes }
     }
-
-    fun customSoundFlow(id: Long): Flow<NotificationSound> =
-        context.appPreferences.data.map { NotificationSound.fromRaw(it[customSoundKey(id)]) }
 
     suspend fun customSound(id: Long): NotificationSound =
         NotificationSound.fromRaw(context.appPreferences.data.first()[customSoundKey(id)])

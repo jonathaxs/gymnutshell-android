@@ -138,7 +138,6 @@
     <string name="addgoal_category_new_button">Nueva categoría</string>
     <string name="addgoal_category_new_section">Categoría personalizada</string>
     <string name="addgoal_category_new_name_placeholder">ejemplo: Estiramiento</string>
-    <string name="addgoal_category_new_rest_day">Botón de descanso (ON/OFF)</string>
     <string name="settings_category_icon_section">Icono</string>
     <string name="goaldetail_stepper">Ajustar valor</string>
     <string name="goaldetail_increment_stepper">Ajustar paso</string>
@@ -146,7 +145,6 @@
     <string name="goaldetail_increment_footer">El paso es cuánto avanza el control deslizante hacia el valor objetivo.</string>
     <string name="a11y_add_goal">Nueva meta de seguimiento</string>
     <string name="a11y_edit_category">Editar categoría</string>
-    <string name="a11y_theme_info">Más información sobre %1$s</string>
     <string name="cd_move_up">Mover hacia arriba</string>
     <string name="cd_move_down">Mover hacia abajo</string>
     <string name="welcome_start_title">¡Hola!</string>
@@ -429,6 +427,4 @@
     <string name="addgoal_dose_footer">Al marcar Hecho, la meta del día se completa con esta cantidad.</string>
     <string name="today_checkin_pending">Pendiente</string>
     <string name="today_checkin_done">Hecho</string>
-    <string name="a11y_checkin_hint_mark_done">Toca para marcar como hecho.</string>
-    <string name="a11y_checkin_hint_mark_pending">Toca para volver a pendiente.</string>
 </resources>

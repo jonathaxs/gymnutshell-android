@@ -138,7 +138,6 @@
     <string name="addgoal_category_new_button">新建分类</string>
     <string name="addgoal_category_new_section">自定义分类</string>
     <string name="addgoal_category_new_name_placeholder">例如：拉伸</string>
-    <string name="addgoal_category_new_rest_day">休息日开关（开/关）</string>
     <string name="settings_category_icon_section">图标</string>
     <string name="goaldetail_stepper">调整数值</string>
     <string name="goaldetail_increment_stepper">调整单次增量</string>
@@ -146,7 +145,6 @@
     <string name="goaldetail_increment_footer">单次增量是滑动条向目标值推进的每次调整幅度。</string>
     <string name="a11y_add_goal">新建打卡目标</string>
     <string name="a11y_edit_category">编辑分类</string>
-    <string name="a11y_theme_info">%1$s的更多信息</string>
     <string name="cd_move_up">上移</string>
     <string name="cd_move_down">下移</string>
     <string name="welcome_start_title">你好！</string>
@@ -429,6 +427,4 @@
     <string name="addgoal_dose_footer">标记为已完成后，当天目标即以此用量完成。</string>
     <string name="today_checkin_pending">待完成</string>
     <string name="today_checkin_done">已完成</string>
-    <string name="a11y_checkin_hint_mark_done">轻点标记为已完成。</string>
-    <string name="a11y_checkin_hint_mark_pending">轻点改回待完成。</string>
 </resources>

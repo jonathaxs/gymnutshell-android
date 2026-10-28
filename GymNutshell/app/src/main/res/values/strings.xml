@@ -179,7 +179,6 @@
     <string name="addgoal_category_new_button">New category</string>
     <string name="addgoal_category_new_section">Custom category</string>
     <string name="addgoal_category_new_name_placeholder">example: Stretching</string>
-    <string name="addgoal_category_new_rest_day">Day off toggle (ON/OFF)</string>
     <string name="settings_category_icon_section">Icon</string>
     <!-- Detalhe de meta fixa (valor + passo) -->
     <string name="goaldetail_stepper">Adjust value</string>
@@ -189,7 +188,6 @@
     <!-- Acessibilidade / descrições -->
     <string name="a11y_add_goal">New tracking goal</string>
     <string name="a11y_edit_category">Edit category</string>
-    <string name="a11y_theme_info">More information about %1$s</string>
     <string name="cd_move_up">Move up</string>
     <string name="cd_move_down">Move down</string>
 
@@ -530,6 +528,4 @@
     <string name="addgoal_dose_footer">Marking Done completes the day\'s goal with this amount.</string>
     <string name="today_checkin_pending">Pending</string>
     <string name="today_checkin_done">Done</string>
-    <string name="a11y_checkin_hint_mark_done">Tap to mark as done.</string>
-    <string name="a11y_checkin_hint_mark_pending">Tap to mark as pending.</string>
 </resources>

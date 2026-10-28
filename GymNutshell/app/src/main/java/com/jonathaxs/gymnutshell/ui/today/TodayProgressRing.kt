@@ -1,5 +1,6 @@
 package com.jonathaxs.gymnutshell.ui.today
 
+import android.os.Build
 import android.provider.Settings
 import android.view.HapticFeedbackConstants
 import androidx.compose.animation.core.Animatable
@@ -102,7 +103,12 @@ fun TodayProgressRing(
     LaunchedEffect(completedCount) {
         if (completedCount > prevCompleted) {
             delay(350)
-            view.performHapticFeedback(HapticFeedbackConstants.CONFIRM)
+            val haptic = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                HapticFeedbackConstants.CONFIRM
+            } else {
+                HapticFeedbackConstants.VIRTUAL_KEY
+            }
+            view.performHapticFeedback(haptic)
             pulseScale.animateTo(1.08f, spring(dampingRatio = 0.5f, stiffness = 1000f))
             pulseScale.animateTo(1f, spring(dampingRatio = 0.6f, stiffness = 250f))
         }

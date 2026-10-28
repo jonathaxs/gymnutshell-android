@@ -6,9 +6,7 @@ plugins {
 android {
     namespace = "com.jonathaxs.gymnutshell.wear"
     compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
+        version = release(37)
     }
 
     defaultConfig {
@@ -16,7 +14,7 @@ android {
         // vincular o app do relógio ao do telefone (igual ao bundle do watchOS).
         applicationId = "com.jonathaxs.gymnutshell"
         minSdk = 30 // Wear OS 3+
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 2
         versionName = "2.0"
     }

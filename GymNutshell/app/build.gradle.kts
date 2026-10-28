@@ -16,15 +16,13 @@ val keystoreProps = Properties().apply {
 android {
     namespace = "com.jonathaxs.gymnutshell"
     compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
+        version = release(37)
     }
 
     defaultConfig {
         applicationId = "com.jonathaxs.gymnutshell"
         minSdk = 29
-        targetSdk = 36
+        targetSdk = 37
         versionCode = 2
         versionName = "2.0"
 

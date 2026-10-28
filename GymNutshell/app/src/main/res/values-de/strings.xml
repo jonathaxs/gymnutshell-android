@@ -138,7 +138,6 @@
     <string name="addgoal_category_new_button">Neue Kategorie</string>
     <string name="addgoal_category_new_section">Eigene Kategorie</string>
     <string name="addgoal_category_new_name_placeholder">z. B.: Dehnen</string>
-    <string name="addgoal_category_new_rest_day">Ruhetag-Schalter (AN/AUS)</string>
     <string name="settings_category_icon_section">Symbol</string>
     <string name="goaldetail_stepper">Wert anpassen</string>
     <string name="goaldetail_increment_stepper">Schrittweite anpassen</string>
@@ -146,7 +145,6 @@
     <string name="goaldetail_increment_footer">Die Schrittweite bestimmt, wie weit der Schieberegler in Richtung Zielwert springt.</string>
     <string name="a11y_add_goal">Neues Tracking-Ziel</string>
     <string name="a11y_edit_category">Kategorie bearbeiten</string>
-    <string name="a11y_theme_info">Weitere Informationen zu %1$s</string>
     <string name="cd_move_up">Nach oben verschieben</string>
     <string name="cd_move_down">Nach unten verschieben</string>
     <string name="welcome_start_title">Hallo!</string>
@@ -429,6 +427,4 @@
     <string name="addgoal_dose_footer">Mit „Erledigt“ ist das Tagesziel mit dieser Menge erreicht.</string>
     <string name="today_checkin_pending">Offen</string>
     <string name="today_checkin_done">Erledigt</string>
-    <string name="a11y_checkin_hint_mark_done">Tippen, um als erledigt zu markieren.</string>
-    <string name="a11y_checkin_hint_mark_pending">Tippen, um wieder auf offen zu setzen.</string>
 </resources>

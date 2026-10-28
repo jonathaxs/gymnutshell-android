@@ -38,6 +38,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -78,8 +79,8 @@ internal fun TodayInfoPopover(
     val positionProvider = remember(density) {
         CategoryPopoverPositionProvider(marginDp = 8.dp, density = density)
     }
-    val configuration = LocalConfiguration.current
-    val maxAvailableWidth = (configuration.screenWidthDp - 32).coerceAtLeast(240).dp
+    val windowWidthDp = with(density) { LocalWindowInfo.current.containerSize.width.toDp() }
+    val maxAvailableWidth = (windowWidthDp - 32.dp).coerceAtLeast(240.dp)
     val popoverWidth = minOf(320.dp, maxAvailableWidth)
 
     Popup(
@@ -292,7 +293,8 @@ internal fun DayInfoPopover(onDismiss: () -> Unit) {
         }
     }
 
-    val locale = Locale.getDefault()
+    // Idioma lido da configuração: se o usuário trocar de idioma, o balão se atualiza.
+    val locale = LocalConfiguration.current.locales[0]
     val fullDate = remember(now.toLocalDate(), locale) {
         now.toLocalDate()
             .format(DateTimeFormatter.ofLocalizedDate(FormatStyle.FULL).withLocale(locale))

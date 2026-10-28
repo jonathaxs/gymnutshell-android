@@ -307,8 +307,8 @@ private fun PreviewRing(
     emoji: String,
     borderArgb: Long?,
     size: Dp,
-    progress: Float = 0.62f,
     modifier: Modifier = Modifier,
+    progress: Float = 0.62f,
 ) {
     val isDark = isSystemInDarkTheme()
     Box(modifier = modifier.size(size), contentAlignment = Alignment.Center) {

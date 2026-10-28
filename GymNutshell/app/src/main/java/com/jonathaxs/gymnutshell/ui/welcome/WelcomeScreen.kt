@@ -97,6 +97,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -918,8 +919,13 @@ private fun SummaryStep(
     val scrollState = rememberScrollState()
 
     // Detecta quando a lista foi rolada até o final para destravar o botão Continuar
-    LaunchedEffect(scrollState.value, scrollState.maxValue) {
-        if (scrollState.maxValue == 0 || scrollState.value >= scrollState.maxValue - 40) {
+    val reachedEnd by remember {
+        derivedStateOf {
+            scrollState.maxValue == 0 || scrollState.value >= scrollState.maxValue - 40
+        }
+    }
+    LaunchedEffect(reachedEnd) {
+        if (reachedEnd) {
             viewModel.setSummaryScrolledToEnd(true)
         }
     }

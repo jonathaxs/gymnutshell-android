@@ -187,12 +187,6 @@ class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
         filterMode.value = mode
     }
 
-    fun deleteRecord(epochDay: Long) {
-        viewModelScope.launch {
-            recordRepo.deleteByDate(epochDay)
-        }
-    }
-
     private companion object {
         // Janela de edição: registros dos últimos 30 dias (1 mês no iOS) são editáveis.
         const val EDIT_WINDOW_DAYS = 30L
