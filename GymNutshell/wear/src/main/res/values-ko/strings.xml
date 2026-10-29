@@ -17,7 +17,9 @@
     <string name="wear_stats_tiers">티어</string>
     <string name="wear_stats_activity">활동</string>
     <string name="wear_stats_recent">최근 7일</string>
-    <string name="wear_stats_days_format">%1$d일</string>
+    <plurals name="wear_stats_days_format">
+        <item quantity="other">%1$d일</item>
+    </plurals>
     <string name="wear_stats_syncing">동기화하려면 휴대폰에서 Gym Nutshell을 열어주세요.</string>
     <string name="wear_notif_empty">아직 알림이 없어요.</string>
     <string name="wear_notif_today">오늘</string>

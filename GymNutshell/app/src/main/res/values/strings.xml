@@ -52,11 +52,17 @@
     <string name="progress_section_activity">Gym Activity</string>
     <string name="progress_activity_workout">Workout Days</string>
     <string name="progress_activity_cardio">Cardio Days</string>
-    <string name="progress_days_count">%1$d days</string>
+    <plurals name="progress_days_count">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
     <!-- Seções Metas ativas, objetivo fitness e últimos 7 dias (porte da ProgressOverView do iOS). -->
     <string name="progress_section_goals">Goals</string>
     <string name="progress_goals_active_label">Active goals</string>
-    <string name="progress_goals_active">%1$d active</string>
+    <plurals name="progress_goals_active">
+        <item quantity="one">%1$d active</item>
+        <item quantity="other">%1$d active</item>
+    </plurals>
     <string name="progress_section_goal">Goal</string>
     <string name="progress_section_recent">Last 7 days</string>
 
@@ -509,11 +515,17 @@
     <string name="today_ring_a11y_label">Progress ring</string>
     <string name="today_ring_a11y_value">%1$d percent</string>
     <string name="today_ring_a11y_hint">Double-tap for ring information</string>
-    <string name="today_category_a11y_value">%1$d of %2$d completed</string>
+    <plurals name="today_category_a11y_value">
+        <item quantity="one">%1$d of %2$d completed</item>
+        <item quantity="other">%1$d of %2$d completed</item>
+    </plurals>
     <string name="today_hero_bell_a11y_label">Notifications</string>
 
     <!-- Today 2.0 (Parte 2 - Grade de categorias) -->
-    <string name="today_category_tile_a11y_value">%1$d of %2$d goals completed</string>
+    <plurals name="today_category_tile_a11y_value">
+        <item quantity="one">%1$d of %2$d goal completed</item>
+        <item quantity="other">%1$d of %2$d goals completed</item>
+    </plurals>
     <string name="today_category_tile_a11y_hint">Double-tap to open category controls</string>
 
     <!-- Categoria check-in (2.0) -->

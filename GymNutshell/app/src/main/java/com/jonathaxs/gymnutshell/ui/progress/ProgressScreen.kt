@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -52,6 +53,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.domain.AppDateFormatters
 import com.jonathaxs.gymnutshell.core.domain.UserGoal
+import com.jonathaxs.gymnutshell.core.domain.pluralQuantity
 import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
 import com.jonathaxs.gymnutshell.ui.components.IconBadge
 import com.jonathaxs.gymnutshell.ui.settings.TierInfoSheet
@@ -277,7 +279,7 @@ private fun TiersCard(state: ProgressUiState, accent: Color, onShowTierInfo: () 
 private fun TierRow(tier: TierCountUi, maxDays: Int, accent: Color) {
     val progressFraction = if (maxDays > 0) (tier.days.toFloat() / maxDays.toFloat()).coerceIn(0f, 1f) else 0f
     val tierName = stringResource(tier.nameRes)
-    val daysText = stringResource(R.string.progress_days_count, tier.days)
+    val daysText = pluralStringResource(R.plurals.progress_days_count, pluralQuantity(tier.days), tier.days)
     val desc = "$tierName, $daysText"
 
     Row(
@@ -462,7 +464,7 @@ private fun GoalsCard(
                     icon = ImageVector.vectorResource(R.drawable.ic_settings_target),
                     iconColor = Color(0xFFFF3B30),
                     title = stringResource(R.string.progress_goals_active_label),
-                    value = stringResource(R.string.progress_goals_active, state.activeGoals),
+                    value = pluralStringResource(R.plurals.progress_goals_active, pluralQuantity(state.activeGoals), state.activeGoals),
                     onClick = onOpenGoals,
                     onClickHint = stringResource(R.string.a11y_stats_card_goals_hint),
                 )

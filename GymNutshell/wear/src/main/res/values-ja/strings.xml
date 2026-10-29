@@ -17,7 +17,9 @@
     <string name="wear_stats_tiers">レベル</string>
     <string name="wear_stats_activity">アクティビティ</string>
     <string name="wear_stats_recent">過去7日間</string>
-    <string name="wear_stats_days_format">%1$d日</string>
+    <plurals name="wear_stats_days_format">
+        <item quantity="other">%1$d日</item>
+    </plurals>
     <string name="wear_stats_syncing">同期するにはスマートフォンでGym Nutshellを開いてください。</string>
     <string name="wear_notif_empty">通知はまだありません。</string>
     <string name="wear_notif_today">今日</string>

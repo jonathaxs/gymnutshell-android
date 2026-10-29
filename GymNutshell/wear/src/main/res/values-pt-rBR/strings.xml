@@ -24,7 +24,11 @@
     <string name="wear_stats_tiers">Níveis</string>
     <string name="wear_stats_activity">Atividade</string>
     <string name="wear_stats_recent">Últimos 7 dias</string>
-    <string name="wear_stats_days_format">%1$d dias</string>
+    <plurals name="wear_stats_days_format">
+        <item quantity="one">%1$d dia</item>
+        <item quantity="many">%1$d dias</item>
+        <item quantity="other">%1$d dias</item>
+    </plurals>
     <string name="wear_stats_syncing">Abra o Gym Nutshell no celular para sincronizar.</string>
 
     <!-- Página Notifications. -->

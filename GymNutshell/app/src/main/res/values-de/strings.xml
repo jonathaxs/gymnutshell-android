@@ -37,10 +37,16 @@
     <string name="progress_section_activity">Training-Aktivität</string>
     <string name="progress_activity_workout">Krafttrainingstage</string>
     <string name="progress_activity_cardio">Cardio-Tage</string>
-    <string name="progress_days_count">%1$d Tage</string>
+    <plurals name="progress_days_count">
+        <item quantity="one">%1$d Tag</item>
+        <item quantity="other">%1$d Tage</item>
+    </plurals>
     <string name="progress_section_goals">Ziele</string>
     <string name="progress_goals_active_label">Aktive Ziele</string>
-    <string name="progress_goals_active">%1$d aktiv</string>
+    <plurals name="progress_goals_active">
+        <item quantity="one">%1$d aktiv</item>
+        <item quantity="other">%1$d aktiv</item>
+    </plurals>
     <string name="progress_section_goal">Ziel</string>
     <string name="progress_section_recent">Letzte 7 Tage</string>
     <string name="settings_section_system">System</string>
@@ -410,9 +416,15 @@
     <string name="today_ring_a11y_label">Fortschrittsring</string>
     <string name="today_ring_a11y_value">%1$d Prozent</string>
     <string name="today_ring_a11y_hint">Doppeltippen für Ringinformationen</string>
-    <string name="today_category_a11y_value">%1$d von %2$d abgeschlossen</string>
+    <plurals name="today_category_a11y_value">
+        <item quantity="one">%1$d von %2$d abgeschlossen</item>
+        <item quantity="other">%1$d von %2$d abgeschlossen</item>
+    </plurals>
     <string name="today_hero_bell_a11y_label">Mitteilungen</string>
-    <string name="today_category_tile_a11y_value">%1$d von %2$d Zielen abgeschlossen</string>
+    <plurals name="today_category_tile_a11y_value">
+        <item quantity="one">%1$d von %2$d Ziel abgeschlossen</item>
+        <item quantity="other">%1$d von %2$d Zielen abgeschlossen</item>
+    </plurals>
     <string name="today_category_tile_a11y_hint">Doppeltippen, um die Steuerelemente der Kategorie zu öffnen</string>
 
     <!-- Categoria check-in (2.0) -->

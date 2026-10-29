@@ -37,10 +37,14 @@
     <string name="progress_section_activity">운동 활동</string>
     <string name="progress_activity_workout">근력 운동한 날</string>
     <string name="progress_activity_cardio">유산소 운동한 날</string>
-    <string name="progress_days_count">%1$d일</string>
+    <plurals name="progress_days_count">
+        <item quantity="other">%1$d일</item>
+    </plurals>
     <string name="progress_section_goals">목표</string>
     <string name="progress_goals_active_label">진행 중인 목표</string>
-    <string name="progress_goals_active">%1$d개 진행 중</string>
+    <plurals name="progress_goals_active">
+        <item quantity="other">%1$d개 진행 중</item>
+    </plurals>
     <string name="progress_section_goal">목표</string>
     <string name="progress_section_recent">최근 7일</string>
     <string name="settings_section_system">시스템</string>
@@ -410,9 +414,13 @@
     <string name="today_ring_a11y_label">진행 링</string>
     <string name="today_ring_a11y_value">%1$d퍼센트</string>
     <string name="today_ring_a11y_hint">이중 탭하여 링 정보 보기</string>
-    <string name="today_category_a11y_value">%2$d개 중 %1$d개 완료</string>
+    <plurals name="today_category_a11y_value">
+        <item quantity="other">%2$d개 중 %1$d개 완료</item>
+    </plurals>
     <string name="today_hero_bell_a11y_label">알림</string>
-    <string name="today_category_tile_a11y_value">%2$d개 목표 중 %1$d개 완료</string>
+    <plurals name="today_category_tile_a11y_value">
+        <item quantity="other">%2$d개 목표 중 %1$d개 완료</item>
+    </plurals>
     <string name="today_category_tile_a11y_hint">이중 탭하여 카테고리 입력 방식 열기</string>
 
     <!-- Categoria check-in (2.0) -->

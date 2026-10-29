@@ -17,7 +17,10 @@
     <string name="wear_stats_tiers">Tiers</string>
     <string name="wear_stats_activity">Activity</string>
     <string name="wear_stats_recent">Last 7 days</string>
-    <string name="wear_stats_days_format">%1$d days</string>
+    <plurals name="wear_stats_days_format">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
     <string name="wear_stats_syncing">Open Gym Nutshell on your phone to sync.</string>
     <string name="wear_notif_empty">No notifications yet.</string>
     <string name="wear_notif_today">Today</string>

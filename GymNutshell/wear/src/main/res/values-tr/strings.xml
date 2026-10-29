@@ -17,7 +17,10 @@
     <string name="wear_stats_tiers">Seviyeler</string>
     <string name="wear_stats_activity">Aktivite</string>
     <string name="wear_stats_recent">Son 7 gün</string>
-    <string name="wear_stats_days_format">%1$d gün</string>
+    <plurals name="wear_stats_days_format">
+        <item quantity="one">%1$d gün</item>
+        <item quantity="other">%1$d gün</item>
+    </plurals>
     <string name="wear_stats_syncing">Senkronize etmek için telefonunuzda Gym Nutshell\'ı açın.</string>
     <string name="wear_notif_empty">Henüz bildirim yok.</string>
     <string name="wear_notif_today">Bugün</string>

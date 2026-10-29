@@ -109,6 +109,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -133,6 +134,7 @@ import com.jonathaxs.gymnutshell.core.domain.ControlStyle
 import com.jonathaxs.gymnutshell.core.domain.GoalCategory
 import com.jonathaxs.gymnutshell.core.domain.ProgressColors
 import com.jonathaxs.gymnutshell.core.domain.TodayGoalsViewMode
+import com.jonathaxs.gymnutshell.core.domain.pluralQuantity
 import com.jonathaxs.gymnutshell.ui.components.categoryIcon
 import com.jonathaxs.gymnutshell.ui.util.Breakpoints
 import com.jonathaxs.gymnutshell.ui.welcome.RoundStepButton
@@ -799,7 +801,12 @@ private fun TodayCategoryHeaderView(
 ) {
     val isDone = totalCount > 0 && completedCount == totalCount
     val categoryLabel = stringResource(R.string.a11y_category_label, title)
-    val a11yValue = stringResource(R.string.today_category_a11y_value, completedCount, totalCount)
+    val a11yValue = pluralStringResource(
+        R.plurals.today_category_a11y_value,
+        pluralQuantity(totalCount),
+        completedCount,
+        totalCount,
+    )
     val stateDesc = stringResource(if (collapsed) R.string.state_collapsed else R.string.state_expanded)
 
     Row(

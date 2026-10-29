@@ -37,10 +37,18 @@
     <string name="progress_section_activity">Attività in palestra</string>
     <string name="progress_activity_workout">Giorni di pesi</string>
     <string name="progress_activity_cardio">Giorni di cardio</string>
-    <string name="progress_days_count">%1$d giorni</string>
+    <plurals name="progress_days_count">
+        <item quantity="one">%1$d giorno</item>
+        <item quantity="many">%1$d giorni</item>
+        <item quantity="other">%1$d giorni</item>
+    </plurals>
     <string name="progress_section_goals">Obiettivi</string>
     <string name="progress_goals_active_label">Obiettivi attivi</string>
-    <string name="progress_goals_active">%1$d attivi</string>
+    <plurals name="progress_goals_active">
+        <item quantity="one">%1$d attivo</item>
+        <item quantity="many">%1$d attivi</item>
+        <item quantity="other">%1$d attivi</item>
+    </plurals>
     <string name="progress_section_goal">Obiettivo</string>
     <string name="progress_section_recent">Ultimi 7 giorni</string>
     <string name="settings_section_system">Sistema</string>
@@ -410,9 +418,17 @@
     <string name="today_ring_a11y_label">Anello di avanzamento</string>
     <string name="today_ring_a11y_value">%1$d percento</string>
     <string name="today_ring_a11y_hint">Tocca due volte per le informazioni sull\'anello</string>
-    <string name="today_category_a11y_value">%1$d di %2$d completati</string>
+    <plurals name="today_category_a11y_value">
+        <item quantity="one">%1$d di %2$d completato</item>
+        <item quantity="many">%1$d di %2$d completati</item>
+        <item quantity="other">%1$d di %2$d completati</item>
+    </plurals>
     <string name="today_hero_bell_a11y_label">Notifiche</string>
-    <string name="today_category_tile_a11y_value">%1$d di %2$d obiettivi completati</string>
+    <plurals name="today_category_tile_a11y_value">
+        <item quantity="one">%1$d di %2$d obiettivo completato</item>
+        <item quantity="many">%1$d di %2$d obiettivi completati</item>
+        <item quantity="other">%1$d di %2$d obiettivi completati</item>
+    </plurals>
     <string name="today_category_tile_a11y_hint">Tocca due volte per aprire i controlli della categoria</string>
 
     <!-- Categoria check-in (2.0) -->

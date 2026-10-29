@@ -37,10 +37,14 @@
     <string name="progress_section_activity">健身活动</string>
     <string name="progress_activity_workout">力量训练天数</string>
     <string name="progress_activity_cardio">有氧运动天数</string>
-    <string name="progress_days_count">%1$d 天</string>
+    <plurals name="progress_days_count">
+        <item quantity="other">%1$d 天</item>
+    </plurals>
     <string name="progress_section_goals">目标</string>
     <string name="progress_goals_active_label">进行中的目标</string>
-    <string name="progress_goals_active">%1$d 项进行中</string>
+    <plurals name="progress_goals_active">
+        <item quantity="other">%1$d 项进行中</item>
+    </plurals>
     <string name="progress_section_goal">健身目标</string>
     <string name="progress_section_recent">最近 7 天</string>
     <string name="settings_section_system">系统</string>
@@ -410,9 +414,13 @@
     <string name="today_ring_a11y_label">进度环</string>
     <string name="today_ring_a11y_value">百分之 %1$d</string>
     <string name="today_ring_a11y_hint">轻点两下查看圆环信息</string>
-    <string name="today_category_a11y_value">已完成 %1$d/%2$d</string>
+    <plurals name="today_category_a11y_value">
+        <item quantity="other">已完成 %1$d/%2$d</item>
+    </plurals>
     <string name="today_hero_bell_a11y_label">通知</string>
-    <string name="today_category_tile_a11y_value">已完成 %1$d/%2$d 个目标</string>
+    <plurals name="today_category_tile_a11y_value">
+        <item quantity="other">已完成 %1$d/%2$d 个目标</item>
+    </plurals>
     <string name="today_category_tile_a11y_hint">轻点两下打开该分类的记录方式</string>
 
     <!-- Categoria check-in (2.0) -->

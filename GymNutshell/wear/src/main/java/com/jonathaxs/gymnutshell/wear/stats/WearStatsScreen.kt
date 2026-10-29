@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -35,6 +36,7 @@ import androidx.wear.compose.material3.ScreenScaffold
 import androidx.wear.compose.material3.Text
 import com.jonathaxs.gymnutshell.core.domain.AppTheme
 import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
+import com.jonathaxs.gymnutshell.core.domain.pluralQuantity
 import com.jonathaxs.gymnutshell.core.sync.WearDayEntry
 import com.jonathaxs.gymnutshell.core.sync.WearStatsSummary
 import com.jonathaxs.gymnutshell.core.widget.SegmentedRing
@@ -141,7 +143,7 @@ private fun LabeledDaysRow(
     days: Int,
     color: Color? = null,
 ) {
-    val daysLabel = stringResource(R.string.wear_stats_days_format, days)
+    val daysLabel = pluralStringResource(R.plurals.wear_stats_days_format, pluralQuantity(days), days)
     Row(
         modifier = Modifier
             .fillMaxWidth()

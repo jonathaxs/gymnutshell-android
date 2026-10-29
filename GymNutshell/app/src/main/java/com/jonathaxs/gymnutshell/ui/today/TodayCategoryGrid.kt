@@ -49,6 +49,7 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -70,6 +71,7 @@ import androidx.compose.ui.window.PopupProperties
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.domain.ControlStyle
 import com.jonathaxs.gymnutshell.core.domain.GoalCategory
+import com.jonathaxs.gymnutshell.core.domain.pluralQuantity
 import com.jonathaxs.gymnutshell.core.theme.AccentColor
 import com.jonathaxs.gymnutshell.ui.components.categoryIcon
 
@@ -245,7 +247,12 @@ private fun CategoryTileItem(
         label = "category_tile_progress",
     )
 
-    val a11yValue = stringResource(R.string.today_category_tile_a11y_value, tile.completedCount, tile.totalCount)
+    val a11yValue = pluralStringResource(
+        R.plurals.today_category_tile_a11y_value,
+        pluralQuantity(tile.totalCount),
+        tile.completedCount,
+        tile.totalCount,
+    )
     val a11yHint = stringResource(R.string.today_category_tile_a11y_hint)
 
     val density = LocalDensity.current

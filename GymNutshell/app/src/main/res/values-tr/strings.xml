@@ -37,10 +37,16 @@
     <string name="progress_section_activity">Antrenman Aktivitesi</string>
     <string name="progress_activity_workout">Ağırlık Antrenmanı Günleri</string>
     <string name="progress_activity_cardio">Kardiyo Günleri</string>
-    <string name="progress_days_count">%1$d gün</string>
+    <plurals name="progress_days_count">
+        <item quantity="one">%1$d gün</item>
+        <item quantity="other">%1$d gün</item>
+    </plurals>
     <string name="progress_section_goals">Hedefler</string>
     <string name="progress_goals_active_label">Aktif hedefler</string>
-    <string name="progress_goals_active">%1$d aktif</string>
+    <plurals name="progress_goals_active">
+        <item quantity="one">%1$d aktif</item>
+        <item quantity="other">%1$d aktif</item>
+    </plurals>
     <string name="progress_section_goal">Hedef</string>
     <string name="progress_section_recent">Son 7 gün</string>
     <string name="settings_section_system">Sistem</string>
@@ -410,9 +416,15 @@
     <string name="today_ring_a11y_label">İlerleme halkası</string>
     <string name="today_ring_a11y_value">Yüzde %1$d</string>
     <string name="today_ring_a11y_hint">Halka bilgisi için çift dokunun</string>
-    <string name="today_category_a11y_value">%2$d hedeften %1$d tanesi tamamlandı</string>
+    <plurals name="today_category_a11y_value">
+        <item quantity="one">%2$d hedeften %1$d tanesi tamamlandı</item>
+        <item quantity="other">%2$d hedeften %1$d tanesi tamamlandı</item>
+    </plurals>
     <string name="today_hero_bell_a11y_label">Bildirimler</string>
-    <string name="today_category_tile_a11y_value">%2$d hedeften %1$d tanesi tamamlandı</string>
+    <plurals name="today_category_tile_a11y_value">
+        <item quantity="one">%2$d hedeften %1$d tanesi tamamlandı</item>
+        <item quantity="other">%2$d hedeften %1$d tanesi tamamlandı</item>
+    </plurals>
     <string name="today_category_tile_a11y_hint">Kategori denetimlerini açmak için çift dokunun</string>
 
     <!-- Categoria check-in (2.0) -->

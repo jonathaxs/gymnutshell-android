@@ -17,7 +17,9 @@
     <string name="wear_stats_tiers">等级</string>
     <string name="wear_stats_activity">活动</string>
     <string name="wear_stats_recent">最近 7 天</string>
-    <string name="wear_stats_days_format">%1$d 天</string>
+    <plurals name="wear_stats_days_format">
+        <item quantity="other">%1$d 天</item>
+    </plurals>
     <string name="wear_stats_syncing">在手机上打开 Gym Nutshell 进行同步。</string>
     <string name="wear_notif_empty">暂无通知。</string>
     <string name="wear_notif_today">今天</string>

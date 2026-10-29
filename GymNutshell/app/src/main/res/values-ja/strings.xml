@@ -37,10 +37,14 @@
     <string name="progress_section_activity">ジムのアクティビティ</string>
     <string name="progress_activity_workout">筋トレの日数</string>
     <string name="progress_activity_cardio">有酸素運動の日数</string>
-    <string name="progress_days_count">%1$d日</string>
+    <plurals name="progress_days_count">
+        <item quantity="other">%1$d日</item>
+    </plurals>
     <string name="progress_section_goals">目標</string>
     <string name="progress_goals_active_label">アクティブな目標</string>
-    <string name="progress_goals_active">%1$d件アクティブ</string>
+    <plurals name="progress_goals_active">
+        <item quantity="other">%1$d件アクティブ</item>
+    </plurals>
     <string name="progress_section_goal">目標</string>
     <string name="progress_section_recent">過去7日間</string>
     <string name="settings_section_system">システム</string>
@@ -410,9 +414,13 @@
     <string name="today_ring_a11y_label">進捗リング</string>
     <string name="today_ring_a11y_value">%1$dパーセント</string>
     <string name="today_ring_a11y_hint">ダブルタップしてリングの情報を表示</string>
-    <string name="today_category_a11y_value">%2$d件中 %1$d件達成</string>
+    <plurals name="today_category_a11y_value">
+        <item quantity="other">%2$d件中 %1$d件達成</item>
+    </plurals>
     <string name="today_hero_bell_a11y_label">通知</string>
-    <string name="today_category_tile_a11y_value">%2$d件中 %1$d件の目標を達成</string>
+    <plurals name="today_category_tile_a11y_value">
+        <item quantity="other">%2$d件中 %1$d件の目標を達成</item>
+    </plurals>
     <string name="today_category_tile_a11y_hint">ダブルタップしてカテゴリーの操作を開く</string>
 
     <!-- Categoria check-in (2.0) -->

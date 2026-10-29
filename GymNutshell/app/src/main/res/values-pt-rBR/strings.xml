@@ -53,10 +53,18 @@
     <string name="progress_section_activity">Atividade nos Treinos</string>
     <string name="progress_activity_workout">Dias de Musculação</string>
     <string name="progress_activity_cardio">Dias de Cardio</string>
-    <string name="progress_days_count">%1$d dias</string>
+    <plurals name="progress_days_count">
+        <item quantity="one">%1$d dia</item>
+        <item quantity="many">%1$d dias</item>
+        <item quantity="other">%1$d dias</item>
+    </plurals>
     <string name="progress_section_goals">Metas</string>
     <string name="progress_goals_active_label">Metas ativas</string>
-    <string name="progress_goals_active">%1$d ativas</string>
+    <plurals name="progress_goals_active">
+        <item quantity="one">%1$d ativa</item>
+        <item quantity="many">%1$d ativas</item>
+        <item quantity="other">%1$d ativas</item>
+    </plurals>
     <string name="progress_section_goal">Objetivo</string>
     <string name="progress_section_recent">Últimos 7 dias</string>
 
@@ -500,11 +508,19 @@
     <string name="today_ring_a11y_label">Anel de progresso</string>
     <string name="today_ring_a11y_value">%1$d por cento</string>
     <string name="today_ring_a11y_hint">Toque duas vezes para informações do anel</string>
-    <string name="today_category_a11y_value">%1$d de %2$d concluídas</string>
+    <plurals name="today_category_a11y_value">
+        <item quantity="one">%1$d de %2$d concluída</item>
+        <item quantity="many">%1$d de %2$d concluídas</item>
+        <item quantity="other">%1$d de %2$d concluídas</item>
+    </plurals>
     <string name="today_hero_bell_a11y_label">Notificações</string>
 
     <!-- Today 2.0 (Parte 2 - Grade de categorias) -->
-    <string name="today_category_tile_a11y_value">%1$d de %2$d metas concluídas</string>
+    <plurals name="today_category_tile_a11y_value">
+        <item quantity="one">%1$d de %2$d meta concluída</item>
+        <item quantity="many">%1$d de %2$d metas concluídas</item>
+        <item quantity="other">%1$d de %2$d metas concluídas</item>
+    </plurals>
     <string name="today_category_tile_a11y_hint">Toque duas vezes para abrir os controles da categoria</string>
 
     <!-- Categoria check-in (2.0) -->

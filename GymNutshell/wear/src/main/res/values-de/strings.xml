@@ -17,7 +17,10 @@
     <string name="wear_stats_tiers">Stufen</string>
     <string name="wear_stats_activity">Aktivität</string>
     <string name="wear_stats_recent">Letzte 7 Tage</string>
-    <string name="wear_stats_days_format">%1$d Tage</string>
+    <plurals name="wear_stats_days_format">
+        <item quantity="one">%1$d Tag</item>
+        <item quantity="other">%1$d Tage</item>
+    </plurals>
     <string name="wear_stats_syncing">Öffne Gym Nutshell auf deinem Smartphone zum Synchronisieren.</string>
     <string name="wear_notif_empty">Noch keine Mitteilungen.</string>
     <string name="wear_notif_today">Heute</string>
