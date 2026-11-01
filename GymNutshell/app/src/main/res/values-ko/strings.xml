@@ -435,4 +435,21 @@
     <string name="addgoal_dose_footer">완료로 표시하면 이 양으로 오늘 목표가 달성됩니다.</string>
     <string name="today_checkin_pending">대기</string>
     <string name="today_checkin_done">완료</string>
+
+    <!-- Lembretes por horário dos suplementos -->
+    <string name="notifications_supplement_body">%1$s 먹을 시간이에요.</string>
+    <string name="notifications_supplement_group_title">💊 보충제 시간</string>
+    <string name="notifications_supplement_action_done">먹었어요</string>
+    <string name="notifications_supplement_preset_morning">아침</string>
+    <string name="notifications_supplement_preset_lunch">점심</string>
+    <string name="notifications_supplement_preset_afternoon">늦은 오후</string>
+    <string name="notifications_supplement_preset_night">저녁</string>
+    <string name="notifications_supplement_preset_bedtime">자기 전</string>
+    <string name="settings_notifications_times_header">알림</string>
+    <string name="settings_notifications_times_row">시간</string>
+    <string name="settings_notifications_times_add">시간 추가</string>
+    <string name="settings_notifications_times_empty">시간 없음</string>
+    <string name="settings_notifications_times_footer">각 시간마다 하루에 한 번 알려요. 오늘에서 완료로 표시하거나 알림에서 먹었어요를 누르면 그날 알림이 멈춰요.</string>
+    <string name="settings_notifications_group_title">같은 시간 보충제 묶기</string>
+    <string name="settings_notifications_group_footer">같은 시간의 보충제를 알림 하나로 묶어요. 끄면 보충제마다 따로 알려요.</string>
 </resources>

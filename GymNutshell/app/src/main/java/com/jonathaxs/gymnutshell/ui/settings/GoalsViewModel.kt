@@ -21,6 +21,7 @@ import com.jonathaxs.gymnutshell.core.domain.Profile
 import com.jonathaxs.gymnutshell.core.domain.UnifiedCategoryOrder
 import com.jonathaxs.gymnutshell.core.domain.UnitConverter
 import com.jonathaxs.gymnutshell.core.domain.UserGoal
+import com.jonathaxs.gymnutshell.notifications.NotificationScheduler
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -76,6 +77,7 @@ class GoalsViewModel(app: Application) : AndroidViewModel(app) {
     private val goalConfigRepo = GoalConfigRepository(app.applicationContext)
     private val customGoalRepo = CustomGoalRepository(app.applicationContext)
     private val customCategoryRepo = CustomGoalCategoryRepository(app.applicationContext)
+    private val scheduler = NotificationScheduler(app.applicationContext)
 
     val uiState: StateFlow<GoalsUiState> =
         combine(
@@ -163,11 +165,17 @@ class GoalsViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     fun removeFixed(key: String) {
-        viewModelScope.launch { goalConfigRepo.remove(key) }
+        viewModelScope.launch {
+            goalConfigRepo.remove(key)
+            if (key == "tracking.creatine") scheduler.rescheduleSupplementReminders()
+        }
     }
 
     fun restoreFixed(key: String) {
-        viewModelScope.launch { goalConfigRepo.restore(key) }
+        viewModelScope.launch {
+            goalConfigRepo.restore(key)
+            if (key == "tracking.creatine") scheduler.rescheduleSupplementReminders()
+        }
     }
 
     /** Move uma meta fixa pra cima/baixo dentro da própria categoria (porte de moveGoalsWithinCategory do iOS). */
@@ -210,6 +218,8 @@ class GoalsViewModel(app: Application) : AndroidViewModel(app) {
     fun deleteCustom(goalId: Long) {
         viewModelScope.launch {
             customGoalRepo.all().firstOrNull { it.id == goalId }?.let { customGoalRepo.delete(it) }
+            scheduler.cancelCustom(goalId)
+            scheduler.rescheduleSupplementReminders()
         }
     }
 

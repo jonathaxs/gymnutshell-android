@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -32,9 +33,12 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.domain.CategoryKind
 import com.jonathaxs.gymnutshell.core.domain.GoalCategory
+import com.jonathaxs.gymnutshell.core.domain.ReminderTime
+import com.jonathaxs.gymnutshell.ui.components.GroupInset
 import com.jonathaxs.gymnutshell.ui.components.GroupRow
 import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
 import com.jonathaxs.gymnutshell.ui.components.GroupSection
+import com.jonathaxs.gymnutshell.ui.components.ReminderTimesSection
 import com.jonathaxs.gymnutshell.ui.welcome.RoundStepButton
 
 /** Detalhe de uma meta fixa: edita valor + passo — porte de TrackingGoalDetailView (iOS). */
@@ -47,10 +51,12 @@ fun GoalDetailScreen(goalKey: String, onBack: () -> Unit, viewModel: GoalDetailV
     // Estado local dos steppers, semeado quando os dados terminam de carregar.
     var value by remember { mutableIntStateOf(0) }
     var increment by remember { mutableIntStateOf(1) }
+    var reminderTimes by remember { mutableStateOf<List<ReminderTime>>(emptyList()) }
     LaunchedEffect(state.loaded) {
         if (state.loaded) {
             value = state.value
             increment = state.increment
+            reminderTimes = state.reminderTimes
         }
     }
 
@@ -71,7 +77,12 @@ fun GoalDetailScreen(goalKey: String, onBack: () -> Unit, viewModel: GoalDetailV
                     TextButton(
                         enabled = canSave,
                         onClick = {
-                            viewModel.save(goalKey, value, increment)
+                            viewModel.save(
+                                key = goalKey,
+                                value = value,
+                                increment = if (isCheckIn) value else increment,
+                                reminderTimes = reminderTimes,
+                            )
                             onBack()
                         },
                     ) { Text(stringResource(R.string.action_save)) }
@@ -95,6 +106,13 @@ fun GoalDetailScreen(goalKey: String, onBack: () -> Unit, viewModel: GoalDetailV
                             onIncrement = { value = (value + 1).coerceAtMost(99999) },
                         )
                     }
+                }
+                item {
+                    ReminderTimesSection(
+                        times = reminderTimes,
+                        onTimesChange = { reminderTimes = it },
+                        modifier = Modifier.padding(horizontal = GroupInset, vertical = 16.dp),
+                    )
                 }
             } else {
                 item {

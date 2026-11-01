@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.domain.NotificationKind
 import com.jonathaxs.gymnutshell.core.domain.NotificationSound
+import com.jonathaxs.gymnutshell.core.domain.ReminderTime
 
 /**
  * Mapeia cada NotificationKind/Sound pros recursos de string (strings.xml).
@@ -83,5 +84,14 @@ object NotificationStrings {
     fun soundRes(sound: NotificationSound): Int = when (sound) {
         NotificationSound.Default -> R.string.notif_sound_default
         NotificationSound.Silent -> R.string.notif_sound_silent
+    }
+
+    @StringRes
+    fun presetTitleRes(preset: ReminderTime.Preset): Int = when (preset) {
+        ReminderTime.Preset.Morning -> R.string.notifications_supplement_preset_morning
+        ReminderTime.Preset.Lunch -> R.string.notifications_supplement_preset_lunch
+        ReminderTime.Preset.Afternoon -> R.string.notifications_supplement_preset_afternoon
+        ReminderTime.Preset.Night -> R.string.notifications_supplement_preset_night
+        ReminderTime.Preset.Bedtime -> R.string.notifications_supplement_preset_bedtime
     }
 }

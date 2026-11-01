@@ -90,6 +90,11 @@
                 android:resource="@xml/goals_widget_info" />
         </receiver>
 
+        <!-- Marca suplemento como feito a partir da ação "Tomei" da notificação. -->
+        <receiver
+            android:name=".notifications.SupplementActionReceiver"
+            android:exported="false" />
+
         <!-- Recebe os deltas de intake/descanso vindos do relógio (Data Layer),
              mesmo com o app fechado. -->
         <service

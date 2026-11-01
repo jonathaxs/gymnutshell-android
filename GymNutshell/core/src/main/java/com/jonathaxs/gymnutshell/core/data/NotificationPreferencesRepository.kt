@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.jonathaxs.gymnutshell.core.domain.NotificationKind
 import com.jonathaxs.gymnutshell.core.domain.NotificationSound
+import com.jonathaxs.gymnutshell.core.domain.ReminderTime
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
@@ -88,6 +89,63 @@ class NotificationPreferencesRepository(private val context: Context) {
         context.appPreferences.edit { it[customSoundKey(id)] = sound.rawValue }
     }
 
+    // MARK: - Lembretes por horário (suplementos / metas check-in)
+
+    /** Todos os horários salvos por id ("creatine" ou "custom.<id>") num Flow só. */
+    val reminderTimes: Flow<Map<String, List<ReminderTime>>> = context.appPreferences.data.map { prefs ->
+        prefs.asMap()
+            .mapNotNull { (key, value) ->
+                if (!key.name.startsWith(TIMES_PREFIX) || value !is String) return@mapNotNull null
+                val id = key.name.removePrefix(TIMES_PREFIX)
+                val times = parseTimesString(value)
+                if (times.isEmpty()) null else id to times
+            }
+            .toMap()
+    }
+
+    suspend fun reminderTimes(id: String): List<ReminderTime> {
+        val raw = context.appPreferences.data.first()[timesKey(id)] ?: return emptyList()
+        return parseTimesString(raw)
+    }
+
+    suspend fun setReminderTimes(times: List<ReminderTime>, id: String) {
+        val unique = times.distinct().sorted()
+        val key = timesKey(id)
+        context.appPreferences.edit { prefs ->
+            if (unique.isEmpty()) {
+                prefs.remove(key)
+            } else {
+                prefs[key] = unique.joinToString(",") { it.storageString }
+            }
+        }
+    }
+
+    /** Junta num aviso só os suplementos do mesmo horário. Desligado por padrão. */
+    val groupSupplements: Flow<Boolean> = context.appPreferences.data.map { prefs ->
+        prefs[groupSupplementsKey] ?: false
+    }
+
+    suspend fun isGroupSupplements(): Boolean =
+        context.appPreferences.data.first()[groupSupplementsKey] ?: false
+
+    suspend fun setGroupSupplements(grouped: Boolean) {
+        context.appPreferences.edit { it[groupSupplementsKey] = grouped }
+    }
+
+    suspend fun isReminderEnabled(id: String): Boolean =
+        context.appPreferences.data.first()[booleanPreferencesKey("$ENABLED_PREFIX$id")] ?: false
+
+    suspend fun setReminderEnabled(enabled: Boolean, id: String) {
+        context.appPreferences.edit { it[booleanPreferencesKey("$ENABLED_PREFIX$id")] = enabled }
+    }
+
+    private fun parseTimesString(raw: String): List<ReminderTime> =
+        raw.trim().removeSurrounding("[", "]")
+            .split(",")
+            .mapNotNull { ReminderTime.parse(it.trim().removeSurrounding("\"")) }
+            .distinct()
+            .sorted()
+
     // MARK: - Defaults do onboarding
 
     /**
@@ -129,6 +187,10 @@ class NotificationPreferencesRepository(private val context: Context) {
     suspend fun intervalSnapshot(): Map<String, Int> = snapshot(INTERVAL_PREFIX)
     suspend fun soundSnapshot(): Map<String, String> = snapshot(SOUND_PREFIX)
 
+    /** Mapa id→lista de horários "HH:mm" salvos. */
+    suspend fun timesSnapshot(): Map<String, List<String>> =
+        reminderTimes.first().mapValues { (_, list) -> list.map { it.storageString } }
+
     @Suppress("UNCHECKED_CAST")
     private suspend fun <T> snapshot(prefix: String): Map<String, T> =
         context.appPreferences.data.first().asMap()
@@ -141,11 +203,25 @@ class NotificationPreferencesRepository(private val context: Context) {
         enabled: Map<String, Boolean>?,
         interval: Map<String, Int>?,
         sound: Map<String, String>?,
+        times: Map<String, List<String>>? = null,
+        groupSupplements: Boolean? = null,
     ) {
         context.appPreferences.edit { prefs ->
             enabled?.forEach { (id, v) -> prefs[booleanPreferencesKey("$ENABLED_PREFIX$id")] = v }
             interval?.forEach { (id, v) -> prefs[intPreferencesKey("$INTERVAL_PREFIX$id")] = v }
             sound?.forEach { (id, v) -> prefs[stringPreferencesKey("$SOUND_PREFIX$id")] = v }
+            times?.forEach { (id, rawList) ->
+                val parsed = rawList.mapNotNull { ReminderTime.parse(it) }.distinct().sorted()
+                val key = timesKey(id)
+                if (parsed.isEmpty()) {
+                    prefs.remove(key)
+                } else {
+                    prefs[key] = parsed.joinToString(",") { it.storageString }
+                }
+            }
+            if (groupSupplements != null) {
+                prefs[groupSupplementsKey] = groupSupplements
+            }
         }
     }
 
@@ -157,11 +233,20 @@ class NotificationPreferencesRepository(private val context: Context) {
     private fun customEnabledKey(id: Long) = booleanPreferencesKey("notifications.enabled.custom.$id")
     private fun customIntervalKey(id: Long) = intPreferencesKey("notifications.intervalMinutes.custom.$id")
     private fun customSoundKey(id: Long) = stringPreferencesKey("notifications.sound.custom.$id")
+    private fun timesKey(id: String) = stringPreferencesKey("$TIMES_PREFIX$id")
+    private val groupSupplementsKey = booleanPreferencesKey(GROUP_SUPPLEMENTS_KEY)
     private val defaultsAppliedKey = booleanPreferencesKey("notifications.defaultsApplied")
 
-    private companion object {
-        const val ENABLED_PREFIX = "notifications.enabled."
-        const val INTERVAL_PREFIX = "notifications.intervalMinutes."
-        const val SOUND_PREFIX = "notifications.sound."
+    companion object {
+        /** Id do lembrete da Creatina (mesmo id usado nas outras preferências dela). */
+        val CREATINE_REMINDER_ID: String = NotificationKind.Creatine.rawValue
+
+        fun customReminderId(id: Long): String = "custom.$id"
+
+        private const val ENABLED_PREFIX = "notifications.enabled."
+        private const val INTERVAL_PREFIX = "notifications.intervalMinutes."
+        private const val SOUND_PREFIX = "notifications.sound."
+        private const val TIMES_PREFIX = "notifications.times."
+        private const val GROUP_SUPPLEMENTS_KEY = "notifications.supplements.grouped"
     }
 }

@@ -435,4 +435,21 @@
     <string name="addgoal_dose_footer">完了にすると、この量でその日の目標が達成されます。</string>
     <string name="today_checkin_pending">未完了</string>
     <string name="today_checkin_done">完了</string>
+
+    <!-- Lembretes por horário dos suplementos -->
+    <string name="notifications_supplement_body">%1$sを飲む時間です。</string>
+    <string name="notifications_supplement_group_title">💊 サプリの時間</string>
+    <string name="notifications_supplement_action_done">飲んだ</string>
+    <string name="notifications_supplement_preset_morning">朝</string>
+    <string name="notifications_supplement_preset_lunch">昼</string>
+    <string name="notifications_supplement_preset_afternoon">夕方</string>
+    <string name="notifications_supplement_preset_night">夜</string>
+    <string name="notifications_supplement_preset_bedtime">寝る前</string>
+    <string name="settings_notifications_times_header">リマインダー</string>
+    <string name="settings_notifications_times_row">時刻</string>
+    <string name="settings_notifications_times_add">時刻を追加</string>
+    <string name="settings_notifications_times_empty">時刻なし</string>
+    <string name="settings_notifications_times_footer">各時刻に1日1回通知します。「今日」で完了にするか、通知の「飲んだ」をタップすると、その日の通知は止まります。</string>
+    <string name="settings_notifications_group_title">同じ時刻のサプリをまとめる</string>
+    <string name="settings_notifications_group_footer">同じ時刻のサプリを1つの通知にまとめます。オフの場合はサプリごとに通知します。</string>
 </resources>

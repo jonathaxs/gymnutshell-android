@@ -13,7 +13,7 @@ class CustomGoalRepository(context: Context) {
     suspend fun all(): List<CustomGoal> = dao.getAll()
 
     /** Insere uma meta nova já no fim da ordem (maior posição + 1). */
-    suspend fun add(goal: CustomGoal) = dao.insert(goal.copy(position = dao.maxPosition() + 1))
+    suspend fun add(goal: CustomGoal): Long = dao.insert(goal.copy(position = dao.maxPosition() + 1))
 
     suspend fun update(goal: CustomGoal) = dao.update(goal)
     suspend fun delete(goal: CustomGoal) = dao.delete(goal)

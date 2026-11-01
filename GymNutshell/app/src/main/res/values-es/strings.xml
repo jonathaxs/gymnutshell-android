@@ -443,4 +443,21 @@
     <string name="addgoal_dose_footer">Al marcar Hecho, la meta del día se completa con esta cantidad.</string>
     <string name="today_checkin_pending">Pendiente</string>
     <string name="today_checkin_done">Hecho</string>
+
+    <!-- Lembretes por horário dos suplementos -->
+    <string name="notifications_supplement_body">Hora de tomar %1$s.</string>
+    <string name="notifications_supplement_group_title">💊 Hora de los suplementos</string>
+    <string name="notifications_supplement_action_done">Tomado</string>
+    <string name="notifications_supplement_preset_morning">Mañana</string>
+    <string name="notifications_supplement_preset_lunch">Almuerzo</string>
+    <string name="notifications_supplement_preset_afternoon">Final de la tarde</string>
+    <string name="notifications_supplement_preset_night">Noche</string>
+    <string name="notifications_supplement_preset_bedtime">Antes de dormir</string>
+    <string name="settings_notifications_times_header">Recordatorios</string>
+    <string name="settings_notifications_times_row">Hora</string>
+    <string name="settings_notifications_times_add">Añadir hora</string>
+    <string name="settings_notifications_times_empty">Sin horas</string>
+    <string name="settings_notifications_times_footer">Un aviso al día en cada hora. Los avisos del día se detienen cuando marcas Hecho en Hoy o tocas Tomado en la notificación.</string>
+    <string name="settings_notifications_group_title">Agrupar suplementos a la misma hora</string>
+    <string name="settings_notifications_group_footer">Junta en un solo aviso los suplementos de la misma hora. Desactivado, cada suplemento tiene su aviso.</string>
 </resources>

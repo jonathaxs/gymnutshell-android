@@ -11,11 +11,13 @@ import androidx.core.app.NotificationManagerCompat
 import com.jonathaxs.gymnutshell.MainActivity
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.data.CustomGoal
+import com.jonathaxs.gymnutshell.core.data.CustomGoalRepository
 import com.jonathaxs.gymnutshell.core.data.NotificationHistoryRepository
 import com.jonathaxs.gymnutshell.core.data.NotificationPreferencesRepository
 import com.jonathaxs.gymnutshell.core.domain.NotificationKind
 import com.jonathaxs.gymnutshell.core.domain.NotificationRoute
 import com.jonathaxs.gymnutshell.core.domain.NotificationSound
+import com.jonathaxs.gymnutshell.core.domain.PlannedSupplementReminder
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -38,6 +40,7 @@ class GymNotifier(context: Context) {
     private val manager = NotificationManagerCompat.from(appContext)
     private val prefs = NotificationPreferencesRepository(appContext)
     private val history = NotificationHistoryRepository(appContext)
+    private val customGoalRepo = CustomGoalRepository(appContext)
 
     // MARK: - Eventos
 
@@ -97,6 +100,91 @@ class GymNotifier(context: Context) {
         postRaw(ensureCustomChannel(goal, sound), title, body, NotificationRoute.Today, sound = sound)
         // kindRaw "custom" não resolve pra um NotificationKind (ícone cai no sino; o emoji já vai no título).
         history.append("custom", title, body, NotificationRoute.Today.rawValue)
+    }
+
+    /**
+     * Lembrete por horário de suplemento (individual ou agrupado) com a ação "Tomei".
+     * Agrupado: só fica silencioso se todas as metas do aviso estiverem em silencioso.
+     */
+    suspend fun postSupplementReminder(item: PlannedSupplementReminder) {
+        val customGoals = customGoalRepo.all()
+        val sounds = item.entryIds.map { id ->
+            if (id == NotificationPreferencesRepository.CREATINE_REMINDER_ID) {
+                prefs.sound(NotificationKind.Creatine)
+            } else {
+                val customId = id.removePrefix("custom.").toLongOrNull()
+                if (customId != null) prefs.customSound(customId) else NotificationSound.Default
+            }
+        }
+        val sound = if (sounds.isNotEmpty() && sounds.all { it == NotificationSound.Silent }) {
+            NotificationSound.Silent
+        } else {
+            NotificationSound.Default
+        }
+
+        val firstCustomGoal = item.entryIds.firstNotNullOfOrNull { id ->
+            val customId = id.removePrefix("custom.").toLongOrNull() ?: return@firstNotNullOfOrNull null
+            customGoals.firstOrNull { it.id == customId }
+        }
+        val channelId = if (NotificationPreferencesRepository.CREATINE_REMINDER_ID in item.entryIds || firstCustomGoal == null) {
+            ensureChannel(NotificationKind.Creatine, sound)
+        } else {
+            ensureCustomChannel(firstCustomGoal, sound)
+        }
+
+        if (manager.areNotificationsEnabled()) {
+            val notifId = idCounter.incrementAndGet()
+
+            val contentIntent = Intent(appContext, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                putExtra(EXTRA_ROUTE, NotificationRoute.Today.rawValue)
+            }
+            val contentPendingIntent = PendingIntent.getActivity(
+                appContext,
+                notifId,
+                contentIntent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
+
+            val actionIntent = Intent(appContext, SupplementActionReceiver::class.java).apply {
+                putExtra(SupplementActionReceiver.EXTRA_SUPPLEMENT_IDS, item.entryIds.toTypedArray())
+                putExtra(SupplementActionReceiver.EXTRA_REMINDER_EPOCH_DAY, item.fireDate.toLocalDate().toEpochDay())
+                putExtra(SupplementActionReceiver.EXTRA_NOTIFICATION_ID, notifId)
+            }
+            val actionPendingIntent = PendingIntent.getBroadcast(
+                appContext,
+                notifId,
+                actionIntent,
+                PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
+            )
+
+            val notification = NotificationCompat.Builder(appContext, channelId)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentTitle(item.title)
+                .setContentText(item.body)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(item.body))
+                .setAutoCancel(true)
+                .setContentIntent(contentPendingIntent)
+                .addAction(
+                    0,
+                    appContext.getString(R.string.notifications_supplement_action_done),
+                    actionPendingIntent,
+                )
+                .setPriority(
+                    if (sound == NotificationSound.Silent) NotificationCompat.PRIORITY_LOW
+                    else NotificationCompat.PRIORITY_DEFAULT,
+                )
+                .build()
+
+            manager.notify(notifId, notification)
+        }
+
+        val historyKind = if (item.entryIds == listOf(NotificationPreferencesRepository.CREATINE_REMINDER_ID)) {
+            NotificationKind.Creatine.rawValue
+        } else {
+            "custom"
+        }
+        history.append(historyKind, item.title, item.body, NotificationRoute.Today.rawValue)
     }
 
     // MARK: - Núcleo de postagem

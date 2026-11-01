@@ -83,6 +83,8 @@ class BackupService(context: Context) {
                 notificationEnabled = notifPrefs.enabledSnapshot().ifEmpty { null },
                 notificationInterval = notifPrefs.intervalSnapshot().ifEmpty { null },
                 notificationSound = notifPrefs.soundSnapshot().ifEmpty { null },
+                notificationTimes = notifPrefs.timesSnapshot().ifEmpty { null },
+                groupSupplements = notifPrefs.isGroupSupplements(),
             ),
             customCategories = customCategoryRepo.all().ifEmpty { null },
         )
@@ -125,7 +127,13 @@ class BackupService(context: Context) {
             prefs.controlStyle?.let { raw ->
                 ControlStyle.fromRawOrNull(raw)?.let { settingsRepo.setControlStyle(it) }
             }
-            notifPrefs.restoreFromBackup(prefs.notificationEnabled, prefs.notificationInterval, prefs.notificationSound)
+            notifPrefs.restoreFromBackup(
+                enabled = prefs.notificationEnabled,
+                interval = prefs.notificationInterval,
+                sound = prefs.notificationSound,
+                times = prefs.notificationTimes,
+                groupSupplements = prefs.groupSupplements,
+            )
         }
     }
 

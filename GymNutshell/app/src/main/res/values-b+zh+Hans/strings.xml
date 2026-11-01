@@ -435,4 +435,21 @@
     <string name="addgoal_dose_footer">标记为已完成后，当天目标即以此用量完成。</string>
     <string name="today_checkin_pending">待完成</string>
     <string name="today_checkin_done">已完成</string>
+
+    <!-- Lembretes por horário dos suplementos -->
+    <string name="notifications_supplement_body">该吃%1$s了。</string>
+    <string name="notifications_supplement_group_title">💊 补剂时间</string>
+    <string name="notifications_supplement_action_done">已服用</string>
+    <string name="notifications_supplement_preset_morning">早上</string>
+    <string name="notifications_supplement_preset_lunch">午饭</string>
+    <string name="notifications_supplement_preset_afternoon">傍晚</string>
+    <string name="notifications_supplement_preset_night">晚上</string>
+    <string name="notifications_supplement_preset_bedtime">睡前</string>
+    <string name="settings_notifications_times_header">提醒</string>
+    <string name="settings_notifications_times_row">时间</string>
+    <string name="settings_notifications_times_add">添加时间</string>
+    <string name="settings_notifications_times_empty">未设置时间</string>
+    <string name="settings_notifications_times_footer">每个时间每天提醒一次。在“今天”中标记为完成，或在通知中轻点“已服用”后，当天的提醒会停止。</string>
+    <string name="settings_notifications_group_title">合并同一时间的补剂</string>
+    <string name="settings_notifications_group_footer">将同一时间的补剂合并为一条提醒。关闭时，每种补剂单独提醒。</string>
 </resources>

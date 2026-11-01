@@ -439,4 +439,21 @@
     <string name="addgoal_dose_footer">Yapıldı olarak işaretlenince günün hedefi bu miktarla tamamlanır.</string>
     <string name="today_checkin_pending">Bekliyor</string>
     <string name="today_checkin_done">Yapıldı</string>
+
+    <!-- Lembretes por horário dos suplementos -->
+    <string name="notifications_supplement_body">%1$s alma zamanı.</string>
+    <string name="notifications_supplement_group_title">💊 Takviye zamanı</string>
+    <string name="notifications_supplement_action_done">Aldım</string>
+    <string name="notifications_supplement_preset_morning">Sabah</string>
+    <string name="notifications_supplement_preset_lunch">Öğle</string>
+    <string name="notifications_supplement_preset_afternoon">Akşamüstü</string>
+    <string name="notifications_supplement_preset_night">Akşam</string>
+    <string name="notifications_supplement_preset_bedtime">Yatmadan önce</string>
+    <string name="settings_notifications_times_header">Hatırlatıcılar</string>
+    <string name="settings_notifications_times_row">Saat</string>
+    <string name="settings_notifications_times_add">Saat ekle</string>
+    <string name="settings_notifications_times_empty">Saat yok</string>
+    <string name="settings_notifications_times_footer">Her saatte günde bir hatırlatma. Bugün\'de Yapıldı olarak işaretlediğinde veya bildirimde Aldım\'a dokunduğunda günün hatırlatmaları durur.</string>
+    <string name="settings_notifications_group_title">Aynı saatteki takviyeleri grupla</string>
+    <string name="settings_notifications_group_footer">Aynı saatteki takviyeleri tek hatırlatmada birleştirir. Kapalıyken her takviyenin kendi hatırlatması olur.</string>
 </resources>

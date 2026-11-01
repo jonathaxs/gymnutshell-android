@@ -41,8 +41,10 @@ import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.data.CustomGoalCategory
 import com.jonathaxs.gymnutshell.core.domain.CategoryKind
 import com.jonathaxs.gymnutshell.core.domain.GoalCategory
+import com.jonathaxs.gymnutshell.core.domain.ReminderTime
 import com.jonathaxs.gymnutshell.ui.components.CategoryKindPicker
 import com.jonathaxs.gymnutshell.ui.components.CategorySymbolPicker
+import com.jonathaxs.gymnutshell.ui.components.ReminderTimesSection
 import java.text.BreakIterator
 
 /** Formulário de criar/editar meta personalizada — porte de AddTrackingGoalView (iOS). */
@@ -63,6 +65,7 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
     var newCategoryName by remember { mutableStateOf("") }
     var newCategoryKind by remember { mutableStateOf(CategoryKind.Standard) }
     var newCategorySymbol by remember { mutableStateOf(CustomGoalCategory.DEFAULT_SYMBOL_NAME) }
+    var reminderTimes by remember { mutableStateOf<List<ReminderTime>>(emptyList()) }
 
     // Pré-preenche uma vez quando a meta em edição termina de carregar.
     LaunchedEffect(data.editing?.id) {
@@ -78,6 +81,7 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
         unit = editing.unit
         goalText = editing.target.toString()
         incrementText = editing.increment.toString()
+        reminderTimes = data.reminderTimes
     }
 
     val accent = Color(data.accentArgb)
@@ -148,6 +152,7 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
                                     null
                                 },
                                 editingId = data.editing?.id,
+                                reminderTimes = reminderTimes,
                             )
                             onBack()
                         },
@@ -282,6 +287,11 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
                     isError = stepTooLarge,
                     supportingText = errorText(stepTooLarge, R.string.addgoal_warning_step),
                     modifier = Modifier.fillMaxWidth(),
+                )
+            } else {
+                ReminderTimesSection(
+                    times = reminderTimes,
+                    onTimesChange = { reminderTimes = it },
                 )
             }
         }

@@ -20,7 +20,7 @@ interface CustomGoalDao {
     suspend fun getAll(): List<CustomGoal>
 
     @Insert
-    suspend fun insert(goal: CustomGoal)
+    suspend fun insert(goal: CustomGoal): Long
 
     @Update
     suspend fun update(goal: CustomGoal)

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.jonathaxs.gymnutshell.core.backup.BackupService
 import com.jonathaxs.gymnutshell.core.data.ProfileRepository
 import com.jonathaxs.gymnutshell.notifications.GymNotifier
+import com.jonathaxs.gymnutshell.notifications.NotificationScheduler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,6 +27,7 @@ class BackupViewModel(app: Application) : AndroidViewModel(app) {
 
     private val service = BackupService(app.applicationContext)
     private val notifier = GymNotifier(app.applicationContext)
+    private val scheduler = NotificationScheduler(app.applicationContext)
     private val profileRepo = ProfileRepository(app.applicationContext)
 
     private val _status = MutableStateFlow<BackupStatus?>(null)
@@ -67,6 +69,7 @@ class BackupViewModel(app: Application) : AndroidViewModel(app) {
                     } ?: error("sem stream de entrada")
                 }
                 service.importJson(text)
+                scheduler.rescheduleAllActive()
             }.isSuccess
             _status.value = if (ok) BackupStatus.Imported else BackupStatus.Error
         }

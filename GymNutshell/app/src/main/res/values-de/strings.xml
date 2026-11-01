@@ -439,4 +439,21 @@
     <string name="addgoal_dose_footer">Mit „Erledigt“ ist das Tagesziel mit dieser Menge erreicht.</string>
     <string name="today_checkin_pending">Offen</string>
     <string name="today_checkin_done">Erledigt</string>
+
+    <!-- Lembretes por horário dos suplementos -->
+    <string name="notifications_supplement_body">Zeit für %1$s.</string>
+    <string name="notifications_supplement_group_title">💊 Zeit für Supplements</string>
+    <string name="notifications_supplement_action_done">Genommen</string>
+    <string name="notifications_supplement_preset_morning">Morgens</string>
+    <string name="notifications_supplement_preset_lunch">Mittags</string>
+    <string name="notifications_supplement_preset_afternoon">Später Nachmittag</string>
+    <string name="notifications_supplement_preset_night">Abends</string>
+    <string name="notifications_supplement_preset_bedtime">Vor dem Schlafen</string>
+    <string name="settings_notifications_times_header">Erinnerungen</string>
+    <string name="settings_notifications_times_row">Uhrzeit</string>
+    <string name="settings_notifications_times_add">Uhrzeit hinzufügen</string>
+    <string name="settings_notifications_times_empty">Keine Uhrzeit</string>
+    <string name="settings_notifications_times_footer">Eine Erinnerung pro Tag zu jeder Uhrzeit. Die Erinnerungen des Tages enden, wenn du auf Heute Erledigt markierst oder in der Mitteilung auf Genommen tippst.</string>
+    <string name="settings_notifications_group_title">Supplements zur gleichen Zeit bündeln</string>
+    <string name="settings_notifications_group_footer">Fasst Supplements mit derselben Uhrzeit in einer Erinnerung zusammen. Aus: jedes Supplement hat seine eigene.</string>
 </resources>

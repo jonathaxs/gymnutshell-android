@@ -19,6 +19,7 @@ import com.jonathaxs.gymnutshell.core.data.HealthPreferencesRepository
 import com.jonathaxs.gymnutshell.core.data.IntakeRepository
 import com.jonathaxs.gymnutshell.core.data.ProfileRepository
 import com.jonathaxs.gymnutshell.core.data.SettingsRepository
+import com.jonathaxs.gymnutshell.core.data.SupplementCheckInRepository
 import com.jonathaxs.gymnutshell.core.data.TodayPreferencesRepository
 import com.jonathaxs.gymnutshell.core.domain.AppDateFormatters
 import com.jonathaxs.gymnutshell.core.domain.AppTheme
@@ -129,6 +130,7 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
     private val customGoalRepo = CustomGoalRepository(app.applicationContext)
     private val customCategoryRepo = CustomGoalCategoryRepository(app.applicationContext)
     private val goalConfigRepo = GoalConfigRepository(app.applicationContext)
+    private val supplementCheckInRepo = SupplementCheckInRepository(app.applicationContext)
     private val notifier = GymNotifier(app.applicationContext)
     private val scheduler = NotificationScheduler(app.applicationContext)
     private val healthPrefs = HealthPreferencesRepository(app.applicationContext)
@@ -137,6 +139,8 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
     init {
         viewModelScope.launch {
             rolloverIfNeeded()
+            supplementCheckInRepo.applyPending()
+            scheduler.rescheduleSupplementReminders()
             // Após a virada (intakes zerados), tenta preencher Treino/Cardio com o que veio do Health Connect.
             checkWorkoutsFromHealth()
         }
@@ -367,7 +371,11 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
      * Hoje ficava em background. Idempotente — reusa [checkWorkoutsFromHealth], que só preenche zeradas.
      */
     fun refreshWorkoutsFromHealth() {
-        viewModelScope.launch { checkWorkoutsFromHealth() }
+        viewModelScope.launch {
+            rolloverIfNeeded()
+            supplementCheckInRepo.applyPending()
+            checkWorkoutsFromHealth()
+        }
     }
 
     /**

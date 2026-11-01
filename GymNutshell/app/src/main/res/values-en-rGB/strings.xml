@@ -439,4 +439,21 @@
     <string name="addgoal_dose_footer">Marking Done completes the day\'s goal with this amount.</string>
     <string name="today_checkin_pending">Pending</string>
     <string name="today_checkin_done">Done</string>
+
+    <!-- Lembretes por horário dos suplementos -->
+    <string name="notifications_supplement_body">Time to take %1$s.</string>
+    <string name="notifications_supplement_group_title">💊 Supplement time</string>
+    <string name="notifications_supplement_action_done">Taken</string>
+    <string name="notifications_supplement_preset_morning">Morning</string>
+    <string name="notifications_supplement_preset_lunch">Lunch</string>
+    <string name="notifications_supplement_preset_afternoon">Late afternoon</string>
+    <string name="notifications_supplement_preset_night">Evening</string>
+    <string name="notifications_supplement_preset_bedtime">Bedtime</string>
+    <string name="settings_notifications_times_header">Reminders</string>
+    <string name="settings_notifications_times_row">Time</string>
+    <string name="settings_notifications_times_add">Add time</string>
+    <string name="settings_notifications_times_empty">No times set</string>
+    <string name="settings_notifications_times_footer">One reminder a day at each time. The day\'s reminders stop when you mark Done on Today or tap Taken on the notification.</string>
+    <string name="settings_notifications_group_title">Group supplements at the same time</string>
+    <string name="settings_notifications_group_footer">Combines supplements set for the same time into one reminder. When off, each supplement gets its own.</string>
 </resources>

@@ -443,4 +443,21 @@
     <string name="addgoal_dose_footer">Segnando Fatto, l\'obiettivo del giorno è completato con questa quantità.</string>
     <string name="today_checkin_pending">In sospeso</string>
     <string name="today_checkin_done">Fatto</string>
+
+    <!-- Lembretes por horário dos suplementos -->
+    <string name="notifications_supplement_body">È ora di prendere %1$s.</string>
+    <string name="notifications_supplement_group_title">💊 Ora degli integratori</string>
+    <string name="notifications_supplement_action_done">Preso</string>
+    <string name="notifications_supplement_preset_morning">Mattina</string>
+    <string name="notifications_supplement_preset_lunch">Pranzo</string>
+    <string name="notifications_supplement_preset_afternoon">Tardo pomeriggio</string>
+    <string name="notifications_supplement_preset_night">Sera</string>
+    <string name="notifications_supplement_preset_bedtime">Prima di dormire</string>
+    <string name="settings_notifications_times_header">Promemoria</string>
+    <string name="settings_notifications_times_row">Orario</string>
+    <string name="settings_notifications_times_add">Aggiungi orario</string>
+    <string name="settings_notifications_times_empty">Nessun orario</string>
+    <string name="settings_notifications_times_footer">Un promemoria al giorno per ogni orario. I promemoria del giorno si fermano quando segni Fatto in Oggi o tocchi Preso nella notifica.</string>
+    <string name="settings_notifications_group_title">Raggruppa integratori allo stesso orario</string>
+    <string name="settings_notifications_group_footer">Unisce in un solo promemoria gli integratori dello stesso orario. Disattivato, ogni integratore ha il suo.</string>
 </resources>

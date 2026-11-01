@@ -30,11 +30,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jonathaxs.gymnutshell.R
+import com.jonathaxs.gymnutshell.core.data.CustomGoalCategoryRepository
 import com.jonathaxs.gymnutshell.core.data.NotificationPreferencesRepository
+import com.jonathaxs.gymnutshell.core.domain.CategoryKind
 import com.jonathaxs.gymnutshell.core.domain.NotificationKind
 import com.jonathaxs.gymnutshell.core.domain.NotificationSound
+import com.jonathaxs.gymnutshell.core.domain.ReminderTime
 import com.jonathaxs.gymnutshell.notifications.NotificationScheduler
 import com.jonathaxs.gymnutshell.notifications.NotificationStrings
+import com.jonathaxs.gymnutshell.ui.components.ReminderTimesSection
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -50,6 +54,7 @@ fun NotificationIntervalEditScreen(target: String, onBack: () -> Unit) {
     val scope = rememberCoroutineScope()
     val prefs = remember { NotificationPreferencesRepository(context.applicationContext) }
     val scheduler = remember { NotificationScheduler(context.applicationContext) }
+    val customCategoryRepo = remember { CustomGoalCategoryRepository(context.applicationContext) }
 
     val kind = remember(target) {
         if (target.startsWith("kind:")) NotificationKind.fromRaw(target.removePrefix("kind:")) else null
@@ -63,18 +68,32 @@ fun NotificationIntervalEditScreen(target: String, onBack: () -> Unit) {
     var minutes by remember { mutableIntStateOf(120) }
     var sound by remember { mutableStateOf(NotificationSound.Default) }
     var title by remember { mutableStateOf("") }
+    var isCheckIn by remember { mutableStateOf(kind == NotificationKind.Creatine) }
+    var reminderTimes by remember { mutableStateOf<List<ReminderTime>>(emptyList()) }
 
     LaunchedEffect(target) {
         when {
             kind != null -> {
-                minutes = prefs.intervalMinutes(kind)
+                isCheckIn = kind == NotificationKind.Creatine
+                if (isCheckIn) {
+                    reminderTimes = prefs.reminderTimes(NotificationPreferencesRepository.CREATINE_REMINDER_ID)
+                } else {
+                    minutes = prefs.intervalMinutes(kind)
+                }
                 sound = prefs.sound(kind)
                 title = resources.getString(NotificationStrings.titleRes(kind))
             }
             customId != null -> {
-                minutes = prefs.customIntervalMinutes(customId)
+                val goal = scheduler.customGoal(customId)
+                val categories = customCategoryRepo.all()
+                isCheckIn = goal?.kind(categories) == CategoryKind.CheckIn
+                if (isCheckIn) {
+                    reminderTimes = prefs.reminderTimes(NotificationPreferencesRepository.customReminderId(customId))
+                } else {
+                    minutes = prefs.customIntervalMinutes(customId)
+                }
                 sound = prefs.customSound(customId)
-                title = scheduler.customGoal(customId)?.let { "${it.emoji} ${it.name}" }.orEmpty()
+                title = goal?.let { "${it.emoji} ${it.name}" }.orEmpty()
             }
         }
     }
@@ -83,12 +102,24 @@ fun NotificationIntervalEditScreen(target: String, onBack: () -> Unit) {
         scope.launch {
             when {
                 kind != null -> {
-                    if (kind.isEditable) prefs.setIntervalMinutes(minutes, kind)
+                    if (isCheckIn) {
+                        val id = NotificationPreferencesRepository.CREATINE_REMINDER_ID
+                        prefs.setReminderTimes(reminderTimes, id)
+                        prefs.setEnabled(reminderTimes.isNotEmpty(), kind)
+                    } else if (kind.isEditable) {
+                        prefs.setIntervalMinutes(minutes, kind)
+                    }
                     prefs.setSound(sound, kind)
                     if (kind.isIntervalBased) scheduler.reschedule(kind)
                 }
                 customId != null -> {
-                    prefs.setCustomIntervalMinutes(minutes, customId)
+                    if (isCheckIn) {
+                        val id = NotificationPreferencesRepository.customReminderId(customId)
+                        prefs.setReminderTimes(reminderTimes, id)
+                        prefs.setCustomEnabled(reminderTimes.isNotEmpty(), customId)
+                    } else {
+                        prefs.setCustomIntervalMinutes(minutes, customId)
+                    }
                     prefs.setCustomSound(sound, customId)
                     scheduler.rescheduleCustom(customId)
                 }
@@ -107,7 +138,12 @@ fun NotificationIntervalEditScreen(target: String, onBack: () -> Unit) {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            if (showsInterval) {
+            if (isCheckIn) {
+                ReminderTimesSection(
+                    times = reminderTimes,
+                    onTimesChange = { reminderTimes = it },
+                )
+            } else if (showsInterval) {
                 Text(
                     stringResource(R.string.settings_notifications_interval_header),
                     style = MaterialTheme.typography.titleSmall,

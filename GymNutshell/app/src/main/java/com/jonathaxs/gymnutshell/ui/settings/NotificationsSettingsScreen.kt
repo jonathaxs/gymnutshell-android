@@ -50,6 +50,7 @@ import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
 import com.jonathaxs.gymnutshell.ui.components.GroupSection
 import com.jonathaxs.gymnutshell.ui.components.PermissionCard
 import com.jonathaxs.gymnutshell.ui.components.PermissionCardState
+import com.jonathaxs.gymnutshell.ui.components.reminderTimesSummary
 import com.jonathaxs.gymnutshell.ui.theme.color
 
 // Kinds da seção Sistema e da seção Metas (mesma ordem do iOS).
@@ -148,16 +149,50 @@ fun NotificationsSettingsScreen(
                 }
             }
 
+            if (ui.hasCheckInGoals) {
+                GroupSection(footer = stringResource(R.string.settings_notifications_group_footer)) {
+                    GroupRow(
+                        title = stringResource(R.string.settings_notifications_group_title),
+                        enabled = allowed,
+                        trailing = {
+                            Switch(
+                                checked = ui.groupSupplements,
+                                onCheckedChange = { viewModel.setGroupSupplements(it) },
+                                enabled = allowed,
+                            )
+                        },
+                    )
+                }
+            }
+
             GroupSection(title = stringResource(R.string.settings_notifications_section_goals)) {
                 GOAL_KINDS.forEachIndexed { index, kind ->
                     if (index > 0) GroupRowDivider()
+                    val isCheckIn = kind == NotificationKind.Creatine
+                    val times = if (isCheckIn) ui.timesFor(kind) else emptyList()
+                    val description = if (isCheckIn) {
+                        reminderTimesSummary(context, times)
+                    } else {
+                        stringResource(NotificationStrings.descRes(kind))
+                    }
+                    val checked = if (isCheckIn) {
+                        ui.isEnabled(kind) && times.isNotEmpty()
+                    } else {
+                        ui.isEnabled(kind)
+                    }
                     NotificationRow(
                         leadingEmoji = kind.emoji,
                         title = stringResource(NotificationStrings.titleRes(kind)),
-                        description = stringResource(NotificationStrings.descRes(kind)),
-                        checked = ui.isEnabled(kind),
+                        description = description,
+                        checked = checked,
                         enabled = allowed,
-                        onCheckedChange = { viewModel.setEnabled(kind, it) },
+                        onCheckedChange = { newValue ->
+                            if (isCheckIn && newValue && times.isEmpty()) {
+                                onEditTarget("kind:${kind.rawValue}")
+                            } else {
+                                viewModel.setEnabled(kind, newValue)
+                            }
+                        },
                         onOpen = { onEditTarget("kind:${kind.rawValue}") },
                     )
                 }
@@ -167,13 +202,31 @@ fun NotificationsSettingsScreen(
                 GroupSection(title = stringResource(R.string.settings_notifications_section_custom)) {
                     ui.customGoals.forEachIndexed { index, goal ->
                         if (index > 0) GroupRowDivider()
+                        val isCheckIn = ui.isCustomCheckIn(goal.id)
+                        val times = if (isCheckIn) ui.timesForCustom(goal.id) else emptyList()
+                        val description = if (isCheckIn) {
+                            reminderTimesSummary(context, times)
+                        } else {
+                            stringResource(R.string.notif_custom_desc)
+                        }
+                        val checked = if (isCheckIn) {
+                            ui.isCustomEnabled(goal.id) && times.isNotEmpty()
+                        } else {
+                            ui.isCustomEnabled(goal.id)
+                        }
                         NotificationRow(
                             leadingEmoji = goal.emoji,
                             title = goal.name,
-                            description = stringResource(R.string.notif_custom_desc),
-                            checked = ui.isCustomEnabled(goal.id),
+                            description = description,
+                            checked = checked,
                             enabled = allowed,
-                            onCheckedChange = { viewModel.setCustomEnabled(goal.id, it) },
+                            onCheckedChange = { newValue ->
+                                if (isCheckIn && newValue && times.isEmpty()) {
+                                    onEditTarget("custom:${goal.id}")
+                                } else {
+                                    viewModel.setCustomEnabled(goal.id, newValue)
+                                }
+                            },
                             onOpen = { onEditTarget("custom:${goal.id}") },
                         )
                     }

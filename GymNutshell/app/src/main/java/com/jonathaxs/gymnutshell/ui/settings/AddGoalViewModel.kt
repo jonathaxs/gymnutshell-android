@@ -7,9 +7,12 @@ import com.jonathaxs.gymnutshell.core.data.CustomGoal
 import com.jonathaxs.gymnutshell.core.data.CustomGoalCategory
 import com.jonathaxs.gymnutshell.core.data.CustomGoalCategoryRepository
 import com.jonathaxs.gymnutshell.core.data.CustomGoalRepository
+import com.jonathaxs.gymnutshell.core.data.NotificationPreferencesRepository
 import com.jonathaxs.gymnutshell.core.data.SettingsRepository
 import com.jonathaxs.gymnutshell.core.domain.CategoryKind
 import com.jonathaxs.gymnutshell.core.domain.GoalCategory
+import com.jonathaxs.gymnutshell.core.domain.ReminderTime
+import com.jonathaxs.gymnutshell.notifications.NotificationScheduler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -30,6 +33,7 @@ data class AddGoalData(
     val customCategories: List<CustomGoalCategory> = emptyList(),
     val accentArgb: Long = 0xFF007AFF,
     val editing: CustomGoal? = null,
+    val reminderTimes: List<ReminderTime> = emptyList(),
 )
 
 /**
@@ -41,6 +45,8 @@ class AddGoalViewModel(app: Application) : AndroidViewModel(app) {
     private val customGoalRepo = CustomGoalRepository(app.applicationContext)
     private val customCategoryRepo = CustomGoalCategoryRepository(app.applicationContext)
     private val settingsRepo = SettingsRepository(app.applicationContext)
+    private val notifPrefs = NotificationPreferencesRepository(app.applicationContext)
+    private val scheduler = NotificationScheduler(app.applicationContext)
 
     private val _data = MutableStateFlow(AddGoalData())
     val data: StateFlow<AddGoalData> = _data.asStateFlow()
@@ -50,12 +56,19 @@ class AddGoalViewModel(app: Application) : AndroidViewModel(app) {
         if (_data.value.loaded) return
         viewModelScope.launch {
             val goals = customGoalRepo.all()
+            val editing = goalId?.let { id -> goals.firstOrNull { it.id == id } }
+            val loadedTimes = if (editing != null) {
+                notifPrefs.reminderTimes(NotificationPreferencesRepository.customReminderId(editing.id))
+            } else {
+                emptyList()
+            }
             _data.value = AddGoalData(
                 loaded = true,
                 existingGoals = goals,
                 customCategories = customCategoryRepo.all(),
                 accentArgb = settingsRepo.accentColor.first().argb,
-                editing = goalId?.let { id -> goals.firstOrNull { it.id == id } },
+                editing = editing,
+                reminderTimes = loadedTimes,
             )
         }
     }
@@ -70,6 +83,7 @@ class AddGoalViewModel(app: Application) : AndroidViewModel(app) {
         selection: CategorySelection,
         newCategory: Triple<String, CategoryKind, String>?,
         editingId: Long?,
+        reminderTimes: List<ReminderTime> = emptyList(),
     ) {
         viewModelScope.launch {
             var resolved = selection
@@ -86,7 +100,7 @@ class AddGoalViewModel(app: Application) : AndroidViewModel(app) {
             val customCategoryId = (resolved as? CategorySelection.Custom)?.id
 
             val editing = editingId?.let { id -> customGoalRepo.all().firstOrNull { it.id == id } }
-            if (editing != null) {
+            val savedId = if (editing != null) {
                 customGoalRepo.update(
                     editing.copy(
                         emoji = emoji.trim(),
@@ -98,6 +112,7 @@ class AddGoalViewModel(app: Application) : AndroidViewModel(app) {
                         customCategoryId = customCategoryId,
                     ),
                 )
+                editing.id
             } else {
                 customGoalRepo.add(
                     CustomGoal(
@@ -110,6 +125,20 @@ class AddGoalViewModel(app: Application) : AndroidViewModel(app) {
                         customCategoryId = customCategoryId,
                     ),
                 )
+            }
+
+            val categories = customCategoryRepo.all()
+            val isCheckIn = when (val sel = resolved) {
+                is CategorySelection.Builtin -> sel.category.kind == CategoryKind.CheckIn
+                is CategorySelection.Custom ->
+                    categories.firstOrNull { it.id == sel.id }?.kind == CategoryKind.CheckIn
+            }
+            val loadedTimes = _data.value.reminderTimes
+            if (isCheckIn && reminderTimes.distinct().sorted() != loadedTimes.distinct().sorted()) {
+                val remId = NotificationPreferencesRepository.customReminderId(savedId)
+                notifPrefs.setReminderTimes(reminderTimes, remId)
+                notifPrefs.setCustomEnabled(reminderTimes.isNotEmpty(), savedId)
+                scheduler.rescheduleCustom(savedId)
             }
         }
     }
