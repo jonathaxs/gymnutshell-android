@@ -538,7 +538,7 @@
 
     <!-- Lembretes por horário dos suplementos -->
     <string name="notifications_supplement_body">Hora de tomar %1$s.</string>
-    <string name="notifications_supplement_group_title">💊 Hora dos suplementos</string>
+    <string name="notifications_supplement_group_title">⏰ Hora do check-in</string>
     <string name="notifications_supplement_action_done">Tomei</string>
     <string name="notifications_supplement_preset_morning">Manhã</string>
     <string name="notifications_supplement_preset_lunch">Almoço</string>
@@ -550,6 +550,6 @@
     <string name="settings_notifications_times_add">Adicionar horário</string>
     <string name="settings_notifications_times_empty">Nenhum horário</string>
     <string name="settings_notifications_times_footer">Um aviso por dia em cada horário. Os avisos do dia param quando você marca Feito na Hoje ou toca em Tomei na notificação.</string>
-    <string name="settings_notifications_group_title">Agrupar suplementos do mesmo horário</string>
-    <string name="settings_notifications_group_footer">Junta num aviso só os suplementos marcados no mesmo horário. Desligado, cada suplemento tem o seu aviso.</string>
+    <string name="settings_notifications_group_title">Agrupar metas de check-in do mesmo horário</string>
+    <string name="settings_notifications_group_footer">Junta num aviso só as metas de check-in marcadas no mesmo horário. Desligado, cada meta tem o seu aviso.</string>
 </resources>

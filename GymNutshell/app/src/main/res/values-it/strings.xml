@@ -446,7 +446,7 @@
 
     <!-- Lembretes por horário dos suplementos -->
     <string name="notifications_supplement_body">È ora di prendere %1$s.</string>
-    <string name="notifications_supplement_group_title">💊 Ora degli integratori</string>
+    <string name="notifications_supplement_group_title">⏰ Ora del check-in</string>
     <string name="notifications_supplement_action_done">Preso</string>
     <string name="notifications_supplement_preset_morning">Mattina</string>
     <string name="notifications_supplement_preset_lunch">Pranzo</string>
@@ -458,6 +458,6 @@
     <string name="settings_notifications_times_add">Aggiungi orario</string>
     <string name="settings_notifications_times_empty">Nessun orario</string>
     <string name="settings_notifications_times_footer">Un promemoria al giorno per ogni orario. I promemoria del giorno si fermano quando segni Fatto in Oggi o tocchi Preso nella notifica.</string>
-    <string name="settings_notifications_group_title">Raggruppa integratori allo stesso orario</string>
-    <string name="settings_notifications_group_footer">Unisce in un solo promemoria gli integratori dello stesso orario. Disattivato, ogni integratore ha il suo.</string>
+    <string name="settings_notifications_group_title">Raggruppa obiettivi check-in allo stesso orario</string>
+    <string name="settings_notifications_group_footer">Unisce in un solo promemoria gli obiettivi check-in dello stesso orario. Disattivato, ogni obiettivo ha il suo.</string>
 </resources>

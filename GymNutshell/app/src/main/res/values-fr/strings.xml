@@ -446,7 +446,7 @@
 
     <!-- Lembretes por horário dos suplementos -->
     <string name="notifications_supplement_body">C\'est l\'heure de prendre %1$s.</string>
-    <string name="notifications_supplement_group_title">💊 L\'heure des compléments</string>
+    <string name="notifications_supplement_group_title">⏰ L\'heure du check-in</string>
     <string name="notifications_supplement_action_done">Pris</string>
     <string name="notifications_supplement_preset_morning">Matin</string>
     <string name="notifications_supplement_preset_lunch">Déjeuner</string>
@@ -458,6 +458,6 @@
     <string name="settings_notifications_times_add">Ajouter une heure</string>
     <string name="settings_notifications_times_empty">Aucune heure</string>
     <string name="settings_notifications_times_footer">Un rappel par jour à chaque heure. Les rappels du jour s\'arrêtent quand vous marquez Fait sur Aujourd\'hui ou touchez Pris dans la notification.</string>
-    <string name="settings_notifications_group_title">Regrouper les compléments à la même heure</string>
-    <string name="settings_notifications_group_footer">Réunit en un seul rappel les compléments prévus à la même heure. Désactivé, chaque complément a son rappel.</string>
+    <string name="settings_notifications_group_title">Regrouper les objectifs check-in à la même heure</string>
+    <string name="settings_notifications_group_footer">Réunit en un seul rappel les objectifs check-in prévus à la même heure. Désactivé, chaque objectif a son rappel.</string>
 </resources>
