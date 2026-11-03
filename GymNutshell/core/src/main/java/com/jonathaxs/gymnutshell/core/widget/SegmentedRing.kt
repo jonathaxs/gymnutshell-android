@@ -2,6 +2,7 @@ package com.jonathaxs.gymnutshell.core.widget
 
 import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
 import kotlin.math.PI
+import kotlin.math.floor
 
 /**
  * Lógica pura do anel de progresso em 5 segmentos arredondados — porte de SegmentedProgressRing (iOS).
@@ -32,11 +33,14 @@ object SegmentedRing {
     val SEGMENT_COLORS: List<Long> = PALETTES.map { it.base }
 
     /** Cor do segmento em que o progresso está (0.0..1.0), igual ao ringColor do WatchHeroView (iOS). */
-    fun colorForProgress(progress: Double): Long {
-        val clamped = progress.coerceIn(0.0, 1.0)
-        val index = (clamped * SEGMENT_COUNT).toInt().coerceIn(0, SEGMENT_COUNT - 1)
-        return SEGMENT_COLORS[index]
-    }
+    fun colorForProgress(progress: Double): Long = colorForTier(DailyAchievement.from(progress))
+
+    /**
+     * Progresso na % inteira (arredondada para baixo), a mesma do número e do nível. Sem isso, em 80,4%
+     * o segmento roxo já começava a encher enquanto o número dizia 80% e o emoji ainda era o do nível 4.
+     */
+    private fun wholePercent(progress: Double): Double =
+        floor(progress.coerceIn(0.0, 1.0) * 100) / 100
 
     /** Retorna a cor ARGB do nível de conquista (Level 1..5). */
     fun colorForTier(tier: DailyAchievement): Long = SEGMENT_COLORS[tier.number - 1]
@@ -45,7 +49,7 @@ object SegmentedRing {
      * Fração de preenchimento (0.0f..1.0f) de um segmento específico para um dado progresso.
      */
     fun fraction(index: Int, progress: Double): Float {
-        val clamped = progress.coerceIn(0.0, 1.0)
+        val clamped = wholePercent(progress)
         return (clamped * SEGMENT_COUNT - index).coerceIn(0.0, 1.0).toFloat()
     }
 
@@ -56,7 +60,7 @@ object SegmentedRing {
      * Lista com a fração de preenchimento (0.0f..1.0f) de cada um dos 5 segmentos.
      */
     fun fractions(progress: Double): List<Float> {
-        val clamped = progress.coerceIn(0.0, 1.0)
+        val clamped = wholePercent(progress)
         return List(SEGMENT_COUNT) { index ->
             (clamped * SEGMENT_COUNT - index).coerceIn(0.0, 1.0).toFloat()
         }

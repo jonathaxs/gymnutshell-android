@@ -86,7 +86,7 @@ class SegmentedRingTest {
     @Test
     fun `cor por progresso segue a cor do segmento atual`() {
         assertEquals(0xFFFE6E55L, SegmentedRing.colorForProgress(0.0))
-        assertEquals(0xFFFEC239L, SegmentedRing.colorForProgress(0.20))
+        assertEquals(0xFFFE6E55L, SegmentedRing.colorForProgress(0.20))
         assertEquals(0xFFFEC239L, SegmentedRing.colorForProgress(0.21))
         assertEquals(0xFF46DA7FL, SegmentedRing.colorForProgress(0.50))
         assertEquals(0xFF47468FL, SegmentedRing.colorForProgress(1.0))
@@ -115,5 +115,15 @@ class SegmentedRingTest {
         assertEquals(expectedTotalSweep * 0.5f, segments[2].sweepFilled, 0.001f)
         assertEquals(0f, segments[3].sweepFilled, 0.0001f)
         assertEquals(0f, segments[4].sweepFilled, 0.0001f)
+    }
+
+    @Test
+    fun `roxo so comeca a encher junto com o nivel 5`() {
+        // 80,4% aparece como 80%: nível 4 e roxo vazio.
+        assertEquals(0f, SegmentedRing.fractions(0.804)[4], 0.0001f)
+        assertEquals(DailyAchievement.Level4, DailyAchievement.from(0.804))
+        // 81%: nível 5 e o roxo começa a encher.
+        assertTrue(SegmentedRing.fractions(0.81)[4] > 0f)
+        assertEquals(DailyAchievement.Level5, DailyAchievement.from(0.81))
     }
 }
