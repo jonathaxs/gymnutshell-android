@@ -37,6 +37,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.Animatable
 import android.Manifest
 import android.os.Build
+import android.text.format.DateFormat
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -82,6 +83,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -92,8 +94,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -107,6 +113,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -115,6 +123,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.health.connect.client.PermissionController
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -123,9 +133,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.ui.components.PermissionCard
+import com.jonathaxs.gymnutshell.ui.components.formatted
 import com.jonathaxs.gymnutshell.core.domain.AppTheme
 import com.jonathaxs.gymnutshell.core.domain.ControlStyle
 import com.jonathaxs.gymnutshell.core.domain.MeasurementSystem
+import com.jonathaxs.gymnutshell.core.domain.ReminderTime
 import com.jonathaxs.gymnutshell.core.domain.ThemeCategory
 import com.jonathaxs.gymnutshell.core.domain.UnitConverter
 import com.jonathaxs.gymnutshell.core.domain.UserGoal
@@ -134,6 +146,7 @@ import com.jonathaxs.gymnutshell.ui.settings.ThemeDetailsButton
 import com.jonathaxs.gymnutshell.ui.settings.categoryNameRes
 import com.jonathaxs.gymnutshell.ui.settings.themeNameRes
 import com.jonathaxs.gymnutshell.ui.theme.color
+import com.jonathaxs.gymnutshell.ui.today.CategoryPopoverPositionProvider
 import kotlin.math.roundToInt
 
 /**
@@ -329,6 +342,11 @@ fun WelcomeScreen(viewModel: WelcomeViewModel = viewModel()) {
                                 onRequestHealth = {
                                     healthPermissionLauncher.launch(viewModel.healthPermissions)
                                 },
+                                onOpenNotificationsSetup = viewModel::openNotificationsSetup,
+                                onDismissNotificationsSetup = viewModel::dismissNotificationsSetup,
+                                onWaterReminderChange = viewModel::setWaterReminderEnabled,
+                                onCreatineReminderChange = viewModel::setCreatineReminderEnabled,
+                                onCreatineTimeChange = viewModel::setCreatineReminderTime,
                             )
                         }
                     }
@@ -1617,6 +1635,11 @@ private fun ReadyStep(
     accentColor: Color,
     onRequestNotifications: () -> Unit,
     onRequestHealth: () -> Unit,
+    onOpenNotificationsSetup: () -> Unit,
+    onDismissNotificationsSetup: () -> Unit,
+    onWaterReminderChange: (Boolean) -> Unit,
+    onCreatineReminderChange: (Boolean) -> Unit,
+    onCreatineTimeChange: (ReminderTime) -> Unit,
 ) {
     // Conteúdo centralizado na tela; Vamos lá / Voltar sobem pra logo abaixo das permissões.
     CenteredStepColumn {
@@ -1627,17 +1650,32 @@ private fun ReadyStep(
             accentColor = accentColor,
         )
 
-        // Permissão de Notificações
-        PermissionCard(
-            modifier = Modifier.padding(top = 16.dp),
-            icon = Icons.Default.Notifications,
-            iconBackgroundColor = Color(0xFFFF3B30),
-            title = stringResource(R.string.welcome_ready_notifications_title),
-            description = stringResource(R.string.welcome_ready_notifications_desc),
-            state = state.notificationsPermissionState,
-            accentColor = accentColor,
-            onAllow = onRequestNotifications,
-        )
+        // Permissão de Notificações + balão rápido de lembretes ao permitir
+        Box(modifier = Modifier.fillMaxWidth()) {
+            PermissionCard(
+                modifier = Modifier.padding(top = 16.dp),
+                icon = Icons.Default.Notifications,
+                iconBackgroundColor = Color(0xFFFF3B30),
+                title = stringResource(R.string.welcome_ready_notifications_title),
+                description = stringResource(R.string.welcome_ready_notifications_desc),
+                state = state.notificationsPermissionState,
+                accentColor = accentColor,
+                onAllow = onRequestNotifications,
+                onAllowedClick = onOpenNotificationsSetup,
+                allowedClickHint = stringResource(R.string.a11y_welcome_ready_notifications_setup_hint),
+            )
+
+            if (state.showNotificationsSetup) {
+                WelcomeNotificationsPopover(
+                    state = state,
+                    accentColor = accentColor,
+                    onDismiss = onDismissNotificationsSetup,
+                    onWaterReminderChange = onWaterReminderChange,
+                    onCreatineReminderChange = onCreatineReminderChange,
+                    onCreatineTimeChange = onCreatineTimeChange,
+                )
+            }
+        }
 
         // Permissão de Saúde (Health Connect, se disponível no aparelho)
         if (state.isHealthAvailable) {
@@ -1654,5 +1692,213 @@ private fun ReadyStep(
         }
         Spacer(Modifier.height(16.dp))
         WelcomeButtonsSlot(WelcomeStep.Ready)
+    }
+}
+
+/**
+ * Balão rápido logo depois de aceitar as notificações na Welcome:
+ * Água e, se o usuário incluiu na etapa de metas, Creatina (com horário).
+ * Porte de WelcomeNotificationsPopover.swift (iOS).
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun WelcomeNotificationsPopover(
+    state: WelcomeUiState,
+    accentColor: Color,
+    onDismiss: () -> Unit,
+    onWaterReminderChange: (Boolean) -> Unit,
+    onCreatineReminderChange: (Boolean) -> Unit,
+    onCreatineTimeChange: (ReminderTime) -> Unit,
+) {
+    val context = LocalContext.current
+    val density = LocalDensity.current
+    val configuration = LocalConfiguration.current
+    val maxAvailableWidth = (configuration.screenWidthDp.dp - 24.dp).coerceAtLeast(240.dp)
+    val popoverWidth = minOf(320.dp, maxAvailableWidth)
+    val positionProvider = remember(density) {
+        CategoryPopoverPositionProvider(marginDp = 8.dp, density = density)
+    }
+
+    var showTimePicker by remember { mutableStateOf(false) }
+
+    Popup(
+        popupPositionProvider = positionProvider,
+        onDismissRequest = onDismiss,
+        properties = PopupProperties(focusable = true),
+    ) {
+        var visible by remember { mutableStateOf(false) }
+        LaunchedEffect(Unit) { visible = true }
+
+        val scale by animateFloatAsState(
+            targetValue = if (visible) 1f else 0.92f,
+            animationSpec = spring(dampingRatio = 0.8f, stiffness = 520f),
+            label = "welcome_notif_popover_scale",
+        )
+        val alpha by animateFloatAsState(
+            targetValue = if (visible) 1f else 0f,
+            animationSpec = tween(durationMillis = 150),
+            label = "welcome_notif_popover_alpha",
+        )
+
+        Surface(
+            modifier = Modifier
+                .width(popoverWidth)
+                .scale(scale)
+                .alpha(alpha),
+            shape = RoundedCornerShape(22.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            tonalElevation = 6.dp,
+            shadowElevation = 10.dp,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f)),
+        ) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = stringResource(R.string.welcome_ready_notifications_setup_title),
+                    style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .semantics { heading() },
+                )
+
+                Surface(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(14.dp),
+                    color = MaterialTheme.colorScheme.surface,
+                ) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
+                        // Água
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 14.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ) {
+                            Text(
+                                text = "💧 " + stringResource(R.string.today_water),
+                                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
+                                color = MaterialTheme.colorScheme.onSurface,
+                            )
+                            Switch(
+                                checked = state.waterReminderEnabled,
+                                onCheckedChange = onWaterReminderChange,
+                                colors = SwitchDefaults.colors(checkedTrackColor = accentColor),
+                            )
+                        }
+
+                        // Creatina (só quando incluída nas metas da Welcome)
+                        if (state.includeCreatine) {
+                            HorizontalDivider(
+                                color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
+                            )
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 14.dp, vertical = 6.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                            ) {
+                                Text(
+                                    text = "🧪 " + stringResource(R.string.today_creatine),
+                                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Medium),
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                )
+                                Switch(
+                                    checked = state.creatineReminderEnabled,
+                                    onCheckedChange = onCreatineReminderChange,
+                                    colors = SwitchDefaults.colors(checkedTrackColor = accentColor),
+                                )
+                            }
+
+                            AnimatedVisibility(
+                                visible = state.creatineReminderEnabled,
+                                enter = fadeIn(tween(180)) + expandVertically(tween(180)),
+                                exit = fadeOut(tween(150)) + shrinkVertically(tween(150)),
+                            ) {
+                                Column(modifier = Modifier.fillMaxWidth()) {
+                                    HorizontalDivider(
+                                        color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f),
+                                    )
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .clickable(role = Role.Button) { showTimePicker = true }
+                                            .padding(horizontal = 14.dp, vertical = 12.dp),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                    ) {
+                                        Text(
+                                            text = stringResource(R.string.settings_notifications_times_row),
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            color = MaterialTheme.colorScheme.onSurface,
+                                        )
+                                        Surface(
+                                            shape = RoundedCornerShape(8.dp),
+                                            color = accentColor.copy(alpha = 0.14f),
+                                        ) {
+                                            Text(
+                                                text = state.creatineReminderTime.formatted(context),
+                                                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold),
+                                                color = accentColor,
+                                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                                            )
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Text(
+                    text = stringResource(R.string.welcome_ready_notifications_setup_footer),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+            }
+        }
+    }
+
+    if (showTimePicker) {
+        val is24Hour = DateFormat.is24HourFormat(context)
+        val pickerState = rememberTimePickerState(
+            initialHour = state.creatineReminderTime.hour,
+            initialMinute = state.creatineReminderTime.minute,
+            is24Hour = is24Hour,
+        )
+        AlertDialog(
+            onDismissRequest = { showTimePicker = false },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onCreatineTimeChange(ReminderTime(pickerState.hour, pickerState.minute))
+                        showTimePicker = false
+                    }
+                ) {
+                    Text(stringResource(R.string.action_save), color = accentColor)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showTimePicker = false }) {
+                    Text(stringResource(R.string.backup_cancel))
+                }
+            },
+            text = {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    TimePicker(state = pickerState)
+                }
+            },
+        )
     }
 }

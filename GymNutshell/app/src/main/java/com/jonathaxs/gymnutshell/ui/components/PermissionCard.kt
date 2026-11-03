@@ -1,6 +1,7 @@
 package com.jonathaxs.gymnutshell.ui.components
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -21,9 +23,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.jonathaxs.gymnutshell.R
@@ -45,6 +51,8 @@ fun PermissionCard(
     onAllow: () -> Unit,
     modifier: Modifier = Modifier,
     accentColor: Color = MaterialTheme.colorScheme.primary,
+    onAllowedClick: (() -> Unit)? = null,
+    allowedClickHint: String? = null,
 ) {
     Surface(
         modifier = modifier.fillMaxWidth(),
@@ -99,7 +107,26 @@ fun PermissionCard(
                     }
                 }
                 PermissionCardState.Allowed -> {
+                    val allowedText = stringResource(R.string.welcome_ready_allowed)
+                    val rowModifier = if (onAllowedClick != null) {
+                        Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable(
+                                role = Role.Button,
+                                onClickLabel = allowedClickHint,
+                                onClick = onAllowedClick,
+                            )
+                            .semantics(mergeDescendants = true) {
+                                if (allowedClickHint != null) {
+                                    contentDescription = "$allowedText. $allowedClickHint"
+                                }
+                            }
+                            .padding(vertical = 4.dp, horizontal = 2.dp)
+                    } else {
+                        Modifier
+                    }
                     Row(
+                        modifier = rowModifier,
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
                     ) {
@@ -110,10 +137,18 @@ fun PermissionCard(
                             modifier = Modifier.size(18.dp),
                         )
                         Text(
-                            text = stringResource(R.string.welcome_ready_allowed),
+                            text = allowedText,
                             style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
                             color = Color(0xFF34C759),
                         )
+                        if (onAllowedClick != null) {
+                            Icon(
+                                imageVector = Icons.Default.KeyboardArrowDown,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(16.dp),
+                            )
+                        }
                     }
                 }
                 PermissionCardState.Requested -> {

@@ -95,8 +95,8 @@
     <string name="color_orange">Naranja</string>
     <string name="color_cyan">Cian</string>
     <string name="color_pink">Rosa</string>
-    <string name="settings_section_data">Tus datos</string>
-    <string name="settings_profile_title">Perfil</string>
+    <string name="settings_section_data">Perfil</string>
+    <string name="settings_profile_title">Tus datos</string>
     <string name="settings_profile_section_optional">Opcional</string>
     <string name="settings_profile_name">Nombre</string>
     <string name="settings_profile_name_placeholder">Opcional</string>
@@ -151,7 +151,7 @@
     <string name="goaldetail_increment_stepper">Ajustar paso</string>
     <string name="goaldetail_footer">Cambiar esto no afecta a los registros pasados.</string>
     <string name="goaldetail_increment_footer">El paso es cuánto avanza el control deslizante hacia el valor objetivo.</string>
-    <string name="a11y_add_goal">Nueva meta de seguimiento</string>
+    <string name="a11y_add_goal">Añadir</string>
     <string name="a11y_edit_category">Editar categoría</string>
     <string name="cd_move_up">Mover hacia arriba</string>
     <string name="cd_move_down">Mover hacia abajo</string>
@@ -199,6 +199,9 @@
     <string name="welcome_ready_allowed">Permitido</string>
     <string name="welcome_ready_requested">Solicitado</string>
     <string name="welcome_ready_denied">Denegado</string>
+    <string name="welcome_ready_notifications_setup_title">¿Qué te recordamos?</string>
+    <string name="welcome_ready_notifications_setup_footer">Puedes cambiar todo esto luego en Ajustes › Notificaciones.</string>
+    <string name="a11y_welcome_ready_notifications_setup_hint">Toca para elegir los recordatorios.</string>
     <string name="welcome_button_continue">Continuar</string>
     <string name="welcome_button_start">¡Vamos!</string>
     <string name="welcome_button_back">Atrás</string>
@@ -220,7 +223,7 @@
     <string name="favorite_exercise_traps">Trapecios</string>
     <string name="favorite_exercise_forearms">Antebrazos</string>
     <string name="favorite_exercise_calves">Pantorrillas</string>
-    <string name="settings_theme">Emojis</string>
+    <string name="settings_theme">Emoji</string>
     <string name="theme_cat_sport">Deporte</string>
     <string name="theme_cat_animals">Animales</string>
     <string name="theme_cat_warrior">Héroe</string>
@@ -437,8 +440,10 @@
     <string name="category_kind_rest_day">Con descanso</string>
     <string name="category_kind_check_in">Check-in</string>
     <string name="category_kind_standard_footer">Registra las metas poco a poco con el control deslizante o los botones − / +.</string>
-    <string name="category_kind_rest_day_footer">Como Estándar, con un botón ON/OFF para marcar el día de descanso.</string>
+    <string name="category_kind_rest_day_footer">Con un botón ON/OFF para marcar el día de descanso.</string>
     <string name="category_kind_check_in_footer">Cada meta se marca una vez al día: Pendiente o Hecho.</string>
+    <string name="addgoal_category_kind_footer">Esta categoría es del tipo «%1$s». %2$s</string>
+    <string name="settings_goals_add_to_category">Añadir meta</string>
     <string name="addgoal_section_dose">Dosis</string>
     <string name="addgoal_dose_footer">Al marcar Hecho, la meta del día se completa con esta cantidad.</string>
     <string name="today_checkin_pending">Pendiente</string>

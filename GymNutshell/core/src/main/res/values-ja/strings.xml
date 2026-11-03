@@ -76,9 +76,9 @@
     <string name="tier_plant_level4">クリスマスツリー</string>
     <string name="tier_plant_level5">大森林</string>
     <string name="tier_astronaut_level1">宇宙飛行士</string>
-    <string name="tier_astronaut_level2">ロケット</string>
-    <string name="tier_astronaut_level3">空飛ぶ円盤</string>
-    <string name="tier_astronaut_level4">エイリアン</string>
+    <string name="tier_astronaut_level2">エイリアン</string>
+    <string name="tier_astronaut_level3">ロケット</string>
+    <string name="tier_astronaut_level4">空飛ぶ円盤</string>
     <string name="tier_astronaut_level5">ターディス</string>
     <string name="tier_celestial_level1">彗星</string>
     <string name="tier_celestial_level2">月</string>
@@ -88,8 +88,8 @@
     <string name="tier_champion_level1">ブロンズ</string>
     <string name="tier_champion_level2">シルバー</string>
     <string name="tier_champion_level3">ゴールド</string>
-    <string name="tier_champion_level4">ダイヤモンド</string>
-    <string name="tier_champion_level5">トロフィー</string>
+    <string name="tier_champion_level4">トロフィー</string>
+    <string name="tier_champion_level5">ダイヤモンド</string>
     <string name="tier_number_level1">ワン</string>
     <string name="tier_number_level2">ツー</string>
     <string name="tier_number_level3">スリー</string>

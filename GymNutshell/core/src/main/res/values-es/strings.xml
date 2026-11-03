@@ -76,9 +76,9 @@
     <string name="tier_plant_level4">Árbol de Navidad</string>
     <string name="tier_plant_level5">Bosque</string>
     <string name="tier_astronaut_level1">Astronauta</string>
-    <string name="tier_astronaut_level2">Cohete</string>
-    <string name="tier_astronaut_level3">Platillo volador</string>
-    <string name="tier_astronaut_level4">Alienígena</string>
+    <string name="tier_astronaut_level2">Alienígena</string>
+    <string name="tier_astronaut_level3">Cohete</string>
+    <string name="tier_astronaut_level4">Platillo volador</string>
     <string name="tier_astronaut_level5">TARDIS</string>
     <string name="tier_celestial_level1">Cometa</string>
     <string name="tier_celestial_level2">Luna</string>
@@ -88,8 +88,8 @@
     <string name="tier_champion_level1">Bronce</string>
     <string name="tier_champion_level2">Plata</string>
     <string name="tier_champion_level3">Oro</string>
-    <string name="tier_champion_level4">Diamante</string>
-    <string name="tier_champion_level5">Trofeo</string>
+    <string name="tier_champion_level4">Trofeo</string>
+    <string name="tier_champion_level5">Diamante</string>
     <string name="tier_number_level1">Uno</string>
     <string name="tier_number_level2">Dos</string>
     <string name="tier_number_level3">Tres</string>

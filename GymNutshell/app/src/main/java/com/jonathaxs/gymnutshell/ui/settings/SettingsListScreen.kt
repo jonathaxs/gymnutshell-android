@@ -40,7 +40,7 @@ import com.jonathaxs.gymnutshell.ui.theme.color
 
 /**
  * Lista raiz da Settings — porte da SettingsView (iOS): mesmas seções, na mesma ordem
- * (Seus dados → Aparência → Sistema → Sobre), com IconBadge colorido em cada linha.
+ * (Perfil → Sistema → Aparência → Sobre), com IconBadge colorido em cada linha.
  * Top bar com seta de voltar para a tela Hoje.
  */
 @Composable
@@ -99,7 +99,7 @@ fun SettingsListScreen(
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
             ) {
-                // 1. Seção "Seus dados": Metas, Objetivo e Perfil
+                // 1. Seção "Perfil": Metas, Objetivo, Emoji e Seus dados
                 GroupSection(
                     title = stringResource(R.string.settings_section_data),
                     titleColor = accent.color,
@@ -131,25 +131,6 @@ fun SettingsListScreen(
                     )
                     GroupRowDivider(startInset = dividerInset)
                     GroupRow(
-                        title = stringResource(R.string.settings_profile_title),
-                        leading = {
-                            GlassIcon(
-                                imageVector = Icons.Default.AccountCircle,
-                                color = Color(0xFF007AFF),
-                            )
-                        },
-                        showChevron = true,
-                        modifier = highlight(SettingsRoutes.PROFILE),
-                        onClick = onOpenProfile,
-                    )
-                }
-
-                // 2. Seção "Aparência": Tema, Cores de destaque, Widgets e Controles
-                GroupSection(
-                    title = stringResource(R.string.settings_appearance),
-                    titleColor = accent.color,
-                ) {
-                    GroupRow(
                         title = stringResource(R.string.settings_theme),
                         leading = {
                             GlassIcon(
@@ -163,46 +144,20 @@ fun SettingsListScreen(
                     )
                     GroupRowDivider(startInset = dividerInset)
                     GroupRow(
-                        title = stringResource(R.string.settings_accent_color),
+                        title = stringResource(R.string.settings_profile_title),
                         leading = {
                             GlassIcon(
-                                painter = painterResource(R.drawable.ic_settings_palette),
-                                color = Color(0xFFFF2D55),
+                                imageVector = Icons.Default.AccountCircle,
+                                color = Color(0xFF007AFF),
                             )
                         },
                         showChevron = true,
-                        modifier = highlight(SettingsRoutes.COLOR),
-                        onClick = onOpenColor,
-                    )
-                    GroupRowDivider(startInset = dividerInset)
-                    GroupRow(
-                        title = stringResource(R.string.settings_widget_background),
-                        leading = {
-                            GlassIcon(
-                                painter = painterResource(R.drawable.ic_settings_widgets),
-                                color = Color(0xFF5856D6),
-                            )
-                        },
-                        showChevron = true,
-                        modifier = highlight(SettingsRoutes.WIDGET_BG),
-                        onClick = onOpenWidgetBackground,
-                    )
-                    GroupRowDivider(startInset = dividerInset)
-                    GroupRow(
-                        title = stringResource(R.string.settings_preference_control_style),
-                        leading = {
-                            GlassIcon(
-                                painter = painterResource(R.drawable.ic_settings_controls),
-                                color = Color(0xFF8E8E93),
-                            )
-                        },
-                        showChevron = true,
-                        modifier = highlight(SettingsRoutes.CONTROLS),
-                        onClick = onOpenControls,
+                        modifier = highlight(SettingsRoutes.PROFILE),
+                        onClick = onOpenProfile,
                     )
                 }
 
-                // 3. Seção "Sistema": Health Connect, Notificações, Medidas, Backup e Idioma
+                // 2. Seção "Sistema": Health Connect, Notificações, Medidas, Backup e Idioma
                 GroupSection(
                     title = stringResource(R.string.settings_section_system),
                     titleColor = accent.color,
@@ -270,6 +225,51 @@ fun SettingsListScreen(
                         showChevron = true,
                         modifier = highlight(SettingsRoutes.LANGUAGE),
                         onClick = onOpenLanguage,
+                    )
+                }
+
+                // 3. Seção "Aparência": Cores de destaque, Widgets e Controles
+                GroupSection(
+                    title = stringResource(R.string.settings_appearance),
+                    titleColor = accent.color,
+                ) {
+                    GroupRow(
+                        title = stringResource(R.string.settings_accent_color),
+                        leading = {
+                            GlassIcon(
+                                painter = painterResource(R.drawable.ic_settings_palette),
+                                color = Color(0xFFFF2D55),
+                            )
+                        },
+                        showChevron = true,
+                        modifier = highlight(SettingsRoutes.COLOR),
+                        onClick = onOpenColor,
+                    )
+                    GroupRowDivider(startInset = dividerInset)
+                    GroupRow(
+                        title = stringResource(R.string.settings_widget_background),
+                        leading = {
+                            GlassIcon(
+                                painter = painterResource(R.drawable.ic_settings_widgets),
+                                color = Color(0xFF5856D6),
+                            )
+                        },
+                        showChevron = true,
+                        modifier = highlight(SettingsRoutes.WIDGET_BG),
+                        onClick = onOpenWidgetBackground,
+                    )
+                    GroupRowDivider(startInset = dividerInset)
+                    GroupRow(
+                        title = stringResource(R.string.settings_preference_control_style),
+                        leading = {
+                            GlassIcon(
+                                painter = painterResource(R.drawable.ic_settings_controls),
+                                color = Color(0xFF8E8E93),
+                            )
+                        },
+                        showChevron = true,
+                        modifier = highlight(SettingsRoutes.CONTROLS),
+                        onClick = onOpenControls,
                     )
                 }
 

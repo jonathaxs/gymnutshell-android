@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 /** Seleção de categoria do formulário: uma categoria fixa ou uma criada pelo usuário. */
 sealed interface CategorySelection {
@@ -38,7 +37,7 @@ data class AddGoalData(
 
 /**
  * ViewModel do formulário de meta personalizada — porte de AddTrackingGoalView (iOS).
- * Carrega metas/categorias existentes (pra checar duplicados) e persiste no salvar (cria categoria nova se preciso).
+ * Carrega metas/categorias existentes (pra checar duplicados) e persiste no salvar.
  */
 class AddGoalViewModel(app: Application) : AndroidViewModel(app) {
 
@@ -73,7 +72,7 @@ class AddGoalViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
-    /** Salva (cria/edita) a meta; se `newCategory` != null, cria a categoria antes e associa a meta a ela. */
+    /** Salva (cria/edita) a meta personalizada. */
     fun save(
         emoji: String,
         name: String,
@@ -81,23 +80,12 @@ class AddGoalViewModel(app: Application) : AndroidViewModel(app) {
         target: Int,
         increment: Int,
         selection: CategorySelection,
-        newCategory: Triple<String, CategoryKind, String>?,
         editingId: Long?,
         reminderTimes: List<ReminderTime> = emptyList(),
     ) {
         viewModelScope.launch {
-            var resolved = selection
-            newCategory?.let { (catName, kind, symbol) ->
-                val category = CustomGoalCategory(
-                    id = UUID.randomUUID().toString(),
-                    name = catName.trim(),
-                    symbolName = symbol,
-                ).withKind(kind)
-                customCategoryRepo.upsert(category)
-                resolved = CategorySelection.Custom(category.id)
-            }
-            val categoryRaw = (resolved as? CategorySelection.Builtin)?.category?.rawValue
-            val customCategoryId = (resolved as? CategorySelection.Custom)?.id
+            val categoryRaw = (selection as? CategorySelection.Builtin)?.category?.rawValue
+            val customCategoryId = (selection as? CategorySelection.Custom)?.id
 
             val editing = editingId?.let { id -> customGoalRepo.all().firstOrNull { it.id == id } }
             val savedId = if (editing != null) {
@@ -128,10 +116,10 @@ class AddGoalViewModel(app: Application) : AndroidViewModel(app) {
             }
 
             val categories = customCategoryRepo.all()
-            val isCheckIn = when (val sel = resolved) {
-                is CategorySelection.Builtin -> sel.category.kind == CategoryKind.CheckIn
+            val isCheckIn = when (selection) {
+                is CategorySelection.Builtin -> selection.category.kind == CategoryKind.CheckIn
                 is CategorySelection.Custom ->
-                    categories.firstOrNull { it.id == sel.id }?.kind == CategoryKind.CheckIn
+                    categories.firstOrNull { it.id == selection.id }?.kind == CategoryKind.CheckIn
             }
             val loadedTimes = _data.value.reminderTimes
             if (isCheckIn && reminderTimes.distinct().sorted() != loadedTimes.distinct().sorted()) {

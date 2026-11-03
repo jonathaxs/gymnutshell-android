@@ -93,8 +93,8 @@
     <string name="color_orange">Orange</string>
     <string name="color_cyan">Cyan</string>
     <string name="color_pink">Pink</string>
-    <string name="settings_section_data">Your data</string>
-    <string name="settings_profile_title">Profile</string>
+    <string name="settings_section_data">Profile</string>
+    <string name="settings_profile_title">Your data</string>
     <string name="settings_profile_section_optional">Optional</string>
     <string name="settings_profile_name">Name</string>
     <string name="settings_profile_name_placeholder">Optional</string>
@@ -149,7 +149,7 @@
     <string name="goaldetail_increment_stepper">Adjust step</string>
     <string name="goaldetail_footer">Changing this does not affect past records.</string>
     <string name="goaldetail_increment_footer">The step is how far the slider advances toward the target value.</string>
-    <string name="a11y_add_goal">New tracking goal</string>
+    <string name="a11y_add_goal">Add</string>
     <string name="a11y_edit_category">Edit category</string>
     <string name="cd_move_up">Move up</string>
     <string name="cd_move_down">Move down</string>
@@ -197,6 +197,9 @@
     <string name="welcome_ready_allowed">Allowed</string>
     <string name="welcome_ready_requested">Requested</string>
     <string name="welcome_ready_denied">Denied</string>
+    <string name="welcome_ready_notifications_setup_title">What should we remind you of?</string>
+    <string name="welcome_ready_notifications_setup_footer">You can change all of this later in Settings › Notifications.</string>
+    <string name="a11y_welcome_ready_notifications_setup_hint">Tap to choose your reminders.</string>
     <string name="welcome_button_continue">Continue</string>
     <string name="welcome_button_start">Let\'s go!</string>
     <string name="welcome_button_back">Back</string>
@@ -218,7 +221,7 @@
     <string name="favorite_exercise_traps">Traps</string>
     <string name="favorite_exercise_forearms">Forearms</string>
     <string name="favorite_exercise_calves">Calves</string>
-    <string name="settings_theme">Emojis</string>
+    <string name="settings_theme">Emoji</string>
     <string name="theme_cat_sport">Sport</string>
     <string name="theme_cat_animals">Animals</string>
     <string name="theme_cat_warrior">Hero</string>
@@ -433,8 +436,10 @@
     <string name="category_kind_rest_day">With day off</string>
     <string name="category_kind_check_in">Check-in</string>
     <string name="category_kind_standard_footer">Log goals bit by bit with the slider or the − / + buttons.</string>
-    <string name="category_kind_rest_day_footer">Like Standard, plus an ON/OFF button to mark a day off.</string>
+    <string name="category_kind_rest_day_footer">With an ON/OFF button to mark a day off.</string>
     <string name="category_kind_check_in_footer">Each goal is checked once a day: Pending or Done.</string>
+    <string name="addgoal_category_kind_footer">This category\'s type is “%1$s”. %2$s</string>
+    <string name="settings_goals_add_to_category">Add goal</string>
     <string name="addgoal_section_dose">Dose</string>
     <string name="addgoal_dose_footer">Marking Done completes the day\'s goal with this amount.</string>
     <string name="today_checkin_pending">Pending</string>

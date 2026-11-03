@@ -583,15 +583,7 @@ private fun TodayPageButtons(
         horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        TodayRoundButton(accent, onOpenSettings) {
-            Icon(Icons.Outlined.Settings, stringResource(R.string.tab_settings), tint = accent, modifier = Modifier.size(22.dp))
-        }
-        TodayRoundButton(accent, onOpenHistory) {
-            Icon(painterResource(R.drawable.ic_records), stringResource(R.string.today_history), tint = accent, modifier = Modifier.size(22.dp))
-        }
-        TodayRoundButton(accent, onOpenAchievements) {
-            Icon(painterResource(R.drawable.ic_settings_trophy), stringResource(R.string.achievements_header_title), tint = accent, modifier = Modifier.size(22.dp))
-        }
+        // Lista/grade primeiro e Ajustes por último, como no iOS.
         // Mostra o ícone do modo pra onde vai: em lista, o de grade; em grade, o de lista.
         TodayRoundButton(accent, onToggleViewMode) {
             Icon(
@@ -600,6 +592,15 @@ private fun TodayPageButtons(
                 tint = accent,
                 modifier = Modifier.size(22.dp),
             )
+        }
+        TodayRoundButton(accent, onOpenHistory) {
+            Icon(painterResource(R.drawable.ic_records), stringResource(R.string.today_history), tint = accent, modifier = Modifier.size(22.dp))
+        }
+        TodayRoundButton(accent, onOpenAchievements) {
+            Icon(painterResource(R.drawable.ic_settings_trophy), stringResource(R.string.achievements_header_title), tint = accent, modifier = Modifier.size(22.dp))
+        }
+        TodayRoundButton(accent, onOpenSettings) {
+            Icon(Icons.Outlined.Settings, stringResource(R.string.tab_settings), tint = accent, modifier = Modifier.size(22.dp))
         }
     }
 }
@@ -1135,7 +1136,8 @@ internal fun CheckInSelector(
         val segmentWidth = maxWidth / 2
         val pillOffset by animateDpAsState(
             targetValue = if (done) segmentWidth else 0.dp,
-            animationSpec = spring(dampingRatio = 0.85f, stiffness = 400f),
+            // Deslize curto e firme, igual ao iOS (spring 0.22 s).
+            animationSpec = spring(dampingRatio = 0.86f, stiffness = 800f),
             label = "checkin_pill_offset",
         )
 
@@ -1635,8 +1637,12 @@ private fun TodaySideRail(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
-            IconButton(onClick = onOpenSettings) {
-                Icon(Icons.Filled.Settings, stringResource(R.string.tab_settings), tint = accent)
+            IconButton(onClick = onToggleViewMode) {
+                Icon(
+                    painter = painterResource(if (isList) R.drawable.ic_view_grid else R.drawable.ic_view_list),
+                    contentDescription = stringResource(R.string.today_goals_view_mode_switch_a11y, nextModeName),
+                    tint = accent,
+                )
             }
             IconButton(onClick = onOpenHistory) {
                 Icon(painterResource(R.drawable.ic_records), stringResource(R.string.today_history), tint = accent)
@@ -1644,12 +1650,8 @@ private fun TodaySideRail(
             IconButton(onClick = onOpenAchievements) {
                 Icon(painterResource(R.drawable.ic_settings_trophy), stringResource(R.string.achievements_header_title), tint = accent)
             }
-            IconButton(onClick = onToggleViewMode) {
-                Icon(
-                    painter = painterResource(if (isList) R.drawable.ic_view_grid else R.drawable.ic_view_list),
-                    contentDescription = stringResource(R.string.today_goals_view_mode_switch_a11y, nextModeName),
-                    tint = accent,
-                )
+            IconButton(onClick = onOpenSettings) {
+                Icon(Icons.Filled.Settings, stringResource(R.string.tab_settings), tint = accent)
             }
         }
     }

@@ -91,8 +91,8 @@
     <string name="color_orange">橙色</string>
     <string name="color_cyan">青色</string>
     <string name="color_pink">粉色</string>
-    <string name="settings_section_data">你的数据</string>
-    <string name="settings_profile_title">个人资料</string>
+    <string name="settings_section_data">个人资料</string>
+    <string name="settings_profile_title">你的数据</string>
     <string name="settings_profile_section_optional">选填</string>
     <string name="settings_profile_name">名字</string>
     <string name="settings_profile_name_placeholder">选填</string>
@@ -147,7 +147,7 @@
     <string name="goaldetail_increment_stepper">调整单次增量</string>
     <string name="goaldetail_footer">修改此项不会影响过去的记录。</string>
     <string name="goaldetail_increment_footer">单次增量是滑动条向目标值推进的每次调整幅度。</string>
-    <string name="a11y_add_goal">新建打卡目标</string>
+    <string name="a11y_add_goal">添加</string>
     <string name="a11y_edit_category">编辑分类</string>
     <string name="cd_move_up">上移</string>
     <string name="cd_move_down">下移</string>
@@ -195,6 +195,9 @@
     <string name="welcome_ready_allowed">已允许</string>
     <string name="welcome_ready_requested">已请求</string>
     <string name="welcome_ready_denied">已拒绝</string>
+    <string name="welcome_ready_notifications_setup_title">要提醒你什么？</string>
+    <string name="welcome_ready_notifications_setup_footer">之后可以在 设置 › 通知 中随时更改。</string>
+    <string name="a11y_welcome_ready_notifications_setup_hint">轻点以选择提醒。</string>
     <string name="welcome_button_continue">继续</string>
     <string name="welcome_button_start">开始吧！</string>
     <string name="welcome_button_back">返回</string>
@@ -429,8 +432,10 @@
     <string name="category_kind_rest_day">含休息日</string>
     <string name="category_kind_check_in">打卡</string>
     <string name="category_kind_standard_footer">用滑块或 − / + 按钮逐步记录。</string>
-    <string name="category_kind_rest_day_footer">与标准相同，另有标记休息日的开/关按钮。</string>
+    <string name="category_kind_rest_day_footer">带有标记休息日的开/关按钮。</string>
     <string name="category_kind_check_in_footer">每个目标每天打卡一次：待完成 或 已完成。</string>
+    <string name="addgoal_category_kind_footer">此类别为“%1$s”类型。%2$s</string>
+    <string name="settings_goals_add_to_category">添加目标</string>
     <string name="addgoal_section_dose">剂量</string>
     <string name="addgoal_dose_footer">标记为已完成后，当天目标即以此用量完成。</string>
     <string name="today_checkin_pending">待完成</string>

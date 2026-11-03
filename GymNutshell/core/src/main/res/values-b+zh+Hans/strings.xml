@@ -76,9 +76,9 @@
     <string name="tier_plant_level4">圣诞树</string>
     <string name="tier_plant_level5">大森林</string>
     <string name="tier_astronaut_level1">宇航员</string>
-    <string name="tier_astronaut_level2">火箭</string>
-    <string name="tier_astronaut_level3">飞碟</string>
-    <string name="tier_astronaut_level4">外星人</string>
+    <string name="tier_astronaut_level2">外星人</string>
+    <string name="tier_astronaut_level3">火箭</string>
+    <string name="tier_astronaut_level4">飞碟</string>
     <string name="tier_astronaut_level5">塔迪斯</string>
     <string name="tier_celestial_level1">彗星</string>
     <string name="tier_celestial_level2">月球</string>
@@ -88,8 +88,8 @@
     <string name="tier_champion_level1">青铜</string>
     <string name="tier_champion_level2">白银</string>
     <string name="tier_champion_level3">黄金</string>
-    <string name="tier_champion_level4">钻石</string>
-    <string name="tier_champion_level5">冠军奖杯</string>
+    <string name="tier_champion_level4">冠军奖杯</string>
+    <string name="tier_champion_level5">钻石</string>
     <string name="tier_number_level1">一</string>
     <string name="tier_number_level2">二</string>
     <string name="tier_number_level3">三</string>

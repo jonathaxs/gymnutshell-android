@@ -93,8 +93,8 @@
     <string name="color_orange">Turuncu</string>
     <string name="color_cyan">Camgöbeği</string>
     <string name="color_pink">Pembe</string>
-    <string name="settings_section_data">Verilerin</string>
-    <string name="settings_profile_title">Profil</string>
+    <string name="settings_section_data">Profil</string>
+    <string name="settings_profile_title">Verilerin</string>
     <string name="settings_profile_section_optional">İsteğe Bağlı</string>
     <string name="settings_profile_name">Ad</string>
     <string name="settings_profile_name_placeholder">İsteğe Bağlı</string>
@@ -149,7 +149,7 @@
     <string name="goaldetail_increment_stepper">Adımı ayarla</string>
     <string name="goaldetail_footer">Bunu değiştirmek geçmiş kayıtları etkilemez.</string>
     <string name="goaldetail_increment_footer">Adım, kaydırıcının hedef değere doğru ne kadar ilerleyeceğini belirler.</string>
-    <string name="a11y_add_goal">Yeni takip hedefi</string>
+    <string name="a11y_add_goal">Ekle</string>
     <string name="a11y_edit_category">Kategoriyi düzenle</string>
     <string name="cd_move_up">Yukarı taşı</string>
     <string name="cd_move_down">Aşağı taşı</string>
@@ -197,6 +197,9 @@
     <string name="welcome_ready_allowed">İzin Verildi</string>
     <string name="welcome_ready_requested">İstendi</string>
     <string name="welcome_ready_denied">Reddedildi</string>
+    <string name="welcome_ready_notifications_setup_title">Neyi hatırlatalım?</string>
+    <string name="welcome_ready_notifications_setup_footer">Bunların hepsini daha sonra Ayarlar › Bildirimler\'den değiştirebilirsin.</string>
+    <string name="a11y_welcome_ready_notifications_setup_hint">Hatırlatıcıları seçmek için dokun.</string>
     <string name="welcome_button_continue">Sürdür</string>
     <string name="welcome_button_start">Haydi başlayalım!</string>
     <string name="welcome_button_back">Geri</string>
@@ -218,7 +221,7 @@
     <string name="favorite_exercise_traps">Trapez</string>
     <string name="favorite_exercise_forearms">Ön Kol</string>
     <string name="favorite_exercise_calves">Kalf</string>
-    <string name="settings_theme">Emojiler</string>
+    <string name="settings_theme">Emoji</string>
     <string name="theme_cat_sport">Spor</string>
     <string name="theme_cat_animals">Hayvanlar</string>
     <string name="theme_cat_warrior">Kahraman</string>
@@ -433,8 +436,10 @@
     <string name="category_kind_rest_day">Dinlenme günlü</string>
     <string name="category_kind_check_in">Check-in</string>
     <string name="category_kind_standard_footer">Hedefleri kaydırıcı veya − / + düğmeleriyle azar azar kaydedin.</string>
-    <string name="category_kind_rest_day_footer">Standart gibi, dinlenme günü için AÇIK/KAPALI düğmesiyle.</string>
+    <string name="category_kind_rest_day_footer">Dinlenme günü için AÇIK/KAPALI düğmesiyle.</string>
     <string name="category_kind_check_in_footer">Her hedef günde bir kez işaretlenir: Bekliyor veya Yapıldı.</string>
+    <string name="addgoal_category_kind_footer">Bu kategorinin türü “%1$s”. %2$s</string>
+    <string name="settings_goals_add_to_category">Hedef ekle</string>
     <string name="addgoal_section_dose">Doz</string>
     <string name="addgoal_dose_footer">Yapıldı olarak işaretlenince günün hedefi bu miktarla tamamlanır.</string>
     <string name="today_checkin_pending">Bekliyor</string>

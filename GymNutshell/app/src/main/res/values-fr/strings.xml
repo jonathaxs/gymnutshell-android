@@ -95,8 +95,8 @@
     <string name="color_orange">Orange</string>
     <string name="color_cyan">Cyan</string>
     <string name="color_pink">Rose</string>
-    <string name="settings_section_data">Tes données</string>
-    <string name="settings_profile_title">Profil</string>
+    <string name="settings_section_data">Profil</string>
+    <string name="settings_profile_title">Tes données</string>
     <string name="settings_profile_section_optional">Facultatif</string>
     <string name="settings_profile_name">Nom</string>
     <string name="settings_profile_name_placeholder">Facultatif</string>
@@ -151,7 +151,7 @@
     <string name="goaldetail_increment_stepper">Ajuster le pas</string>
     <string name="goaldetail_footer">Modifier ceci n\'affecte pas les données passées.</string>
     <string name="goaldetail_increment_footer">Le pas correspond à l\'incrément de la valeur vers l\'objectif.</string>
-    <string name="a11y_add_goal">Nouvel objectif de suivi</string>
+    <string name="a11y_add_goal">Ajouter</string>
     <string name="a11y_edit_category">Modifier la catégorie</string>
     <string name="cd_move_up">Monter</string>
     <string name="cd_move_down">Descendre</string>
@@ -199,6 +199,9 @@
     <string name="welcome_ready_allowed">Autorisé</string>
     <string name="welcome_ready_requested">Demandé</string>
     <string name="welcome_ready_denied">Refusé</string>
+    <string name="welcome_ready_notifications_setup_title">Que faut-il vous rappeler ?</string>
+    <string name="welcome_ready_notifications_setup_footer">Vous pourrez tout changer plus tard dans Réglages › Notifications.</string>
+    <string name="a11y_welcome_ready_notifications_setup_hint">Touchez pour choisir vos rappels.</string>
     <string name="welcome_button_continue">Continuer</string>
     <string name="welcome_button_start">C\'est parti !</string>
     <string name="welcome_button_back">Retour</string>
@@ -220,7 +223,7 @@
     <string name="favorite_exercise_traps">Trapèzes</string>
     <string name="favorite_exercise_forearms">Avant-bras</string>
     <string name="favorite_exercise_calves">Mollets</string>
-    <string name="settings_theme">Emojis</string>
+    <string name="settings_theme">Emoji</string>
     <string name="theme_cat_sport">Sport</string>
     <string name="theme_cat_animals">Animaux</string>
     <string name="theme_cat_warrior">Héros</string>
@@ -437,8 +440,10 @@
     <string name="category_kind_rest_day">Avec repos</string>
     <string name="category_kind_check_in">Check-in</string>
     <string name="category_kind_standard_footer">Enregistrez les objectifs petit à petit avec le curseur ou les boutons − / +.</string>
-    <string name="category_kind_rest_day_footer">Comme Standard, avec un bouton ON/OFF pour marquer un jour de repos.</string>
+    <string name="category_kind_rest_day_footer">Avec un bouton ON/OFF pour marquer un jour de repos.</string>
     <string name="category_kind_check_in_footer">Chaque objectif se coche une fois par jour : En attente ou Fait.</string>
+    <string name="addgoal_category_kind_footer">Cette catégorie est du type « %1$s ». %2$s</string>
+    <string name="settings_goals_add_to_category">Ajouter un objectif</string>
     <string name="addgoal_section_dose">Dose</string>
     <string name="addgoal_dose_footer">En marquant Fait, l\'objectif du jour est atteint avec cette quantité.</string>
     <string name="today_checkin_pending">En attente</string>

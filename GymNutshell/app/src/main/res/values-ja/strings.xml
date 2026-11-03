@@ -91,8 +91,8 @@
     <string name="color_orange">オレンジ</string>
     <string name="color_cyan">シアン</string>
     <string name="color_pink">ピンク</string>
-    <string name="settings_section_data">ユーザーデータ</string>
-    <string name="settings_profile_title">プロフィール</string>
+    <string name="settings_section_data">プロフィール</string>
+    <string name="settings_profile_title">ユーザーデータ</string>
     <string name="settings_profile_section_optional">任意</string>
     <string name="settings_profile_name">名前</string>
     <string name="settings_profile_name_placeholder">任意</string>
@@ -147,7 +147,7 @@
     <string name="goaldetail_increment_stepper">増減幅を調整</string>
     <string name="goaldetail_footer">これを変更しても過去の記録には影響しません。</string>
     <string name="goaldetail_increment_footer">増減幅は、スライダーが目標値に向かって進む刻み幅です。</string>
-    <string name="a11y_add_goal">新しい記録目標</string>
+    <string name="a11y_add_goal">追加</string>
     <string name="a11y_edit_category">カテゴリーを編集</string>
     <string name="cd_move_up">上に移動</string>
     <string name="cd_move_down">下に移動</string>
@@ -195,6 +195,9 @@
     <string name="welcome_ready_allowed">許可済み</string>
     <string name="welcome_ready_requested">リクエスト済み</string>
     <string name="welcome_ready_denied">拒否</string>
+    <string name="welcome_ready_notifications_setup_title">何をお知らせしますか？</string>
+    <string name="welcome_ready_notifications_setup_footer">あとで 設定 › 通知 からいつでも変更できます。</string>
+    <string name="a11y_welcome_ready_notifications_setup_hint">タップしてリマインダーを選びます。</string>
     <string name="welcome_button_continue">続ける</string>
     <string name="welcome_button_start">スタート！</string>
     <string name="welcome_button_back">戻る</string>
@@ -429,8 +432,10 @@
     <string name="category_kind_rest_day">休息日あり</string>
     <string name="category_kind_check_in">チェックイン</string>
     <string name="category_kind_standard_footer">スライダーまたは − / + ボタンで少しずつ記録します。</string>
-    <string name="category_kind_rest_day_footer">標準と同じで、休息日を記録する ON/OFF ボタン付き。</string>
+    <string name="category_kind_rest_day_footer">休息日を記録する ON/OFF ボタン付き。</string>
     <string name="category_kind_check_in_footer">各目標は1日1回チェック：未完了 または 完了。</string>
+    <string name="addgoal_category_kind_footer">このカテゴリは「%1$s」タイプです。%2$s</string>
+    <string name="settings_goals_add_to_category">目標を追加</string>
     <string name="addgoal_section_dose">用量</string>
     <string name="addgoal_dose_footer">完了にすると、この量でその日の目標が達成されます。</string>
     <string name="today_checkin_pending">未完了</string>

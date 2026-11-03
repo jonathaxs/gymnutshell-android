@@ -51,6 +51,7 @@ class MainActivity : ComponentActivity() {
             ProfileRepository(applicationContext).migrateLegacyProfile()
             SettingsRepository(applicationContext).migrateLegacyUkSystem()
             DailyRecordRepository(applicationContext).migrateToFiveLevelsIfNeeded()
+            DailyRecordRepository(applicationContext).migrateThemeEmojiSwapIfNeeded()
         }
         enableEdgeToEdge()
         maybeRequestNotificationsPermission()

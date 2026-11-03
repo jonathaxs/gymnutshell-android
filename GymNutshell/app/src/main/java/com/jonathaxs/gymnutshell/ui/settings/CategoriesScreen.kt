@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -44,6 +45,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.data.CustomGoalCategory
+import com.jonathaxs.gymnutshell.core.domain.CategoryKind
+import com.jonathaxs.gymnutshell.core.domain.GoalCategory
 import com.jonathaxs.gymnutshell.ui.components.CategoryKindPicker
 import com.jonathaxs.gymnutshell.ui.components.CategorySymbolPicker
 import com.jonathaxs.gymnutshell.ui.components.GroupRow
@@ -107,6 +110,7 @@ fun CategoriesScreen(onBack: () -> Unit, viewModel: CategoriesViewModel = viewMo
     editing?.let { category ->
         EditCategorySheet(
             category = category,
+            existingCategories = state.items.mapNotNull { it.custom },
             accent = accent,
             onDismiss = { editing = null },
             onSave = { updated ->
@@ -138,19 +142,31 @@ private fun ReorderArrows(canUp: Boolean, canDown: Boolean, onMoveUp: () -> Unit
     }
 }
 
-/** Sheet de editar categoria personalizada (nome + tipo + ícone) — porte de EditCustomGoalCategoryView (iOS). */
+/**
+ * Sheet de criar ou editar categoria personalizada (nome + tipo + ícone) —
+ * porte de EditCustomGoalCategoryView (iOS). Quando `category` é nulo, cria uma nova.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun EditCategorySheet(
-    category: CustomGoalCategory,
+internal fun EditCategorySheet(
+    category: CustomGoalCategory?,
+    existingCategories: List<CustomGoalCategory>,
     accent: Color,
     onDismiss: () -> Unit,
     onSave: (CustomGoalCategory) -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    var name by remember { mutableStateOf(category.name) }
-    var kind by remember { mutableStateOf(category.kind) }
-    var symbol by remember { mutableStateOf(category.symbolName) }
+    var name by remember(category?.id) { mutableStateOf(category?.name.orEmpty()) }
+    var kind by remember(category?.id) { mutableStateOf(category?.kind ?: CategoryKind.Standard) }
+    var symbol by remember(category?.id) { mutableStateOf(category?.symbolName ?: CustomGoalCategory.DEFAULT_SYMBOL_NAME) }
+
+    val trimmedName = name.trim()
+    val builtinNames = GoalCategory.entries.map { stringResource(GoalsViewModel.categoryTitleRes(it)) }
+    val isNameConflict = trimmedName.isNotEmpty() && (
+        builtinNames.any { it.equals(trimmedName, ignoreCase = true) } ||
+            existingCategories.any { it.id != category?.id && it.name.equals(trimmedName, ignoreCase = true) }
+    )
+    val canSave = trimmedName.isNotEmpty() && !isNameConflict
 
     ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
         Column(
@@ -163,17 +179,28 @@ private fun EditCategorySheet(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.Start,
         ) {
-            Text(stringResource(R.string.addgoal_category_new_section), style = MaterialTheme.typography.titleMedium)
-            CategoryKindPicker(
-                selected = kind,
-                onSelect = { kind = it },
+            Text(
+                text = category?.name ?: stringResource(R.string.addgoal_category_new_button),
+                style = MaterialTheme.typography.titleMedium,
             )
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
                 label = { Text(stringResource(R.string.addgoal_category_new_section)) },
+                placeholder = { Text(stringResource(R.string.addgoal_category_new_name_placeholder)) },
                 singleLine = true,
                 modifier = Modifier.fillMaxWidth(),
+            )
+            if (isNameConflict) {
+                Text(
+                    text = stringResource(R.string.addgoal_warning_category_duplicate),
+                    color = Color(0xFFFF3B30),
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+            CategoryKindPicker(
+                selected = kind,
+                onSelect = { kind = it },
             )
             Text(stringResource(R.string.settings_category_icon_section), style = MaterialTheme.typography.titleMedium)
             CategorySymbolPicker(
@@ -182,8 +209,13 @@ private fun EditCategorySheet(
                 accentColor = accent,
             )
             Button(
-                onClick = { onSave(category.copy(name = name.trim(), symbolName = symbol).withKind(kind)) },
-                enabled = name.isNotBlank(),
+                onClick = {
+                    val base = category?.copy(name = trimmedName, symbolName = symbol)
+                        ?: CustomGoalCategory(name = trimmedName, symbolName = symbol)
+                    onSave(base.withKind(kind))
+                },
+                enabled = canSave,
+                colors = ButtonDefaults.buttonColors(containerColor = accent),
                 modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp),
             ) { Text(stringResource(R.string.action_save)) }
         }

@@ -56,12 +56,14 @@ data class GoalSectionUi(
     val collapsed: Boolean,
     val fixedRows: List<FixedRowUi>,
     val customRows: List<CustomRowUi>,
+    val customCategoryId: String? = null,
 )
 
 /** Estado do hub de Goals. */
 data class GoalsUiState(
     val sections: List<GoalSectionUi> = emptyList(),
     val uncategorized: List<CustomRowUi> = emptyList(),
+    val customCategories: List<CustomGoalCategory> = emptyList(),
     val accentArgb: Long = 0xFF007AFF,
 )
 
@@ -126,10 +128,12 @@ class GoalsViewModel(app: Application) : AndroidViewModel(app) {
                 val customRows: List<CustomRowUi>
                 val titleRes: Int?
                 val title: String?
+                val customCategoryId: String?
                 when (item) {
                     is CategoryItem.Builtin -> {
                         titleRes = categoryTitleRes(item.category)
                         title = null
+                        customCategoryId = null
                         fixedRows = orderedKeys
                             .filter { GoalCategory.defaultCategory(it) == item.category }
                             .mapNotNull { fixedRow(it) }
@@ -140,14 +144,15 @@ class GoalsViewModel(app: Application) : AndroidViewModel(app) {
                     is CategoryItem.Custom -> {
                         titleRes = null
                         title = item.category.name
+                        customCategoryId = item.category.id
                         fixedRows = emptyList()
                         customRows = customGoals
                             .filter { it.customCategoryId == item.category.id }
                             .mapNotNull { customRow(it.id) }
                     }
                 }
-                if (fixedRows.isEmpty() && customRows.isEmpty()) return@mapNotNull null
-                GoalSectionUi(item.id, titleRes, title, item.id in collapsed, fixedRows, customRows)
+                if (item is CategoryItem.Builtin && fixedRows.isEmpty() && customRows.isEmpty()) return@mapNotNull null
+                GoalSectionUi(item.id, titleRes, title, item.id in collapsed, fixedRows, customRows, customCategoryId)
             }
 
             // Metas personalizadas sem categoria (compat. com metas antigas sem categoria definida).
@@ -155,7 +160,12 @@ class GoalsViewModel(app: Application) : AndroidViewModel(app) {
                 .filter { it.categoryRaw == null && it.customCategoryId == null }
                 .mapNotNull { customRow(it.id) }
 
-            GoalsUiState(sections = sections, uncategorized = uncategorized, accentArgb = accent.argb)
+            GoalsUiState(
+                sections = sections,
+                uncategorized = uncategorized,
+                customCategories = customCategories,
+                accentArgb = accent.argb,
+            )
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), GoalsUiState())
 
     // MARK: - Ações
@@ -221,6 +231,10 @@ class GoalsViewModel(app: Application) : AndroidViewModel(app) {
             scheduler.cancelCustom(goalId)
             scheduler.rescheduleSupplementReminders()
         }
+    }
+
+    fun saveCategory(category: CustomGoalCategory) {
+        viewModelScope.launch { customCategoryRepo.upsert(category) }
     }
 
     companion object {

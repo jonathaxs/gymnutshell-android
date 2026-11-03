@@ -93,8 +93,8 @@
     <string name="color_orange">Orange</string>
     <string name="color_cyan">Cyan</string>
     <string name="color_pink">Rosa</string>
-    <string name="settings_section_data">Deine Daten</string>
-    <string name="settings_profile_title">Profil</string>
+    <string name="settings_section_data">Profil</string>
+    <string name="settings_profile_title">Deine Daten</string>
     <string name="settings_profile_section_optional">Optional</string>
     <string name="settings_profile_name">Name</string>
     <string name="settings_profile_name_placeholder">Optional</string>
@@ -149,7 +149,7 @@
     <string name="goaldetail_increment_stepper">Schrittweite anpassen</string>
     <string name="goaldetail_footer">Änderungen wirken sich nicht auf vergangene Einträge aus.</string>
     <string name="goaldetail_increment_footer">Die Schrittweite bestimmt, wie weit der Schieberegler in Richtung Zielwert springt.</string>
-    <string name="a11y_add_goal">Neues Tracking-Ziel</string>
+    <string name="a11y_add_goal">Hinzufügen</string>
     <string name="a11y_edit_category">Kategorie bearbeiten</string>
     <string name="cd_move_up">Nach oben verschieben</string>
     <string name="cd_move_down">Nach unten verschieben</string>
@@ -197,6 +197,9 @@
     <string name="welcome_ready_allowed">Erlaubt</string>
     <string name="welcome_ready_requested">Angefragt</string>
     <string name="welcome_ready_denied">Abgelehnt</string>
+    <string name="welcome_ready_notifications_setup_title">Woran sollen wir dich erinnern?</string>
+    <string name="welcome_ready_notifications_setup_footer">Du kannst das alles später unter Einstellungen › Mitteilungen ändern.</string>
+    <string name="a11y_welcome_ready_notifications_setup_hint">Tippe, um deine Erinnerungen auszuwählen.</string>
     <string name="welcome_button_continue">Weiter</string>
     <string name="welcome_button_start">Los geht\'s!</string>
     <string name="welcome_button_back">Zurück</string>
@@ -218,7 +221,7 @@
     <string name="favorite_exercise_traps">Nacken</string>
     <string name="favorite_exercise_forearms">Unterarme</string>
     <string name="favorite_exercise_calves">Waden</string>
-    <string name="settings_theme">Emojis</string>
+    <string name="settings_theme">Emoji</string>
     <string name="theme_cat_sport">Sport</string>
     <string name="theme_cat_animals">Tiere</string>
     <string name="theme_cat_warrior">Held</string>
@@ -433,8 +436,10 @@
     <string name="category_kind_rest_day">Mit Ruhetag</string>
     <string name="category_kind_check_in">Check-in</string>
     <string name="category_kind_standard_footer">Ziele schrittweise mit dem Schieberegler oder den Tasten − / + erfassen.</string>
-    <string name="category_kind_rest_day_footer">Wie Standard, mit einem AN/AUS-Schalter für Ruhetage.</string>
+    <string name="category_kind_rest_day_footer">Mit einem AN/AUS-Schalter für Ruhetage.</string>
     <string name="category_kind_check_in_footer">Jedes Ziel wird einmal täglich abgehakt: Offen oder Erledigt.</string>
+    <string name="addgoal_category_kind_footer">Diese Kategorie ist vom Typ „%1$s“. %2$s</string>
+    <string name="settings_goals_add_to_category">Ziel hinzufügen</string>
     <string name="addgoal_section_dose">Dosis</string>
     <string name="addgoal_dose_footer">Mit „Erledigt“ ist das Tagesziel mit dieser Menge erreicht.</string>
     <string name="today_checkin_pending">Offen</string>

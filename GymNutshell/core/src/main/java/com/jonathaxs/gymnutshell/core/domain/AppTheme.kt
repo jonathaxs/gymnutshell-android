@@ -48,9 +48,9 @@ enum class AppTheme(val rawValue: String, val category: ThemeCategory) {
         Ninja -> tier.pick("🥋", "⚔️", "🥷", "🦸", "⛩️")
         Fire -> tier.pick("🕯️", "🔥", "🌋", "🌞", "💥")
         Plant -> tier.pick("🌱", "🌿", "🌳", "🎄", "🏞️")
-        Astronaut -> tier.pick("🧑‍🚀", "🚀", "🛸", "👽", "🚪")
+        Astronaut -> tier.pick("🧑‍🚀", "👽", "🚀", "🛸", "🚪")
         Celestial -> tier.pick("☄️", "🌔", "🌎", "🪐", "🌌")
-        Champion -> tier.pick("🥉", "🥈", "🥇", "💎", "🏆")
+        Champion -> tier.pick("🥉", "🥈", "🥇", "🏆", "💎")
         Number -> tier.pick("1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣")
     }
 

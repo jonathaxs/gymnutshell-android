@@ -120,9 +120,14 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
         composable(SettingsRoutes.CONTROLS) { SettingsPage(SettingsRoutes.CONTROLS, navController) }
         composable(SettingsRoutes.CUSTOM_GOALS) { SettingsPage(SettingsRoutes.CUSTOM_GOALS, navController) }
         composable(
-            route = "${SettingsRoutes.ADD_GOAL}?goalId={goalId}",
+            route = "${SettingsRoutes.ADD_GOAL}?goalId={goalId}&categoryId={categoryId}",
             arguments = listOf(
                 navArgument("goalId") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
+                navArgument("categoryId") {
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
@@ -131,6 +136,7 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
         ) { entry ->
             AddGoalScreen(
                 goalId = entry.arguments?.getString("goalId")?.toLongOrNull(),
+                initialCategoryId = entry.arguments?.getString("categoryId"),
                 onBack = { navController.popBackStack() },
             )
         }
@@ -192,7 +198,14 @@ fun SettingsPage(route: String, navController: NavController) {
         SettingsRoutes.CUSTOM_GOALS -> {
         GoalsScreen(
             onBack = back,
-            onAddGoal = { navController.navigate(SettingsRoutes.ADD_GOAL) },
+            onAddGoal = { categoryId ->
+                val route = if (categoryId != null) {
+                    "${SettingsRoutes.ADD_GOAL}?categoryId=$categoryId"
+                } else {
+                    SettingsRoutes.ADD_GOAL
+                }
+                navController.navigate(route)
+            },
             onEditGoal = { id -> navController.navigate("${SettingsRoutes.ADD_GOAL}?goalId=$id") },
             onOpenGoalDetail = { key -> navController.navigate("${SettingsRoutes.GOAL_DETAIL}/$key") },
             onOpenCategories = { navController.navigate(SettingsRoutes.CATEGORIES) },

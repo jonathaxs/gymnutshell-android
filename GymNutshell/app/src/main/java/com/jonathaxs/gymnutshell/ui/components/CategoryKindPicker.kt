@@ -70,14 +70,14 @@ fun CategoryKindPicker(
 }
 
 @StringRes
-private fun kindTitleRes(kind: CategoryKind): Int = when (kind) {
+internal fun kindTitleRes(kind: CategoryKind): Int = when (kind) {
     CategoryKind.Standard -> R.string.category_kind_standard
     CategoryKind.RestDay -> R.string.category_kind_rest_day
     CategoryKind.CheckIn -> R.string.category_kind_check_in
 }
 
 @StringRes
-private fun kindFooterRes(kind: CategoryKind): Int = when (kind) {
+internal fun kindFooterRes(kind: CategoryKind): Int = when (kind) {
     CategoryKind.Standard -> R.string.category_kind_standard_footer
     CategoryKind.RestDay -> R.string.category_kind_rest_day_footer
     CategoryKind.CheckIn -> R.string.category_kind_check_in_footer

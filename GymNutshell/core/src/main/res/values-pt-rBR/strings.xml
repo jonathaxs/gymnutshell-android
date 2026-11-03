@@ -102,9 +102,9 @@
 
     <!-- Space -->
     <string name="tier_astronaut_level1">Astronauta</string>
-    <string name="tier_astronaut_level2">Foguete</string>
-    <string name="tier_astronaut_level3">Disco Voador</string>
-    <string name="tier_astronaut_level4">Alienígena</string>
+    <string name="tier_astronaut_level2">Alienígena</string>
+    <string name="tier_astronaut_level3">Foguete</string>
+    <string name="tier_astronaut_level4">Disco Voador</string>
     <string name="tier_astronaut_level5">TARDIS</string>
 
     <string name="tier_celestial_level1">Cometa</string>
@@ -117,8 +117,8 @@
     <string name="tier_champion_level1">Bronze</string>
     <string name="tier_champion_level2">Prata</string>
     <string name="tier_champion_level3">Ouro</string>
-    <string name="tier_champion_level4">Diamante</string>
-    <string name="tier_champion_level5">Troféu</string>
+    <string name="tier_champion_level4">Troféu</string>
+    <string name="tier_champion_level5">Diamante</string>
 
     <string name="tier_number_level1">Um</string>
     <string name="tier_number_level2">Dois</string>

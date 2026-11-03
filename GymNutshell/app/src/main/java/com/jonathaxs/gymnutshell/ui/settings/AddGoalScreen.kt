@@ -38,33 +38,38 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
-import com.jonathaxs.gymnutshell.core.data.CustomGoalCategory
 import com.jonathaxs.gymnutshell.core.domain.CategoryKind
 import com.jonathaxs.gymnutshell.core.domain.GoalCategory
 import com.jonathaxs.gymnutshell.core.domain.ReminderTime
-import com.jonathaxs.gymnutshell.ui.components.CategoryKindPicker
-import com.jonathaxs.gymnutshell.ui.components.CategorySymbolPicker
 import com.jonathaxs.gymnutshell.ui.components.ReminderTimesSection
+import com.jonathaxs.gymnutshell.ui.components.kindFooterRes
+import com.jonathaxs.gymnutshell.ui.components.kindTitleRes
 import java.text.BreakIterator
 
 /** Formulário de criar/editar meta personalizada — porte de AddTrackingGoalView (iOS). */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel = viewModel()) {
+fun AddGoalScreen(
+    goalId: Long?,
+    initialCategoryId: String? = null,
+    onBack: () -> Unit,
+    viewModel: AddGoalViewModel = viewModel(),
+) {
     val data by viewModel.data.collectAsStateWithLifecycle()
     LaunchedEffect(Unit) { viewModel.start(goalId) }
 
     // Campos de rascunho.
-    var selectedCategory by remember { mutableStateOf<CategorySelection>(CategorySelection.Builtin(GoalCategory.Essencial)) }
+    var selectedCategory by remember {
+        mutableStateOf<CategorySelection>(
+            initialCategoryId?.let { CategorySelection.Custom(it) }
+                ?: CategorySelection.Builtin(GoalCategory.Essencial),
+        )
+    }
     var emoji by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     var unit by remember { mutableStateOf("") }
     var goalText by remember { mutableStateOf("") }
     var incrementText by remember { mutableStateOf("") }
-    var creatingNewCategory by remember { mutableStateOf(false) }
-    var newCategoryName by remember { mutableStateOf("") }
-    var newCategoryKind by remember { mutableStateOf(CategoryKind.Standard) }
-    var newCategorySymbol by remember { mutableStateOf(CustomGoalCategory.DEFAULT_SYMBOL_NAME) }
     var reminderTimes by remember { mutableStateOf<List<ReminderTime>>(emptyList()) }
 
     // Pré-preenche uma vez quando a meta em edição termina de carregar.
@@ -84,18 +89,13 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
         reminderTimes = data.reminderTimes
     }
 
-    val accent = Color(data.accentArgb)
     val builtinNames = GoalCategory.entries.associateWith { stringResource(GoalsViewModel.categoryTitleRes(it)) }
 
-    // Tipo efetivo da categoria selecionada (ou da nova categoria sendo criada).
-    val effectiveCategoryKind = if (creatingNewCategory) {
-        newCategoryKind
-    } else {
-        when (val sel = selectedCategory) {
-            is CategorySelection.Builtin -> sel.category.kind
-            is CategorySelection.Custom ->
-                data.customCategories.firstOrNull { it.id == sel.id }?.kind ?: CategoryKind.Standard
-        }
+    // Tipo efetivo da categoria selecionada.
+    val effectiveCategoryKind = when (val sel = selectedCategory) {
+        is CategorySelection.Builtin -> sel.category.kind
+        is CategorySelection.Custom ->
+            data.customCategories.firstOrNull { it.id == sel.id }?.kind ?: CategoryKind.Standard
     }
     val isCheckIn = effectiveCategoryKind == CategoryKind.CheckIn
 
@@ -108,10 +108,6 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
     val nameConflict = nameLower.isNotEmpty() &&
         (nameLower in AddGoalViewModel.RESERVED_NAMES ||
             data.existingGoals.any { it.id != data.editing?.id && it.name.lowercase() == nameLower })
-    val newCatLower = newCategoryName.trim().lowercase()
-    val categoryNameConflict = creatingNewCategory && newCatLower.isNotEmpty() &&
-        (builtinNames.values.any { it.lowercase() == newCatLower } ||
-            data.customCategories.any { it.name.lowercase() == newCatLower })
     val goalValue = goalText.toIntOrNull()
     val stepValue = incrementText.toIntOrNull()
     val stepTooLarge = !isCheckIn && goalValue != null && goalValue > 0 &&
@@ -119,8 +115,7 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
     val stepValid = isCheckIn || (stepValue != null && stepValue > 0 && goalValue != null && stepValue <= goalValue)
 
     val isValid = trimmedEmoji.isNotEmpty() && name.isNotBlank() && !emojiConflict && !nameConflict &&
-        unit.isNotBlank() && goalValue != null && goalValue > 0 && stepValid &&
-        (!creatingNewCategory || (newCategoryName.isNotBlank() && !categoryNameConflict))
+        unit.isNotBlank() && goalValue != null && goalValue > 0 && stepValid
 
     val title = data.editing?.let { "${it.emoji} ${it.name}" } ?: stringResource(R.string.addgoal_title_new)
 
@@ -146,11 +141,6 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
                                 target = savedTarget,
                                 increment = savedIncrement,
                                 selection = selectedCategory,
-                                newCategory = if (creatingNewCategory && newCategoryName.isNotBlank()) {
-                                    Triple(newCategoryName, newCategoryKind, newCategorySymbol)
-                                } else {
-                                    null
-                                },
                                 editingId = data.editing?.id,
                                 reminderTimes = reminderTimes,
                             )
@@ -177,43 +167,15 @@ fun AddGoalScreen(goalId: Long?, onBack: () -> Unit, viewModel: AddGoalViewModel
                 customCategories = data.customCategories,
                 onSelect = { selectedCategory = it },
             )
-            TextButton(
-                onClick = {
-                    creatingNewCategory = !creatingNewCategory
-                    if (!creatingNewCategory) {
-                        newCategoryName = ""
-                        newCategoryKind = CategoryKind.Standard
-                        newCategorySymbol = CustomGoalCategory.DEFAULT_SYMBOL_NAME
-                    }
-                },
-            ) {
+            if (effectiveCategoryKind != CategoryKind.Standard) {
                 Text(
-                    (if (creatingNewCategory) "− " else "+ ") + stringResource(R.string.addgoal_category_new_button),
-                    color = accent,
-                )
-            }
-
-            // Nova categoria (inline).
-            if (creatingNewCategory) {
-                CategoryKindPicker(
-                    selected = newCategoryKind,
-                    onSelect = { newCategoryKind = it },
-                )
-                OutlinedTextField(
-                    value = newCategoryName,
-                    onValueChange = { newCategoryName = it },
-                    label = { Text(stringResource(R.string.addgoal_category_new_section)) },
-                    placeholder = { Text(stringResource(R.string.addgoal_category_new_name_placeholder)) },
-                    singleLine = true,
-                    isError = categoryNameConflict,
-                    supportingText = errorText(categoryNameConflict, R.string.addgoal_warning_category_duplicate),
-                    modifier = Modifier.fillMaxWidth(),
-                )
-                FieldLabel(stringResource(R.string.settings_category_icon_section))
-                CategorySymbolPicker(
-                    selection = newCategorySymbol,
-                    onSelect = { newCategorySymbol = it },
-                    accentColor = accent,
+                    text = stringResource(
+                        R.string.addgoal_category_kind_footer,
+                        stringResource(kindTitleRes(effectiveCategoryKind)),
+                        stringResource(kindFooterRes(effectiveCategoryKind)),
+                    ),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
 

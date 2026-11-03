@@ -76,9 +76,9 @@
     <string name="tier_plant_level4">크리스마스 트리</string>
     <string name="tier_plant_level5">울창한 숲</string>
     <string name="tier_astronaut_level1">우주비행사</string>
-    <string name="tier_astronaut_level2">로켓</string>
-    <string name="tier_astronaut_level3">비행접시</string>
-    <string name="tier_astronaut_level4">외계인</string>
+    <string name="tier_astronaut_level2">외계인</string>
+    <string name="tier_astronaut_level3">로켓</string>
+    <string name="tier_astronaut_level4">비행접시</string>
     <string name="tier_astronaut_level5">타디스</string>
     <string name="tier_celestial_level1">혜성</string>
     <string name="tier_celestial_level2">달</string>
@@ -88,8 +88,8 @@
     <string name="tier_champion_level1">브론즈</string>
     <string name="tier_champion_level2">실버</string>
     <string name="tier_champion_level3">골드</string>
-    <string name="tier_champion_level4">다이아몬드</string>
-    <string name="tier_champion_level5">트로피</string>
+    <string name="tier_champion_level4">트로피</string>
+    <string name="tier_champion_level5">다이아몬드</string>
     <string name="tier_number_level1">하나</string>
     <string name="tier_number_level2">둘</string>
     <string name="tier_number_level3">셋</string>

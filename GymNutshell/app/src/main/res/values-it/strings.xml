@@ -95,8 +95,8 @@
     <string name="color_orange">Arancione</string>
     <string name="color_cyan">Ciano</string>
     <string name="color_pink">Rosa</string>
-    <string name="settings_section_data">I tuoi dati</string>
-    <string name="settings_profile_title">Profilo</string>
+    <string name="settings_section_data">Profilo</string>
+    <string name="settings_profile_title">I tuoi dati</string>
     <string name="settings_profile_section_optional">Facoltativo</string>
     <string name="settings_profile_name">Nome</string>
     <string name="settings_profile_name_placeholder">Facoltativo</string>
@@ -151,7 +151,7 @@
     <string name="goaldetail_increment_stepper">Modifica passo</string>
     <string name="goaldetail_footer">Modificare questo valore non influisce sulle registrazioni passate.</string>
     <string name="goaldetail_increment_footer">Il passo indica di quanto avanza il cursore verso il target.</string>
-    <string name="a11y_add_goal">Nuovo obiettivo di monitoraggio</string>
+    <string name="a11y_add_goal">Aggiungi</string>
     <string name="a11y_edit_category">Modifica categoria</string>
     <string name="cd_move_up">Sposta in alto</string>
     <string name="cd_move_down">Sposta in basso</string>
@@ -199,6 +199,9 @@
     <string name="welcome_ready_allowed">Consentito</string>
     <string name="welcome_ready_requested">Richiesto</string>
     <string name="welcome_ready_denied">Rifiutato</string>
+    <string name="welcome_ready_notifications_setup_title">Cosa ti ricordiamo?</string>
+    <string name="welcome_ready_notifications_setup_footer">Puoi cambiare tutto più tardi in Impostazioni › Notifiche.</string>
+    <string name="a11y_welcome_ready_notifications_setup_hint">Tocca per scegliere i promemoria.</string>
     <string name="welcome_button_continue">Continua</string>
     <string name="welcome_button_start">Andiamo!</string>
     <string name="welcome_button_back">Indietro</string>
@@ -437,8 +440,10 @@
     <string name="category_kind_rest_day">Con riposo</string>
     <string name="category_kind_check_in">Check-in</string>
     <string name="category_kind_standard_footer">Registra gli obiettivi poco a poco con lo slider o i pulsanti − / +.</string>
-    <string name="category_kind_rest_day_footer">Come Standard, con un pulsante ON/OFF per segnare il giorno di riposo.</string>
+    <string name="category_kind_rest_day_footer">Con un pulsante ON/OFF per segnare il giorno di riposo.</string>
     <string name="category_kind_check_in_footer">Ogni obiettivo si spunta una volta al giorno: In sospeso o Fatto.</string>
+    <string name="addgoal_category_kind_footer">Questa categoria è del tipo «%1$s». %2$s</string>
+    <string name="settings_goals_add_to_category">Aggiungi obiettivo</string>
     <string name="addgoal_section_dose">Dose</string>
     <string name="addgoal_dose_footer">Segnando Fatto, l\'obiettivo del giorno è completato con questa quantità.</string>
     <string name="today_checkin_pending">In sospeso</string>

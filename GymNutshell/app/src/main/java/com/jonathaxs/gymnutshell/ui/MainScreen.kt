@@ -193,16 +193,28 @@ fun MainScreen(
                     composable(SettingsRoutes.CUSTOM_GOALS) {
                         GoalsScreen(
                             onBack = { sheetNavController.popBackStack() },
-                            onAddGoal = { sheetNavController.navigate(SettingsRoutes.ADD_GOAL) },
+                            onAddGoal = { categoryId ->
+                                val route = if (categoryId != null) {
+                                    "${SettingsRoutes.ADD_GOAL}?categoryId=$categoryId"
+                                } else {
+                                    SettingsRoutes.ADD_GOAL
+                                }
+                                sheetNavController.navigate(route)
+                            },
                             onEditGoal = { id -> sheetNavController.navigate("${SettingsRoutes.ADD_GOAL}?goalId=$id") },
                             onOpenGoalDetail = { key -> sheetNavController.navigate("${SettingsRoutes.GOAL_DETAIL}/$key") },
                             onOpenCategories = { sheetNavController.navigate(SettingsRoutes.CATEGORIES) },
                         )
                     }
                     composable(
-                        route = "${SettingsRoutes.ADD_GOAL}?goalId={goalId}",
+                        route = "${SettingsRoutes.ADD_GOAL}?goalId={goalId}&categoryId={categoryId}",
                         arguments = listOf(
                             navArgument("goalId") {
+                                type = NavType.StringType
+                                nullable = true
+                                defaultValue = null
+                            },
+                            navArgument("categoryId") {
                                 type = NavType.StringType
                                 nullable = true
                                 defaultValue = null
@@ -211,6 +223,7 @@ fun MainScreen(
                     ) { entry ->
                         AddGoalScreen(
                             goalId = entry.arguments?.getString("goalId")?.toLongOrNull(),
+                            initialCategoryId = entry.arguments?.getString("categoryId"),
                             onBack = { sheetNavController.popBackStack() },
                         )
                     }

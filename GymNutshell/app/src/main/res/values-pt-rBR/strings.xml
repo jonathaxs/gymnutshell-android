@@ -128,8 +128,8 @@
     <string name="color_pink">Rosa</string>
 
     <!-- Dados físicos e perfil -->
-    <string name="settings_section_data">Seus dados</string>
-    <string name="settings_profile_title">Perfil</string>
+    <string name="settings_section_data">Perfil</string>
+    <string name="settings_profile_title">Seus dados</string>
     <string name="settings_profile_section_optional">Opcional</string>
     <string name="settings_profile_name">Nome</string>
     <string name="settings_profile_name_placeholder">Opcional</string>
@@ -192,7 +192,7 @@
     <string name="goaldetail_footer">Alterar isso não afeta registros passados.</string>
     <string name="goaldetail_increment_footer">O passo é o quanto o slider avança no valor da meta.</string>
     <!-- Acessibilidade / descrições -->
-    <string name="a11y_add_goal">Nova meta de rastreio</string>
+    <string name="a11y_add_goal">Adicionar</string>
     <string name="a11y_edit_category">Editar categoria</string>
     <string name="cd_move_up">Mover para cima</string>
     <string name="cd_move_down">Mover para baixo</string>
@@ -242,6 +242,9 @@
     <string name="welcome_ready_allowed">Permitido</string>
     <string name="welcome_ready_requested">Solicitado</string>
     <string name="welcome_ready_denied">Negado</string>
+    <string name="welcome_ready_notifications_setup_title">O que lembrar?</string>
+    <string name="welcome_ready_notifications_setup_footer">Dá pra mudar tudo isso depois em Ajustes › Notificações.</string>
+    <string name="a11y_welcome_ready_notifications_setup_hint">Toque para escolher os lembretes.</string>
     <string name="welcome_button_continue">Continuar</string>
     <string name="welcome_button_start">Vamos lá!</string>
     <string name="welcome_button_back">Voltar</string>
@@ -267,7 +270,7 @@
     <string name="favorite_exercise_calves">Panturrilhas</string>
 
     <!-- Temas -->
-    <string name="settings_theme">Emojis</string>
+    <string name="settings_theme">Emoji</string>
     <string name="theme_cat_sport">Esporte</string>
     <string name="theme_cat_animals">Animais</string>
     <string name="theme_cat_warrior">Herói</string>
@@ -529,8 +532,10 @@
     <string name="category_kind_rest_day">Com descanso</string>
     <string name="category_kind_check_in">Check-in</string>
     <string name="category_kind_standard_footer">As metas são registradas aos poucos, com o slider ou os botões − / +.</string>
-    <string name="category_kind_rest_day_footer">Igual ao padrão, com um botão ON/OFF pra marcar dia de descanso.</string>
+    <string name="category_kind_rest_day_footer">Com um botão ON/OFF para marcar dia de descanso.</string>
     <string name="category_kind_check_in_footer">Cada meta é marcada uma vez por dia: Pendente ou Feito.</string>
+    <string name="addgoal_category_kind_footer">Esta categoria é do tipo “%1$s”. %2$s</string>
+    <string name="settings_goals_add_to_category">Adicionar meta</string>
     <string name="addgoal_section_dose">Dose</string>
     <string name="addgoal_dose_footer">Ao marcar Feito, a meta do dia fica completa com esse valor.</string>
     <string name="today_checkin_pending">Pendente</string>

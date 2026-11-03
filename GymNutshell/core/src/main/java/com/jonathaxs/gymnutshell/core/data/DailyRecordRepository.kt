@@ -17,6 +17,7 @@ class DailyRecordRepository(private val context: Context) {
 
     private object Keys {
         val fiveLevelsMigration = booleanPreferencesKey("migration.achievement.fiveLevels")
+        val themeEmojiSwapMigration = booleanPreferencesKey("migration.achievement.themeEmojiSwap.2026-11")
     }
 
     /** Histórico observável (a UI reage a mudanças). */
@@ -41,6 +42,19 @@ class DailyRecordRepository(private val context: Context) {
         recordDao.replaceAll(normalized)
         context.appPreferences.edit { prefs ->
             prefs[Keys.fiveLevelsMigration] = true
+        }
+    }
+
+    /**
+     * Roda uma vez: emojis do Espaço e da Medalha trocaram de nível (ex: 🚀 do 2 pro 3), e os dias salvos
+     * guardam o emoji. Recalcula pela % salva pra o histórico não ler o nível errado.
+     */
+    suspend fun migrateThemeEmojiSwapIfNeeded() {
+        val alreadyMigrated = context.appPreferences.data.first()[Keys.themeEmojiSwapMigration] ?: false
+        if (alreadyMigrated) return
+        recordDao.replaceAll(recordDao.getAll().map { it.normalizeAchievement() })
+        context.appPreferences.edit { prefs ->
+            prefs[Keys.themeEmojiSwapMigration] = true
         }
     }
 }

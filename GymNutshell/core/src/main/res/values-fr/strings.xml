@@ -76,9 +76,9 @@
     <string name="tier_plant_level4">Sapin de Noël</string>
     <string name="tier_plant_level5">Forêt</string>
     <string name="tier_astronaut_level1">Astronaute</string>
-    <string name="tier_astronaut_level2">Fusée</string>
-    <string name="tier_astronaut_level3">Soucoupe Volante</string>
-    <string name="tier_astronaut_level4">Extraterrestre</string>
+    <string name="tier_astronaut_level2">Extraterrestre</string>
+    <string name="tier_astronaut_level3">Fusée</string>
+    <string name="tier_astronaut_level4">Soucoupe Volante</string>
     <string name="tier_astronaut_level5">TARDIS</string>
     <string name="tier_celestial_level1">Comète</string>
     <string name="tier_celestial_level2">Lune</string>
@@ -88,8 +88,8 @@
     <string name="tier_champion_level1">Bronze</string>
     <string name="tier_champion_level2">Argent</string>
     <string name="tier_champion_level3">Or</string>
-    <string name="tier_champion_level4">Diamant</string>
-    <string name="tier_champion_level5">Trophée</string>
+    <string name="tier_champion_level4">Trophée</string>
+    <string name="tier_champion_level5">Diamant</string>
     <string name="tier_number_level1">Un</string>
     <string name="tier_number_level2">Deux</string>
     <string name="tier_number_level3">Trois</string>

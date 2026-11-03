@@ -104,9 +104,9 @@
 
     <!-- Space -->
     <string name="tier_astronaut_level1">Astronaut</string>
-    <string name="tier_astronaut_level2">Rocket</string>
-    <string name="tier_astronaut_level3">Flying Saucer</string>
-    <string name="tier_astronaut_level4">Alien</string>
+    <string name="tier_astronaut_level2">Alien</string>
+    <string name="tier_astronaut_level3">Rocket</string>
+    <string name="tier_astronaut_level4">Flying Saucer</string>
     <string name="tier_astronaut_level5">TARDIS</string>
 
     <string name="tier_celestial_level1">Comet</string>
@@ -119,8 +119,8 @@
     <string name="tier_champion_level1">Bronze</string>
     <string name="tier_champion_level2">Silver</string>
     <string name="tier_champion_level3">Gold</string>
-    <string name="tier_champion_level4">Diamond</string>
-    <string name="tier_champion_level5">Trophy</string>
+    <string name="tier_champion_level4">Trophy</string>
+    <string name="tier_champion_level5">Diamond</string>
 
     <string name="tier_number_level1">One</string>
     <string name="tier_number_level2">Two</string>

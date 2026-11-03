@@ -16,7 +16,9 @@ import com.jonathaxs.gymnutshell.core.domain.AppTheme
 import com.jonathaxs.gymnutshell.core.domain.ControlStyle
 import com.jonathaxs.gymnutshell.core.domain.GoalsCalculator
 import com.jonathaxs.gymnutshell.core.domain.MeasurementSystem
+import com.jonathaxs.gymnutshell.core.domain.NotificationKind
 import com.jonathaxs.gymnutshell.core.domain.Profile
+import com.jonathaxs.gymnutshell.core.domain.ReminderTime
 import com.jonathaxs.gymnutshell.core.domain.UserGoal
 import com.jonathaxs.gymnutshell.core.theme.AccentColor
 import com.jonathaxs.gymnutshell.health.HealthConnectManager
@@ -51,6 +53,10 @@ data class WelcomeUiState(
     val healthPermissionState: WelcomePermissionState = WelcomePermissionState.Idle,
     val isHealthAvailable: Boolean = false,
     val restoreFailed: Boolean = false,
+    val showNotificationsSetup: Boolean = false,
+    val waterReminderEnabled: Boolean = true,
+    val creatineReminderEnabled: Boolean = false,
+    val creatineReminderTime: ReminderTime = ReminderTime(8, 0),
 ) {
     /** Exibe a etapa de unidades só quando o país requer escolha (EUA, GB, etc.). */
     val showsUnitsStep: Boolean = MeasurementSystem.needsChoice()
@@ -252,10 +258,22 @@ class WelcomeViewModel(app: Application) : AndroidViewModel(app) {
                 healthManager.grantedPermissions().containsAll(healthManager.allPermissions)
             } else false
 
+            if (notifGranted) {
+                notificationPrefs.applyDefaultEnabledKindsOnce()
+            }
+            val waterOn = notificationPrefs.isEnabled(NotificationKind.Water)
+            val creatineOn = notificationPrefs.isEnabled(NotificationKind.Creatine)
+            val savedTime = notificationPrefs
+                .reminderTimes(NotificationPreferencesRepository.CREATINE_REMINDER_ID)
+                .firstOrNull() ?: ReminderTime(8, 0)
+
             _state.update { current ->
                 current.copy(
                     notificationsPermissionState = if (notifGranted) WelcomePermissionState.Allowed else current.notificationsPermissionState,
                     healthPermissionState = if (healthGranted) WelcomePermissionState.Allowed else current.healthPermissionState,
+                    waterReminderEnabled = waterOn,
+                    creatineReminderEnabled = creatineOn,
+                    creatineReminderTime = savedTime,
                 )
             }
         }
@@ -269,8 +287,71 @@ class WelcomeViewModel(app: Application) : AndroidViewModel(app) {
         if (actuallyGranted) {
             viewModelScope.launch {
                 notificationPrefs.applyDefaultEnabledKindsOnce()
+                syncNotificationSetupFromPrefs(openPopover = true)
                 notificationScheduler.rescheduleAllActive()
             }
+        }
+    }
+
+    fun openNotificationsSetup() {
+        viewModelScope.launch {
+            notificationPrefs.applyDefaultEnabledKindsOnce()
+            syncNotificationSetupFromPrefs(openPopover = true)
+        }
+    }
+
+    fun dismissNotificationsSetup() {
+        _state.update { it.copy(showNotificationsSetup = false) }
+    }
+
+    fun setWaterReminderEnabled(enabled: Boolean) {
+        _state.update { it.copy(waterReminderEnabled = enabled) }
+        viewModelScope.launch {
+            notificationPrefs.setEnabled(enabled, NotificationKind.Water)
+            notificationScheduler.rescheduleAllActive()
+        }
+    }
+
+    fun setCreatineReminderEnabled(enabled: Boolean) {
+        val currentTime = _state.value.creatineReminderTime
+        _state.update { it.copy(creatineReminderEnabled = enabled) }
+        viewModelScope.launch {
+            // Ligar sem horário salvo grava o padrão (08:00). Desligar preserva o horário.
+            if (enabled && notificationPrefs.reminderTimes(NotificationPreferencesRepository.CREATINE_REMINDER_ID).isEmpty()) {
+                notificationPrefs.setReminderTimes(
+                    listOf(currentTime),
+                    NotificationPreferencesRepository.CREATINE_REMINDER_ID,
+                )
+            }
+            notificationPrefs.setEnabled(enabled, NotificationKind.Creatine)
+            notificationScheduler.rescheduleSupplementReminders()
+        }
+    }
+
+    fun setCreatineReminderTime(time: ReminderTime) {
+        _state.update { it.copy(creatineReminderTime = time) }
+        viewModelScope.launch {
+            notificationPrefs.setReminderTimes(
+                listOf(time),
+                NotificationPreferencesRepository.CREATINE_REMINDER_ID,
+            )
+            notificationScheduler.rescheduleSupplementReminders()
+        }
+    }
+
+    private suspend fun syncNotificationSetupFromPrefs(openPopover: Boolean = false) {
+        val waterOn = notificationPrefs.isEnabled(NotificationKind.Water)
+        val creatineOn = notificationPrefs.isEnabled(NotificationKind.Creatine)
+        val savedTime = notificationPrefs
+            .reminderTimes(NotificationPreferencesRepository.CREATINE_REMINDER_ID)
+            .firstOrNull() ?: ReminderTime(8, 0)
+        _state.update {
+            it.copy(
+                waterReminderEnabled = waterOn,
+                creatineReminderEnabled = creatineOn,
+                creatineReminderTime = savedTime,
+                showNotificationsSetup = if (openPopover) true else it.showNotificationsSetup,
+            )
         }
     }
 

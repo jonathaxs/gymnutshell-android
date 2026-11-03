@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -42,6 +43,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -54,6 +56,7 @@ import com.jonathaxs.gymnutshell.ui.components.GroupInset
 import com.jonathaxs.gymnutshell.ui.components.GroupRow
 import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
 import com.jonathaxs.gymnutshell.ui.components.GroupSection
+import com.jonathaxs.gymnutshell.ui.components.categoryIcon
 
 // Verde/vermelho estilo iOS pros botões de restaurar (+) e remover (−).
 private val RemoveRed = Color(0xFFFF3B30)
@@ -63,7 +66,7 @@ private val RemoveRed = Color(0xFFFF3B30)
 @Composable
 fun GoalsScreen(
     onBack: () -> Unit,
-    onAddGoal: () -> Unit,
+    onAddGoal: (String?) -> Unit,
     onEditGoal: (Long) -> Unit,
     onOpenGoalDetail: (String) -> Unit,
     onOpenCategories: () -> Unit,
@@ -71,6 +74,8 @@ fun GoalsScreen(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     var editMode by remember { mutableStateOf(false) }
+    var showAddMenu by remember { mutableStateOf(false) }
+    var showNewCategorySheet by remember { mutableStateOf(false) }
     val accent = Color(state.accentArgb)
 
     Scaffold(
@@ -86,8 +91,43 @@ fun GoalsScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = onAddGoal) {
-                        Icon(Icons.Default.Add, contentDescription = stringResource(R.string.a11y_add_goal))
+                    Box {
+                        IconButton(onClick = { showAddMenu = true }) {
+                            Icon(Icons.Default.Add, contentDescription = stringResource(R.string.a11y_add_goal))
+                        }
+                        DropdownMenu(
+                            expanded = showAddMenu,
+                            onDismissRequest = { showAddMenu = false },
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.addgoal_title_new)) },
+                                leadingIcon = {
+                                    Icon(
+                                        painter = painterResource(R.drawable.ic_settings_target),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(20.dp),
+                                    )
+                                },
+                                onClick = {
+                                    showAddMenu = false
+                                    onAddGoal(null)
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.addgoal_category_new_button)) },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = categoryIcon("square.grid.2x2.fill"),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(20.dp),
+                                    )
+                                },
+                                onClick = {
+                                    showAddMenu = false
+                                    showNewCategorySheet = true
+                                },
+                            )
+                        }
                     }
                     TextButton(onClick = { editMode = !editMode }) {
                         Text(
@@ -127,6 +167,21 @@ fun GoalsScreen(
                     item(key = "card_${section.id}") {
                         val siblingIds = section.customRows.map { it.id }
                         GroupCard {
+                            if (section.fixedRows.isEmpty() && section.customRows.isEmpty()) {
+                                GroupRow(
+                                    title = stringResource(R.string.settings_goals_add_to_category),
+                                    titleColor = accent,
+                                    leading = {
+                                        Icon(
+                                            imageVector = Icons.Default.AddCircle,
+                                            contentDescription = null,
+                                            tint = accent,
+                                            modifier = Modifier.size(22.dp),
+                                        )
+                                    },
+                                    onClick = { onAddGoal(section.customCategoryId) },
+                                )
+                            }
                             section.fixedRows.forEachIndexed { idx, row ->
                                 if (idx > 0) GroupRowDivider()
                                 FixedGoalRow(
@@ -181,6 +236,19 @@ fun GoalsScreen(
                 }
             }
         }
+    }
+
+    if (showNewCategorySheet) {
+        EditCategorySheet(
+            category = null,
+            existingCategories = state.customCategories,
+            accent = accent,
+            onDismiss = { showNewCategorySheet = false },
+            onSave = { created ->
+                viewModel.saveCategory(created)
+                showNewCategorySheet = false
+            },
+        )
     }
 }
 
