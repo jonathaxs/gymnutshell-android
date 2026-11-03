@@ -233,6 +233,21 @@ fun NotificationsSettingsScreen(
                 }
             }
 
+            // Emoji desligado por padrão: as notificações saem só com texto.
+            GroupSection(footer = stringResource(R.string.settings_notifications_emoji_footer)) {
+                GroupRow(
+                    title = stringResource(R.string.settings_notifications_emoji_title),
+                    enabled = allowed,
+                    trailing = {
+                        Switch(
+                            checked = ui.showEmoji,
+                            onCheckedChange = { viewModel.setShowEmoji(it) },
+                            enabled = allowed,
+                        )
+                    },
+                )
+            }
+
             Spacer(Modifier.height(24.dp))
         }
     }

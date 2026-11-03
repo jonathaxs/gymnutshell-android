@@ -86,8 +86,26 @@ class SupplementReminderTest {
         )
         assertEquals(2, plano.size)
         assertEquals(listOf("a", "b"), plano[0].entryIds)
-        assertEquals("🧪 Creatina, 🐟 Ômega 3", plano[0].body)
+        assertEquals("Creatina, Ômega 3", plano[0].body)
         assertEquals(listOf("a"), plano[1].entryIds)
+    }
+
+    @Test
+    fun lembreteComEmojiSoQuandoLigado() {
+        val a = SupplementReminderEntry(id = "a", emoji = "🧪", name = "Creatina", times = listOf(manha), doneToday = false)
+        val b = SupplementReminderEntry(id = "b", emoji = "🐟", name = "Ômega 3", times = listOf(manha), doneToday = false)
+        val semEmoji = SupplementReminderPlanner.plan(entries = listOf(a), now = dataFixa(1, 6, 0), grouped = false, days = 1)
+        assertEquals("Creatina", semEmoji[0].title)
+        val sozinho = SupplementReminderPlanner.plan(
+            entries = listOf(a), now = dataFixa(1, 6, 0), grouped = false, showEmoji = true, days = 1,
+        )
+        assertEquals("🧪 Creatina", sozinho[0].title)
+        val agrupado = SupplementReminderPlanner.plan(
+            entries = listOf(a, b), now = dataFixa(1, 6, 0), grouped = true, showEmoji = true, days = 1,
+            groupTitle = "Hora do check-in",
+        )
+        assertEquals("⏰ Hora do check-in", agrupado[0].title)
+        assertEquals("🧪 Creatina, 🐟 Ômega 3", agrupado[0].body)
     }
 
     @Test

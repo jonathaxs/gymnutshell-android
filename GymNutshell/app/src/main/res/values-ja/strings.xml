@@ -295,7 +295,7 @@
     <string name="notif_kind_workout_body">筋トレの時間です。今日も頑張りましょう！</string>
     <string name="notif_kind_cardio_body">有酸素運動の時間です！少し体を動かしてリフレッシュしましょう。</string>
     <string name="notif_kind_creatine_body">今日のクレアチンはもう飲みましたか？</string>
-    <string name="notif_event_achievement_body">%1$s 今日は%2$sで終了しました！</string>
+    <string name="notif_event_achievement_body">今日は%1$sで終了しました！</string>
     <string name="notif_event_health_body_cardio">有酸素運動が %1$d分記録されました（%2$s）。</string>
     <string name="notif_event_health_body_workout">筋トレが %1$d分記録されました（%2$s）。</string>
     <string name="notif_event_health_body_sleep">%d時間の睡眠が記録されました。</string>
@@ -443,7 +443,7 @@
 
     <!-- Lembretes por horário dos suplementos -->
     <string name="notifications_supplement_body">%1$sを飲む時間です。</string>
-    <string name="notifications_supplement_group_title">⏰ チェックインの時間</string>
+    <string name="notifications_supplement_group_title">チェックインの時間</string>
     <string name="notifications_supplement_action_done">飲んだ</string>
     <string name="notifications_supplement_preset_morning">朝</string>
     <string name="notifications_supplement_preset_lunch">昼</string>
@@ -457,4 +457,6 @@
     <string name="settings_notifications_times_footer">各時刻に1日1回通知します。「今日」で完了にするか、通知の「飲んだ」をタップすると、その日の通知は止まります。</string>
     <string name="settings_notifications_group_title">同じ時刻のチェックイン目標をまとめる</string>
     <string name="settings_notifications_group_footer">同じ時刻のチェックイン目標を1つの通知にまとめます。オフの場合は目標ごとに通知します。</string>
+    <string name="settings_notifications_emoji_title">通知に絵文字を表示</string>
+    <string name="settings_notifications_emoji_footer">各目標と毎日の成果の絵文字を通知の文に表示します。</string>
 </resources>

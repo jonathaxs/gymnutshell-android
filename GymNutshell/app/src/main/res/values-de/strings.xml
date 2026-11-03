@@ -297,7 +297,7 @@
     <string name="notif_kind_workout_body">Dein Krafttraining wartet. Los geht\'s!</string>
     <string name="notif_kind_cardio_body">Zeit für Cardio! Jede Bewegung macht einen Unterschied.</string>
     <string name="notif_kind_creatine_body">Hast du heute schon dein Kreatin genommen?</string>
-    <string name="notif_event_achievement_body">%1$s Du hast den Tag als %2$s abgeschlossen!</string>
+    <string name="notif_event_achievement_body">Du hast den Tag als %1$s abgeschlossen!</string>
     <string name="notif_event_health_body_cardio">%1$d Min. Cardio erfasst (%2$s).</string>
     <string name="notif_event_health_body_workout">%1$d Min. Krafttraining erfasst (%2$s).</string>
     <string name="notif_event_health_body_sleep">%d Std. Schlaf erfasst.</string>
@@ -447,7 +447,7 @@
 
     <!-- Lembretes por horário dos suplementos -->
     <string name="notifications_supplement_body">Zeit für %1$s.</string>
-    <string name="notifications_supplement_group_title">⏰ Zeit für den Check-in</string>
+    <string name="notifications_supplement_group_title">Zeit für den Check-in</string>
     <string name="notifications_supplement_action_done">Genommen</string>
     <string name="notifications_supplement_preset_morning">Morgens</string>
     <string name="notifications_supplement_preset_lunch">Mittags</string>
@@ -461,4 +461,6 @@
     <string name="settings_notifications_times_footer">Eine Erinnerung pro Tag zu jeder Uhrzeit. Die Erinnerungen des Tages enden, wenn du auf Heute Erledigt markierst oder in der Mitteilung auf Genommen tippst.</string>
     <string name="settings_notifications_group_title">Check-in-Ziele zur gleichen Zeit bündeln</string>
     <string name="settings_notifications_group_footer">Fasst Check-in-Ziele mit derselben Uhrzeit in einer Erinnerung zusammen. Aus: jedes Ziel hat seine eigene.</string>
+    <string name="settings_notifications_emoji_title">Emojis in Mitteilungen</string>
+    <string name="settings_notifications_emoji_footer">Zeigt das Emoji jedes Ziels und des Tageserfolgs im Text der Mitteilungen.</string>
 </resources>

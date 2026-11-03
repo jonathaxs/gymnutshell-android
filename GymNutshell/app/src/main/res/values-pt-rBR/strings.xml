@@ -361,7 +361,7 @@
     <string name="notif_kind_creatine_body">Já tomou sua creatina hoje?</string>
 
     <!-- Notificações: corpo dos eventos -->
-    <string name="notif_event_achievement_body">%1$s Você fechou o dia como %2$s!</string>
+    <string name="notif_event_achievement_body">Você fechou o dia como %1$s!</string>
     <string name="notif_event_health_body_cardio">Foi registrado %1$d min em Cardio (%2$s).</string>
     <string name="notif_event_health_body_workout">Foi registrado %1$d min em Musculação (%2$s).</string>
     <string name="notif_event_health_body_sleep">Foi registrado %d h de sono.</string>
@@ -543,7 +543,7 @@
 
     <!-- Lembretes por horário dos suplementos -->
     <string name="notifications_supplement_body">Hora de tomar %1$s.</string>
-    <string name="notifications_supplement_group_title">⏰ Hora do check-in</string>
+    <string name="notifications_supplement_group_title">Hora do check-in</string>
     <string name="notifications_supplement_action_done">Tomei</string>
     <string name="notifications_supplement_preset_morning">Manhã</string>
     <string name="notifications_supplement_preset_lunch">Almoço</string>
@@ -557,4 +557,6 @@
     <string name="settings_notifications_times_footer">Um aviso por dia em cada horário. Os avisos do dia param quando você marca Feito na Hoje ou toca em Tomei na notificação.</string>
     <string name="settings_notifications_group_title">Agrupar metas de check-in do mesmo horário</string>
     <string name="settings_notifications_group_footer">Junta num aviso só as metas de check-in marcadas no mesmo horário. Desligado, cada meta tem o seu aviso.</string>
+    <string name="settings_notifications_emoji_title">Emojis nas notificações</string>
+    <string name="settings_notifications_emoji_footer">Mostra o emoji de cada meta e da conquista do dia no texto das notificações.</string>
 </resources>

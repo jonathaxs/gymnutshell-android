@@ -132,6 +132,18 @@ class NotificationPreferencesRepository(private val context: Context) {
         context.appPreferences.edit { it[groupSupplementsKey] = grouped }
     }
 
+    /** Emoji da meta, do suplemento ou da conquista no texto das notificações. Desligado por padrão. */
+    val showEmoji: Flow<Boolean> = context.appPreferences.data.map { prefs ->
+        prefs[showEmojiKey] ?: false
+    }
+
+    suspend fun isShowEmoji(): Boolean =
+        context.appPreferences.data.first()[showEmojiKey] ?: false
+
+    suspend fun setShowEmoji(show: Boolean) {
+        context.appPreferences.edit { it[showEmojiKey] = show }
+    }
+
     suspend fun isReminderEnabled(id: String): Boolean =
         context.appPreferences.data.first()[booleanPreferencesKey("$ENABLED_PREFIX$id")] ?: false
 
@@ -205,6 +217,7 @@ class NotificationPreferencesRepository(private val context: Context) {
         sound: Map<String, String>?,
         times: Map<String, List<String>>? = null,
         groupSupplements: Boolean? = null,
+        notificationEmoji: Boolean? = null,
     ) {
         context.appPreferences.edit { prefs ->
             enabled?.forEach { (id, v) -> prefs[booleanPreferencesKey("$ENABLED_PREFIX$id")] = v }
@@ -222,6 +235,9 @@ class NotificationPreferencesRepository(private val context: Context) {
             if (groupSupplements != null) {
                 prefs[groupSupplementsKey] = groupSupplements
             }
+            if (notificationEmoji != null) {
+                prefs[showEmojiKey] = notificationEmoji
+            }
         }
     }
 
@@ -235,6 +251,7 @@ class NotificationPreferencesRepository(private val context: Context) {
     private fun customSoundKey(id: Long) = stringPreferencesKey("notifications.sound.custom.$id")
     private fun timesKey(id: String) = stringPreferencesKey("$TIMES_PREFIX$id")
     private val groupSupplementsKey = booleanPreferencesKey(GROUP_SUPPLEMENTS_KEY)
+    private val showEmojiKey = booleanPreferencesKey(SHOW_EMOJI_KEY)
     private val defaultsAppliedKey = booleanPreferencesKey("notifications.defaultsApplied")
 
     companion object {
@@ -248,5 +265,10 @@ class NotificationPreferencesRepository(private val context: Context) {
         private const val SOUND_PREFIX = "notifications.sound."
         private const val TIMES_PREFIX = "notifications.times."
         private const val GROUP_SUPPLEMENTS_KEY = "notifications.supplements.grouped"
+        private const val SHOW_EMOJI_KEY = "notifications.showEmoji"
+
+        /** Põe o emoji na frente do texto só quando a opção está ligada. */
+        fun withEmoji(emoji: String?, text: String, show: Boolean): String =
+            if (show && !emoji.isNullOrEmpty()) "$emoji $text" else text
     }
 }

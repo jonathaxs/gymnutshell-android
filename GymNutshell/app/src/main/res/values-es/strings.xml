@@ -299,7 +299,7 @@
     <string name="notif_kind_workout_body">Tu entrenamiento de musculación te espera. ¡Vamos!</string>
     <string name="notif_kind_cardio_body">¡Hora del cardio! Un poco de movimiento marca la diferencia.</string>
     <string name="notif_kind_creatine_body">¿Ya tomaste tu creatina hoy?</string>
-    <string name="notif_event_achievement_body">%1$s ¡Terminaste el día como %2$s!</string>
+    <string name="notif_event_achievement_body">¡Terminaste el día como %1$s!</string>
     <string name="notif_event_health_body_cardio">Se registraron %1$d min de Cardio (%2$s).</string>
     <string name="notif_event_health_body_workout">Se registraron %1$d min de Musculación (%2$s).</string>
     <string name="notif_event_health_body_sleep">Se registraron %d h de sueño.</string>
@@ -451,7 +451,7 @@
 
     <!-- Lembretes por horário dos suplementos -->
     <string name="notifications_supplement_body">Hora de tomar %1$s.</string>
-    <string name="notifications_supplement_group_title">⏰ Hora del check-in</string>
+    <string name="notifications_supplement_group_title">Hora del check-in</string>
     <string name="notifications_supplement_action_done">Tomado</string>
     <string name="notifications_supplement_preset_morning">Mañana</string>
     <string name="notifications_supplement_preset_lunch">Almuerzo</string>
@@ -465,4 +465,6 @@
     <string name="settings_notifications_times_footer">Un aviso al día en cada hora. Los avisos del día se detienen cuando marcas Hecho en Hoy o tocas Tomado en la notificación.</string>
     <string name="settings_notifications_group_title">Agrupar metas de check-in a la misma hora</string>
     <string name="settings_notifications_group_footer">Junta en un solo aviso las metas de check-in de la misma hora. Desactivado, cada meta tiene su aviso.</string>
+    <string name="settings_notifications_emoji_title">Emojis en las notificaciones</string>
+    <string name="settings_notifications_emoji_footer">Muestra el emoji de cada meta y del logro diario en el texto de las notificaciones.</string>
 </resources>

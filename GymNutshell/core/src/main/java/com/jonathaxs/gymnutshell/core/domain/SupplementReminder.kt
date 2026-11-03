@@ -109,14 +109,16 @@ object SupplementReminderPlanner {
     /**
      * Monta os avisos dos próximos dias. Pula horários que já passaram e, hoje,
      * as metas já feitas. Agrupado: um aviso por horário com todas as metas dele.
+     * [showEmoji] põe o emoji de cada meta (e o ⏰ do agrupado) no texto do aviso.
      */
     fun plan(
         entries: List<SupplementReminderEntry>,
         now: LocalDateTime = LocalDateTime.now(),
         grouped: Boolean,
+        showEmoji: Boolean = false,
         days: Int = DAYS_AHEAD,
         bodyFormat: (String) -> String = { "Hora de tomar $it." },
-        groupTitle: String = "💊 Hora dos suplementos",
+        groupTitle: String = "Hora do check-in",
     ): List<PlannedSupplementReminder> {
         val today = now.toLocalDate()
 
@@ -138,11 +140,11 @@ object SupplementReminderPlanner {
         val result = if (grouped) {
             slots.groupBy({ it.first }, { it.second }).map { (date, groupEntries) ->
                 val sortedGroup = groupEntries.sortedBy { it.name }
-                reminder(sortedGroup, date, bodyFormat, groupTitle)
+                reminder(sortedGroup, date, bodyFormat, groupTitle, showEmoji)
             }
         } else {
             slots.map { (date, entry) ->
-                reminder(listOf(entry), date, bodyFormat, groupTitle)
+                reminder(listOf(entry), date, bodyFormat, groupTitle, showEmoji)
             }
         }
 
@@ -156,24 +158,27 @@ object SupplementReminderPlanner {
         date: LocalDateTime,
         bodyFormat: (String) -> String,
         groupTitle: String,
+        showEmoji: Boolean,
     ): PlannedSupplementReminder {
         val stamp = date.format(stampFormatter)
+        fun label(entry: SupplementReminderEntry) =
+            if (showEmoji && entry.emoji.isNotEmpty()) "${entry.emoji} ${entry.name}" else entry.name
         if (group.size == 1) {
             val entry = group.first()
             return PlannedSupplementReminder(
                 identifier = "$IDENTIFIER_PREFIX$stamp.${entry.id}",
                 fireDate = date,
                 entryIds = listOf(entry.id),
-                title = "${entry.emoji} ${entry.name}",
+                title = label(entry),
                 body = bodyFormat(entry.name),
             )
         }
-        val names = group.joinToString(", ") { "${it.emoji} ${it.name}" }
+        val names = group.joinToString(", ") { label(it) }
         return PlannedSupplementReminder(
             identifier = "$IDENTIFIER_PREFIX$stamp.group",
             fireDate = date,
             entryIds = group.map { it.id },
-            title = groupTitle,
+            title = if (showEmoji) "⏰ $groupTitle" else groupTitle,
             body = names,
         )
     }

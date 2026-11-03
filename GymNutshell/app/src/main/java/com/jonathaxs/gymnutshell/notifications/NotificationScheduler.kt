@@ -203,6 +203,7 @@ class NotificationScheduler(context: Context) {
             entries = entries,
             now = now,
             grouped = prefs.isGroupSupplements(),
+            showEmoji = prefs.isShowEmoji(),
             days = days,
             bodyFormat = { appContext.getString(R.string.notifications_supplement_body, it) },
             groupTitle = appContext.getString(R.string.notifications_supplement_group_title),

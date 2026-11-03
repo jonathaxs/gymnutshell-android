@@ -297,7 +297,7 @@
     <string name="notif_kind_workout_body">Güç antrenmanın seni bekliyor. Haydi salona!</string>
     <string name="notif_kind_cardio_body">Kardiyo zamanı! Biraz hareket büyük fark yaratır.</string>
     <string name="notif_kind_creatine_body">Bugün kreatinini aldın mı?</string>
-    <string name="notif_event_achievement_body">%1$s Günü %2$s olarak tamamladın!</string>
+    <string name="notif_event_achievement_body">Günü %1$s olarak tamamladın!</string>
     <string name="notif_event_health_body_cardio">%1$d dk Kardiyo kaydedildi (%2$s).</string>
     <string name="notif_event_health_body_workout">%1$d dk Güç Antrenmanı kaydedildi (%2$s).</string>
     <string name="notif_event_health_body_sleep">%d saat uyku kaydedildi.</string>
@@ -447,7 +447,7 @@
 
     <!-- Lembretes por horário dos suplementos -->
     <string name="notifications_supplement_body">%1$s alma zamanı.</string>
-    <string name="notifications_supplement_group_title">⏰ Check-in zamanı</string>
+    <string name="notifications_supplement_group_title">Check-in zamanı</string>
     <string name="notifications_supplement_action_done">Aldım</string>
     <string name="notifications_supplement_preset_morning">Sabah</string>
     <string name="notifications_supplement_preset_lunch">Öğle</string>
@@ -461,4 +461,6 @@
     <string name="settings_notifications_times_footer">Her saatte günde bir hatırlatma. Bugün\'de Yapıldı olarak işaretlediğinde veya bildirimde Aldım\'a dokunduğunda günün hatırlatmaları durur.</string>
     <string name="settings_notifications_group_title">Aynı saatteki check-in hedeflerini grupla</string>
     <string name="settings_notifications_group_footer">Aynı saatteki check-in hedeflerini tek hatırlatmada birleştirir. Kapalıyken her hedefin kendi hatırlatması olur.</string>
+    <string name="settings_notifications_emoji_title">Bildirimlerde emoji</string>
+    <string name="settings_notifications_emoji_footer">Her hedefin ve günlük başarının emojisini bildirim metninde gösterir.</string>
 </resources>

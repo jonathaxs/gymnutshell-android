@@ -49,7 +49,7 @@ class GymNotifier(context: Context) {
         val kind = NotificationKind.Achievement
         if (!prefs.isEnabled(kind)) return
         val title = appContext.getString(R.string.notif_kind_achievement_title)
-        val body = appContext.getString(R.string.notif_event_achievement_body, emoji, tierName)
+        val body = withEmoji(emoji, appContext.getString(R.string.notif_event_achievement_body, tierName))
         post(kind, title, body, achievementEpochDay, prefs.sound(kind))
         history.append(kind.rawValue, title, body, kind.route.rawValue, achievementEpochDay)
     }
@@ -86,7 +86,7 @@ class GymNotifier(context: Context) {
     /** Lembrete recorrente de um kind fixo (água, proteína, …). Postado pelo ReminderWorker. */
     suspend fun postReminder(kind: NotificationKind) {
         val sound = prefs.sound(kind)
-        val title = appContext.getString(NotificationStrings.titleRes(kind))
+        val title = withEmoji(kind.emoji, appContext.getString(NotificationStrings.titleRes(kind)))
         val body = appContext.getString(NotificationStrings.bodyRes(kind))
         postRaw(ensureChannel(kind, sound), title, body, kind.route, sound = sound)
         history.append(kind.rawValue, title, body, kind.route.rawValue)
@@ -95,10 +95,10 @@ class GymNotifier(context: Context) {
     /** Lembrete recorrente de uma meta personalizada. Postado pelo ReminderWorker. */
     suspend fun postCustomReminder(goal: CustomGoal) {
         val sound = prefs.customSound(goal.id)
-        val title = "${goal.emoji} ${goal.name}"
+        val title = withEmoji(goal.emoji, goal.name)
         val body = appContext.getString(R.string.notif_custom_body, goal.name)
         postRaw(ensureCustomChannel(goal, sound), title, body, NotificationRoute.Today, sound = sound)
-        // kindRaw "custom" não resolve pra um NotificationKind (ícone cai no sino; o emoji já vai no título).
+        // kindRaw "custom" não resolve pra um NotificationKind (ícone cai no sino).
         history.append("custom", title, body, NotificationRoute.Today.rawValue)
     }
 
@@ -186,6 +186,10 @@ class GymNotifier(context: Context) {
         }
         history.append(historyKind, item.title, item.body, NotificationRoute.Today.rawValue)
     }
+
+    /** Emoji na frente do texto só com a opção "Emojis nas notificações" ligada (desligada por padrão). */
+    private suspend fun withEmoji(emoji: String?, text: String): String =
+        NotificationPreferencesRepository.withEmoji(emoji, text, prefs.isShowEmoji())
 
     // MARK: - Núcleo de postagem
 

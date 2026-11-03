@@ -112,5 +112,6 @@ data class PreferencesSnapshot(
     val notificationSound: Map<String, String>? = null,
     val notificationTimes: Map<String, List<String>>? = null,
     val groupSupplements: Boolean? = null,
+    val notificationEmoji: Boolean? = null,
     val goalIncrements: Map<String, Int>? = null,
 )

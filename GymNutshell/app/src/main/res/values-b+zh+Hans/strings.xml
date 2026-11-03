@@ -295,7 +295,7 @@
     <string name="notif_kind_workout_body">力量训练正在等着你，动起来吧！</string>
     <string name="notif_kind_cardio_body">有氧时间到！活动一下，活力满满。</string>
     <string name="notif_kind_creatine_body">今天吃肌酸了吗？</string>
-    <string name="notif_event_achievement_body">%1$s 你今天达成了%2$s！</string>
+    <string name="notif_event_achievement_body">你今天达成了%1$s！</string>
     <string name="notif_event_health_body_cardio">已记录 %1$d 分钟有氧运动（%2$s）。</string>
     <string name="notif_event_health_body_workout">已记录 %1$d 分钟力量训练（%2$s）。</string>
     <string name="notif_event_health_body_sleep">已记录 %d 小时睡眠。</string>
@@ -443,7 +443,7 @@
 
     <!-- Lembretes por horário dos suplementos -->
     <string name="notifications_supplement_body">该吃%1$s了。</string>
-    <string name="notifications_supplement_group_title">⏰ 打卡时间</string>
+    <string name="notifications_supplement_group_title">打卡时间</string>
     <string name="notifications_supplement_action_done">已服用</string>
     <string name="notifications_supplement_preset_morning">早上</string>
     <string name="notifications_supplement_preset_lunch">午饭</string>
@@ -457,4 +457,6 @@
     <string name="settings_notifications_times_footer">每个时间每天提醒一次。在“今天”中标记为完成，或在通知中轻点“已服用”后，当天的提醒会停止。</string>
     <string name="settings_notifications_group_title">合并同一时间的打卡目标</string>
     <string name="settings_notifications_group_footer">将同一时间的打卡目标合并为一条提醒。关闭时，每个目标单独提醒。</string>
+    <string name="settings_notifications_emoji_title">通知中显示表情</string>
+    <string name="settings_notifications_emoji_footer">在通知文字中显示每个目标和每日成就的表情。</string>
 </resources>

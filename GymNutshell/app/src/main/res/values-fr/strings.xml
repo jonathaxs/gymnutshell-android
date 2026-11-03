@@ -299,7 +299,7 @@
     <string name="notif_kind_workout_body">Ton entraînement de muscu t\'attend. C\'est parti !</string>
     <string name="notif_kind_cardio_body">C\'est l\'heure du cardio ! Bouger un peu fait toute la différence.</string>
     <string name="notif_kind_creatine_body">As-tu pris ta créatine aujourd\'hui ?</string>
-    <string name="notif_event_achievement_body">%1$s Tu as terminé la journée en tant que %2$s !</string>
+    <string name="notif_event_achievement_body">Tu as terminé la journée en tant que %1$s !</string>
     <string name="notif_event_health_body_cardio">%1$d min de cardio enregistrées (%2$s).</string>
     <string name="notif_event_health_body_workout">%1$d min de musculation enregistrées (%2$s).</string>
     <string name="notif_event_health_body_sleep">%d h de sommeil enregistrées.</string>
@@ -451,7 +451,7 @@
 
     <!-- Lembretes por horário dos suplementos -->
     <string name="notifications_supplement_body">C\'est l\'heure de prendre %1$s.</string>
-    <string name="notifications_supplement_group_title">⏰ L\'heure du check-in</string>
+    <string name="notifications_supplement_group_title">L\'heure du check-in</string>
     <string name="notifications_supplement_action_done">Pris</string>
     <string name="notifications_supplement_preset_morning">Matin</string>
     <string name="notifications_supplement_preset_lunch">Déjeuner</string>
@@ -465,4 +465,6 @@
     <string name="settings_notifications_times_footer">Un rappel par jour à chaque heure. Les rappels du jour s\'arrêtent quand vous marquez Fait sur Aujourd\'hui ou touchez Pris dans la notification.</string>
     <string name="settings_notifications_group_title">Regrouper les objectifs check-in à la même heure</string>
     <string name="settings_notifications_group_footer">Réunit en un seul rappel les objectifs check-in prévus à la même heure. Désactivé, chaque objectif a son rappel.</string>
+    <string name="settings_notifications_emoji_title">Emojis dans les notifications</string>
+    <string name="settings_notifications_emoji_footer">Affiche l\'emoji de chaque objectif et du succès du jour dans le texte des notifications.</string>
 </resources>

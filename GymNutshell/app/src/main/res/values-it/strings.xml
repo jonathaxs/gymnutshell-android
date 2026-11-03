@@ -299,7 +299,7 @@
     <string name="notif_kind_workout_body">Il tuo allenamento con i pesi ti aspetta. Andiamo in palestra!</string>
     <string name="notif_kind_cardio_body">È ora di fare cardio! Anche un po\' di movimento fa la differenza.</string>
     <string name="notif_kind_creatine_body">Hai già preso la tua creatina oggi?</string>
-    <string name="notif_event_achievement_body">%1$s Hai chiuso la giornata come %2$s!</string>
+    <string name="notif_event_achievement_body">Hai chiuso la giornata come %1$s!</string>
     <string name="notif_event_health_body_cardio">Registrati %1$d min di cardio (%2$s).</string>
     <string name="notif_event_health_body_workout">Registrati %1$d min di pesi (%2$s).</string>
     <string name="notif_event_health_body_sleep">Registrate %d ore di sonno.</string>
@@ -451,7 +451,7 @@
 
     <!-- Lembretes por horário dos suplementos -->
     <string name="notifications_supplement_body">È ora di prendere %1$s.</string>
-    <string name="notifications_supplement_group_title">⏰ Ora del check-in</string>
+    <string name="notifications_supplement_group_title">Ora del check-in</string>
     <string name="notifications_supplement_action_done">Preso</string>
     <string name="notifications_supplement_preset_morning">Mattina</string>
     <string name="notifications_supplement_preset_lunch">Pranzo</string>
@@ -465,4 +465,6 @@
     <string name="settings_notifications_times_footer">Un promemoria al giorno per ogni orario. I promemoria del giorno si fermano quando segni Fatto in Oggi o tocchi Preso nella notifica.</string>
     <string name="settings_notifications_group_title">Raggruppa obiettivi check-in allo stesso orario</string>
     <string name="settings_notifications_group_footer">Unisce in un solo promemoria gli obiettivi check-in dello stesso orario. Disattivato, ogni obiettivo ha il suo.</string>
+    <string name="settings_notifications_emoji_title">Emoji nelle notifiche</string>
+    <string name="settings_notifications_emoji_footer">Mostra l\'emoji di ogni obiettivo e del traguardo del giorno nel testo delle notifiche.</string>
 </resources>

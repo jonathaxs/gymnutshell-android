@@ -85,6 +85,7 @@ class BackupService(context: Context) {
                 notificationSound = notifPrefs.soundSnapshot().ifEmpty { null },
                 notificationTimes = notifPrefs.timesSnapshot().ifEmpty { null },
                 groupSupplements = notifPrefs.isGroupSupplements(),
+                notificationEmoji = notifPrefs.isShowEmoji(),
             ),
             customCategories = customCategoryRepo.all().ifEmpty { null },
         )
@@ -133,6 +134,7 @@ class BackupService(context: Context) {
                 sound = prefs.notificationSound,
                 times = prefs.notificationTimes,
                 groupSupplements = prefs.groupSupplements,
+                notificationEmoji = prefs.notificationEmoji,
             )
         }
     }

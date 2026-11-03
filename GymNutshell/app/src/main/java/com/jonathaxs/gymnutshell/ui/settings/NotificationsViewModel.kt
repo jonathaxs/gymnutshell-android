@@ -25,6 +25,7 @@ data class NotificationsUiState(
     val enabled: Map<String, Boolean> = emptyMap(),
     val reminderTimes: Map<String, List<ReminderTime>> = emptyMap(),
     val groupSupplements: Boolean = false,
+    val showEmoji: Boolean = false,
     val customGoals: List<CustomGoal> = emptyList(),
     val customCheckInIds: Set<Long> = emptySet(),
     val hasCheckInGoals: Boolean = true,
@@ -50,13 +51,15 @@ class NotificationsViewModel(app: Application) : AndroidViewModel(app) {
 
     val state: StateFlow<NotificationsUiState> =
         combine(
-            combine(prefs.enabledStates, prefs.reminderTimes, prefs.groupSupplements) { enabled, times, grouped ->
-                Triple(enabled, times, grouped)
+            combine(
+                prefs.enabledStates, prefs.reminderTimes, prefs.groupSupplements, prefs.showEmoji,
+            ) { enabled, times, grouped, showEmoji ->
+                NotificationPrefs(enabled, times, grouped, showEmoji)
             },
             customRepo.goals,
             customCategoryRepo.categories,
             goalConfigRepo.removedKeys,
-        ) { (enabled, times, grouped), goals, categories, removedKeys ->
+        ) { (enabled, times, grouped, showEmoji), goals, categories, removedKeys ->
             val checkInIds = goals
                 .filter { it.kind(categories) == CategoryKind.CheckIn }
                 .map { it.id }
@@ -67,6 +70,7 @@ class NotificationsViewModel(app: Application) : AndroidViewModel(app) {
                 enabled = enabled,
                 reminderTimes = times,
                 groupSupplements = grouped,
+                showEmoji = showEmoji,
                 customGoals = goals,
                 customCheckInIds = checkInIds,
                 hasCheckInGoals = hasCheckIn,
@@ -107,6 +111,14 @@ class NotificationsViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 
+    /** Liga/desliga o emoji nas notificações. Os avisos por horário já planejados são refeitos. */
+    fun setShowEmoji(value: Boolean) {
+        viewModelScope.launch {
+            prefs.setShowEmoji(value)
+            scheduler.rescheduleSupplementReminders()
+        }
+    }
+
     /** Chamado quando o usuário concede a permissão pela tela: aplica defaults e re-arma tudo. */
     fun onPermissionGranted() {
         viewModelScope.launch {
@@ -115,3 +127,11 @@ class NotificationsViewModel(app: Application) : AndroidViewModel(app) {
         }
     }
 }
+
+/** Preferências de notificação lidas juntas (o combine aceita no máximo 5 fluxos). */
+private data class NotificationPrefs(
+    val enabled: Map<String, Boolean>,
+    val times: Map<String, List<ReminderTime>>,
+    val grouped: Boolean,
+    val showEmoji: Boolean,
+)
