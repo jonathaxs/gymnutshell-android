@@ -349,19 +349,19 @@
     <string name="notif_kind_creatine_desc">Lembretes para a dose diária de creatina.</string>
 
     <!-- Notificações: corpo dos lembretes recorrentes -->
-    <string name="notif_kind_progress_body">Continue assim! Cada meta conta pra sua próxima conquista.</string>
+    <string name="notif_kind_progress_body">Cada meta conta para a sua próxima conquista.</string>
     <string name="notif_kind_sleep_body">Que tal um cochilo pra alcançar sua meta de sono hoje?</string>
-    <string name="notif_kind_water_body">Bora tomar um copo de água? Continue rumo à sua meta do dia.</string>
+    <string name="notif_kind_water_body">Que tal um copo de água? Continue rumo à sua meta do dia.</string>
     <string name="notif_kind_protein_body">Hora de caprichar na proteína pra bater sua meta do dia.</string>
     <string name="notif_kind_carbs_body">Que tal uma boa fonte de carboidratos pra manter o pique?</string>
     <string name="notif_kind_goodfat_body">Não esqueça das gorduras boas hoje (azeite, castanhas, abacate).</string>
     <string name="notif_kind_fiber_body">Inclua uma porção de fibras na próxima refeição.</string>
-    <string name="notif_kind_workout_body">Seu treino de musculação te espera. Bora pra academia!</string>
-    <string name="notif_kind_cardio_body">Hora do cardio! Um pouco de movimento faz diferença.</string>
+    <string name="notif_kind_workout_body">Hora do treino de musculação.</string>
+    <string name="notif_kind_cardio_body">Hora do cardio. Um pouco de movimento faz diferença.</string>
     <string name="notif_kind_creatine_body">Já tomou sua creatina hoje?</string>
 
     <!-- Notificações: corpo dos eventos -->
-    <string name="notif_event_achievement_body">Você fechou o dia como %1$s!</string>
+    <string name="notif_event_achievement_body">Você fechou o dia como %1$s.</string>
     <string name="notif_event_health_body_cardio">Foi registrado %1$d min em Cardio (%2$s).</string>
     <string name="notif_event_health_body_workout">Foi registrado %1$d min em Musculação (%2$s).</string>
     <string name="notif_event_health_body_sleep">Foi registrado %d h de sono.</string>
