@@ -99,22 +99,22 @@ fun SettingsListScreen(
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
             ) {
-                // 1. Seção "Perfil": Metas, Objetivo, Emoji e Seus dados
+                // 1. Seção "Perfil": Seus dados, Objetivo, Metas e Emoji
                 GroupSection(
                     title = stringResource(R.string.settings_section_data),
                     titleColor = accent.color,
                 ) {
                     GroupRow(
-                        title = stringResource(R.string.settings_daily_goals),
+                        title = stringResource(R.string.settings_profile_title),
                         leading = {
                             GlassIcon(
-                                painter = painterResource(R.drawable.ic_settings_target),
-                                color = Color(0xFFFF3B30),
+                                imageVector = Icons.Default.AccountCircle,
+                                color = Color(0xFF007AFF),
                             )
                         },
                         showChevron = true,
-                        modifier = highlight(SettingsRoutes.CUSTOM_GOALS),
-                        onClick = onOpenCustomGoals,
+                        modifier = highlight(SettingsRoutes.PROFILE),
+                        onClick = onOpenProfile,
                     )
                     GroupRowDivider(startInset = dividerInset)
                     GroupRow(
@@ -131,6 +131,19 @@ fun SettingsListScreen(
                     )
                     GroupRowDivider(startInset = dividerInset)
                     GroupRow(
+                        title = stringResource(R.string.settings_daily_goals),
+                        leading = {
+                            GlassIcon(
+                                painter = painterResource(R.drawable.ic_settings_target),
+                                color = Color(0xFFFF3B30),
+                            )
+                        },
+                        showChevron = true,
+                        modifier = highlight(SettingsRoutes.CUSTOM_GOALS),
+                        onClick = onOpenCustomGoals,
+                    )
+                    GroupRowDivider(startInset = dividerInset)
+                    GroupRow(
                         title = stringResource(R.string.settings_theme),
                         leading = {
                             GlassIcon(
@@ -141,19 +154,6 @@ fun SettingsListScreen(
                         showChevron = true,
                         modifier = highlight(SettingsRoutes.THEME),
                         onClick = onOpenTheme,
-                    )
-                    GroupRowDivider(startInset = dividerInset)
-                    GroupRow(
-                        title = stringResource(R.string.settings_profile_title),
-                        leading = {
-                            GlassIcon(
-                                imageVector = Icons.Default.AccountCircle,
-                                color = Color(0xFF007AFF),
-                            )
-                        },
-                        showChevron = true,
-                        modifier = highlight(SettingsRoutes.PROFILE),
-                        onClick = onOpenProfile,
                     )
                 }
 

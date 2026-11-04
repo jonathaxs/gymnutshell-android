@@ -72,7 +72,7 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
             BoxWithConstraints(Modifier.fillMaxSize()) {
                 val wide = maxWidth >= 700.dp || (maxWidth >= 560.dp && rememberIsTablet())
                 val listWidth = if (maxWidth < 744.dp) 300.dp else 340.dp
-                var selected by rememberSaveable { mutableStateOf(SettingsRoutes.CUSTOM_GOALS) }
+                var selected by rememberSaveable { mutableStateOf(SettingsRoutes.PROFILE) }
                 val open: (String) -> Unit = { route -> if (wide) selected = route else navController.navigate(route) }
                 val list = @Composable {
                     SettingsListScreen(
