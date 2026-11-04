@@ -414,7 +414,7 @@
     <string name="today_goals_view_mode_grid">Grille</string>
     <string name="today_category_other">Autres</string>
     <string name="today_edit_theme">Modifier l’emoji</string>
-    <string name="today_edit_colors">Modifier les couleurs d\'accentuation</string>
+    <string name="today_edit_colors">Modifier la couleur d\'accentuation</string>
     <string name="today_edit_controls">Modifier les commandes</string>
     <string name="today_edit_quick">Modification rapide</string>
     <string name="today_edit_goals">Modifier les objectifs</string>

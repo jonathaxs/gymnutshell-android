@@ -18,8 +18,8 @@
     <string name="tier_dog_level1">Cagnolino</string>
     <string name="tier_dog_level2">Cane Fitness</string>
     <string name="tier_dog_level3">Cagnolone</string>
-    <string name="tier_dog_level4">Lupo</string>
-    <string name="tier_dog_level5">Cane Caramello</string>
+    <string name="tier_dog_level5">Lupo</string>
+    <string name="tier_dog_level4">Cane Caramello</string>
     <string name="tier_bear_level1">Orsetto</string>
     <string name="tier_bear_level2">Orso Bruno</string>
     <string name="tier_bear_level3">Orso Polare</string>
@@ -109,8 +109,8 @@
     <string name="tier_dog_level1_fem">Cagnolina</string>
     <string name="tier_dog_level2_fem">Cane Fitness</string>
     <string name="tier_dog_level3_fem">Cagnolona</string>
-    <string name="tier_dog_level4_fem">Lupa</string>
-    <string name="tier_dog_level5_fem">Cane Caramello</string>
+    <string name="tier_dog_level5_fem">Lupa</string>
+    <string name="tier_dog_level4_fem">Cane Caramello</string>
     <string name="tier_bear_level1_fem">Orsetta</string>
     <string name="tier_bear_level2_fem">Orsa Bruna</string>
     <string name="tier_bear_level3_fem">Orsa Polare</string>

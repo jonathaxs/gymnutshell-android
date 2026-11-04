@@ -412,7 +412,7 @@
     <string name="today_goals_view_mode_grid">Raster</string>
     <string name="today_category_other">Sonstige</string>
     <string name="today_edit_theme">Emoji bearbeiten</string>
-    <string name="today_edit_colors">Akzentfarben bearbeiten</string>
+    <string name="today_edit_colors">Akzentfarbe bearbeiten</string>
     <string name="today_edit_controls">Steuerung bearbeiten</string>
     <string name="today_edit_quick">Schnell bearbeiten</string>
     <string name="today_edit_goals">Ziele bearbeiten</string>

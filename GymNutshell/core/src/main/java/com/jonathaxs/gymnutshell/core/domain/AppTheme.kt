@@ -36,7 +36,7 @@ enum class AppTheme(val rawValue: String, val category: ThemeCategory) {
         Gym -> tier.pick("🐓", "🏋️", "🐀", "💪", "🗿")
         Running -> tier.pick("🚶", "👟", "🏃", "🎽", "🏅")
         Cat -> tier.pick("🐱", "🐈", "🐆", "🐅", "🦁")
-        Dog -> tier.pick("🐶", "🐩", "🐕‍🦺", "🐺", "🐕")
+        Dog -> tier.pick("🐶", "🐩", "🐕‍🦺", "🐕", "🐺")
         Bear -> tier.pick("🧸", "🐻", "🐻‍❄️", "🦬", "🦣")
         Dino -> tier.pick("🐢", "🐊", "🦖", "🦕", "🦴")
         Dragon -> tier.pick("🥚", "🦎", "🐉", "🐲", "👑")

@@ -18,8 +18,8 @@
     <string name="tier_dog_level1">子イヌ</string>
     <string name="tier_dog_level2">フィットネスイヌ</string>
     <string name="tier_dog_level3">スヌープドッグ</string>
-    <string name="tier_dog_level4">オオカミ</string>
-    <string name="tier_dog_level5">キャラメルドッグ</string>
+    <string name="tier_dog_level5">オオカミ</string>
+    <string name="tier_dog_level4">キャラメルドッグ</string>
     <string name="tier_bear_level1">子グマ</string>
     <string name="tier_bear_level2">ヒグマ</string>
     <string name="tier_bear_level3">ホッキョクグマ</string>
@@ -109,8 +109,8 @@
     <string name="tier_dog_level1_fem">子イヌ</string>
     <string name="tier_dog_level2_fem">フィットネスイヌ</string>
     <string name="tier_dog_level3_fem">スヌープドッグ</string>
-    <string name="tier_dog_level4_fem">オオカミ</string>
-    <string name="tier_dog_level5_fem">キャラメルドッグ</string>
+    <string name="tier_dog_level5_fem">オオカミ</string>
+    <string name="tier_dog_level4_fem">キャラメルドッグ</string>
     <string name="tier_bear_level1_fem">子グマ</string>
     <string name="tier_bear_level2_fem">ヒグマ</string>
     <string name="tier_bear_level3_fem">ホッキョクグマ</string>

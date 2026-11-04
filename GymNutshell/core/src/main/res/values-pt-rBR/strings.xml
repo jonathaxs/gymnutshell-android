@@ -29,8 +29,8 @@
     <string name="tier_dog_level1">Cachorrinho</string>
     <string name="tier_dog_level2">Cachorro Fitness</string>
     <string name="tier_dog_level3">Cachorrão</string>
-    <string name="tier_dog_level4">Lobo</string>
-    <string name="tier_dog_level5">Cachorro Caramelo</string>
+    <string name="tier_dog_level5">Lobo</string>
+    <string name="tier_dog_level4">Cachorro Caramelo</string>
 
     <string name="tier_bear_level1">Ursinho</string>
     <string name="tier_bear_level2">Urso Brabo</string>
@@ -53,7 +53,7 @@
     <string name="tier_horse_level1">Cavalinho</string>
     <string name="tier_horse_level2">Unicórnio</string>
     <string name="tier_horse_level3">Cavalo Fitness</string>
-    <string name="tier_horse_level4">Cavaludo</string>
+    <string name="tier_horse_level4">Cavalão</string>
     <string name="tier_horse_level5">Puro-sangue</string>
 
     <string name="tier_ocean_level1">Peixinho</string>
@@ -135,7 +135,7 @@
     <string name="tier_gym_level2_fem">Marombinha</string>
     <string name="tier_gym_level3_fem">Rata de Academia</string>
     <string name="tier_gym_level4_fem">Musculosa</string>
-    <string name="tier_gym_level5_fem">Monstra</string>
+    <string name="tier_gym_level5_fem">Monstruosa</string>
     <string name="tier_running_level3_fem">Corredora</string>
     <string name="tier_cat_level1_fem">Gatinha</string>
     <string name="tier_cat_level2_fem">Gata Fitness</string>
@@ -145,8 +145,8 @@
     <string name="tier_dog_level1_fem">Cachorrinha</string>
     <string name="tier_dog_level2_fem">Cachorra Fitness</string>
     <string name="tier_dog_level3_fem">Cachorrona</string>
-    <string name="tier_dog_level4_fem">Loba</string>
-    <string name="tier_dog_level5_fem">Cachorra Caramelo</string>
+    <string name="tier_dog_level5_fem">Loba</string>
+    <string name="tier_dog_level4_fem">Cachorra Caramelo</string>
     <string name="tier_bear_level1_fem">Ursinha</string>
     <string name="tier_bear_level2_fem">Ursa Braba</string>
     <string name="tier_bear_level3_fem">Ursa Congelante</string>
@@ -160,7 +160,7 @@
     <string name="tier_horse_level1_fem">Éguinha pocotó</string>
     <string name="tier_horse_level2_fem">Unicórnia</string>
     <string name="tier_horse_level3_fem">Cavala Fitness</string>
-    <string name="tier_horse_level4_fem">Cavaluda</string>
+    <string name="tier_horse_level4_fem">Cavalona</string>
     <string name="tier_fire_level3_fem">Vulcânica</string>
     <string name="tier_fire_level4_fem">Estrela Diva</string>
     <string name="tier_doctor_level3_fem">Formada</string>

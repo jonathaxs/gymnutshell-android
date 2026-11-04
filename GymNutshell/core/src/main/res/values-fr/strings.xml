@@ -18,8 +18,8 @@
     <string name="tier_dog_level1">Petit Chien</string>
     <string name="tier_dog_level2">Chien Fitness</string>
     <string name="tier_dog_level3">Snoop Dog</string>
-    <string name="tier_dog_level4">Loup</string>
-    <string name="tier_dog_level5">Chien Caramel</string>
+    <string name="tier_dog_level5">Loup</string>
+    <string name="tier_dog_level4">Chien Caramel</string>
     <string name="tier_bear_level1">Ourson</string>
     <string name="tier_bear_level2">Ours Brun</string>
     <string name="tier_bear_level3">Ours Polaire</string>
@@ -109,8 +109,8 @@
     <string name="tier_dog_level1_fem">Petite Chienne</string>
     <string name="tier_dog_level2_fem">Chienne Fitness</string>
     <string name="tier_dog_level3_fem">Snoop Dog</string>
-    <string name="tier_dog_level4_fem">Louve</string>
-    <string name="tier_dog_level5_fem">Chienne Caramel</string>
+    <string name="tier_dog_level5_fem">Louve</string>
+    <string name="tier_dog_level4_fem">Chienne Caramel</string>
     <string name="tier_bear_level1_fem">Oursonne</string>
     <string name="tier_bear_level2_fem">Ourse Brune</string>
     <string name="tier_bear_level3_fem">Ourse Polaire</string>

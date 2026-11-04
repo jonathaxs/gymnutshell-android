@@ -504,7 +504,7 @@
     <string name="today_goals_view_mode_grid">Grade</string>
     <string name="today_category_other">Outras</string>
     <string name="today_edit_theme">Editar emoji</string>
-    <string name="today_edit_colors">Editar cores de destaque</string>
+    <string name="today_edit_colors">Editar cor de destaque</string>
     <string name="today_edit_controls">Editar controles</string>
     <string name="today_edit_quick">Edição rápida</string>
     <string name="today_edit_goals">Editar metas</string>

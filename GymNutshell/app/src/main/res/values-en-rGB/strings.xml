@@ -412,7 +412,7 @@
     <string name="today_goals_view_mode_grid">Grid</string>
     <string name="today_category_other">Other</string>
     <string name="today_edit_theme">Edit emoji</string>
-    <string name="today_edit_colors">Edit accent colours</string>
+    <string name="today_edit_colors">Edit accent colour</string>
     <string name="today_edit_controls">Edit controls</string>
     <string name="today_edit_quick">Quick edit</string>
     <string name="today_edit_goals">Edit goals</string>

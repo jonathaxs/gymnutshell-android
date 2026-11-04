@@ -18,8 +18,8 @@
     <string name="tier_dog_level1">Little Dog</string>
     <string name="tier_dog_level2">Fitness Dog</string>
     <string name="tier_dog_level3">Snoop Dog</string>
-    <string name="tier_dog_level4">Wolf</string>
-    <string name="tier_dog_level5">The Caramel Dog</string>
+    <string name="tier_dog_level5">Wolf</string>
+    <string name="tier_dog_level4">The Caramel Dog</string>
     <string name="tier_bear_level1">Bear Cub</string>
     <string name="tier_bear_level2">Brown Bear</string>
     <string name="tier_bear_level3">Polar Bear</string>
@@ -109,8 +109,8 @@
     <string name="tier_dog_level1_fem">Little Dog</string>
     <string name="tier_dog_level2_fem">Fitness Dog</string>
     <string name="tier_dog_level3_fem">Snoop Dog</string>
-    <string name="tier_dog_level4_fem">Wolf</string>
-    <string name="tier_dog_level5_fem">The Caramel Dog</string>
+    <string name="tier_dog_level5_fem">Wolf</string>
+    <string name="tier_dog_level4_fem">The Caramel Dog</string>
     <string name="tier_bear_level1_fem">Bear Cub</string>
     <string name="tier_bear_level2_fem">Brown Bear</string>
     <string name="tier_bear_level3_fem">Polar Bear</string>

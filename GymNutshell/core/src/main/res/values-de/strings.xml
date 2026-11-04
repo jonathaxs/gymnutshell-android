@@ -18,8 +18,8 @@
     <string name="tier_dog_level1">Hündchen</string>
     <string name="tier_dog_level2">Fitness-Hund</string>
     <string name="tier_dog_level3">Snoop Dog</string>
-    <string name="tier_dog_level4">Wolf</string>
-    <string name="tier_dog_level5">Karamell-Hund</string>
+    <string name="tier_dog_level5">Wolf</string>
+    <string name="tier_dog_level4">Karamell-Hund</string>
     <string name="tier_bear_level1">Bärchen</string>
     <string name="tier_bear_level2">Braunbär</string>
     <string name="tier_bear_level3">Eisbär</string>
@@ -109,8 +109,8 @@
     <string name="tier_dog_level1_fem">Hündchen</string>
     <string name="tier_dog_level2_fem">Fitness-Hund</string>
     <string name="tier_dog_level3_fem">Snoop Dog</string>
-    <string name="tier_dog_level4_fem">Wölfin</string>
-    <string name="tier_dog_level5_fem">Karamell-Hund</string>
+    <string name="tier_dog_level5_fem">Wölfin</string>
+    <string name="tier_dog_level4_fem">Karamell-Hund</string>
     <string name="tier_bear_level1_fem">Bärchen</string>
     <string name="tier_bear_level2_fem">Braunbär</string>
     <string name="tier_bear_level3_fem">Eisbär</string>

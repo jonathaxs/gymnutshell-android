@@ -18,8 +18,8 @@
     <string name="tier_dog_level1">Perrito</string>
     <string name="tier_dog_level2">Perro Fitness</string>
     <string name="tier_dog_level3">Perrazo</string>
-    <string name="tier_dog_level4">Lobo</string>
-    <string name="tier_dog_level5">Perro Caramelo</string>
+    <string name="tier_dog_level5">Lobo</string>
+    <string name="tier_dog_level4">Perro Caramelo</string>
     <string name="tier_bear_level1">Osito</string>
     <string name="tier_bear_level2">Oso Bravo</string>
     <string name="tier_bear_level3">Oso Polar</string>
@@ -109,8 +109,8 @@
     <string name="tier_dog_level1_fem">Perrita</string>
     <string name="tier_dog_level2_fem">Perra Fitness</string>
     <string name="tier_dog_level3_fem">Perraza</string>
-    <string name="tier_dog_level4_fem">Loba</string>
-    <string name="tier_dog_level5_fem">Perra Caramelo</string>
+    <string name="tier_dog_level5_fem">Loba</string>
+    <string name="tier_dog_level4_fem">Perra Caramelo</string>
     <string name="tier_bear_level1_fem">Osita</string>
     <string name="tier_bear_level2_fem">Osa Brava</string>
     <string name="tier_bear_level3_fem">Osa Polar</string>
