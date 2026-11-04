@@ -3,13 +3,13 @@
     <string name="app_name">Gym Nutshell</string>
     <string name="app_name_home">Nutshell</string>
     <string name="tab_settings">Settings</string>
-    <string name="today_workout">Workout</string>
+    <string name="today_workout">Weight Training</string>
     <string name="today_cardio">Cardio</string>
     <string name="today_sleep">Sleep</string>
     <string name="today_water">Water</string>
     <string name="today_protein">Protein</string>
     <string name="today_carbs">Carbs</string>
-    <string name="today_good_fat">Fats</string>
+    <string name="today_good_fat">Good Fats</string>
     <string name="today_fiber">Fibre</string>
     <string name="today_creatine">Creatine</string>
     <string name="rest_day">Rest day</string>
@@ -55,7 +55,7 @@
     <string name="settings_about_link">Gym Nutshell</string>
     <string name="settings_about_title">About the App</string>
     <string name="settings_about_version">Version</string>
-    <string name="settings_about_description">Gym Nutshell is your gym daily goals in a nutshell.\n\nSet goals, track them, and watch consistency turn into results.</string>
+    <string name="settings_about_description">Gym Nutshell is your daily gym goals in a nutshell.\n\nSet goals, track them, and watch consistency turn into results.</string>
     <string name="settings_about_feedback">Send Feedback</string>
     <string name="a11y_app_icon">App icon</string>
     <string name="settings_wear_os">Wear OS</string>
@@ -74,9 +74,9 @@
     <string name="ring_info_color_cyan">Almost there</string>
     <string name="ring_info_color_purple">Final stretch</string>
     <string name="ring_info_color_blue">Goal complete</string>
-    <string name="tier_info_range_suffix">\" of progress\"</string>
-    <string name="info_next_prefix">\"Remaining \"</string>
-    <string name="info_next_middle">\" to reach: \"</string>
+    <string name="tier_info_range_suffix">" of progress"</string>
+    <string name="info_next_prefix">"Remaining "</string>
+    <string name="info_next_middle">" to reach: "</string>
     <string name="today_max_level">Maximum level reached today!</string>
     <string name="settings_about_achievement">Achievement</string>
     <string name="tier_info_intro">Your achievement is recorded at the end of the day, at midnight.</string>
@@ -173,7 +173,7 @@
     <string name="welcome_step_units_title">Your units</string>
     <string name="welcome_step_units_subtitle">How do you prefer to measure water?</string>
     <string name="welcome_step_units_note">You can change this later in Settings.</string>
-    <string name="welcome_units_metric_desc">Milliliters, like 250 ml per glass.</string>
+    <string name="welcome_units_metric_desc">Millilitres, like 250 ml per glass.</string>
     <string name="welcome_units_imperial_desc">Fluid ounces, like %d fl oz per glass.</string>
     <string name="welcome_summary_title">Your goals</string>
     <string name="welcome_summary_subtitle_customize">You can edit these values or add new goals anytime.</string>
@@ -402,7 +402,7 @@
     <string name="today_history">Records</string>
     <string name="today_hero_caption_start">Track a goal to get started</string>
     <string name="today_hero_caption_next_level">%1$d%% to go for the next level</string>
-    <string name="today_hero_caption_max">Maximum level reached today!</string>
+    <string name="today_hero_caption_max">Top achievement of the day!</string>
     <!-- Balões da Hoje (porte de TodayInfoPopovers do iOS): nível da conquista e fim do dia. -->
     <string name="today_info_level_format">Level %1$d</string>
     <string name="today_info_tier_row_a11y">%1$s, %2$s, level %3$d</string>
@@ -433,7 +433,7 @@
     <!-- Categoria check-in (2.0) -->
     <string name="settings_category_kind">Type</string>
     <string name="category_kind_standard">Standard</string>
-    <string name="category_kind_rest_day">With day off</string>
+    <string name="category_kind_rest_day">Rest day</string>
     <string name="category_kind_check_in">Check-in</string>
     <string name="category_kind_standard_footer">Log goals bit by bit with the slider or the − / + buttons.</string>
     <string name="category_kind_rest_day_footer">With an ON/OFF button to mark a day off.</string>

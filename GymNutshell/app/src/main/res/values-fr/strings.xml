@@ -71,14 +71,14 @@
     <string name="ring_info_intro" formatted="false">L\'anneau indique le pourcentage moyen de tes objectifs atteints. Chaque segment coloré vaut 20 %.</string>
     <string name="ring_info_section_colors">Segments de l\'anneau</string>
     <string name="ring_info_color_red">Démarrage</string>
-    <string name="ring_info_color_orange">En route</string>
+    <string name="ring_info_color_orange">En bonne voie</string>
     <string name="ring_info_color_green">Très bien</string>
     <string name="ring_info_color_cyan">Presque atteint</string>
     <string name="ring_info_color_purple">Dernière ligne droite</string>
     <string name="ring_info_color_blue">Objectif atteint</string>
-    <string name="tier_info_range_suffix">\" de progression\"</string>
-    <string name="info_next_prefix">\"Il reste \"</string>
-    <string name="info_next_middle">\" pour atteindre : \"</string>
+    <string name="tier_info_range_suffix">" de progression"</string>
+    <string name="info_next_prefix">"Il reste "</string>
+    <string name="info_next_middle">" pour atteindre : "</string>
     <string name="today_max_level">Niveau maximum atteint aujourd\'hui !</string>
     <string name="settings_about_achievement">Succès du jour</string>
     <string name="tier_info_intro">Ton succès est enregistré en fin de journée, à minuit.</string>
@@ -181,7 +181,7 @@
     <string name="welcome_summary_subtitle_customize">Tu peux modifier ces valeurs ou ajouter de nouveaux objectifs à tout moment.</string>
     <string name="welcome_option_add">Ajouter</string>
     <string name="welcome_step_control_title">Commandes</string>
-    <string name="welcome_step_control_subtitle">Comment préfères-tu valider tes objectifs au quotidien ?</string>
+    <string name="welcome_step_control_subtitle">Comment préfères-tu renseigner tes objectifs au quotidien ?</string>
     <string name="welcome_control_slider">Glisser</string>
     <string name="welcome_control_slider_desc">Fais glisser le curseur jusqu\'à la valeur souhaitée.</string>
     <string name="welcome_control_stepper">Boutons</string>
@@ -199,9 +199,9 @@
     <string name="welcome_ready_allowed">Autorisé</string>
     <string name="welcome_ready_requested">Demandé</string>
     <string name="welcome_ready_denied">Refusé</string>
-    <string name="welcome_ready_notifications_setup_title">Que faut-il vous rappeler ?</string>
-    <string name="welcome_ready_notifications_setup_footer">Vous pourrez tout changer plus tard dans Réglages › Notifications.</string>
-    <string name="a11y_welcome_ready_notifications_setup_hint">Touchez pour choisir vos rappels.</string>
+    <string name="welcome_ready_notifications_setup_title">Quels rappels veux-tu activer ?</string>
+    <string name="welcome_ready_notifications_setup_footer">Tu pourras tout modifier plus tard dans Réglages › Notifications.</string>
+    <string name="a11y_welcome_ready_notifications_setup_hint">Touche pour choisir tes rappels.</string>
     <string name="welcome_button_continue">Continuer</string>
     <string name="welcome_button_start">C\'est parti !</string>
     <string name="welcome_button_back">Retour</string>
@@ -210,7 +210,7 @@
     <string name="a11y_welcome_goal_increase">Augmenter %1$s</string>
     <string name="settings_profile_favorite_exercise">Exercice préféré</string>
     <string name="favorite_exercise_unknown">Je ne sais pas</string>
-    <string name="favorite_exercise_back">Retour</string>
+    <string name="favorite_exercise_back">Dos</string>
     <string name="favorite_exercise_arms">Bras</string>
     <string name="favorite_exercise_chest">Pectoraux</string>
     <string name="favorite_exercise_legs">Jambes</string>
@@ -401,10 +401,10 @@
     <string name="widget_bg_preview">Aperçu</string>
     <string name="widget_bg_pick_color">Choisir une couleur</string>
     <string name="common_close">Fermer</string>
-    <string name="today_history">Registres</string>
+    <string name="today_history">Historique</string>
     <string name="today_hero_caption_start">Suis un premier objectif pour commencer</string>
     <string name="today_hero_caption_next_level">Plus que %1$d%% pour le niveau suivant</string>
-    <string name="today_hero_caption_max">Niveau maximum atteint aujourd\'hui !</string>
+    <string name="today_hero_caption_max">Meilleur succès du jour !</string>
     <!-- Balões da Hoje (porte de TodayInfoPopovers do iOS): nível da conquista e fim do dia. -->
     <string name="today_info_level_format">Niveau %1$d</string>
     <string name="today_info_tier_row_a11y">%1$s, %2$s, niveau %3$d</string>
@@ -439,13 +439,13 @@
     <string name="category_kind_standard">Standard</string>
     <string name="category_kind_rest_day">Avec repos</string>
     <string name="category_kind_check_in">Check-in</string>
-    <string name="category_kind_standard_footer">Enregistrez les objectifs petit à petit avec le curseur ou les boutons − / +.</string>
+    <string name="category_kind_standard_footer">Enregistre les objectifs petit à petit avec le curseur ou les boutons − / +.</string>
     <string name="category_kind_rest_day_footer">Avec un bouton ON/OFF pour marquer un jour de repos.</string>
     <string name="category_kind_check_in_footer">Chaque objectif se coche une fois par jour : En attente ou Fait.</string>
     <string name="addgoal_category_kind_footer">Cette catégorie est du type « %1$s ». %2$s</string>
     <string name="settings_goals_add_to_category">Ajouter un objectif</string>
     <string name="addgoal_section_dose">Dose</string>
-    <string name="addgoal_dose_footer">En marquant Fait, l\'objectif du jour est atteint avec cette quantité.</string>
+    <string name="addgoal_dose_footer">En choisissant « Fait », l\'objectif du jour est atteint avec cette quantité.</string>
     <string name="today_checkin_pending">En attente</string>
     <string name="today_checkin_done">Fait</string>
 
@@ -462,7 +462,7 @@
     <string name="settings_notifications_times_row">Heure</string>
     <string name="settings_notifications_times_add">Ajouter une heure</string>
     <string name="settings_notifications_times_empty">Aucune heure</string>
-    <string name="settings_notifications_times_footer">Un rappel par jour à chaque heure. Les rappels du jour s\'arrêtent quand vous marquez Fait sur Aujourd\'hui ou touchez Pris dans la notification.</string>
+    <string name="settings_notifications_times_footer">Un rappel par jour à chaque heure. Les rappels du jour s\'arrêtent quand tu marques Fait sur Aujourd\'hui ou touches Pris dans la notification.</string>
     <string name="settings_notifications_group_title">Regrouper les objectifs check-in à la même heure</string>
     <string name="settings_notifications_group_footer">Réunit en un seul rappel les objectifs check-in prévus à la même heure. Désactivé, chaque objectif a son rappel.</string>
     <string name="settings_notifications_emoji_title">Emojis dans les notifications</string>

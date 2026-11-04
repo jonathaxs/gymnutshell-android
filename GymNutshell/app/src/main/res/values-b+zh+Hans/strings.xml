@@ -72,13 +72,13 @@
     <string name="ring_info_color_cyan">胜利在望</string>
     <string name="ring_info_color_purple">最后冲刺</string>
     <string name="ring_info_color_blue">目标达成</string>
-    <string name="tier_info_range_suffix">\" 进度\"</string>
-    <string name="info_next_prefix">\"还差 \"</string>
-    <string name="info_next_middle">\" 即可达到：\"</string>
+    <string name="tier_info_range_suffix">" 进度"</string>
+    <string name="info_next_prefix">"还差 "</string>
+    <string name="info_next_middle">" 即可达到："</string>
     <string name="today_max_level">今天已达到最高等级！</string>
     <string name="settings_about_achievement">成就</string>
-    <string name="tier_info_intro">你的成就将在每天午夜结束时记录。</string>
-    <string name="tier_info_section_levels">成就</string>
+    <string name="tier_info_intro">你的成就将在每天结束时（午夜）记录。</string>
+    <string name="tier_info_section_levels">等级</string>
     <string name="tier_info_change_theme">更换表情</string>
     <string name="settings_accent_color">强调色</string>
     <string name="a11y_selected">已选择</string>
@@ -107,7 +107,7 @@
     <string name="settings_control_style_footer">你可以直接在“今天”屏幕上切换列表和网格视图。</string>
     <string name="settings_color_preview">预览</string>
     <string name="settings_color_subtitle">强调色</string>
-    <string name="settings_units">度量衡单位</string>
+    <string name="settings_units">度量单位</string>
     <string name="unit_metric">公制 (ml)</string>
     <string name="unit_us">英制 (fl oz)</string>
     <string name="settings_custom_goals">自定义目标</string>
@@ -206,7 +206,7 @@
     <string name="a11y_welcome_goal_increase">增加 %1$s</string>
     <string name="settings_profile_favorite_exercise">最喜欢的锻炼部位</string>
     <string name="favorite_exercise_unknown">不确定</string>
-    <string name="favorite_exercise_back">返回</string>
+    <string name="favorite_exercise_back">背部</string>
     <string name="favorite_exercise_arms">手臂</string>
     <string name="favorite_exercise_chest">胸部</string>
     <string name="favorite_exercise_legs">腿部</string>
@@ -259,7 +259,7 @@
     <string name="notif_sound_default">默认</string>
     <string name="notif_sound_silent">静音</string>
     <string name="health_activity_other">健身运动</string>
-    <string name="notif_kind_progress_title">进阶</string>
+    <string name="notif_kind_progress_title">进度</string>
     <string name="notif_kind_achievement_title">每日成就</string>
     <string name="notif_kind_health_title">Health Connect</string>
     <string name="notif_kind_backup_title">备份</string>
@@ -381,7 +381,7 @@
     <string name="backup_status_exported">备份已导出。</string>
     <string name="backup_status_imported">备份已恢复。</string>
     <string name="backup_status_error">出现问题，请重试。</string>
-    <string name="widget_progress_label">进阶</string>
+    <string name="widget_progress_label">进度</string>
     <string name="widget_progress_description">追踪你的每日进度。</string>
     <string name="widget_calendar_label">日历</string>
     <string name="widget_calendar_description">今天的进度与本月概览一目了然。</string>
@@ -391,16 +391,16 @@
     <string name="widget_bg_mode_system">默认</string>
     <string name="widget_bg_mode_accent">强调色</string>
     <string name="widget_bg_mode_custom">自定义</string>
-    <string name="widget_bg_footer_system">微件使用系统背景（浅色或深色）。</string>
-    <string name="widget_bg_footer_accent">微件使用你的 App 强调色。</string>
-    <string name="widget_bg_footer_custom">微件使用你自选的颜色。</string>
+    <string name="widget_bg_footer_system">小组件使用系统背景（浅色或深色）。</string>
+    <string name="widget_bg_footer_accent">小组件使用你的 App 强调色。</string>
+    <string name="widget_bg_footer_custom">小组件使用你自选的颜色。</string>
     <string name="widget_bg_preview">预览</string>
     <string name="widget_bg_pick_color">选择颜色</string>
     <string name="common_close">关闭</string>
     <string name="today_history">记录</string>
     <string name="today_hero_caption_start">记录一个目标以开启今天</string>
     <string name="today_hero_caption_next_level">距离下一等级还差 %1$d%%</string>
-    <string name="today_hero_caption_max">今天已达到最高等级！</string>
+    <string name="today_hero_caption_max">已达成今日最高成就！</string>
     <!-- Balões da Hoje (porte de TodayInfoPopovers do iOS): nível da conquista e fim do dia. -->
     <string name="today_info_level_format">等级 %1$d</string>
     <string name="today_info_tier_row_a11y">%1$s，%2$s，等级 %3$d</string>
@@ -424,7 +424,7 @@
     <plurals name="today_category_tile_a11y_value">
         <item quantity="other">已完成 %1$d/%2$d 个目标</item>
     </plurals>
-    <string name="today_category_tile_a11y_hint">轻点两下打开该分类的记录方式</string>
+    <string name="today_category_tile_a11y_hint">轻点两下打开该分类目标</string>
 
     <!-- Categoria check-in (2.0) -->
     <string name="settings_category_kind">类型</string>
@@ -434,7 +434,7 @@
     <string name="category_kind_standard_footer">用滑块或 − / + 按钮逐步记录。</string>
     <string name="category_kind_rest_day_footer">带有标记休息日的开/关按钮。</string>
     <string name="category_kind_check_in_footer">每个目标每天打卡一次：待完成 或 已完成。</string>
-    <string name="addgoal_category_kind_footer">此类别为“%1$s”类型。%2$s</string>
+    <string name="addgoal_category_kind_footer">此分类属于“%1$s”类型。%2$s</string>
     <string name="settings_goals_add_to_category">添加目标</string>
     <string name="addgoal_section_dose">剂量</string>
     <string name="addgoal_dose_footer">标记为已完成后，当天目标即以此用量完成。</string>
@@ -446,7 +446,7 @@
     <string name="notifications_supplement_group_title">打卡时间</string>
     <string name="notifications_supplement_action_done">已服用</string>
     <string name="notifications_supplement_preset_morning">早上</string>
-    <string name="notifications_supplement_preset_lunch">午饭</string>
+    <string name="notifications_supplement_preset_lunch">中午</string>
     <string name="notifications_supplement_preset_afternoon">傍晚</string>
     <string name="notifications_supplement_preset_night">晚上</string>
     <string name="notifications_supplement_preset_bedtime">睡前</string>

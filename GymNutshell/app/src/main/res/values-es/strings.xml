@@ -76,9 +76,9 @@
     <string name="ring_info_color_cyan">Casi listo</string>
     <string name="ring_info_color_purple">Recta final</string>
     <string name="ring_info_color_blue">Meta completada</string>
-    <string name="tier_info_range_suffix">\" de progreso\"</string>
-    <string name="info_next_prefix">\"Faltan \"</string>
-    <string name="info_next_middle">\" para alcanzar: \"</string>
+    <string name="tier_info_range_suffix">" de progreso"</string>
+    <string name="info_next_prefix">"Faltan "</string>
+    <string name="info_next_middle">" para alcanzar: "</string>
     <string name="today_max_level">¡Nivel máximo alcanzado hoy!</string>
     <string name="settings_about_achievement">Logro del día</string>
     <string name="tier_info_intro">Tu logro se registra al final del día, a medianoche.</string>
@@ -169,7 +169,7 @@
     <string name="welcome_field_sex_male">Masculino</string>
     <string name="welcome_goal_title">Tu objetivo</string>
     <string name="welcome_goal_bulking_desc">Aumenta la masa muscular con superávit calórico</string>
-    <string name="welcome_goal_maintenance_desc">Mantén tu peso y composición actual</string>
+    <string name="welcome_goal_maintenance_desc">Mantén tu peso y composición actuales</string>
     <string name="welcome_goal_cutting_desc">Reduce grasa corporal preservando el músculo</string>
     <string name="welcome_goal_info_editable">Puedes cambiarlo más tarde en Ajustes.</string>
     <string name="welcome_step_units_title">Tus unidades</string>
@@ -210,7 +210,7 @@
     <string name="a11y_welcome_goal_increase">Aumentar %1$s</string>
     <string name="settings_profile_favorite_exercise">Ejercicio favorito</string>
     <string name="favorite_exercise_unknown">No lo sé</string>
-    <string name="favorite_exercise_back">Atrás</string>
+    <string name="favorite_exercise_back">Espalda</string>
     <string name="favorite_exercise_arms">Brazos</string>
     <string name="favorite_exercise_chest">Pecho</string>
     <string name="favorite_exercise_legs">Piernas</string>
@@ -291,8 +291,8 @@
     <string name="notif_kind_creatine_desc">Recordatorios para tu dosis diaria de creatina.</string>
     <string name="notif_kind_progress_body">¡Sigue así! Cada meta cuenta para tu próximo logro.</string>
     <string name="notif_kind_sleep_body">¿Qué tal una siesta para alcanzar tu meta de sueño de hoy?</string>
-    <string name="notif_kind_water_body">¿Momento de un vaso de agua? Sigue avanzando hacia tu meta diaria.</string>
-    <string name="notif_kind_protein_body">Momento de añadir algo de proteína para alcanzar la meta de hoy.</string>
+    <string name="notif_kind_water_body">¿Hora de un vaso de agua? Sigue avanzando hacia tu meta diaria.</string>
+    <string name="notif_kind_protein_body">Es hora de añadir algo de proteína para alcanzar la meta de hoy.</string>
     <string name="notif_kind_carbs_body">¿Qué tal una buena fuente de carbohidratos para mantener la energía?</string>
     <string name="notif_kind_goodfat_body">No olvides las grasas buenas hoy (aceite de oliva, frutos secos, aguacate).</string>
     <string name="notif_kind_fiber_body">Añade una porción de fibra a tu próxima comida.</string>
@@ -347,7 +347,7 @@
     <string name="a11y_stats_card_usergoal_hint">cambiar objetivo</string>
     <string name="a11y_recent_day_hint">abrir este día en el calendario</string>
     <string name="notif_custom_desc">Recordatorios para cumplir la meta de hoy.</string>
-    <string name="notif_custom_body">Momento de registrar %s, sigue avanzando hacia la meta de hoy.</string>
+    <string name="notif_custom_body">Hora de registrar %s, sigue avanzando hacia la meta de hoy.</string>
     <string name="notif_custom_footer">Los recordatorios periódicos se detienen al alcanzar la meta de hoy para este registro personalizado.</string>
     <string name="health_activity_running">Carrera</string>
     <string name="health_activity_walking">Caminata</string>
@@ -404,7 +404,7 @@
     <string name="today_history">Registros</string>
     <string name="today_hero_caption_start">Registra una meta para empezar</string>
     <string name="today_hero_caption_next_level">Faltan %1$d%% para el siguiente nivel</string>
-    <string name="today_hero_caption_max">¡Nivel máximo alcanzado hoy!</string>
+    <string name="today_hero_caption_max">¡Logro máximo del día!</string>
     <!-- Balões da Hoje (porte de TodayInfoPopovers do iOS): nível da conquista e fim do dia. -->
     <string name="today_info_level_format">Nivel %1$d</string>
     <string name="today_info_tier_row_a11y">%1$s, %2$s, nivel %3$d</string>
@@ -461,10 +461,10 @@
     <string name="settings_notifications_times_header">Recordatorios</string>
     <string name="settings_notifications_times_row">Hora</string>
     <string name="settings_notifications_times_add">Añadir hora</string>
-    <string name="settings_notifications_times_empty">Sin horas</string>
-    <string name="settings_notifications_times_footer">Un aviso al día en cada hora. Los avisos del día se detienen cuando marcas Hecho en Hoy o tocas Tomado en la notificación.</string>
+    <string name="settings_notifications_times_empty">Sin horarios</string>
+    <string name="settings_notifications_times_footer">Un recordatorio al día para cada hora. Los recordatorios del día se detienen cuando marcas Hecho en Hoy o tocas Tomado en la notificación.</string>
     <string name="settings_notifications_group_title">Agrupar metas de check-in a la misma hora</string>
-    <string name="settings_notifications_group_footer">Junta en un solo aviso las metas de check-in de la misma hora. Desactivado, cada meta tiene su aviso.</string>
+    <string name="settings_notifications_group_footer">Agrupa en un solo recordatorio las metas de check-in de la misma hora. Si se desactiva, cada meta tendrá su propio recordatorio.</string>
     <string name="settings_notifications_emoji_title">Emojis en las notificaciones</string>
     <string name="settings_notifications_emoji_footer">Muestra el emoji de cada meta y del logro diario en el texto de las notificaciones.</string>
 </resources>

@@ -76,15 +76,15 @@
     <string name="ring_info_color_cyan">Quasi fatta</string>
     <string name="ring_info_color_purple">Traguardo vicino</string>
     <string name="ring_info_color_blue">Obiettivo completato</string>
-    <string name="tier_info_range_suffix">\" di progresso\"</string>
-    <string name="info_next_prefix">\"Mancano \"</string>
-    <string name="info_next_middle">\" per raggiungere: \"</string>
+    <string name="tier_info_range_suffix">" di progresso"</string>
+    <string name="info_next_prefix">"Mancano "</string>
+    <string name="info_next_middle">" per raggiungere: "</string>
     <string name="today_max_level">Livello massimo raggiunto oggi!</string>
     <string name="settings_about_achievement">Traguardo</string>
     <string name="tier_info_intro">Il tuo traguardo viene registrato alla fine della giornata, a mezzanotte.</string>
     <string name="tier_info_section_levels">Traguardi</string>
     <string name="tier_info_change_theme">Cambia emoji</string>
-    <string name="settings_accent_color">Colore in risalto</string>
+    <string name="settings_accent_color">Colore di risalto</string>
     <string name="a11y_selected">Selezionato</string>
     <string name="a11y_not_selected">Non selezionato</string>
     <string name="color_red">Rosso</string>
@@ -110,7 +110,7 @@
     <string name="settings_preference_control_style">Controlli</string>
     <string name="settings_control_style_footer">Puoi passare dalla visualizzazione a elenco a quella a griglia direttamente nella schermata Oggi.</string>
     <string name="settings_color_preview">Anteprima</string>
-    <string name="settings_color_subtitle">Colore in risalto</string>
+    <string name="settings_color_subtitle">Colore di risalto</string>
     <string name="settings_units">Unità di misura</string>
     <string name="unit_metric">Metrico (ml)</string>
     <string name="unit_us">Imperiale (fl oz)</string>
@@ -210,7 +210,7 @@
     <string name="a11y_welcome_goal_increase">Aumenta %1$s</string>
     <string name="settings_profile_favorite_exercise">Esercizio preferito</string>
     <string name="favorite_exercise_unknown">Non saprei</string>
-    <string name="favorite_exercise_back">Indietro</string>
+    <string name="favorite_exercise_back">Dorsali</string>
     <string name="favorite_exercise_arms">Braccia</string>
     <string name="favorite_exercise_chest">Petto</string>
     <string name="favorite_exercise_legs">Gambe</string>
@@ -260,7 +260,7 @@
     <string name="theme_doctor_fem">Dottoressa</string>
     <string name="notif_group_reminders">Promemoria</string>
     <string name="notif_group_system">Sistema</string>
-    <string name="notif_sound_default">Di default</string>
+    <string name="notif_sound_default">Predefinito</string>
     <string name="notif_sound_silent">Silenzioso</string>
     <string name="health_activity_other">Esercizio</string>
     <string name="notif_kind_progress_title">Progresso</string>
@@ -291,7 +291,7 @@
     <string name="notif_kind_creatine_desc">Promemoria per la dose giornaliera di creatina.</string>
     <string name="notif_kind_progress_body">Continua così! Ogni obiettivo conta per il tuo prossimo traguardo.</string>
     <string name="notif_kind_sleep_body">Che ne dici di un riposino per raggiungere il tuo obiettivo di sonno oggi?</string>
-    <string name="notif_kind_water_body">Tempo per un bicchiere d\'acqua? Continua ad avvicinarti al tuo obiettivo.</string>
+    <string name="notif_kind_water_body">È ora di bere un bicchiere d\'acqua? Continua ad avvicinarti al tuo obiettivo.</string>
     <string name="notif_kind_protein_body">È ora di fare il pieno di proteine per centrare l\'obiettivo di oggi.</string>
     <string name="notif_kind_carbs_body">Che ne dici di una buona fonte di carboidrati per mantenere l\'energia alta?</string>
     <string name="notif_kind_goodfat_body">Non dimenticare i grassi buoni oggi (olio d\'oliva, frutta a guscio, avocado).</string>
@@ -341,11 +341,11 @@
     <string name="a11y_recent_day_done">%1$s, traguardo raggiunto</string>
     <string name="a11y_recent_day_empty">%1$s, nessuna registrazione</string>
     <string name="a11y_history_row">%1$s, %2$d percento</string>
-    <string name="a11y_stats_card_tiers_hint">scopri come funzionano i livelli</string>
-    <string name="a11y_stats_card_activity_hint">apri il registro attività</string>
-    <string name="a11y_stats_card_goals_hint">gestisci gli obiettivi monitorati</string>
-    <string name="a11y_stats_card_usergoal_hint">cambia obiettivo</string>
-    <string name="a11y_recent_day_hint">apri questo giorno nel calendario</string>
+    <string name="a11y_stats_card_tiers_hint">scoprire come funzionano i livelli</string>
+    <string name="a11y_stats_card_activity_hint">aprire il registro delle attività</string>
+    <string name="a11y_stats_card_goals_hint">gestire gli obiettivi monitorati</string>
+    <string name="a11y_stats_card_usergoal_hint">cambiare obiettivo</string>
+    <string name="a11y_recent_day_hint">aprire questo giorno nel calendario</string>
     <string name="notif_custom_desc">Promemoria per raggiungere l\'obiettivo di oggi.</string>
     <string name="notif_custom_body">È ora di registrare %s, continua ad avvicinarti all\'obiettivo di oggi.</string>
     <string name="notif_custom_footer">I promemoria periodici si interrompono una volta raggiunto l\'obiettivo giornaliero per questo elemento personalizzato.</string>
@@ -392,7 +392,7 @@
     <string name="widget_goals_label">Obiettivi</string>
     <string name="widget_goals_description">Progresso individuale dei tuoi obiettivi attivi.</string>
     <string name="settings_widget_background">Widget</string>
-    <string name="widget_bg_mode_system">Di default</string>
+    <string name="widget_bg_mode_system">Predefinito</string>
     <string name="widget_bg_mode_accent">In risalto</string>
     <string name="widget_bg_mode_custom">Personalizzato</string>
     <string name="widget_bg_footer_system">I widget utilizzano lo sfondo di sistema (chiaro o scuro).</string>
@@ -401,10 +401,10 @@
     <string name="widget_bg_preview">Anteprima</string>
     <string name="widget_bg_pick_color">Scegli un colore</string>
     <string name="common_close">Chiudi</string>
-    <string name="today_history">Registri</string>
+    <string name="today_history">Storico</string>
     <string name="today_hero_caption_start">Monitora un obiettivo per iniziare</string>
     <string name="today_hero_caption_next_level">Manca il %1$d%% per il livello successivo</string>
-    <string name="today_hero_caption_max">Livello massimo raggiunto oggi!</string>
+    <string name="today_hero_caption_max">Massimo traguardo del giorno!</string>
     <!-- Balões da Hoje (porte de TodayInfoPopovers do iOS): nível da conquista e fim do dia. -->
     <string name="today_info_level_format">Livello %1$d</string>
     <string name="today_info_tier_row_a11y">%1$s, %2$s, livello %3$d</string>
@@ -414,7 +414,7 @@
     <string name="today_goals_view_mode_grid">Griglia</string>
     <string name="today_category_other">Altro</string>
     <string name="today_edit_theme">Modifica emoji</string>
-    <string name="today_edit_colors">Modifica colori in risalto</string>
+    <string name="today_edit_colors">Modifica colore di risalto</string>
     <string name="today_edit_controls">Modifica controlli</string>
     <string name="today_edit_quick">Modifica rapida</string>
     <string name="today_edit_goals">Modifica obiettivi</string>

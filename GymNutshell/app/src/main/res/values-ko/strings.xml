@@ -22,7 +22,7 @@
     <string name="cd_increase">%1$s 증가</string>
     <string name="cd_decrease">%1$s 감소</string>
     <string name="state_collapsed">접힘</string>
-    <string name="state_expanded">펼침</string>
+    <string name="state_expanded">펼쳐짐</string>
     <string name="cd_daily_tier">오늘의 업적, %1$s</string>
     <string name="cd_prev_month">이전 달</string>
     <string name="cd_next_month">다음 달</string>
@@ -72,9 +72,9 @@
     <string name="ring_info_color_cyan">거의 다 왔어요</string>
     <string name="ring_info_color_purple">마지막 스퍼트</string>
     <string name="ring_info_color_blue">목표 달성</string>
-    <string name="tier_info_range_suffix">\" 진행률\"</string>
-    <string name="info_next_prefix">\"도달까지 \"</string>
-    <string name="info_next_middle">\" 남음: \"</string>
+    <string name="tier_info_range_suffix">" 진행률"</string>
+    <string name="info_next_prefix">"도달까지 "</string>
+    <string name="info_next_middle">" 남음: "</string>
     <string name="today_max_level">오늘 최고 레벨에 도달했어요!</string>
     <string name="settings_about_achievement">업적</string>
     <string name="tier_info_intro">나의 업적은 하루가 끝나는 자정에 기록돼요.</string>
@@ -97,8 +97,8 @@
     <string name="settings_profile_name">이름</string>
     <string name="settings_profile_name_placeholder">선택 사항</string>
     <string name="field_name">이름</string>
-    <string name="settings_fitness_goal">목표</string>
-    <string name="settings_daily_goals">목표</string>
+    <string name="settings_fitness_goal">운동 목표</string>
+    <string name="settings_daily_goals">일일 목표</string>
     <string name="settings_goalchange_section_pick">목표 선택</string>
     <string name="settings_goalchange_section_preview">다시 계산된 목표</string>
     <string name="settings_goalchange_save_recalc">저장 및 다시 계산</string>
@@ -206,7 +206,7 @@
     <string name="a11y_welcome_goal_increase">%1$s 증가</string>
     <string name="settings_profile_favorite_exercise">좋아하는 운동 부위</string>
     <string name="favorite_exercise_unknown">잘 모르겠음</string>
-    <string name="favorite_exercise_back">뒤로</string>
+    <string name="favorite_exercise_back">등</string>
     <string name="favorite_exercise_arms">팔</string>
     <string name="favorite_exercise_chest">가슴</string>
     <string name="favorite_exercise_legs">하체</string>
@@ -259,7 +259,7 @@
     <string name="notif_sound_default">기본</string>
     <string name="notif_sound_silent">무음</string>
     <string name="health_activity_other">기타 운동</string>
-    <string name="notif_kind_progress_title">성장</string>
+    <string name="notif_kind_progress_title">진행 상황</string>
     <string name="notif_kind_achievement_title">오늘의 업적</string>
     <string name="notif_kind_health_title">Health Connect</string>
     <string name="notif_kind_backup_title">백업</string>
@@ -286,7 +286,7 @@
     <string name="notif_kind_cardio_desc">오늘의 유산소 운동을 완료하기 위한 알림이에요.</string>
     <string name="notif_kind_creatine_desc">일일 크레아틴 섭취를 위한 알림이에요.</string>
     <string name="notif_kind_progress_body">조금만 더 힘내세요! 목표를 달성할 때마다 다음 업적에 가까워져요.</string>
-    <string name="notif_kind_sleep_body">오늘 수면 목표를 채우기 위해 잠깐 낮잠 한숨 어떠세요?</string>
+    <string name="notif_kind_sleep_body">오늘 수면 목표를 채우기 위해 가벼운 낮잠 어떠세요?</string>
     <string name="notif_kind_water_body">시원한 물 한 잔 어때요? 오늘의 목표를 향해 달려보세요.</string>
     <string name="notif_kind_protein_body">오늘의 목표를 채우기 위해 단백질을 챙겨 드세요.</string>
     <string name="notif_kind_carbs_body">에너지를 보충할 좋은 탄수화물 어떠세요?</string>
@@ -381,10 +381,10 @@
     <string name="backup_status_exported">백업을 내보냈어요.</string>
     <string name="backup_status_imported">백업이 복원되었어요.</string>
     <string name="backup_status_error">문제가 발생했어요. 다시 시도해주세요.</string>
-    <string name="widget_progress_label">성장</string>
-    <string name="widget_progress_description">매일의 성장을 추적해보세요.</string>
+    <string name="widget_progress_label">진행 상황</string>
+    <string name="widget_progress_description">매일의 진행 상황을 추적해보세요.</string>
     <string name="widget_calendar_label">캘린더</string>
-    <string name="widget_calendar_description">오늘의 성장과 이번 달 현황을 한눈에.</string>
+    <string name="widget_calendar_description">오늘의 진행 상황과 이번 달 현황을 한눈에.</string>
     <string name="widget_goals_label">목표</string>
     <string name="widget_goals_description">진행 중인 목표별 상세 진행률.</string>
     <string name="settings_widget_background">위젯</string>
@@ -400,7 +400,7 @@
     <string name="today_history">기록</string>
     <string name="today_hero_caption_start">목표를 기록하고 시작해보세요</string>
     <string name="today_hero_caption_next_level">다음 레벨까지 %1$d%% 남음</string>
-    <string name="today_hero_caption_max">오늘 최고 레벨에 도달했어요!</string>
+    <string name="today_hero_caption_max">오늘의 최고 업적 달성!</string>
     <!-- Balões da Hoje (porte de TodayInfoPopovers do iOS): nível da conquista e fim do dia. -->
     <string name="today_info_level_format">레벨 %1$d</string>
     <string name="today_info_tier_row_a11y">%1$s, %2$s, 레벨 %3$d</string>
@@ -431,9 +431,9 @@
     <string name="category_kind_standard">기본</string>
     <string name="category_kind_rest_day">휴식일 포함</string>
     <string name="category_kind_check_in">체크인</string>
-    <string name="category_kind_standard_footer">슬라이더나 − / + 버튼으로 조금씩 기록합니다.</string>
-    <string name="category_kind_rest_day_footer">휴식일을 표시하는 ON/OFF 버튼이 있습니다.</string>
-    <string name="category_kind_check_in_footer">각 목표는 하루 한 번 체크합니다: 대기 또는 완료.</string>
+    <string name="category_kind_standard_footer">슬라이더나 − / + 버튼으로 조금씩 기록해요.</string>
+    <string name="category_kind_rest_day_footer">휴식일을 표시하는 ON/OFF 버튼이 있어요.</string>
+    <string name="category_kind_check_in_footer">각 목표는 하루 한 번 대기 또는 완료로 체크해요.</string>
     <string name="addgoal_category_kind_footer">이 카테고리는 %1$s 유형이에요. %2$s</string>
     <string name="settings_goals_add_to_category">목표 추가</string>
     <string name="addgoal_section_dose">용량</string>
@@ -454,7 +454,7 @@
     <string name="settings_notifications_times_row">시간</string>
     <string name="settings_notifications_times_add">시간 추가</string>
     <string name="settings_notifications_times_empty">시간 없음</string>
-    <string name="settings_notifications_times_footer">각 시간마다 하루에 한 번 알려요. 오늘에서 완료로 표시하거나 알림에서 먹었어요를 누르면 그날 알림이 멈춰요.</string>
+    <string name="settings_notifications_times_footer">각 시간마다 하루에 한 번 알려요. \'오늘\' 화면에서 완료로 표시하거나 알림에서 \'먹었어요\'를 누르면 당일 알림이 멈춰요.</string>
     <string name="settings_notifications_group_title">같은 시간 체크인 목표 묶기</string>
     <string name="settings_notifications_group_footer">같은 시간의 체크인 목표를 알림 하나로 묶어요. 끄면 목표마다 따로 알려요.</string>
     <string name="settings_notifications_emoji_title">알림에 이모지 표시</string>

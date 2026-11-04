@@ -34,7 +34,7 @@
     <string name="edit_record_title">Tag bearbeiten</string>
     <string name="edit_record_save">Speichern</string>
     <string name="progress_section_tiers">Stufenübersicht</string>
-    <string name="progress_section_activity">Training-Aktivität</string>
+    <string name="progress_section_activity">Trainingsaktivität</string>
     <string name="progress_activity_workout">Krafttrainingstage</string>
     <string name="progress_activity_cardio">Cardio-Tage</string>
     <plurals name="progress_days_count">
@@ -50,7 +50,7 @@
     <string name="progress_section_goal">Ziel</string>
     <string name="progress_section_recent">Letzte 7 Tage</string>
     <string name="settings_section_system">System</string>
-    <string name="settings_section_about">Über</string>
+    <string name="settings_section_about">Info</string>
     <string name="settings_appearance">Erscheinungsbild</string>
     <string name="settings_about_link">Gym Nutshell</string>
     <string name="settings_about_title">Über die App</string>
@@ -74,13 +74,13 @@
     <string name="ring_info_color_cyan">Fast geschafft</string>
     <string name="ring_info_color_purple">Zielgerade</string>
     <string name="ring_info_color_blue">Ziel erreicht</string>
-    <string name="tier_info_range_suffix">\" Fortschritt\"</string>
-    <string name="info_next_prefix">\"Noch \"</string>
-    <string name="info_next_middle">\" bis: \"</string>
-    <string name="today_max_level">Höchstes Level heute erreicht!</string>
+    <string name="tier_info_range_suffix">" Fortschritt"</string>
+    <string name="info_next_prefix">"Noch "</string>
+    <string name="info_next_middle">" bis: "</string>
+    <string name="today_max_level">Höchste Stufe heute erreicht!</string>
     <string name="settings_about_achievement">Erfolg</string>
     <string name="tier_info_intro">Dein Erfolg wird am Ende des Tages, um Mitternacht, festgehalten.</string>
-    <string name="tier_info_section_levels">Erfolge</string>
+    <string name="tier_info_section_levels">Stufen</string>
     <string name="tier_info_change_theme">Emoji ändern</string>
     <string name="settings_accent_color">Akzentfarbe</string>
     <string name="a11y_selected">Ausgewählt</string>
@@ -126,7 +126,7 @@
     <string name="goals_title">Ziele</string>
     <string name="goals_categories_title">Kategorien</string>
     <string name="goals_category_order">Kategoriereihenfolge</string>
-    <string name="goal_badge_custom">Eigener</string>
+    <string name="goal_badge_custom">Individuell</string>
     <string name="tracking_goals_edit">Bearbeiten</string>
     <string name="tracking_goals_done">Fertig</string>
     <string name="addgoal_title_new">Neues Ziel</string>
@@ -208,7 +208,7 @@
     <string name="a11y_welcome_goal_increase">%1$s erhöhen</string>
     <string name="settings_profile_favorite_exercise">Lieblingsübung</string>
     <string name="favorite_exercise_unknown">Nicht sicher</string>
-    <string name="favorite_exercise_back">Zurück</string>
+    <string name="favorite_exercise_back">Rücken</string>
     <string name="favorite_exercise_arms">Arme</string>
     <string name="favorite_exercise_chest">Brust</string>
     <string name="favorite_exercise_legs">Beine</string>
@@ -339,8 +339,8 @@
     <string name="a11y_recent_day_done">%1$s, Erfolg erzielt</string>
     <string name="a11y_recent_day_empty">%1$s, kein Eintrag</string>
     <string name="a11y_history_row">%1$s, %2$d Prozent</string>
-    <string name="a11y_stats_card_tiers_hint">funktionsweise der Stufen anzeigen</string>
-    <string name="a11y_stats_card_activity_hint">aktivitätsprotokoll öffnen</string>
+    <string name="a11y_stats_card_tiers_hint">Funktionsweise der Stufen anzeigen</string>
+    <string name="a11y_stats_card_activity_hint">Aktivitätsprotokoll öffnen</string>
     <string name="a11y_stats_card_goals_hint">getrackte Ziele verwalten</string>
     <string name="a11y_stats_card_usergoal_hint">Ziel ändern</string>
     <string name="a11y_recent_day_hint">diesen Tag im Kalender öffnen</string>
@@ -401,8 +401,8 @@
     <string name="common_close">Schließen</string>
     <string name="today_history">Aufzeichnungen</string>
     <string name="today_hero_caption_start">Tracke ein Ziel, um zu starten</string>
-    <string name="today_hero_caption_next_level">Noch %1$d%% bis zum nächsten Level</string>
-    <string name="today_hero_caption_max">Höchstes Level heute erreicht!</string>
+    <string name="today_hero_caption_next_level">Noch %1$d%% bis zur nächsten Stufe</string>
+    <string name="today_hero_caption_max">Tageshöchster Erfolg!</string>
     <!-- Balões da Hoje (porte de TodayInfoPopovers do iOS): nível da conquista e fim do dia. -->
     <string name="today_info_level_format">Stufe %1$d</string>
     <string name="today_info_tier_row_a11y">%1$s, %2$s, Stufe %3$d</string>
@@ -457,10 +457,10 @@
     <string name="settings_notifications_times_header">Erinnerungen</string>
     <string name="settings_notifications_times_row">Uhrzeit</string>
     <string name="settings_notifications_times_add">Uhrzeit hinzufügen</string>
-    <string name="settings_notifications_times_empty">Keine Uhrzeit</string>
-    <string name="settings_notifications_times_footer">Eine Erinnerung pro Tag zu jeder Uhrzeit. Die Erinnerungen des Tages enden, wenn du auf Heute Erledigt markierst oder in der Mitteilung auf Genommen tippst.</string>
+    <string name="settings_notifications_times_empty">Keine Zeiten festgelegt</string>
+    <string name="settings_notifications_times_footer">Eine Erinnerung pro Tag zu jeder Uhrzeit. Die Erinnerungen des Tages enden, wenn du in der Heute-Ansicht „Erledigt“ markierst oder in der Mitteilung auf „Genommen“ tippst.</string>
     <string name="settings_notifications_group_title">Check-in-Ziele zur gleichen Zeit bündeln</string>
-    <string name="settings_notifications_group_footer">Fasst Check-in-Ziele mit derselben Uhrzeit in einer Erinnerung zusammen. Aus: jedes Ziel hat seine eigene.</string>
+    <string name="settings_notifications_group_footer">Fasst Check-in-Ziele mit derselben Uhrzeit in einer Erinnerung zusammen. Wenn deaktiviert, erhält jedes Ziel eine eigene Erinnerung.</string>
     <string name="settings_notifications_emoji_title">Emojis in Mitteilungen</string>
     <string name="settings_notifications_emoji_footer">Zeigt das Emoji jedes Ziels und des Tageserfolgs im Text der Mitteilungen.</string>
 </resources>

@@ -2,7 +2,7 @@
 <resources>
     <string name="tier_gym_level1">ヒヨコ</string>
     <string name="tier_gym_level2">筋トレ見習い</string>
-    <string name="tier_gym_level3">ジム通い</string>
+    <string name="tier_gym_level3">ジムの常連</string>
     <string name="tier_gym_level4">マッチョ</string>
     <string name="tier_gym_level5">ビースト</string>
     <string name="tier_running_level1">ウォーカー</string>
@@ -23,7 +23,7 @@
     <string name="tier_bear_level1">子グマ</string>
     <string name="tier_bear_level2">ヒグマ</string>
     <string name="tier_bear_level3">ホッキョクグマ</string>
-    <string name="tier_bear_level4">強豪バイソン</string>
+    <string name="tier_bear_level4">屈強なバイソン</string>
     <string name="tier_bear_level5">マンモス</string>
     <string name="tier_dino_level1">子ガメ</string>
     <string name="tier_dino_level2">ワニ</string>
@@ -97,7 +97,7 @@
     <string name="tier_number_level5">ファイブ</string>
     <string name="tier_gym_level1_fem">ヒヨコ</string>
     <string name="tier_gym_level2_fem">筋トレ見習い</string>
-    <string name="tier_gym_level3_fem">ジム通い</string>
+    <string name="tier_gym_level3_fem">ジムの常連</string>
     <string name="tier_gym_level4_fem">マッチョ</string>
     <string name="tier_gym_level5_fem">ビースト</string>
     <string name="tier_running_level3_fem">ランナー</string>
@@ -114,7 +114,7 @@
     <string name="tier_bear_level1_fem">子グマ</string>
     <string name="tier_bear_level2_fem">ヒグマ</string>
     <string name="tier_bear_level3_fem">ホッキョクグマ</string>
-    <string name="tier_bear_level4_fem">強豪バイソン</string>
+    <string name="tier_bear_level4_fem">屈強なバイソン</string>
     <string name="tier_dino_level4_fem">巨大恐竜</string>
     <string name="tier_dragon_level1_fem">ちいさな卵</string>
     <string name="tier_dragon_level2_fem">トカゲ</string>
