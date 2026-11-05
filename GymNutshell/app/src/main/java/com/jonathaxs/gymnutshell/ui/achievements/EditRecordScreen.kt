@@ -172,6 +172,13 @@ private fun EditHeaderCard(state: EditRecordUiState, accent: Color) {
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
+                // "Nível 3 · +3 pts", recalculado conforme as metas mudam.
+                Text(
+                    stringResource(R.string.today_info_level_format, state.tierLevel) + " · " +
+                        stringResource(R.string.points_plus_format, state.tierLevel),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
             }
         }
     }

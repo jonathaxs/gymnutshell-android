@@ -491,4 +491,5 @@
     <string name="settings_appearance_mode_system">기기</string>
     <string name="settings_appearance_mode_light">라이트</string>
     <string name="settings_appearance_mode_dark">다크</string>
+    <string name="a11y_points_plus_format">%d 포인트 획득</string>
 </resources>

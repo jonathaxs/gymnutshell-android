@@ -491,4 +491,5 @@
     <string name="settings_appearance_mode_system">デバイス</string>
     <string name="settings_appearance_mode_light">ライト</string>
     <string name="settings_appearance_mode_dark">ダーク</string>
+    <string name="a11y_points_plus_format">+%dポイント</string>
 </resources>

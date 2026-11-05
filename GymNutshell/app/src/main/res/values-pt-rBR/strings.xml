@@ -591,4 +591,5 @@
     <string name="settings_appearance_mode_system">Dispositivo</string>
     <string name="settings_appearance_mode_light">Claro</string>
     <string name="settings_appearance_mode_dark">Escuro</string>
+    <string name="a11y_points_plus_format">mais %d pontos</string>
 </resources>

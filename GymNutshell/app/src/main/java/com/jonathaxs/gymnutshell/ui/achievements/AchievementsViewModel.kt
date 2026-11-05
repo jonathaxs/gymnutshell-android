@@ -51,6 +51,8 @@ data class HistoryItemUi(
     val bonusKind: StreakBonusKind? = null,
     val bonusId: String? = null,
     val bonusPoints: Int = 0,
+    /** Pontos do dia (número do nível, 1 a 5). Zero nas linhas de bônus. */
+    val points: Int = 0,
 )
 
 /** Modo de visualização: calendário (com o dia selecionado) ou lista completa. Espelha o FilterMode (iOS). */
@@ -195,6 +197,7 @@ class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
                 tierNameRes = theme.tierNameRes(tier, profile.sex),
                 percent = record.percent,
                 canEdit = (todayEpoch - record.date) in 0..EDIT_WINDOW_DAYS,
+                points = tier.points,
             )
         }
         for (bonus in pendingBonuses) {

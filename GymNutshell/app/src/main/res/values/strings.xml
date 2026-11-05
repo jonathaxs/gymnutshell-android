@@ -596,4 +596,5 @@
     <string name="settings_appearance_mode_system">Device</string>
     <string name="settings_appearance_mode_light">Light</string>
     <string name="settings_appearance_mode_dark">Dark</string>
+    <string name="a11y_points_plus_format">plus %d points</string>
 </resources>

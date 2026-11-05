@@ -568,25 +568,32 @@ private fun HistoryBonusRow(
 
         Spacer(Modifier.width(10.dp))
 
-        Box(
-            modifier = Modifier
-                .clip(CircleShape)
-                .background(accent.copy(alpha = 0.12f))
-                .padding(horizontal = 10.dp, vertical = 5.dp),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text(
-                text = pointsText,
-                style = MaterialTheme.typography.labelMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = accent,
-                modifier = Modifier.clearAndSetSemantics {},
-            )
-        }
+        PointsCapsule(text = pointsText, accent = accent)
     }
 }
 
-/** Linha do histórico: emoji em círculo suave (40dp), data + percentual e botão redondo de editar (lápis). Sem pontos. */
+/** Cápsula "+N pts" na cor de destaque, usada nos dias e nos bônus. */
+@Composable
+private fun PointsCapsule(text: String, accent: Color) {
+    Box(
+        modifier = Modifier
+            .clip(CircleShape)
+            .background(accent.copy(alpha = 0.12f))
+            .padding(horizontal = 10.dp, vertical = 5.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = accent,
+            maxLines = 1,
+            modifier = Modifier.clearAndSetSemantics {},
+        )
+    }
+}
+
+/** Linha do histórico: emoji em círculo suave (40dp), data + percentual, pontos do dia e botão redondo de editar (lápis). */
 @Composable
 private fun HistoryRow(
     item: HistoryItemUi,
@@ -595,7 +602,9 @@ private fun HistoryRow(
 ) {
     val editDesc = stringResource(R.string.cd_edit_record)
     val tierName = stringResource(item.tierNameRes)
-    val rowDesc = stringResource(R.string.a11y_history_row, item.dateLabel, item.percent)
+    val pointsText = stringResource(R.string.points_plus_format, item.points)
+    val rowDesc = stringResource(R.string.a11y_history_row, item.dateLabel, item.percent) +
+        ", " + stringResource(R.string.a11y_points_plus_format, item.points)
 
     Row(
         modifier = Modifier
@@ -640,6 +649,10 @@ private fun HistoryRow(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+
+        Spacer(Modifier.width(10.dp))
+
+        PointsCapsule(text = pointsText, accent = accent)
 
         // Botão de editar redondo pequeno com lápis (área de toque acessível de 48dp)
         if (onEdit != null) {
