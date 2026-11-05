@@ -28,11 +28,11 @@ class DailyAchievementTest {
 
     @Test
     fun `pontos de cada tier batem com o iOS`() {
-        assertEquals(0, DailyAchievement.Level1.points)
-        assertEquals(25, DailyAchievement.Level2.points)
-        assertEquals(50, DailyAchievement.Level3.points)
-        assertEquals(75, DailyAchievement.Level4.points)
-        assertEquals(100, DailyAchievement.Level5.points)
+        assertEquals(1, DailyAchievement.Level1.points)
+        assertEquals(2, DailyAchievement.Level2.points)
+        assertEquals(3, DailyAchievement.Level3.points)
+        assertEquals(4, DailyAchievement.Level4.points)
+        assertEquals(5, DailyAchievement.Level5.points)
     }
 
     @Test

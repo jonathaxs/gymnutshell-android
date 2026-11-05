@@ -44,6 +44,7 @@ import kotlin.math.floor
 import kotlin.math.roundToInt
 
 import com.jonathaxs.gymnutshell.core.domain.ControlStyle
+import com.jonathaxs.gymnutshell.notifications.GymNotifier
 
 /** Estado da tela de edição de um DailyRecord — espelha o cabeçalho + metas da EditTodayView (iOS). */
 data class EditRecordUiState(
@@ -175,6 +176,7 @@ class EditRecordViewModel(app: Application) : AndroidViewModel(app) {
                 config = config,
             )
             recordRepo.upsert(rebuilt)
+            GymNotifier(getApplication()).notifyNewStreakBonuses(recordRepo.allRecords())
             onDone()
         }
     }

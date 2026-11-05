@@ -24,6 +24,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -34,6 +36,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -54,8 +57,10 @@ import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.domain.AppDateFormatters
 import com.jonathaxs.gymnutshell.core.domain.UserGoal
 import com.jonathaxs.gymnutshell.core.domain.pluralQuantity
+import com.jonathaxs.gymnutshell.notifications.NotificationStrings
 import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
 import com.jonathaxs.gymnutshell.ui.components.IconBadge
+import com.jonathaxs.gymnutshell.ui.settings.StreakBonusInfoSheet
 import com.jonathaxs.gymnutshell.ui.settings.TierInfoSheet
 import com.jonathaxs.gymnutshell.ui.util.Breakpoints
 import java.time.LocalDate
@@ -78,6 +83,7 @@ fun ProgressScreen(
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val accent = Color(state.accentArgb)
     var showTierInfo by remember { mutableStateOf(false) }
+    var showBonusInfo by remember { mutableStateOf(false) }
 
     // Atividade → Conquistas no modo Lista; tocar num dos últimos 7 dias → Conquistas no calendário naquele dia (iOS).
     val onActivityClick = {
@@ -111,13 +117,14 @@ fun ProgressScreen(
                     horizontalArrangement = Arrangement.spacedBy(16.dp),
                     verticalAlignment = Alignment.Top,
                 ) {
-                    // Coluna esquerda: Conquistas por Níveis
+                    // Coluna esquerda: Conquistas por Níveis → Pontos e bônus
                     Column(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.spacedBy(24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         TiersCard(state, accent) { showTierInfo = true }
+                        BonusesCard(state, accent) { showBonusInfo = true }
                     }
                     // Coluna direita: Atividade → Metas
                     Column(
@@ -141,6 +148,7 @@ fun ProgressScreen(
             ) {
                 RecentActivityCard(state, accent, onRecentDayClick)
                 TiersCard(state, accent) { showTierInfo = true }
+                BonusesCard(state, accent) { showBonusInfo = true }
                 ActivityCard(state, onActivityClick)
                 GoalsCard(state, onOpenGoals, onOpenUserGoal)
             }
@@ -149,6 +157,9 @@ fun ProgressScreen(
 
     if (showTierInfo) {
         TierInfoSheet(onDismiss = { showTierInfo = false }, onOpenTheme = onOpenTheme)
+    }
+    if (showBonusInfo) {
+        StreakBonusInfoSheet(onDismiss = { showBonusInfo = false })
     }
 }
 
@@ -337,6 +348,142 @@ private fun TierRow(tier: TierCountUi, maxDays: Int, accent: Color) {
                 )
             }
         }
+    }
+}
+
+/** Card "Pontos e bônus": total de pontos + 4 tipos de bônus de sequência; abre sheet ao tocar. */
+@Composable
+private fun BonusesCard(state: ProgressUiState, accent: Color, onShowBonusInfo: () -> Unit) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.Start,
+    ) {
+        Text(
+            stringResource(R.string.statistics_section_bonuses),
+            style = MaterialTheme.typography.titleSmall,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(start = 16.dp),
+        )
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(22.dp))
+                .clickable(
+                    onClickLabel = stringResource(R.string.a11y_stats_bonuses_hint),
+                    role = Role.Button,
+                    onClick = onShowBonusInfo,
+                ),
+            shape = RoundedCornerShape(22.dp),
+            color = MaterialTheme.colorScheme.surfaceContainerHigh,
+        ) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.Start,
+            ) {
+                PointsTotalRow(total = state.totalPoints, accent = accent)
+                state.bonusCounts.forEach { bonus ->
+                    GroupRowDivider(startInset = 74.dp)
+                    BonusCountRow(item = bonus, accent = accent)
+                }
+            }
+        }
+    }
+}
+
+/** Linha do total de pontos (dias + bônus) — porte de PointsTotalRow (iOS). */
+@Composable
+private fun PointsTotalRow(total: Int, accent: Color) {
+    val label = stringResource(R.string.statistics_points_total)
+    val totalText = total.toString()
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .semantics(mergeDescendants = true) { contentDescription = "$label, $totalText" },
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(44.dp)
+                .clip(CircleShape)
+                .background(accent.copy(alpha = 0.12f)),
+            contentAlignment = Alignment.Center,
+        ) {
+            Icon(
+                imageVector = Icons.Default.Star,
+                contentDescription = null,
+                tint = accent,
+                modifier = Modifier.size(22.dp),
+            )
+        }
+        Spacer(Modifier.width(14.dp))
+        Text(
+            label,
+            style = MaterialTheme.typography.bodyLarge,
+            fontWeight = FontWeight.SemiBold,
+        )
+        Spacer(Modifier.weight(1f))
+        Text(
+            totalText,
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+        )
+    }
+}
+
+/** Linha de um tipo de bônus de sequência — porte de BonusCountRow (iOS). */
+@Composable
+private fun BonusCountRow(item: BonusCountUi, accent: Color) {
+    val title = stringResource(NotificationStrings.streakBonusTitleRes(item.kind))
+    val pointsText = stringResource(R.string.points_plus_format, item.kind.points)
+    val timesText = stringResource(R.string.statistics_bonus_times, item.count)
+    val rowDesc = stringResource(R.string.a11y_stats_bonus_row_format, title, item.count)
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .alpha(if (item.count == 0) 0.55f else 1f)
+            .semantics(mergeDescendants = true) { contentDescription = rowDesc },
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(44.dp)
+                .clip(CircleShape)
+                .background(accent.copy(alpha = 0.12f)),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(item.kind.emoji, fontSize = 22.sp, modifier = Modifier.clearAndSetSemantics {})
+        }
+        Spacer(Modifier.width(14.dp))
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+            horizontalAlignment = Alignment.Start,
+        ) {
+            Text(
+                title,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.SemiBold,
+            )
+            Text(
+                pointsText,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        Spacer(Modifier.width(12.dp))
+        Text(
+            timesText,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 

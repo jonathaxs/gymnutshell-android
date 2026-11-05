@@ -12,8 +12,11 @@ import com.jonathaxs.gymnutshell.MainActivity
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.data.CustomGoal
 import com.jonathaxs.gymnutshell.core.data.CustomGoalRepository
+import com.jonathaxs.gymnutshell.core.data.DailyRecord
+import com.jonathaxs.gymnutshell.core.data.DailyRecordRepository
 import com.jonathaxs.gymnutshell.core.data.NotificationHistoryRepository
 import com.jonathaxs.gymnutshell.core.data.NotificationPreferencesRepository
+import com.jonathaxs.gymnutshell.core.domain.EarnedStreakBonus
 import com.jonathaxs.gymnutshell.core.domain.NotificationKind
 import com.jonathaxs.gymnutshell.core.domain.NotificationRoute
 import com.jonathaxs.gymnutshell.core.domain.NotificationSound
@@ -52,6 +55,32 @@ class GymNotifier(context: Context) {
         val body = withEmoji(emoji, appContext.getString(R.string.notif_event_achievement_body, tierName))
         post(kind, title, body, achievementEpochDay, prefs.sound(kind))
         history.append(kind.rawValue, title, body, kind.route.rawValue, achievementEpochDay)
+    }
+
+    /** Bônus de sequência ("<título do bônus>! +N pontos."). Porte de sendStreakBonusNotification (iOS). */
+    suspend fun fireStreakBonus(bonus: EarnedStreakBonus) {
+        val kind = NotificationKind.StreakBonus
+        if (!prefs.isEnabled(kind)) return
+        val title = appContext.getString(R.string.notif_kind_streak_bonus_title)
+        val bonusTitle = appContext.getString(NotificationStrings.streakBonusTitleRes(bonus.kind))
+        val body = withEmoji(
+            bonus.kind.emoji,
+            appContext.getString(R.string.notif_event_streak_bonus_body, bonusTitle, bonus.points),
+        )
+        val epochDay = bonus.anchorDate.toEpochDay()
+        post(kind, title, body, epochDay, prefs.sound(kind))
+        history.append(kind.rawValue, title, body, kind.route.rawValue, epochDay)
+    }
+
+    /**
+     * Verifica bônus de sequência novos e dispara notificação só pros recentes — porte de StreakBonusNotifier.notifyNew (iOS).
+     */
+    suspend fun notifyNewStreakBonuses(records: List<DailyRecord>? = null) {
+        val allRecords = records ?: DailyRecordRepository(appContext).allRecords()
+        val fresh = prefs.consumeNewStreakBonuses(allRecords)
+        for (bonus in fresh) {
+            fireStreakBonus(bonus)
+        }
     }
 
     enum class HealthLogKind { Cardio, Workout, Sleep }
@@ -302,7 +331,7 @@ class GymNotifier(context: Context) {
 
         // Kinds de evento ficam no grupo "Sistema"; o resto (metas + progresso) em "Lembretes".
         private val EVENT_KINDS = setOf(
-            NotificationKind.Achievement,
+            NotificationKind.Achievement, NotificationKind.StreakBonus,
             NotificationKind.HealthSync, NotificationKind.Backup,
         )
 

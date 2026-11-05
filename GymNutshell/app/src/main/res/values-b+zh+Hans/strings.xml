@@ -459,4 +459,36 @@
     <string name="settings_notifications_group_footer">将同一时间的打卡目标合并为一条提醒。关闭时，每个目标单独提醒。</string>
     <string name="settings_notifications_emoji_title">通知中显示表情</string>
     <string name="settings_notifications_emoji_footer">在通知文字中显示每个目标和每日成就的表情。</string>
+
+    <!-- Bônus de sequência, pontos e Aparência (2026-11-04) -->
+    <string name="streak_bonus_weekly_level4_title">强劲一周</string>
+    <string name="streak_bonus_weekly_level5_title">完美一周</string>
+    <string name="streak_bonus_monthly_level4_title">强劲一月</string>
+    <string name="streak_bonus_monthly_level5_title">完美一月</string>
+    <string name="streak_bonus_weekly_level4_description">周一至周日，每天达到等级 4 或 5。</string>
+    <string name="streak_bonus_weekly_level5_description">周一至周日，每天达到等级 5。</string>
+    <string name="streak_bonus_monthly_level4_description">整月每天达到等级 4 或 5。</string>
+    <string name="streak_bonus_monthly_level5_description">整月每天达到等级 5。</string>
+    <string name="streak_bonus_generic_title">连续奖励</string>
+    <string name="streak_bonus_info_intro">每个保存的日期都会根据成就等级获得积分。整周或整月达到等级 4 或 5 即可获得连续奖励。</string>
+    <string name="streak_bonus_info_section_daily">每日积分</string>
+    <string name="streak_bonus_info_footer">按周一至周日计算为一周。某天无记录将中断连续。如果整个周期均为等级 5，则仅计入更高的一档奖励。</string>
+    <string name="points_plus_format">+%1$d 分</string>
+    <string name="settings_about_streak_bonus">连续奖励</string>
+    <string name="notif_kind_streak_bonus_title">连续奖励</string>
+    <string name="notif_kind_streak_bonus_desc">完成一周或一月的连续记录时提醒你。</string>
+    <string name="notif_event_streak_bonus_body">%1$s! +%2$d 积分。</string>
+    <string name="statistics_section_bonuses">积分与奖励</string>
+    <string name="statistics_points_total">积分</string>
+    <string name="statistics_bonus_times">%1$d×</string>
+    <string name="a11y_stats_bonuses_hint">轻点了解积分与奖励规则。</string>
+    <string name="a11y_stats_bonus_row_format">%1$s，%2$d 次</string>
+    <string name="a11y_record_row_bonus_format">%1$s，%2$s，额外 %3$d 积分</string>
+    <string name="a11y_record_bonus_hint">轻点查看更多信息。</string>
+    <string name="settings_section_visual">显示</string>
+    <string name="settings_appearance_title">外观</string>
+    <string name="settings_appearance_mode_header">模式</string>
+    <string name="settings_appearance_mode_system">设备</string>
+    <string name="settings_appearance_mode_light">浅色</string>
+    <string name="settings_appearance_mode_dark">深色</string>
 </resources>

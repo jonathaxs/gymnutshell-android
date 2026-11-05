@@ -42,7 +42,7 @@ class WidgetSnapshotBuilderTest {
 
         assertEquals(100, snap.progressPercent)
         assertEquals(5, snap.tier)
-        assertEquals(100, snap.tierPoints)
+        assertEquals(5, snap.tierPoints)
         assertEquals(AppTheme.Gym.emoji(DailyAchievement.Level5), snap.tierEmoji)
         assertEquals(AppTheme.Gym.tierNameRes(DailyAchievement.Level5), snap.tierNameRes)
     }
@@ -53,7 +53,7 @@ class WidgetSnapshotBuilderTest {
 
         assertEquals(0, snap.progressPercent)
         assertEquals(1, snap.tier)
-        assertEquals(0, snap.tierPoints)
+        assertEquals(1, snap.tierPoints)
     }
 
     @Test

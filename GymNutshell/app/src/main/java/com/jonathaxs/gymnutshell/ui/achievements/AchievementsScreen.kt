@@ -39,6 +39,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -58,7 +61,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.domain.AppDateFormatters
+import com.jonathaxs.gymnutshell.notifications.NotificationStrings
 import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
+import com.jonathaxs.gymnutshell.ui.settings.StreakBonusInfoSheet
 import com.jonathaxs.gymnutshell.ui.util.Breakpoints
 import java.time.LocalDate
 
@@ -79,6 +84,7 @@ fun AchievementsScreen(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val accent = Color(state.accentArgb)
+    var showBonusInfo by remember { mutableStateOf(false) }
 
     BoxWithConstraints(modifier.fillMaxSize()) {
         val isWide = maxWidth >= Breakpoints.WideThreshold
@@ -141,7 +147,12 @@ fun AchievementsScreen(
                         if (state.history.isEmpty()) {
                             AchievementsEmptyCard(accent)
                         } else {
-                            HistoryCard(state, accent, onEditRecord)
+                            HistoryCard(
+                                state = state,
+                                accent = accent,
+                                onEditRecord = onEditRecord,
+                                onShowBonusInfo = { showBonusInfo = true },
+                            )
                         }
                         Spacer(Modifier.height(24.dp))
                     }
@@ -165,12 +176,21 @@ fun AchievementsScreen(
                         }
                     } else {
                         item(key = "history_card") {
-                            HistoryCard(state, accent, onEditRecord)
+                            HistoryCard(
+                                state = state,
+                                accent = accent,
+                                onEditRecord = onEditRecord,
+                                onShowBonusInfo = { showBonusInfo = true },
+                            )
                         }
                     }
                 }
             }
         }
+    }
+
+    if (showBonusInfo) {
+        StreakBonusInfoSheet(onDismiss = { showBonusInfo = false })
     }
 }
 
@@ -444,12 +464,13 @@ private fun DayCell(
     }
 }
 
-/** Card com as linhas de histórico do dia ou de todos os dias. */
+/** Card com as linhas de histórico do dia ou de todos os dias (mistura conquistas diárias e bônus). */
 @Composable
 private fun HistoryCard(
     state: AchievementsUiState,
     accent: Color,
     onEditRecord: (Long) -> Unit,
+    onShowBonusInfo: () -> Unit,
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -463,12 +484,104 @@ private fun HistoryCard(
         ) {
             state.history.forEachIndexed { index, item ->
                 if (index > 0) GroupRowDivider(startInset = 68.dp)
-                HistoryRow(
-                    item = item,
-                    accent = accent,
-                    onEdit = if (item.canEdit) ({ onEditRecord(item.epochDay) }) else null,
-                )
+                if (item.bonusKind != null) {
+                    HistoryBonusRow(
+                        item = item,
+                        accent = accent,
+                        onClick = onShowBonusInfo,
+                    )
+                } else {
+                    HistoryRow(
+                        item = item,
+                        accent = accent,
+                        onEdit = if (item.canEdit) ({ onEditRecord(item.epochDay) }) else null,
+                    )
+                }
             }
+        }
+    }
+}
+
+/** Linha de um bônus de sequência no histórico — porte de HistoryBonusRow (iOS). */
+@Composable
+private fun HistoryBonusRow(
+    item: HistoryItemUi,
+    accent: Color,
+    onClick: () -> Unit,
+) {
+    val kind = item.bonusKind ?: return
+    val title = stringResource(NotificationStrings.streakBonusTitleRes(kind))
+    val description = stringResource(NotificationStrings.streakBonusDescRes(kind))
+    val pointsText = stringResource(R.string.points_plus_format, item.bonusPoints)
+    val rowDesc = stringResource(R.string.a11y_record_row_bonus_format, title, item.dateLabel, item.bonusPoints)
+    val hint = stringResource(R.string.a11y_record_bonus_hint)
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(role = Role.Button, onClickLabel = hint, onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .semantics(mergeDescendants = true) {
+                contentDescription = rowDesc
+                role = Role.Button
+            },
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .clip(CircleShape)
+                .background(accent.copy(alpha = 0.12f)),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                text = item.emoji,
+                fontSize = 20.sp,
+                modifier = Modifier.clearAndSetSemantics {},
+            )
+        }
+
+        Spacer(Modifier.width(14.dp))
+
+        Column(
+            modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.spacedBy(2.dp),
+            horizontalAlignment = Alignment.Start,
+        ) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.bodyLarge,
+                fontWeight = FontWeight.SemiBold,
+            )
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            Text(
+                text = item.dateLabel,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+
+        Spacer(Modifier.width(10.dp))
+
+        Box(
+            modifier = Modifier
+                .clip(CircleShape)
+                .background(accent.copy(alpha = 0.12f))
+                .padding(horizontal = 10.dp, vertical = 5.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                text = pointsText,
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = accent,
+                modifier = Modifier.clearAndSetSemantics {},
+            )
         }
     }
 }

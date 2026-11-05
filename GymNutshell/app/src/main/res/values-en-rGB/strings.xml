@@ -463,4 +463,36 @@
     <string name="settings_notifications_group_footer">Combines check-in goals set for the same time into one reminder. When off, each goal gets its own.</string>
     <string name="settings_notifications_emoji_title">Emojis in notifications</string>
     <string name="settings_notifications_emoji_footer">Shows each goal\'s emoji and the daily achievement emoji in notification text.</string>
+
+    <!-- Bônus de sequência, pontos e Aparência (2026-11-04) -->
+    <string name="streak_bonus_weekly_level4_title">Strong week</string>
+    <string name="streak_bonus_weekly_level5_title">Perfect week</string>
+    <string name="streak_bonus_monthly_level4_title">Strong month</string>
+    <string name="streak_bonus_monthly_level5_title">Perfect month</string>
+    <string name="streak_bonus_weekly_level4_description">Monday to Sunday, every day at level 4 or 5.</string>
+    <string name="streak_bonus_weekly_level5_description">Monday to Sunday, every day at level 5.</string>
+    <string name="streak_bonus_monthly_level4_description">The whole month, every day at level 4 or 5.</string>
+    <string name="streak_bonus_monthly_level5_description">The whole month, every day at level 5.</string>
+    <string name="streak_bonus_generic_title">Streak bonus</string>
+    <string name="streak_bonus_info_intro">Every saved day earns points for its achievement level. Finishing a whole week or month at level 4 or 5 earns a streak bonus.</string>
+    <string name="streak_bonus_info_section_daily">Points per day</string>
+    <string name="streak_bonus_info_footer">Weeks run Monday to Sunday. A day without a record breaks the streak. If the whole period was level 5, only the bigger bonus counts.</string>
+    <string name="points_plus_format">+%1$d pts</string>
+    <string name="settings_about_streak_bonus">Streak bonus</string>
+    <string name="notif_kind_streak_bonus_title">Streak bonus</string>
+    <string name="notif_kind_streak_bonus_desc">Lets you know when you finish a week or month streak.</string>
+    <string name="notif_event_streak_bonus_body">%1$s! +%2$d points.</string>
+    <string name="statistics_section_bonuses">Points and bonuses</string>
+    <string name="statistics_points_total">Points</string>
+    <string name="statistics_bonus_times">%1$d×</string>
+    <string name="a11y_stats_bonuses_hint">Tap to see how points and bonuses work.</string>
+    <string name="a11y_stats_bonus_row_format">%1$s, %2$d times</string>
+    <string name="a11y_record_row_bonus_format">%1$s, %2$s, plus %3$d points</string>
+    <string name="a11y_record_bonus_hint">Tap for more information.</string>
+    <string name="settings_section_visual">Display</string>
+    <string name="settings_appearance_title">Appearance</string>
+    <string name="settings_appearance_mode_header">Mode</string>
+    <string name="settings_appearance_mode_system">Device</string>
+    <string name="settings_appearance_mode_light">Light</string>
+    <string name="settings_appearance_mode_dark">Dark</string>
 </resources>

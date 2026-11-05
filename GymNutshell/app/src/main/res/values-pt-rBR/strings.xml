@@ -559,4 +559,36 @@
     <string name="settings_notifications_group_footer">Junta num aviso só as metas de check-in marcadas no mesmo horário. Desligado, cada meta tem o seu aviso.</string>
     <string name="settings_notifications_emoji_title">Emojis nas notificações</string>
     <string name="settings_notifications_emoji_footer">Mostra o emoji de cada meta e da conquista do dia no texto das notificações.</string>
+
+    <!-- Bônus de sequência, pontos e Aparência (2026-11-04) -->
+    <string name="streak_bonus_weekly_level4_title">Semana forte</string>
+    <string name="streak_bonus_weekly_level5_title">Semana perfeita</string>
+    <string name="streak_bonus_monthly_level4_title">Mês forte</string>
+    <string name="streak_bonus_monthly_level5_title">Mês perfeito</string>
+    <string name="streak_bonus_weekly_level4_description">De segunda a domingo, todos os dias no nível 4 ou 5.</string>
+    <string name="streak_bonus_weekly_level5_description">De segunda a domingo, todos os dias no nível 5.</string>
+    <string name="streak_bonus_monthly_level4_description">O mês inteiro, todos os dias no nível 4 ou 5.</string>
+    <string name="streak_bonus_monthly_level5_description">O mês inteiro, todos os dias no nível 5.</string>
+    <string name="streak_bonus_generic_title">Bônus de sequência</string>
+    <string name="streak_bonus_info_intro">Cada dia salvo vale pontos pelo nível da conquista. Fechar uma semana ou um mês inteiro no nível 4 ou 5 rende um bônus de sequência.</string>
+    <string name="streak_bonus_info_section_daily">Pontos por dia</string>
+    <string name="streak_bonus_info_footer">A semana vai de segunda a domingo. Um dia sem registro quebra a sequência. Se o período inteiro foi nível 5, vale só o bônus maior.</string>
+    <string name="points_plus_format">+%1$d pts</string>
+    <string name="settings_about_streak_bonus">Bônus de sequência</string>
+    <string name="notif_kind_streak_bonus_title">Bônus de sequência</string>
+    <string name="notif_kind_streak_bonus_desc">Avisa quando você fecha uma semana ou um mês em sequência.</string>
+    <string name="notif_event_streak_bonus_body">%1$s! +%2$d pontos.</string>
+    <string name="statistics_section_bonuses">Pontos e bônus</string>
+    <string name="statistics_points_total">Pontos</string>
+    <string name="statistics_bonus_times">%1$d×</string>
+    <string name="a11y_stats_bonuses_hint">Toque para ver como funcionam os pontos e os bônus.</string>
+    <string name="a11y_stats_bonus_row_format">%1$s, %2$d vezes</string>
+    <string name="a11y_record_row_bonus_format">%1$s, %2$s, mais %3$d pontos</string>
+    <string name="a11y_record_bonus_hint">Toque para mais informações.</string>
+    <string name="settings_section_visual">Visual</string>
+    <string name="settings_appearance_title">Aparência</string>
+    <string name="settings_appearance_mode_header">Modo</string>
+    <string name="settings_appearance_mode_system">Dispositivo</string>
+    <string name="settings_appearance_mode_light">Claro</string>
+    <string name="settings_appearance_mode_dark">Escuro</string>
 </resources>

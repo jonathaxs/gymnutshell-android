@@ -14,6 +14,8 @@ import com.jonathaxs.gymnutshell.core.domain.AppDateFormatters
 import com.jonathaxs.gymnutshell.core.domain.AppTheme
 import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
 import com.jonathaxs.gymnutshell.core.domain.GoalOrder
+import com.jonathaxs.gymnutshell.core.domain.StreakBonusCalculator
+import com.jonathaxs.gymnutshell.core.domain.StreakBonusKind
 import com.jonathaxs.gymnutshell.core.domain.UserGoal
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -35,9 +37,14 @@ data class RecentDayUi(
     val isToday: Boolean,
 )
 
-/** Estado da ProgressView — porte da ProgressOverView 2.0 (sem pontos, sem bônus, sem dados físicos). */
+/** Contagem de vezes que um bônus de sequência foi conquistado. */
+data class BonusCountUi(val kind: StreakBonusKind, val count: Int)
+
+/** Estado da ProgressView — porte da ProgressOverView 2.0 (iOS). */
 data class ProgressUiState(
     val tierCounts: List<TierCountUi> = emptyList(),
+    val totalPoints: Int = 0,
+    val bonusCounts: List<BonusCountUi> = emptyList(),
     val workoutDays: Int = 0,
     val cardioDays: Int = 0,
     val activeGoals: Int = 0,
@@ -82,6 +89,8 @@ class ProgressViewModel(app: Application) : AndroidViewModel(app) {
             // Metas fixas ativas (GoalOrder.DEFAULT menos as removidas) + metas personalizadas (porte do iOS).
             val activeBuiltinCount = GoalOrder.DEFAULT.count { it !in removedKeys }
             val activeGoals = activeBuiltinCount + customGoals.size
+            val bonuses = StreakBonusCalculator.bonuses(records)
+            val totalPoints = StreakBonusCalculator.totalPoints(records)
 
             ProgressUiState(
                 tierCounts = DailyAchievement.entries.map { tier ->
@@ -91,6 +100,10 @@ class ProgressViewModel(app: Application) : AndroidViewModel(app) {
                         days = countByTier[tier] ?: 0,
                         nameRes = theme.tierNameRes(tier, profile.sex),
                     )
+                },
+                totalPoints = totalPoints,
+                bonusCounts = StreakBonusKind.entries.map { kind ->
+                    BonusCountUi(kind = kind, count = bonuses.count { it.kind == kind })
                 },
                 workoutDays = records.count { it.didWorkout },
                 cardioDays = records.count { it.didCardio },

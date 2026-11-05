@@ -63,6 +63,7 @@ fun SettingsListScreen(
     onOpenWear: () -> Unit,
     onOpenRingInfo: () -> Unit,
     onOpenTierInfo: () -> Unit,
+    onOpenBonusInfo: () -> Unit = {},
     /** Página aberta à direita na tela larga (linha marcada); null no celular. */
     selectedRoute: String? = null,
     viewModel: SettingsViewModel = viewModel(),
@@ -228,16 +229,16 @@ fun SettingsListScreen(
                     )
                 }
 
-                // 3. Seção "Aparência": Cores de destaque, Widgets e Controles
+                // 3. Seção "Visual": Aparência, Widgets e Controles
                 GroupSection(
-                    title = stringResource(R.string.settings_appearance),
+                    title = stringResource(R.string.settings_section_visual),
                     titleColor = accent.color,
                 ) {
                     GroupRow(
-                        title = stringResource(R.string.settings_accent_color),
+                        title = stringResource(R.string.settings_appearance_title),
                         leading = {
                             GlassIcon(
-                                painter = painterResource(R.drawable.ic_settings_palette),
+                                painter = painterResource(R.drawable.ic_settings_appearance),
                                 color = Color(0xFFFF2D55),
                             )
                         },
@@ -328,6 +329,19 @@ fun SettingsListScreen(
                         showChevron = true,
                         modifier = highlight(SettingsRoutes.TIER_INFO),
                         onClick = onOpenTierInfo,
+                    )
+                    GroupRowDivider(startInset = dividerInset)
+                    GroupRow(
+                        title = stringResource(R.string.settings_about_streak_bonus),
+                        leading = {
+                            GlassIcon(
+                                painter = painterResource(R.drawable.ic_settings_streak_bonus),
+                                color = Color(0xFF34C759),
+                            )
+                        },
+                        showChevron = true,
+                        modifier = highlight(SettingsRoutes.BONUS_INFO),
+                        onClick = onOpenBonusInfo,
                     )
                 }
 

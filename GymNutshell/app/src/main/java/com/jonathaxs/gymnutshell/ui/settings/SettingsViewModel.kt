@@ -7,6 +7,7 @@ import com.jonathaxs.gymnutshell.core.data.GoalConfigRepository
 import com.jonathaxs.gymnutshell.core.data.ProfileRepository
 import com.jonathaxs.gymnutshell.core.data.SettingsRepository
 import com.jonathaxs.gymnutshell.core.domain.AppTheme
+import com.jonathaxs.gymnutshell.core.domain.AppearanceMode
 import com.jonathaxs.gymnutshell.core.domain.ControlStyle
 import com.jonathaxs.gymnutshell.core.domain.GoalsCalculator
 import com.jonathaxs.gymnutshell.core.domain.MeasurementSystem
@@ -33,6 +34,12 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app) {
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = AccentColor.Default,
+    )
+
+    val appearanceMode: StateFlow<AppearanceMode> = settingsRepo.appearanceMode.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = AppearanceMode.Default,
     )
 
     val profile: StateFlow<Profile> = profileRepo.profile.stateIn(
@@ -67,6 +74,10 @@ class SettingsViewModel(app: Application) : AndroidViewModel(app) {
 
     fun setAccent(color: AccentColor) {
         viewModelScope.launch { settingsRepo.setAccentColor(color) }
+    }
+
+    fun setAppearanceMode(mode: AppearanceMode) {
+        viewModelScope.launch { settingsRepo.setAppearanceMode(mode) }
     }
 
     fun setTheme(theme: AppTheme) {

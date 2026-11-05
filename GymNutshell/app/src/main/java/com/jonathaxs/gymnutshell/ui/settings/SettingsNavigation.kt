@@ -61,6 +61,7 @@ object SettingsRoutes {
     const val WEAR = "settings_wear"
     const val RING_INFO = "settings_ring_info"
     const val TIER_INFO = "settings_tier_info"
+    const val BONUS_INFO = "settings_bonus_info"
 }
 
 /** Grafo aninhado da Settings: lista → sub-telas. */
@@ -94,6 +95,7 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
                         onOpenWear = { open(SettingsRoutes.WEAR) },
                         onOpenRingInfo = { open(SettingsRoutes.RING_INFO) },
                         onOpenTierInfo = { open(SettingsRoutes.TIER_INFO) },
+                        onOpenBonusInfo = { open(SettingsRoutes.BONUS_INFO) },
                         selectedRoute = if (wide) selected else null,
                     )
                 }
@@ -160,6 +162,7 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
         composable(SettingsRoutes.WEAR) { SettingsPage(SettingsRoutes.WEAR, navController) }
         composable(SettingsRoutes.RING_INFO) { SettingsPage(SettingsRoutes.RING_INFO, navController) }
         composable(SettingsRoutes.TIER_INFO) { SettingsPage(SettingsRoutes.TIER_INFO, navController) }
+        composable(SettingsRoutes.BONUS_INFO) { SettingsPage(SettingsRoutes.BONUS_INFO, navController) }
         composable(
             route = "${SettingsRoutes.NOTIF_EDIT}/{target}",
             arguments = listOf(navArgument("target") { type = NavType.StringType }),
@@ -249,6 +252,9 @@ fun SettingsPage(route: String, navController: NavController) {
             onBack = back,
             onOpenTheme = { navController.navigate(SettingsRoutes.THEME) },
         )
+        }
+        SettingsRoutes.BONUS_INFO -> {
+        StreakBonusInfoScreen(onBack = back)
         }
     }
 }

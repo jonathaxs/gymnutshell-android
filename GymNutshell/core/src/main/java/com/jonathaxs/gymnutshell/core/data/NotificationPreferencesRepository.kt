@@ -5,12 +5,16 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
+import com.jonathaxs.gymnutshell.core.domain.EarnedStreakBonus
 import com.jonathaxs.gymnutshell.core.domain.NotificationKind
 import com.jonathaxs.gymnutshell.core.domain.NotificationSound
 import com.jonathaxs.gymnutshell.core.domain.ReminderTime
+import com.jonathaxs.gymnutshell.core.domain.StreakBonusCalculator
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import java.time.LocalDate
 
 /**
  * Persiste as preferências de notificação — porte do NotificationPreferences (iOS, UserDefaults).
@@ -173,12 +177,13 @@ class NotificationPreferencesRepository(private val context: Context) {
 
     /**
      * Aplica os kinds ligados por padrão na primeira autorização — porte de applyDefaultEnabledKinds (iOS).
-     * Liga Progresso, Conquista e Água; deixa o resto desligado.
+     * Liga Progresso, Conquista, Bônus de sequência e Água; deixa o resto desligado.
      */
     suspend fun applyDefaultEnabledKinds() {
         context.appPreferences.edit { prefs ->
             prefs[enabledKey(NotificationKind.Progress)] = true
             prefs[enabledKey(NotificationKind.Achievement)] = true
+            prefs[enabledKey(NotificationKind.StreakBonus)] = true
             prefs[enabledKey(NotificationKind.HealthSync)] = false
             prefs[enabledKey(NotificationKind.Backup)] = false
             prefs[enabledKey(NotificationKind.Water)] = true
@@ -190,6 +195,47 @@ class NotificationPreferencesRepository(private val context: Context) {
                 prefs[enabledKey(kind)] = false
             }
         }
+    }
+
+    // MARK: - Bônus de sequência (semente e detecção de bônus novos)
+
+    /** Apaga a semente de bônus já avisados (usado após restaurar backup). */
+    suspend fun resetStreakBonusSeed() {
+        context.appPreferences.edit { prefs ->
+            prefs.remove(streakBonusNotifiedIdsKey)
+        }
+    }
+
+    /**
+     * Compara os bônus calculados com os ids já avisados — porte de StreakBonusNotifier.notifyNew (iOS).
+     * Na primeira vez, só semeia os ids atuais (e garante o toggle ligado por padrão) sem disparar nada.
+     * Nas próximas, retorna apenas os bônus novos cuja data-âncora caiu nos últimos 7 dias.
+     */
+    suspend fun consumeNewStreakBonuses(
+        records: List<DailyRecord>,
+        today: LocalDate = LocalDate.now(),
+    ): List<EarnedStreakBonus> {
+        val bonuses = StreakBonusCalculator.bonuses(records)
+        val ids = bonuses.map { it.id }.toSet()
+        var fresh: List<EarnedStreakBonus> = emptyList()
+
+        context.appPreferences.edit { prefs ->
+            val stored = prefs[streakBonusNotifiedIdsKey]
+            if (stored == null) {
+                val bonusEnabledKey = enabledKey(NotificationKind.StreakBonus)
+                if (prefs[bonusEnabledKey] == null) {
+                    prefs[bonusEnabledKey] = true
+                }
+                prefs[streakBonusNotifiedIdsKey] = ids
+            } else {
+                val recentLimit = today.minusDays(7)
+                fresh = bonuses.filter { bonus ->
+                    bonus.id !in stored && !bonus.anchorDate.isBefore(recentLimit)
+                }
+                prefs[streakBonusNotifiedIdsKey] = stored union ids
+            }
+        }
+        return fresh
     }
 
     // MARK: - Backup (snapshots por prefixo + restauração)
@@ -253,6 +299,7 @@ class NotificationPreferencesRepository(private val context: Context) {
     private val groupSupplementsKey = booleanPreferencesKey(GROUP_SUPPLEMENTS_KEY)
     private val showEmojiKey = booleanPreferencesKey(SHOW_EMOJI_KEY)
     private val defaultsAppliedKey = booleanPreferencesKey("notifications.defaultsApplied")
+    private val streakBonusNotifiedIdsKey = stringSetPreferencesKey("streakBonus.notifiedIds")
 
     companion object {
         /** Id do lembrete da Creatina (mesmo id usado nas outras preferências dela). */

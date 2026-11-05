@@ -24,7 +24,8 @@ class WearSnapshotSyncTest {
         val stats = WearSnapshotSync.computeStats(records, today = today)
 
         assertEquals(3, stats.totalDays)
-        assertEquals(90 + 60 + 0, stats.totalPoints)
+        // Pontos pelo nível (5 + 4 + 1), sem bônus (não há semana completa).
+        assertEquals(5 + 4 + 1, stats.totalPoints)
         assertEquals(1, stats.level1Days)
         assertEquals(0, stats.level2Days)
         assertEquals(0, stats.level3Days)

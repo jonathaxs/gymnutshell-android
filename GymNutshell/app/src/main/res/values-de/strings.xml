@@ -463,4 +463,36 @@
     <string name="settings_notifications_group_footer">Fasst Check-in-Ziele mit derselben Uhrzeit in einer Erinnerung zusammen. Wenn deaktiviert, erhält jedes Ziel eine eigene Erinnerung.</string>
     <string name="settings_notifications_emoji_title">Emojis in Mitteilungen</string>
     <string name="settings_notifications_emoji_footer">Zeigt das Emoji jedes Ziels und des Tageserfolgs im Text der Mitteilungen.</string>
+
+    <!-- Bônus de sequência, pontos e Aparência (2026-11-04) -->
+    <string name="streak_bonus_weekly_level4_title">Starke Woche</string>
+    <string name="streak_bonus_weekly_level5_title">Perfekte Woche</string>
+    <string name="streak_bonus_monthly_level4_title">Starker Monat</string>
+    <string name="streak_bonus_monthly_level5_title">Perfekter Monat</string>
+    <string name="streak_bonus_weekly_level4_description">Montag bis Sonntag, jeden Tag auf Stufe 4 oder 5.</string>
+    <string name="streak_bonus_weekly_level5_description">Montag bis Sonntag, jeden Tag auf Stufe 5.</string>
+    <string name="streak_bonus_monthly_level4_description">Den ganzen Monat, jeden Tag auf Stufe 4 oder 5.</string>
+    <string name="streak_bonus_monthly_level5_description">Den ganzen Monat, jeden Tag auf Stufe 5.</string>
+    <string name="streak_bonus_generic_title">Serienbonus</string>
+    <string name="streak_bonus_info_intro">Jeder gespeicherte Tag bringt Punkte für seine Erfolgsstufe. Eine ganze Woche oder einen ganzen Monat auf Stufe 4 oder 5 abzuschließen, bringt einen Serienbonus.</string>
+    <string name="streak_bonus_info_section_daily">Punkte pro Tag</string>
+    <string name="streak_bonus_info_footer">Wochen laufen von Montag bis Sonntag. Ein Tag ohne Eintrag unterbricht die Serie. Wenn der gesamte Zeitraum auf Stufe 5 war, zählt nur der höhere Bonus.</string>
+    <string name="points_plus_format">+%1$d Pkt.</string>
+    <string name="settings_about_streak_bonus">Serienbonus</string>
+    <string name="notif_kind_streak_bonus_title">Serienbonus</string>
+    <string name="notif_kind_streak_bonus_desc">Informiert dich, wenn du eine Wochen- oder Monatsserie abschließt.</string>
+    <string name="notif_event_streak_bonus_body">%1$s! +%2$d Punkte.</string>
+    <string name="statistics_section_bonuses">Punkte und Boni</string>
+    <string name="statistics_points_total">Punkte</string>
+    <string name="statistics_bonus_times">%1$d×</string>
+    <string name="a11y_stats_bonuses_hint">Tippen, um zu sehen, wie Punkte und Boni funktionieren.</string>
+    <string name="a11y_stats_bonus_row_format">%1$s, %2$d-mal</string>
+    <string name="a11y_record_row_bonus_format">%1$s, %2$s, plus %3$d Punkte</string>
+    <string name="a11y_record_bonus_hint">Tippen für weitere Informationen.</string>
+    <string name="settings_section_visual">Darstellung</string>
+    <string name="settings_appearance_title">Erscheinungsbild</string>
+    <string name="settings_appearance_mode_header">Modus</string>
+    <string name="settings_appearance_mode_system">Gerät</string>
+    <string name="settings_appearance_mode_light">Hell</string>
+    <string name="settings_appearance_mode_dark">Dunkel</string>
 </resources>

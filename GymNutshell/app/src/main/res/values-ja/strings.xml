@@ -459,4 +459,36 @@
     <string name="settings_notifications_group_footer">同じ時刻のチェックイン目標を1つの通知にまとめます。オフの場合は目標ごとに通知します。</string>
     <string name="settings_notifications_emoji_title">通知に絵文字を表示</string>
     <string name="settings_notifications_emoji_footer">各目標と毎日の成果の絵文字を通知の文に表示します。</string>
+
+    <!-- Bônus de sequência, pontos e Aparência (2026-11-04) -->
+    <string name="streak_bonus_weekly_level4_title">充実した1週間</string>
+    <string name="streak_bonus_weekly_level5_title">完璧な1週間</string>
+    <string name="streak_bonus_monthly_level4_title">充実した1か月</string>
+    <string name="streak_bonus_monthly_level5_title">完璧な1か月</string>
+    <string name="streak_bonus_weekly_level4_description">月曜日から日曜日まで、毎日レベル4または5。</string>
+    <string name="streak_bonus_weekly_level5_description">月曜日から日曜日まで、毎日レベル5。</string>
+    <string name="streak_bonus_monthly_level4_description">1か月間、毎日レベル4または5。</string>
+    <string name="streak_bonus_monthly_level5_description">1か月間、毎日レベル5。</string>
+    <string name="streak_bonus_generic_title">連続ボーナス</string>
+    <string name="streak_bonus_info_intro">記録した日ごとに成果レベルに応じたポイントを獲得できます。1週間または1か月全体をレベル4または5で達成すると、連続ボーナスを獲得できます。</string>
+    <string name="streak_bonus_info_section_daily">1日あたりのポイント</string>
+    <string name="streak_bonus_info_footer">週は月曜日から日曜日までです。記録のない日があると連続が途切れます。期間全体がレベル5だった場合は、より高いボーナスのみが対象になります。</string>
+    <string name="points_plus_format">+%1$d pt</string>
+    <string name="settings_about_streak_bonus">連続ボーナス</string>
+    <string name="notif_kind_streak_bonus_title">連続ボーナス</string>
+    <string name="notif_kind_streak_bonus_desc">週または月の連続を達成したときにお知らせします。</string>
+    <string name="notif_event_streak_bonus_body">%1$s! +%2$dポイント。</string>
+    <string name="statistics_section_bonuses">ポイントとボーナス</string>
+    <string name="statistics_points_total">ポイント</string>
+    <string name="statistics_bonus_times">%1$d×</string>
+    <string name="a11y_stats_bonuses_hint">タップしてポイントとボーナスの仕組みを表示。</string>
+    <string name="a11y_stats_bonus_row_format">%1$s、%2$d回</string>
+    <string name="a11y_record_row_bonus_format">%1$s、%2$s、+%3$dポイント</string>
+    <string name="a11y_record_bonus_hint">タップして詳細を表示。</string>
+    <string name="settings_section_visual">画面表示</string>
+    <string name="settings_appearance_title">外観</string>
+    <string name="settings_appearance_mode_header">モード</string>
+    <string name="settings_appearance_mode_system">デバイス</string>
+    <string name="settings_appearance_mode_light">ライト</string>
+    <string name="settings_appearance_mode_dark">ダーク</string>
 </resources>

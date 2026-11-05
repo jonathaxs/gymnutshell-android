@@ -156,9 +156,13 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
         val last = intakeRepo.lastActiveDay()
         if (last == null) {
             intakeRepo.setLastActiveDay(today)
+            notifier.notifyNewStreakBonuses(recordRepo.allRecords())
             return
         }
-        if (last >= today) return
+        if (last >= today) {
+            notifier.notifyNewStreakBonuses(recordRepo.allRecords())
+            return
+        }
 
         val profile = profileRepo.profile.first()
         val effective = if (profile.weightKg <= 0.0) DEMO_PROFILE else profile
@@ -193,6 +197,7 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
         }
         // 4) marca hoje como dia ativo
         intakeRepo.setLastActiveDay(today)
+        notifier.notifyNewStreakBonuses(recordRepo.allRecords())
     }
 
     val uiState: StateFlow<TodayUiState> =

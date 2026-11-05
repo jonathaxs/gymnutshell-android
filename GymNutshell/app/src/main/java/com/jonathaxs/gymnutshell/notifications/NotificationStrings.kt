@@ -5,6 +5,7 @@ import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.domain.NotificationKind
 import com.jonathaxs.gymnutshell.core.domain.NotificationSound
 import com.jonathaxs.gymnutshell.core.domain.ReminderTime
+import com.jonathaxs.gymnutshell.core.domain.StreakBonusKind
 
 /**
  * Mapeia cada NotificationKind/Sound pros recursos de string (strings.xml).
@@ -17,6 +18,7 @@ object NotificationStrings {
     fun titleRes(kind: NotificationKind): Int = when (kind) {
         NotificationKind.Progress -> R.string.notif_kind_progress_title
         NotificationKind.Achievement -> R.string.notif_kind_achievement_title
+        NotificationKind.StreakBonus -> R.string.notif_kind_streak_bonus_title
         NotificationKind.HealthSync -> R.string.notif_kind_health_title
         NotificationKind.Backup -> R.string.notif_kind_backup_title
         NotificationKind.Sleep -> R.string.notif_kind_sleep_title
@@ -34,6 +36,7 @@ object NotificationStrings {
     fun descRes(kind: NotificationKind): Int = when (kind) {
         NotificationKind.Progress -> R.string.notif_kind_progress_desc
         NotificationKind.Achievement -> R.string.notif_kind_achievement_desc
+        NotificationKind.StreakBonus -> R.string.notif_kind_streak_bonus_desc
         NotificationKind.HealthSync -> R.string.notif_kind_health_desc
         NotificationKind.Backup -> R.string.notif_kind_backup_desc
         NotificationKind.Sleep -> R.string.notif_kind_sleep_desc
@@ -93,5 +96,21 @@ object NotificationStrings {
         ReminderTime.Preset.Afternoon -> R.string.notifications_supplement_preset_afternoon
         ReminderTime.Preset.Night -> R.string.notifications_supplement_preset_night
         ReminderTime.Preset.Bedtime -> R.string.notifications_supplement_preset_bedtime
+    }
+
+    @StringRes
+    fun streakBonusTitleRes(kind: StreakBonusKind): Int = when (kind) {
+        StreakBonusKind.WeeklyLevel4 -> R.string.streak_bonus_weekly_level4_title
+        StreakBonusKind.WeeklyLevel5 -> R.string.streak_bonus_weekly_level5_title
+        StreakBonusKind.MonthlyLevel4 -> R.string.streak_bonus_monthly_level4_title
+        StreakBonusKind.MonthlyLevel5 -> R.string.streak_bonus_monthly_level5_title
+    }
+
+    @StringRes
+    fun streakBonusDescRes(kind: StreakBonusKind): Int = when (kind) {
+        StreakBonusKind.WeeklyLevel4 -> R.string.streak_bonus_weekly_level4_description
+        StreakBonusKind.WeeklyLevel5 -> R.string.streak_bonus_weekly_level5_description
+        StreakBonusKind.MonthlyLevel4 -> R.string.streak_bonus_monthly_level4_description
+        StreakBonusKind.MonthlyLevel5 -> R.string.streak_bonus_monthly_level5_description
     }
 }

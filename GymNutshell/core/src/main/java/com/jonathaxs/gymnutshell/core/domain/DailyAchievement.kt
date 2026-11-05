@@ -40,15 +40,8 @@ enum class DailyAchievement {
     val next: DailyAchievement?
         get() = if (ordinal + 1 < entries.size) entries[ordinal + 1] else null
 
-    /** Pontos que o tier vale — valores idênticos ao iOS (0/25/50/75/100). */
-    val points: Int
-        get() = when (this) {
-            Level1 -> 0
-            Level2 -> 25
-            Level3 -> 50
-            Level4 -> 75
-            Level5 -> 100
-        }
+    /** Pontos do dia: cada nível vale seu próprio número (1 a 5). */
+    val points: Int get() = number
 
     /**
      * Emoji do tier no tema padrão Gato (cat) — espelha o DailyAchievement.swift do iOS.

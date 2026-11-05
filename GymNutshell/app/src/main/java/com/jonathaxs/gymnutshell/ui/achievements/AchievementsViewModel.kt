@@ -9,6 +9,10 @@ import com.jonathaxs.gymnutshell.core.data.ProfileRepository
 import com.jonathaxs.gymnutshell.core.data.SettingsRepository
 import com.jonathaxs.gymnutshell.core.domain.AppDateFormatters
 import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
+import com.jonathaxs.gymnutshell.core.domain.EarnedStreakBonus
+import com.jonathaxs.gymnutshell.core.domain.StreakBonusCalculator
+import com.jonathaxs.gymnutshell.core.domain.StreakBonusKind
+import com.jonathaxs.gymnutshell.notifications.NotificationStrings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -17,10 +21,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.YearMonth
 import java.time.format.TextStyle
-import java.time.temporal.WeekFields
 import java.util.Locale
 
 /** Uma célula do calendário. */
@@ -35,15 +39,18 @@ data class CalendarDayUi(
     val isSelected: Boolean,
 )
 
-/** Uma linha do histórico: mascote, data, nível e percentual. */
+/** Uma linha do histórico: conquista diária ou bônus de sequência (quando [bonusKind] != null). */
 data class HistoryItemUi(
     val epochDay: Long,
     val dateLabel: String,
     val emoji: String,
     @param:StringRes val tierNameRes: Int,
     val percent: Int,
-    /** Editável dentro da janela de 30 dias, igual ao editWindow do iOS. */
+    /** Editável dentro da janela de 30 dias, igual ao editWindow do iOS. Bônus nunca são editáveis. */
     val canEdit: Boolean = false,
+    val bonusKind: StreakBonusKind? = null,
+    val bonusId: String? = null,
+    val bonusPoints: Int = 0,
 )
 
 /** Modo de visualização: calendário (com o dia selecionado) ou lista completa. Espelha o FilterMode (iOS). */
@@ -106,17 +113,21 @@ class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
         val (theme, profile, accent) = extra
         val todayEpoch = LocalDate.now().toEpochDay()
         val locale = Locale.getDefault()
-        val firstDow = WeekFields.of(locale).firstDayOfWeek
+        // A semana começa sempre na segunda-feira pra bater com a regra do bônus semanal (segunda a domingo).
+        val firstDow = DayOfWeek.MONDAY
+        val bonuses = StreakBonusCalculator.bonuses(records)
 
-        // Mapeamento de emojis pelo tema ativo, espelhando o iOS (não usa o emoji antigo salvo).
+        // Mapeamento de emojis pelo tema ativo; o bônus sobrescreve o dia-âncora (mensal vence semanal).
         val emojiByDay = records.associate { record ->
-            val tier = if (record.achievementEmoji.isNotEmpty()) DailyAchievement.from(record.achievementEmoji)
-            else DailyAchievement.fromPercent(record.percent)
+            val tier = StreakBonusCalculator.levelOf(record)
             record.date to theme.emoji(tier, profile.sex)
+        }.toMutableMap()
+        for (bonus in bonuses.reversed().sortedBy { it.kind.isMonthly }) {
+            emojiByDay[bonus.anchorDate.toEpochDay()] = bonus.kind.emoji
         }
         val percentByDay = records.associate { it.date to it.percent }
 
-        // Grade: começa no primeiro dia da semana que contém o dia 1, vai até o fim do mês.
+        // Grade: começa na segunda-feira da semana que contém o dia 1, vai até o fim do mês.
         val firstOfMonth = ym.atDay(1)
         val shift = ((firstOfMonth.dayOfWeek.value - firstDow.value) + 7) % 7
         val gridStart = firstOfMonth.minusDays(shift.toLong())
@@ -147,14 +158,37 @@ class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
             .getDisplayName(TextStyle.FULL, locale)
             .replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale) else it.toString() }
 
-        // No modo Calendário o histórico mostra só o dia selecionado; no modo Lista, todos os registros.
+        // No modo Calendário o histórico mostra só o dia selecionado; no modo Lista, todos os registros e bônus.
         val historyRecords = records
             .let { all -> if (mode == AchievementsFilterMode.Calendar) all.filter { it.date == selected } else all }
             .sortedByDescending { it.date }
-        val history = historyRecords.map { record ->
-            val tier = if (record.achievementEmoji.isNotEmpty()) DailyAchievement.from(record.achievementEmoji)
-            else DailyAchievement.fromPercent(record.percent)
-            HistoryItemUi(
+        val visibleBonuses = if (mode == AchievementsFilterMode.Calendar) {
+            bonuses.filter { it.anchorDate.toEpochDay() == selected }
+        } else {
+            bonuses
+        }
+
+        fun bonusToUi(bonus: EarnedStreakBonus) = HistoryItemUi(
+            epochDay = bonus.anchorDate.toEpochDay(),
+            dateLabel = AppDateFormatters.mediumDate(bonus.anchorDate),
+            emoji = bonus.kind.emoji,
+            tierNameRes = NotificationStrings.streakBonusTitleRes(bonus.kind),
+            percent = 0,
+            canEdit = false,
+            bonusKind = bonus.kind,
+            bonusId = bonus.id,
+            bonusPoints = bonus.points,
+        )
+
+        // Intercala dias e bônus do mais recente pro mais antigo; o bônus entra logo acima do dia que fechou o período.
+        val history = mutableListOf<HistoryItemUi>()
+        val pendingBonuses = visibleBonuses.toMutableList()
+        for (record in historyRecords) {
+            while (pendingBonuses.isNotEmpty() && pendingBonuses.first().anchorDate.toEpochDay() >= record.date) {
+                history += bonusToUi(pendingBonuses.removeAt(0))
+            }
+            val tier = StreakBonusCalculator.levelOf(record)
+            history += HistoryItemUi(
                 epochDay = record.date,
                 dateLabel = AppDateFormatters.mediumDate(LocalDate.ofEpochDay(record.date)),
                 emoji = theme.emoji(tier, profile.sex),
@@ -162,6 +196,9 @@ class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
                 percent = record.percent,
                 canEdit = (todayEpoch - record.date) in 0..EDIT_WINDOW_DAYS,
             )
+        }
+        for (bonus in pendingBonuses) {
+            history += bonusToUi(bonus)
         }
 
         AchievementsUiState(

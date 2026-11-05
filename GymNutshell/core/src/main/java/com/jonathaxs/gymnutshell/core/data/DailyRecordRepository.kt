@@ -18,6 +18,7 @@ class DailyRecordRepository(private val context: Context) {
     private object Keys {
         val fiveLevelsMigration = booleanPreferencesKey("migration.achievement.fiveLevels")
         val themeEmojiSwapMigration = booleanPreferencesKey("migration.achievement.themeEmojiSwap.2026-11")
+        val pointsLevelNumberMigration = booleanPreferencesKey("migration.achievement.pointsLevelNumber.2026-11")
     }
 
     /** Histórico observável (a UI reage a mudanças). */
@@ -55,6 +56,18 @@ class DailyRecordRepository(private val context: Context) {
         recordDao.replaceAll(recordDao.getAll().map { it.normalizeAchievement() })
         context.appPreferences.edit { prefs ->
             prefs[Keys.themeEmojiSwapMigration] = true
+        }
+    }
+
+    /**
+     * Roda uma vez: atualiza o campo points dos registros salvos pros novos valores (1..5 pelo nível).
+     */
+    suspend fun migratePointsToLevelNumberIfNeeded() {
+        val alreadyMigrated = context.appPreferences.data.first()[Keys.pointsLevelNumberMigration] ?: false
+        if (alreadyMigrated) return
+        recordDao.replaceAll(recordDao.getAll().map { it.normalizeAchievement() })
+        context.appPreferences.edit { prefs ->
+            prefs[Keys.pointsLevelNumberMigration] = true
         }
     }
 }

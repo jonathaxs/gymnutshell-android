@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -50,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
+import com.jonathaxs.gymnutshell.core.domain.AppearanceMode
 import com.jonathaxs.gymnutshell.core.theme.AccentColor
 import com.jonathaxs.gymnutshell.ui.components.GroupCard
 import com.jonathaxs.gymnutshell.ui.components.GroupInset
@@ -57,9 +59,8 @@ import com.jonathaxs.gymnutshell.ui.theme.color
 import com.jonathaxs.gymnutshell.ui.welcome.RoundStepButton
 
 /**
- * Tela de escolha de cor de destaque — porte de ColorSettingsView (iOS):
- * grade com as 8 cores num card agrupado e, embaixo, a prévia ao vivo (% na cor, 2 botões de categoria e barra
- * de progresso com − e +).
+ * Tela de Aparência — porte de ColorSettingsView (iOS):
+ * card "Modo" (Dispositivo, Claro, Escuro), grade com as 8 cores de destaque e, embaixo, a prévia ao vivo.
  */
 @Composable
 fun ColorSettingsScreen(
@@ -67,12 +68,13 @@ fun ColorSettingsScreen(
     viewModel: SettingsViewModel = viewModel(),
 ) {
     val selected by viewModel.accentColor.collectAsStateWithLifecycle()
+    val appearanceMode by viewModel.appearanceMode.collectAsStateWithLifecycle()
     val animatedColor by animateColorAsState(selected.color, tween(250), label = "color_preview")
 
     Scaffold(
         topBar = {
             SettingsTopBar(
-                title = stringResource(R.string.settings_accent_color),
+                title = stringResource(R.string.settings_appearance_title),
                 onBack = onBack,
             )
         },
@@ -91,7 +93,29 @@ fun ColorSettingsScreen(
                     .padding(vertical = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp),
             ) {
-                // 1. Grade de cores de destaque
+                // 1. Modo (Dispositivo / Claro / Escuro)
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.settings_appearance_mode_header),
+                        style = MaterialTheme.typography.titleSmall,
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(start = GroupInset + 20.dp, end = GroupInset),
+                    )
+
+                    GroupCard {
+                        AppearanceModePicker(
+                            selected = appearanceMode,
+                            accent = animatedColor,
+                            onSelect = viewModel::setAppearanceMode,
+                        )
+                    }
+                }
+
+                // 2. Grade de cores de destaque
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -345,4 +369,76 @@ private fun colorNameRes(accent: AccentColor): Int = when (accent) {
     AccentColor.Orange -> R.string.color_orange
     AccentColor.Cyan -> R.string.color_cyan
     AccentColor.Pink -> R.string.color_pink
+}
+
+/** 3 opções lado a lado (Dispositivo, Claro, Escuro) — porte de appearanceModePicker (iOS). */
+@Composable
+private fun AppearanceModePicker(
+    selected: AppearanceMode,
+    accent: Color,
+    onSelect: (AppearanceMode) -> Unit,
+) {
+    val shape = RoundedCornerShape(14.dp)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(12.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+    ) {
+        AppearanceMode.entries.forEach { mode ->
+            val isSelected = mode == selected
+            val label = stringResource(appearanceModeTitleRes(mode))
+            val stateDesc = stringResource(if (isSelected) R.string.a11y_selected else R.string.a11y_not_selected)
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .clip(shape)
+                    .background(
+                        if (isSelected) accent.copy(alpha = 0.12f)
+                        else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.05f),
+                    )
+                    .then(
+                        if (isSelected) Modifier.border(2.dp, accent, shape)
+                        else Modifier,
+                    )
+                    .clickable { onSelect(mode) }
+                    .padding(vertical = 14.dp, horizontal = 8.dp)
+                    .semantics {
+                        contentDescription = label
+                        stateDescription = stateDesc
+                    },
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Icon(
+                    painter = painterResource(appearanceModeIconRes(mode)),
+                    contentDescription = null,
+                    tint = if (isSelected) accent else MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.size(22.dp),
+                )
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.SemiBold),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    modifier = Modifier.clearAndSetSemantics {},
+                )
+            }
+        }
+    }
+}
+
+@StringRes
+private fun appearanceModeTitleRes(mode: AppearanceMode): Int = when (mode) {
+    AppearanceMode.SYSTEM -> R.string.settings_appearance_mode_system
+    AppearanceMode.LIGHT -> R.string.settings_appearance_mode_light
+    AppearanceMode.DARK -> R.string.settings_appearance_mode_dark
+}
+
+private fun appearanceModeIconRes(mode: AppearanceMode): Int = when (mode) {
+    AppearanceMode.SYSTEM -> R.drawable.ic_mode_system
+    AppearanceMode.LIGHT -> R.drawable.ic_mode_light
+    AppearanceMode.DARK -> R.drawable.ic_mode_dark
 }

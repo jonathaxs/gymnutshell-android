@@ -463,4 +463,36 @@
     <string name="settings_notifications_group_footer">Aynı saatteki check-in hedeflerini tek hatırlatmada birleştirir. Kapalıyken her hedefin kendi hatırlatması olur.</string>
     <string name="settings_notifications_emoji_title">Bildirimlerde emoji</string>
     <string name="settings_notifications_emoji_footer">Her hedefin ve günlük başarının emojisini bildirim metninde gösterir.</string>
+
+    <!-- Bônus de sequência, pontos e Aparência (2026-11-04) -->
+    <string name="streak_bonus_weekly_level4_title">Güçlü hafta</string>
+    <string name="streak_bonus_weekly_level5_title">Mükemmel hafta</string>
+    <string name="streak_bonus_monthly_level4_title">Güçlü ay</string>
+    <string name="streak_bonus_monthly_level5_title">Mükemmel ay</string>
+    <string name="streak_bonus_weekly_level4_description">Pazartesiden pazara, her gün seviye 4 veya 5.</string>
+    <string name="streak_bonus_weekly_level5_description">Pazartesiden pazara, her gün seviye 5.</string>
+    <string name="streak_bonus_monthly_level4_description">Tüm ay boyunca, her gün seviye 4 veya 5.</string>
+    <string name="streak_bonus_monthly_level5_description">Tüm ay boyunca, her gün seviye 5.</string>
+    <string name="streak_bonus_generic_title">Seri bonusu</string>
+    <string name="streak_bonus_info_intro">Kaydedilen her gün, başarı seviyesine göre puan kazandırır. Bir haftayı veya ayı tamamen seviye 4 veya 5\'te tamamlamak seri bonusu kazandırır.</string>
+    <string name="streak_bonus_info_section_daily">Günlük puan</string>
+    <string name="streak_bonus_info_footer">Haftalar pazartesiden pazara sürer. Kayıt olmayan bir gün seriyi bozar. Tüm dönem seviye 5 ise yalnızca daha büyük olan bonus sayılır.</string>
+    <string name="points_plus_format">+%1$d pts</string>
+    <string name="settings_about_streak_bonus">Seri bonusu</string>
+    <string name="notif_kind_streak_bonus_title">Seri bonusu</string>
+    <string name="notif_kind_streak_bonus_desc">Haftalık veya aylık bir seriyi tamamladığında sana haber verir.</string>
+    <string name="notif_event_streak_bonus_body">%1$s! +%2$d puan.</string>
+    <string name="statistics_section_bonuses">Puanlar ve bonuslar</string>
+    <string name="statistics_points_total">Puan</string>
+    <string name="statistics_bonus_times">%1$d×</string>
+    <string name="a11y_stats_bonuses_hint">Puan ve bonusların nasıl çalıştığını görmek için dokun.</string>
+    <string name="a11y_stats_bonus_row_format">%1$s, %2$d kez</string>
+    <string name="a11y_record_row_bonus_format">%1$s, %2$s, artı %3$d puan</string>
+    <string name="a11y_record_bonus_hint">Daha fazla bilgi için dokun.</string>
+    <string name="settings_section_visual">Ekran</string>
+    <string name="settings_appearance_title">Görünüm</string>
+    <string name="settings_appearance_mode_header">Mod</string>
+    <string name="settings_appearance_mode_system">Cihaz</string>
+    <string name="settings_appearance_mode_light">Açık</string>
+    <string name="settings_appearance_mode_dark">Koyu</string>
 </resources>

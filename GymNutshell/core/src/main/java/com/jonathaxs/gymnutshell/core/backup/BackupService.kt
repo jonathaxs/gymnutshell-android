@@ -13,6 +13,7 @@ import com.jonathaxs.gymnutshell.core.data.ProfileRepository
 import com.jonathaxs.gymnutshell.core.data.SettingsRepository
 import com.jonathaxs.gymnutshell.core.data.normalizeAchievement
 import com.jonathaxs.gymnutshell.core.domain.AppTheme
+import com.jonathaxs.gymnutshell.core.domain.AppearanceMode
 import com.jonathaxs.gymnutshell.core.domain.ControlStyle
 import com.jonathaxs.gymnutshell.core.domain.GoalsProvider
 import com.jonathaxs.gymnutshell.core.domain.MeasurementSystem
@@ -54,6 +55,7 @@ class BackupService(context: Context) {
         val measurement = settingsRepo.measurementSystem.first()
         val theme = settingsRepo.theme.first()
         val accent = settingsRepo.accentColor.first()
+        val appearanceMode = settingsRepo.appearanceMode.first()
         val controlStyle = settingsRepo.controlStyle.first()
         val goals = GoalsProvider.goals(profile)
 
@@ -78,6 +80,7 @@ class BackupService(context: Context) {
             dailyRecords = recordRepo.allRecords().map { it.toSnapshot() },
             appearance = AppearanceSnapshot(theme = theme.rawValue, accentColor = accent.name),
             preferences = PreferencesSnapshot(
+                appearanceMode = appearanceMode.rawValue,
                 autoWorkoutCheckin = healthPrefs.autoWorkoutCheckin(),
                 controlStyle = controlStyle.rawValue,
                 notificationEnabled = notifPrefs.enabledSnapshot().ifEmpty { null },
@@ -124,6 +127,9 @@ class BackupService(context: Context) {
         recordRepo.replaceAll(payload.dailyRecords.map { it.toEntity().normalizeAchievement() })
 
         payload.preferences?.let { prefs ->
+            prefs.appearanceMode?.let { raw ->
+                AppearanceMode.fromRawOrNull(raw)?.let { settingsRepo.setAppearanceMode(it) }
+            }
             prefs.autoWorkoutCheckin?.let { healthPrefs.setAutoWorkoutCheckin(it) }
             prefs.controlStyle?.let { raw ->
                 ControlStyle.fromRawOrNull(raw)?.let { settingsRepo.setControlStyle(it) }
@@ -137,6 +143,8 @@ class BackupService(context: Context) {
                 notificationEmoji = prefs.notificationEmoji,
             )
         }
+        // Zera a semente pra que os bônus restaurados sejam semeados sem disparar avisos.
+        notifPrefs.resetStreakBonusSeed()
     }
 
     /** Nome de arquivo sugerido — porte de suggestedFilename (iOS). */

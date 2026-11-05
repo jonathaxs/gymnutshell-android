@@ -40,7 +40,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.domain.AppTheme
 import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
+import com.jonathaxs.gymnutshell.core.domain.StreakBonusKind
 import com.jonathaxs.gymnutshell.core.widget.SegmentedRing
+import com.jonathaxs.gymnutshell.notifications.NotificationStrings
 import com.jonathaxs.gymnutshell.ui.today.drawSegmentedRing
 import com.jonathaxs.gymnutshell.ui.components.GroupInset
 import com.jonathaxs.gymnutshell.ui.components.GroupRow
@@ -147,6 +149,81 @@ fun TierInfoContent(
             showChevron = true,
             onClick = onOpenTheme,
         )
+    }
+}
+
+/** Bônus de sequência: como funcionam os pontos do dia e os bônus de semana/mês — porte de StreakBonusInfoView (iOS). */
+@Composable
+fun StreakBonusInfoScreen(onBack: () -> Unit) {
+    InfoPage(title = stringResource(R.string.settings_about_streak_bonus), onBack = onBack) {
+        StreakBonusInfoContent()
+    }
+}
+
+/** Conteúdo explicativo de pontos e bônus de sequência, reutilizado pela página (Settings) e pelo sheet. */
+@Composable
+fun StreakBonusInfoContent(viewModel: SettingsViewModel = viewModel()) {
+    val theme by viewModel.theme.collectAsStateWithLifecycle()
+    val sex = viewModel.profile.collectAsStateWithLifecycle().value.sex
+    val accent = viewModel.accentColor.collectAsStateWithLifecycle().value.color
+
+    IntroText(stringResource(R.string.streak_bonus_info_intro))
+
+    // 1. Pontos por dia (níveis 1 a 5 do tema atual)
+    GroupSection(title = stringResource(R.string.streak_bonus_info_section_daily)) {
+        DailyAchievement.entries.forEachIndexed { index, tier ->
+            if (index > 0) GroupRowDivider()
+            GroupRow(
+                title = stringResource(theme.tierNameRes(tier, sex)),
+                leading = { Text(theme.emoji(tier, sex), style = MaterialTheme.typography.headlineSmall) },
+                trailing = {
+                    Text(
+                        text = stringResource(R.string.points_plus_format, tier.points),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = accent,
+                    )
+                },
+            )
+        }
+    }
+
+    // 2. Bônus de sequência (semana/mês nos níveis 4 e 5)
+    GroupSection(
+        title = stringResource(R.string.streak_bonus_generic_title),
+        footer = stringResource(R.string.streak_bonus_info_footer),
+    ) {
+        StreakBonusKind.entries.forEachIndexed { index, kind ->
+            if (index > 0) GroupRowDivider()
+            GroupRow(
+                title = stringResource(NotificationStrings.streakBonusTitleRes(kind)),
+                subtitle = stringResource(NotificationStrings.streakBonusDescRes(kind)),
+                leading = { Text(kind.emoji, style = MaterialTheme.typography.headlineSmall) },
+                trailing = {
+                    Text(
+                        text = stringResource(R.string.points_plus_format, kind.points),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.SemiBold,
+                        color = accent,
+                    )
+                },
+            )
+        }
+    }
+}
+
+/** Sheet com a info de pontos e bônus de sequência (aberto por Conquistas e Progresso). */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun StreakBonusInfoSheet(onDismiss: () -> Unit) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    ModalBottomSheet(onDismissRequest = onDismiss, sheetState = sheetState) {
+        InfoSheetTitle(stringResource(R.string.settings_about_streak_bonus))
+        Column(
+            Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(bottom = 24.dp),
+        ) {
+            StreakBonusInfoContent()
+        }
     }
 }
 

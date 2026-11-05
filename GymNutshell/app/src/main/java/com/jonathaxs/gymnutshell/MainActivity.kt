@@ -9,7 +9,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -22,6 +22,7 @@ import com.jonathaxs.gymnutshell.core.data.DailyRecordRepository
 import com.jonathaxs.gymnutshell.core.data.NotificationPreferencesRepository
 import com.jonathaxs.gymnutshell.core.data.ProfileRepository
 import com.jonathaxs.gymnutshell.core.data.SettingsRepository
+import com.jonathaxs.gymnutshell.core.domain.AppearanceMode
 import com.jonathaxs.gymnutshell.notifications.GymNotifier
 import com.jonathaxs.gymnutshell.notifications.NotificationScheduler
 import com.jonathaxs.gymnutshell.ui.RootScreen
@@ -50,16 +51,24 @@ class MainActivity : ComponentActivity() {
         runBlocking {
             ProfileRepository(applicationContext).migrateLegacyProfile()
             SettingsRepository(applicationContext).migrateLegacyUkSystem()
-            DailyRecordRepository(applicationContext).migrateToFiveLevelsIfNeeded()
-            DailyRecordRepository(applicationContext).migrateThemeEmojiSwapIfNeeded()
+            val recordRepo = DailyRecordRepository(applicationContext)
+            recordRepo.migrateToFiveLevelsIfNeeded()
+            recordRepo.migrateThemeEmojiSwapIfNeeded()
+            recordRepo.migratePointsToLevelNumberIfNeeded()
         }
         enableEdgeToEdge()
         maybeRequestNotificationsPermission()
         pendingRoute = intent?.getStringExtra(GymNotifier.EXTRA_ROUTE)
         setContent {
-            val accentFlow = remember { SettingsRepository(applicationContext).accentColor }
-            val accent by accentFlow.collectAsState(initial = null)
-            GymNutshellTheme(accent = accent?.color) {
+            val settingsRepo = remember { SettingsRepository(applicationContext) }
+            val accent by settingsRepo.accentColor.collectAsState(initial = null)
+            val appearanceMode by settingsRepo.appearanceMode.collectAsState(initial = AppearanceMode.SYSTEM)
+            val darkTheme = when (appearanceMode) {
+                AppearanceMode.SYSTEM -> isSystemInDarkTheme()
+                AppearanceMode.LIGHT -> false
+                AppearanceMode.DARK -> true
+            }
+            GymNutshellTheme(darkTheme = darkTheme, accent = accent?.color) {
                 RootScreen(
                     pendingRoute = pendingRoute,
                     onRouteConsumed = { pendingRoute = null },
@@ -81,6 +90,9 @@ class MainActivity : ComponentActivity() {
         super.onStop()
         GymWidgets.update(applicationContext)
         PhoneWearSync.push(applicationContext)
+        lifecycleScope.launch {
+            GymNotifier(applicationContext).notifyNewStreakBonuses()
+        }
     }
 
     /**

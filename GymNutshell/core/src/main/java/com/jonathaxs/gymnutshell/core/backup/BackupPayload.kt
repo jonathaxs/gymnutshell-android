@@ -105,6 +105,7 @@ data class PreferencesSnapshot(
     val widgetBackground: String? = null,
     val widgetBackgroundMode: String? = null,
     val orientationLock: String? = null,
+    val appearanceMode: String? = null,
     val autoWorkoutCheckin: Boolean? = null,
     val controlStyle: String? = null,
     val notificationEnabled: Map<String, Boolean>? = null,

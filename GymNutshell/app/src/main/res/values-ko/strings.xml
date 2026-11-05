@@ -459,4 +459,36 @@
     <string name="settings_notifications_group_footer">같은 시간의 체크인 목표를 알림 하나로 묶어요. 끄면 목표마다 따로 알려요.</string>
     <string name="settings_notifications_emoji_title">알림에 이모지 표시</string>
     <string name="settings_notifications_emoji_footer">각 목표와 오늘의 업적 이모지를 알림 문구에 표시해요.</string>
+
+    <!-- Bônus de sequência, pontos e Aparência (2026-11-04) -->
+    <string name="streak_bonus_weekly_level4_title">강력한 한 주</string>
+    <string name="streak_bonus_weekly_level5_title">완벽한 한 주</string>
+    <string name="streak_bonus_monthly_level4_title">강력한 한 달</string>
+    <string name="streak_bonus_monthly_level5_title">완벽한 한 달</string>
+    <string name="streak_bonus_weekly_level4_description">월요일부터 일요일까지, 매일 레벨 4 또는 5.</string>
+    <string name="streak_bonus_weekly_level5_description">월요일부터 일요일까지, 매일 레벨 5.</string>
+    <string name="streak_bonus_monthly_level4_description">한 달 내내, 매일 레벨 4 또는 5.</string>
+    <string name="streak_bonus_monthly_level5_description">한 달 내내, 매일 레벨 5.</string>
+    <string name="streak_bonus_generic_title">연속 달성 보너스</string>
+    <string name="streak_bonus_info_intro">기록된 날마다 업적 레벨에 따라 포인트를 얻어요. 한 주나 한 달 전체를 레벨 4 또는 5로 마치면 연속 달성 보너스를 받아요.</string>
+    <string name="streak_bonus_info_section_daily">하루 포인트</string>
+    <string name="streak_bonus_info_footer">한 주는 월요일부터 일요일까지예요. 기록이 없는 날이 있으면 연속 기록이 끊겨요. 전체 기간이 레벨 5였다면 더 큰 보너스만 적용돼요.</string>
+    <string name="points_plus_format">+%1$d pts</string>
+    <string name="settings_about_streak_bonus">연속 달성 보너스</string>
+    <string name="notif_kind_streak_bonus_title">연속 달성 보너스</string>
+    <string name="notif_kind_streak_bonus_desc">주간 또는 월간 연속 기록을 달성했을 때 알려줘요.</string>
+    <string name="notif_event_streak_bonus_body">%1$s! +%2$d 포인트.</string>
+    <string name="statistics_section_bonuses">포인트 및 보너스</string>
+    <string name="statistics_points_total">포인트</string>
+    <string name="statistics_bonus_times">%1$d×</string>
+    <string name="a11y_stats_bonuses_hint">포인트와 보너스 설명을 보려면 탭하세요.</string>
+    <string name="a11y_stats_bonus_row_format">%1$s, %2$d회</string>
+    <string name="a11y_record_row_bonus_format">%1$s, %2$s, %3$d 포인트 추가</string>
+    <string name="a11y_record_bonus_hint">자세한 정보를 보려면 탭하세요.</string>
+    <string name="settings_section_visual">디스플레이</string>
+    <string name="settings_appearance_title">화면 스타일</string>
+    <string name="settings_appearance_mode_header">모드</string>
+    <string name="settings_appearance_mode_system">기기</string>
+    <string name="settings_appearance_mode_light">라이트</string>
+    <string name="settings_appearance_mode_dark">다크</string>
 </resources>

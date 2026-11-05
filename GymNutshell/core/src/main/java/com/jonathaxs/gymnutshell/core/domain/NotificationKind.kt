@@ -10,6 +10,7 @@ enum class NotificationKind(val rawValue: String) {
     // Sistema
     Progress("progress"),
     Achievement("achievement"),
+    StreakBonus("streakBonus"),
     HealthSync("appleHealth"),
     Backup("backup"),
 
@@ -32,7 +33,7 @@ enum class NotificationKind(val rawValue: String) {
         get() = when (this) {
             Progress, Sleep, Water, Protein, Carbs, GoodFat, Fiber,
             Workout, Cardio, Creatine -> true
-            Achievement, HealthSync, Backup -> false
+            Achievement, StreakBonus, HealthSync, Backup -> false
         }
 
     /** True quando a notificação é baseada em intervalo (agendamento periódico no dia). */
@@ -48,7 +49,7 @@ enum class NotificationKind(val rawValue: String) {
             Water -> 120
             Sleep -> 180
             Protein, Carbs, GoodFat, Fiber, Workout, Cardio, Creatine -> 120
-            Achievement, HealthSync, Backup -> 0
+            Achievement, StreakBonus, HealthSync, Backup -> 0
         }
 
     /**
@@ -69,7 +70,7 @@ enum class NotificationKind(val rawValue: String) {
      */
     val route: NotificationRoute
         get() = when (this) {
-            Achievement -> NotificationRoute.AchievementsToday
+            Achievement, StreakBonus -> NotificationRoute.AchievementsToday
             Backup -> NotificationRoute.Backup
             else -> NotificationRoute.Today
         }

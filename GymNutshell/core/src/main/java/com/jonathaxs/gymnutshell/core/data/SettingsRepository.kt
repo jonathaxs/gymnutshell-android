@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.jonathaxs.gymnutshell.core.domain.AppTheme
+import com.jonathaxs.gymnutshell.core.domain.AppearanceMode
 import com.jonathaxs.gymnutshell.core.domain.ControlStyle
 import com.jonathaxs.gymnutshell.core.domain.MeasurementSystem
 import com.jonathaxs.gymnutshell.core.theme.AccentColor
@@ -19,6 +20,7 @@ import java.time.LocalDate
 class SettingsRepository(private val context: Context) {
 
     private val accentKey = stringPreferencesKey(AccentColor.STORAGE_KEY)
+    private val appearanceModeKey = stringPreferencesKey(AppearanceMode.STORAGE_KEY)
     private val themeKey = stringPreferencesKey("app.theme")
     private val measurementKey = stringPreferencesKey("profile.measurementSystem")
     private val controlStyleKey = stringPreferencesKey(ControlStyle.STORAGE_KEY)
@@ -35,6 +37,15 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setAccentColor(color: AccentColor) {
         context.appPreferences.edit { prefs -> prefs[accentKey] = color.name }
+    }
+
+    /** Modo de aparência persistido (SYSTEM por padrão). */
+    val appearanceMode: Flow<AppearanceMode> = context.appPreferences.data.map { prefs ->
+        AppearanceMode.fromRaw(prefs[appearanceModeKey])
+    }
+
+    suspend fun setAppearanceMode(mode: AppearanceMode) {
+        context.appPreferences.edit { prefs -> prefs[appearanceModeKey] = mode.rawValue }
     }
 
     /** Tema de mascote persistido; cai pro Default (gym) se nada salvo ou inválido. */

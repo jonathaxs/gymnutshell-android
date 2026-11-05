@@ -467,4 +467,36 @@
     <string name="settings_notifications_group_footer">Agrupa en un solo recordatorio las metas de check-in de la misma hora. Si se desactiva, cada meta tendrá su propio recordatorio.</string>
     <string name="settings_notifications_emoji_title">Emojis en las notificaciones</string>
     <string name="settings_notifications_emoji_footer">Muestra el emoji de cada meta y del logro diario en el texto de las notificaciones.</string>
+
+    <!-- Bônus de sequência, pontos e Aparência (2026-11-04) -->
+    <string name="streak_bonus_weekly_level4_title">Semana fuerte</string>
+    <string name="streak_bonus_weekly_level5_title">Semana perfecta</string>
+    <string name="streak_bonus_monthly_level4_title">Mes fuerte</string>
+    <string name="streak_bonus_monthly_level5_title">Mes perfecto</string>
+    <string name="streak_bonus_weekly_level4_description">De lunes a domingo, todos los días en nivel 4 o 5.</string>
+    <string name="streak_bonus_weekly_level5_description">De lunes a domingo, todos los días en nivel 5.</string>
+    <string name="streak_bonus_monthly_level4_description">Todo el mes, todos los días en nivel 4 o 5.</string>
+    <string name="streak_bonus_monthly_level5_description">Todo el mes, todos los días en nivel 5.</string>
+    <string name="streak_bonus_generic_title">Bono de racha</string>
+    <string name="streak_bonus_info_intro">Cada día guardado suma puntos según su nivel de logro. Completar una semana o un mes entero en nivel 4 o 5 otorga un bono de racha.</string>
+    <string name="streak_bonus_info_section_daily">Puntos por día</string>
+    <string name="streak_bonus_info_footer">Las semanas van de lunes a domingo. Un día sin registro rompe la racha. Si todo el período fue de nivel 5, solo cuenta el bono mayor.</string>
+    <string name="points_plus_format">+%1$d pts</string>
+    <string name="settings_about_streak_bonus">Bono de racha</string>
+    <string name="notif_kind_streak_bonus_title">Bono de racha</string>
+    <string name="notif_kind_streak_bonus_desc">Te avisa cuando completas una racha semanal o mensual.</string>
+    <string name="notif_event_streak_bonus_body">%1$s! +%2$d puntos.</string>
+    <string name="statistics_section_bonuses">Puntos y bonos</string>
+    <string name="statistics_points_total">Puntos</string>
+    <string name="statistics_bonus_times">%1$d×</string>
+    <string name="a11y_stats_bonuses_hint">Toca para ver cómo funcionan los puntos y los bonos.</string>
+    <string name="a11y_stats_bonus_row_format">%1$s, %2$d veces</string>
+    <string name="a11y_record_row_bonus_format">%1$s, %2$s, más %3$d puntos</string>
+    <string name="a11y_record_bonus_hint">Toca para más información.</string>
+    <string name="settings_section_visual">Pantalla</string>
+    <string name="settings_appearance_title">Apariencia</string>
+    <string name="settings_appearance_mode_header">Modo</string>
+    <string name="settings_appearance_mode_system">Dispositivo</string>
+    <string name="settings_appearance_mode_light">Claro</string>
+    <string name="settings_appearance_mode_dark">Oscuro</string>
 </resources>

@@ -14,6 +14,7 @@ import com.jonathaxs.gymnutshell.core.domain.AppTheme
 import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
 import com.jonathaxs.gymnutshell.core.domain.NotificationHistoryEntry
 import com.jonathaxs.gymnutshell.core.domain.Profile
+import com.jonathaxs.gymnutshell.core.domain.StreakBonusCalculator
 import com.jonathaxs.gymnutshell.core.domain.UserGoal
 import com.jonathaxs.gymnutshell.core.theme.AccentColor
 import kotlinx.coroutines.flow.first
@@ -38,7 +39,7 @@ object WearSnapshotSync {
         fun tierOf(record: DailyRecord) = DailyAchievement.from(record.percent / 100.0)
         return WearStatsSummary(
             totalDays = records.size,
-            totalPoints = records.sumOf { it.points }, // 2.0: so os registros diarios
+            totalPoints = StreakBonusCalculator.totalPoints(records),
             level1Days = records.count { tierOf(it) == DailyAchievement.Level1 },
             level2Days = records.count { tierOf(it) == DailyAchievement.Level2 },
             level3Days = records.count { tierOf(it) == DailyAchievement.Level3 },

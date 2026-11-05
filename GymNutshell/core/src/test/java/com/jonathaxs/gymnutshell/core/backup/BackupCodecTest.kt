@@ -92,12 +92,17 @@ class BackupCodecTest {
     @Test
     fun `estilo de controle viaja no backup e faz roundtrip`() {
         val original = samplePayload().copy(
-            preferences = PreferencesSnapshot(controlStyle = "stepper"),
+            preferences = PreferencesSnapshot(
+                appearanceMode = "dark",
+                controlStyle = "stepper",
+            ),
         )
         val json = BackupCodec.encode(original)
         assertTrue(json.contains("\"controlStyle\": \"stepper\"") || json.contains("\"controlStyle\""))
+        assertTrue(json.contains("\"appearanceMode\": \"dark\"") || json.contains("\"appearanceMode\""))
         val decoded = BackupCodec.decode(json)
         assertEquals("stepper", decoded.preferences?.controlStyle)
+        assertEquals("dark", decoded.preferences?.appearanceMode)
     }
 
     @Test

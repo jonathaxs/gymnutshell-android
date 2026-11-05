@@ -24,7 +24,7 @@ class NotificationKindTest {
     @Test
     fun `eventos nao sao editaveis`() {
         for (kind in listOf(
-            NotificationKind.Achievement,
+            NotificationKind.Achievement, NotificationKind.StreakBonus,
             NotificationKind.HealthSync, NotificationKind.Backup,
         )) {
             assertFalse(kind.name, kind.isEditable)
@@ -51,6 +51,7 @@ class NotificationKindTest {
     @Test
     fun `rota de deep-link por kind`() {
         assertEquals(NotificationRoute.AchievementsToday, NotificationKind.Achievement.route)
+        assertEquals(NotificationRoute.AchievementsToday, NotificationKind.StreakBonus.route)
         assertEquals(NotificationRoute.Backup, NotificationKind.Backup.route)
         assertEquals(NotificationRoute.Today, NotificationKind.Water.route)
         assertEquals(NotificationRoute.Today, NotificationKind.HealthSync.route)
@@ -69,8 +70,7 @@ class NotificationKindTest {
     @Test
     fun `fromRaw resolve e ignora desconhecido`() {
         assertEquals(NotificationKind.Achievement, NotificationKind.fromRaw("achievement"))
-        // 2.0: bonus de sequencia saiu; o rawValue antigo vira desconhecido.
-        assertNull(NotificationKind.fromRaw("streakBonus"))
+        assertEquals(NotificationKind.StreakBonus, NotificationKind.fromRaw("streakBonus"))
         // Mantém o rawValue legado do iOS pra Saúde.
         assertEquals(NotificationKind.HealthSync, NotificationKind.fromRaw("appleHealth"))
         assertNull(NotificationKind.fromRaw("nope"))
