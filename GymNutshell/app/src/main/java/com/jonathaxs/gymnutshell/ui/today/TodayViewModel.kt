@@ -39,10 +39,18 @@ import com.jonathaxs.gymnutshell.core.domain.TodayGoalsViewMode
 import com.jonathaxs.gymnutshell.core.domain.UnifiedCategoryOrder
 import com.jonathaxs.gymnutshell.core.domain.UnitConverter
 import com.jonathaxs.gymnutshell.core.domain.UserGoal
+import com.jonathaxs.gymnutshell.core.ml.DayInsight
+import com.jonathaxs.gymnutshell.core.ml.DayInsightBuilder
+import com.jonathaxs.gymnutshell.core.ml.toTrainingDay
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -113,6 +121,8 @@ data class TodayUiState(
     val sections: List<TodayCategoryUi> = emptyList(),
     /** Metas personalizadas sem categoria, exibidas no fim da lista. */
     val uncategorizedGoals: List<TodayGoalUi> = emptyList(),
+    /** Frase e previsão do dia calculadas a partir do histórico local. */
+    val dayInsight: DayInsight? = null,
 )
 
 /**
@@ -135,6 +145,20 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
     private val scheduler = NotificationScheduler(app.applicationContext)
     private val healthPrefs = HealthPreferencesRepository(app.applicationContext)
     private val healthConnect = HealthConnectManager(app.applicationContext)
+    private val currentDay = MutableStateFlow(LocalDate.now())
+
+    /**
+     * Previsão/histórico do dia, calculado em background. Só treina de novo quando vira o dia ou
+     * quando muda algum dia passado (mexer nas metas de hoje não refaz o treino).
+     */
+    val dayInsight: StateFlow<DayInsight?> =
+        combine(recordRepo.records, currentDay) { records, today ->
+            today to records.filter { it.date < today.toEpochDay() }.map { it.toTrainingDay() }
+        }
+            .distinctUntilChanged()
+            .map { (today, pastDays) -> DayInsightBuilder.make(today, pastDays) }
+            .flowOn(Dispatchers.Default)
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
     init {
         viewModelScope.launch {
@@ -152,7 +176,9 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
      * No primeiro uso, só marca hoje como dia ativo.
      */
     private suspend fun rolloverIfNeeded() {
-        val today = LocalDate.now().toEpochDay()
+        val todayDate = LocalDate.now()
+        currentDay.value = todayDate
+        val today = todayDate.toEpochDay()
         val last = intakeRepo.lastActiveDay()
         if (last == null) {
             intakeRepo.setLastActiveDay(today)
@@ -217,7 +243,8 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
             ) { m, t, c, v ->
                 PreferencesGroup(m, t, c, v)
             },
-        ) { (profile, customGoals, customCategories), (config, orderIds), (intakeMap, restDays, collapsed), prefsGroup ->
+            dayInsight,
+        ) { (profile, customGoals, customCategories), (config, orderIds), (intakeMap, restDays, collapsed), prefsGroup, insight ->
             // Enquanto não houver onboarding, usa um perfil-demo se nada foi salvo.
             val effective = if (profile.weightKg <= 0.0) DEMO_PROFILE else profile
 
@@ -332,6 +359,7 @@ class TodayViewModel(app: Application) : AndroidViewModel(app) {
                 overallProgress = avg.toFloat(),
                 sections = sections,
                 uncategorizedGoals = uncategorized,
+                dayInsight = insight,
             )
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), TodayUiState())
 

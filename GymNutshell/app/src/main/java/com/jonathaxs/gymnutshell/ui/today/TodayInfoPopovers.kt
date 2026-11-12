@@ -1,8 +1,10 @@
 package com.jonathaxs.gymnutshell.ui.today
 
+import android.icu.text.ListFormatter
 import android.icu.text.MeasureFormat
 import android.icu.util.Measure
 import android.icu.util.MeasureUnit
+import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -54,10 +57,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
+import com.jonathaxs.gymnutshell.core.ml.DayInsight
+import com.jonathaxs.gymnutshell.core.ml.DayInsightFactor
+import com.jonathaxs.gymnutshell.core.ml.RiskModel
 import com.jonathaxs.gymnutshell.core.widget.SegmentedRing
 import com.jonathaxs.gymnutshell.ui.settings.SettingsViewModel
 import com.jonathaxs.gymnutshell.ui.settings.tierRange
 import com.jonathaxs.gymnutshell.ui.theme.color
+import java.text.NumberFormat
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -277,10 +284,14 @@ internal fun RingInfoPopover(onDismiss: () -> Unit) {
 }
 
 /**
- * Balão da data no topo da Hoje: exibe a data completa e quanto tempo falta até a meia-noite.
+ * Balão da data no topo da Hoje: exibe a data completa, quanto tempo falta até a meia-noite e a
+ * explicação da frase do dia (previsão do modelo ou média histórica).
  */
 @Composable
-internal fun DayInfoPopover(onDismiss: () -> Unit) {
+internal fun DayInfoPopover(
+    insight: DayInsight? = null,
+    onDismiss: () -> Unit,
+) {
     var now by remember { mutableStateOf(LocalDateTime.now()) }
 
     // Atualiza na virada de cada minuto cheio enquanto o balão estiver aberto
@@ -322,8 +333,114 @@ internal fun DayInfoPopover(onDismiss: () -> Unit) {
                 .fillMaxWidth()
                 .semantics { contentDescription = spokenText },
         )
+
+        if (insight != null) {
+            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.35f))
+            DayInsightSection(insight = insight, locale = locale)
+        }
     }
 }
+
+/**
+ * Seção que explica de onde veio a frase abaixo da data: previsão do modelo local ou média do dia da semana.
+ */
+@Composable
+private fun DayInsightSection(
+    insight: DayInsight,
+    locale: Locale,
+) {
+    val sectionTitleRes = when (insight.kind) {
+        is DayInsight.Kind.Model -> R.string.today_insight_title
+        is DayInsight.Kind.Weekday -> R.string.today_insight_title_history
+    }
+
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.Start,
+    ) {
+        Text(
+            text = stringResource(sectionTitleRes),
+            style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.SemiBold),
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.semantics { heading() },
+        )
+
+        when (val kind = insight.kind) {
+            is DayInsight.Kind.Model -> {
+                val riskText = remember(kind.risk, locale) { formatPercent(kind.risk, locale) }
+                val accuracyText = remember(kind.accuracy, locale) { formatPercent(kind.accuracy, locale) }
+
+                Text(
+                    text = stringResource(
+                        R.string.today_insight_model_risk,
+                        RiskModel.DEFAULT_WEAK_THRESHOLD,
+                        riskText,
+                    ),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+
+                if (kind.factors.isNotEmpty()) {
+                    val factorLabels = kind.factors.map { stringResource(factorTitleRes(it)) }
+                    val formattedFactors = remember(factorLabels, locale) {
+                        ListFormatter.getInstance(locale).format(factorLabels)
+                    }
+                    Text(
+                        text = stringResource(R.string.today_insight_model_factors, formattedFactors),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                }
+
+                Text(
+                    text = stringResource(
+                        R.string.today_insight_model_footer,
+                        insight.dayCount,
+                        accuracyText,
+                    ),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+
+            is DayInsight.Kind.Weekday -> {
+                Text(
+                    text = stringResource(
+                        R.string.today_insight_weekday_detail,
+                        kind.average,
+                        kind.overall,
+                    ),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+
+                Text(
+                    text = stringResource(R.string.today_insight_weekday_footer, insight.dayCount),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
+        }
+    }
+}
+
+@StringRes
+private fun factorTitleRes(factor: DayInsightFactor): Int = when (factor) {
+    DayInsightFactor.WEEKDAY -> R.string.today_insight_factor_weekday
+    DayInsightFactor.YESTERDAY -> R.string.today_insight_factor_yesterday
+    DayInsightFactor.LAST_WEEK -> R.string.today_insight_factor_last_week
+    DayInsightFactor.STREAK -> R.string.today_insight_factor_streak
+    DayInsightFactor.SLEEP -> R.string.today_insight_factor_sleep
+    DayInsightFactor.WORKOUT -> R.string.today_insight_factor_workout
+    DayInsightFactor.CARDIO -> R.string.today_insight_factor_cardio
+}
+
+private fun formatPercent(value: Double, locale: Locale): String =
+    NumberFormat.getPercentInstance(locale).apply {
+        maximumFractionDigits = 0
+        minimumFractionDigits = 0
+    }.format(value)
 
 /**
  * Calcula e formata o tempo restante até a meia-noite:

@@ -47,10 +47,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -61,11 +63,15 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
 import com.jonathaxs.gymnutshell.core.domain.AppDateFormatters
+import com.jonathaxs.gymnutshell.core.ml.WeekdayAverage
 import com.jonathaxs.gymnutshell.notifications.NotificationStrings
 import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
 import com.jonathaxs.gymnutshell.ui.settings.StreakBonusInfoSheet
 import com.jonathaxs.gymnutshell.ui.util.Breakpoints
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.time.format.TextStyle
+import kotlin.math.roundToInt
 
 /**
  * Aba Conquistas — porte fiel da AchievementsView 2.0 (iOS).
@@ -165,6 +171,14 @@ fun AchievementsScreen(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
+                    if (state.filterMode == AchievementsFilterMode.List && state.totalRecords >= 7) {
+                        item(key = "weekday_chart_card") {
+                            WeekdayAverageChartCard(
+                                averages = state.weekdayAverages,
+                                accent = accent,
+                            )
+                        }
+                    }
                     if (state.filterMode == AchievementsFilterMode.Calendar) {
                         item(key = "calendar_card") {
                             CalendarCard(state, accent, viewModel)
@@ -678,6 +692,98 @@ private fun HistoryRow(
                     )
                 }
             }
+        }
+    }
+}
+
+/** Card com o gráfico de barras da média de percentual por dia da semana (porte de WeekdayAverageChart do iOS). */
+@Composable
+private fun WeekdayAverageChartCard(
+    averages: List<WeekdayAverage>,
+    accent: Color,
+) {
+    val locale = LocalConfiguration.current.locales[0]
+
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(22.dp),
+        color = MaterialTheme.colorScheme.surfaceContainerHigh,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            horizontalAlignment = Alignment.Start,
+        ) {
+            Text(
+                text = stringResource(R.string.achievements_weekday_title),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.semantics { heading() },
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(160.dp)
+                    .padding(top = 4.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.Bottom,
+            ) {
+                averages.take(7).forEach { item ->
+                    val dayOfWeek = DayOfWeek.of(((item.weekday + 5) % 7) + 1)
+                    val shortLabel = dayOfWeek
+                        .getDisplayName(TextStyle.SHORT_STANDALONE, locale)
+                        .replace(".", "")
+                        .trim()
+                    val fullName = dayOfWeek.getDisplayName(TextStyle.FULL_STANDALONE, locale)
+                    val roundedPercent = item.average.roundToInt()
+                    val barFraction = (item.average / 100.0).coerceIn(0.0, 1.0).toFloat()
+
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight()
+                            .clearAndSetSemantics {
+                                contentDescription = "$fullName, $roundedPercent%"
+                            },
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Bottom,
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxWidth(),
+                            contentAlignment = Alignment.BottomCenter,
+                        ) {
+                            if (barFraction > 0f) {
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth(0.62f)
+                                        .fillMaxHeight(barFraction)
+                                        .clip(RoundedCornerShape(6.dp))
+                                        .background(accent),
+                                )
+                            }
+                        }
+                        Spacer(Modifier.height(6.dp))
+                        Text(
+                            text = shortLabel,
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            textAlign = TextAlign.Center,
+                            maxLines = 1,
+                        )
+                    }
+                }
+            }
+
+            Text(
+                text = stringResource(R.string.achievements_weekday_footer),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
         }
     }
 }

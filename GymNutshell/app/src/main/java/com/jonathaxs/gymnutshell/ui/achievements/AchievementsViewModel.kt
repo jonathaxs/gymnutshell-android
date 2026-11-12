@@ -12,6 +12,9 @@ import com.jonathaxs.gymnutshell.core.domain.DailyAchievement
 import com.jonathaxs.gymnutshell.core.domain.EarnedStreakBonus
 import com.jonathaxs.gymnutshell.core.domain.StreakBonusCalculator
 import com.jonathaxs.gymnutshell.core.domain.StreakBonusKind
+import com.jonathaxs.gymnutshell.core.ml.WeekdayAverage
+import com.jonathaxs.gymnutshell.core.ml.WeekdayStats
+import com.jonathaxs.gymnutshell.core.ml.toTrainingDay
 import com.jonathaxs.gymnutshell.notifications.NotificationStrings
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -67,6 +70,8 @@ data class AchievementsUiState(
     val history: List<HistoryItemUi> = emptyList(),
     val filterMode: AchievementsFilterMode = AchievementsFilterMode.Calendar,
     val accentArgb: Long = 0xFF007AFF,
+    val weekdayAverages: List<WeekdayAverage> = emptyList(),
+    val totalRecords: Int = 0,
 )
 
 /**
@@ -204,6 +209,11 @@ class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
             history += bonusToUi(bonus)
         }
 
+        val weekdayAverages = WeekdayStats.averages(
+            days = records.map { it.toTrainingDay() },
+            firstDayOfWeek = firstDow,
+        )
+
         AchievementsUiState(
             monthLabel = AppDateFormatters.monthYear(ym.atDay(1)),
             selectedWeekday = selectedWeekday,
@@ -212,6 +222,8 @@ class AchievementsViewModel(app: Application) : AndroidViewModel(app) {
             history = history,
             filterMode = mode,
             accentArgb = accent.argb,
+            weekdayAverages = weekdayAverages,
+            totalRecords = records.size,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), AchievementsUiState())
 

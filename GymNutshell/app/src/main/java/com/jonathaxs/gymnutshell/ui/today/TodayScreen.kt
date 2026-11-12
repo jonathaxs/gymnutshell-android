@@ -135,6 +135,7 @@ import com.jonathaxs.gymnutshell.core.domain.GoalCategory
 import com.jonathaxs.gymnutshell.core.domain.ProgressColors
 import com.jonathaxs.gymnutshell.core.domain.TodayGoalsViewMode
 import com.jonathaxs.gymnutshell.core.domain.pluralQuantity
+import com.jonathaxs.gymnutshell.core.ml.DayInsight
 import com.jonathaxs.gymnutshell.ui.components.categoryIcon
 import com.jonathaxs.gymnutshell.ui.util.Breakpoints
 import com.jonathaxs.gymnutshell.ui.welcome.RoundStepButton
@@ -243,6 +244,7 @@ private fun TodayPortrait(
         // Topo fixo só com a data: os Ajustes ficam na linha de botões abaixo do anel.
         TodayTopBar(
             dateLabel = state.dateLabel,
+            insight = state.dayInsight,
             modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 8.dp),
         )
 
@@ -334,10 +336,11 @@ private fun TodayPortrait(
     }
 }
 
-/** Topo da Hoje: só a data, centralizada; toque abre o balão com a data completa e o tempo restante. */
+/** Topo da Hoje: data e frase do dia centralizadas; toque abre o balão com a data completa e os detalhes. */
 @Composable
 private fun TodayTopBar(
     dateLabel: String,
+    insight: DayInsight? = null,
     modifier: Modifier = Modifier,
 ) {
     var showDayInfo by remember { mutableStateOf(false) }
@@ -347,25 +350,56 @@ private fun TodayTopBar(
         contentAlignment = Alignment.Center,
     ) {
         Box {
-            Text(
-                text = dateLabel,
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
+            Column(
                 modifier = Modifier
                     .wrapContentWidth()
                     .clip(RoundedCornerShape(8.dp))
                     .clickable { showDayInfo = true }
                     .padding(horizontal = 8.dp, vertical = 2.dp)
-                    .semantics {
+                    .semantics(mergeDescendants = true) {
                         role = Role.Button
                         heading()
                     },
-            )
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
+                Text(
+                    text = dateLabel,
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                if (insight != null) {
+                    val phrase = when (val kind = insight.kind) {
+                        is DayInsight.Kind.Model -> stringResource(
+                            if (insight.needsAttention) {
+                                R.string.today_insight_attention
+                            } else {
+                                R.string.today_insight_steady
+                            },
+                        )
+                        is DayInsight.Kind.Weekday -> stringResource(
+                            R.string.today_insight_weekday,
+                            kind.average,
+                        )
+                    }
+                    Text(
+                        text = phrase,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+            }
             if (showDayInfo) {
-                DayInfoPopover(onDismiss = { showDayInfo = false })
+                DayInfoPopover(
+                    insight = insight,
+                    onDismiss = { showDayInfo = false },
+                )
             }
         }
     }
@@ -1479,7 +1513,10 @@ private fun TodayWide(
                             modifier = Modifier.padding(bottom = 4.dp),
                         )
                     }
-                    TodayTopBar(dateLabel = state.dateLabel)
+                    TodayTopBar(
+                        dateLabel = state.dateLabel,
+                        insight = state.dayInsight,
+                    )
                     TodayHeroCard(
                         state = state,
                         onOpenTheme = onOpenTheme,
