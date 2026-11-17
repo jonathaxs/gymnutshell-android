@@ -498,6 +498,14 @@
     <string name="streak_bonus_info_footer">Haftalar pazartesiden pazara sürer. Kayıt olmayan bir gün seriyi bozar. Tüm dönem seviye 5 ise yalnızca daha büyük olan bonus sayılır.</string>
     <string name="points_plus_format">+%1$d pts</string>
     <string name="settings_about_streak_bonus">Seri bonusu</string>
+    <string name="settings_about_day_insight">Günün cümlesi</string>
+    <string name="day_insight_info_intro">Tarihin altındaki cümle, gününün nasıl geçeceğini gösterir. Ayrıntıları görmek için dokun.</string>
+    <string name="day_insight_info_section_how">Nasıl çalışır</string>
+    <string name="day_insight_info_history">Geçmişini inceler: haftanın günü, dün, son 7 gün, serin, uyku ve antrenman.</string>
+    <string name="day_insight_info_chance">Bugünün zayıf bir gün olma olasılığını hesaplar (hedeflerde en fazla %%%1$d).</string>
+    <string name="day_insight_info_check">Tahmini yalnızca haftanın bu günündeki ortalamandan daha isabetli olduğunda gösterir. Aksi halde bu ortalamayı gösterir.</string>
+    <string name="day_insight_info_days">%1$d kayıtlı günden sonra başlar.</string>
+    <string name="day_insight_info_footer">Her şey basit bir makine öğrenmesi modeliyle cihazında hesaplanır. Verilerin cihazından çıkmaz.</string>
     <string name="notif_kind_streak_bonus_title">Seri bonusu</string>
     <string name="notif_kind_streak_bonus_desc">Haftalık veya aylık bir seriyi tamamladığında sana haber verir.</string>
     <string name="notif_event_streak_bonus_body">%1$s! +%2$d puan.</string>

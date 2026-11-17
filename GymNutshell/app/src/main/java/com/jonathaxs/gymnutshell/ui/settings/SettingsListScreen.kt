@@ -64,6 +64,7 @@ fun SettingsListScreen(
     onOpenRingInfo: () -> Unit,
     onOpenTierInfo: () -> Unit,
     onOpenBonusInfo: () -> Unit = {},
+    onOpenDayInsightInfo: () -> Unit = {},
     /** Página aberta à direita na tela larga (linha marcada); null no celular. */
     selectedRoute: String? = null,
     viewModel: SettingsViewModel = viewModel(),
@@ -342,6 +343,19 @@ fun SettingsListScreen(
                         showChevron = true,
                         modifier = highlight(SettingsRoutes.BONUS_INFO),
                         onClick = onOpenBonusInfo,
+                    )
+                    GroupRowDivider(startInset = dividerInset)
+                    GroupRow(
+                        title = stringResource(R.string.settings_about_day_insight),
+                        leading = {
+                            GlassIcon(
+                                painter = painterResource(R.drawable.ic_settings_day_insight),
+                                color = Color(0xFF32ADE6),
+                            )
+                        },
+                        showChevron = true,
+                        modifier = highlight(SettingsRoutes.DAY_INSIGHT_INFO),
+                        onClick = onOpenDayInsightInfo,
                     )
                 }
 

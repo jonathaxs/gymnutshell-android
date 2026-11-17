@@ -1,6 +1,13 @@
 package com.jonathaxs.gymnutshell.ui.settings
 
 import androidx.compose.foundation.Canvas
+import com.jonathaxs.gymnutshell.core.ml.RiskModel
+import androidx.compose.material3.Icon
+import androidx.compose.material.icons.outlined.Warning
+import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material.icons.outlined.DateRange
+import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -208,6 +215,34 @@ fun StreakBonusInfoContent(viewModel: SettingsViewModel = viewModel()) {
                     )
                 },
             )
+        }
+    }
+}
+
+/** Página da frase do dia (Ajustes > Sobre): o que o modelo olha, quando a previsão aparece e privacidade. */
+@Composable
+fun DayInsightInfoScreen(onBack: () -> Unit, viewModel: SettingsViewModel = viewModel()) {
+    val accent = viewModel.accentColor.collectAsStateWithLifecycle().value.color
+    // Passos na ordem do iOS: o que lê, o que calcula, quando mostra e quando começa.
+    val steps = listOf(
+        Icons.Outlined.Refresh to stringResource(R.string.day_insight_info_history),
+        Icons.Outlined.Warning to stringResource(R.string.day_insight_info_chance, RiskModel.DEFAULT_WEAK_THRESHOLD),
+        Icons.Outlined.CheckCircle to stringResource(R.string.day_insight_info_check),
+        Icons.Outlined.DateRange to stringResource(R.string.day_insight_info_days, RiskModel.MINIMUM_DAYS),
+    )
+    InfoPage(title = stringResource(R.string.settings_about_day_insight), onBack = onBack) {
+        IntroText(stringResource(R.string.day_insight_info_intro))
+        GroupSection(
+            title = stringResource(R.string.day_insight_info_section_how),
+            footer = stringResource(R.string.day_insight_info_footer),
+        ) {
+            steps.forEachIndexed { index, (icon, text) ->
+                if (index > 0) GroupRowDivider()
+                GroupRow(
+                    title = text,
+                    leading = { Icon(icon, contentDescription = null, tint = accent) },
+                )
+            }
         }
     }
 }

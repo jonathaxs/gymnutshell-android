@@ -502,6 +502,14 @@
     <string name="streak_bonus_info_footer">Le settimane vanno da lunedì a domenica. Un giorno senza registrazioni interrompe la serie. Se l\'intero periodo è stato al livello 5, vale solo il bonus maggiore.</string>
     <string name="points_plus_format">+%1$d pt</string>
     <string name="settings_about_streak_bonus">Bonus serie</string>
+    <string name="settings_about_day_insight">Frase del giorno</string>
+    <string name="day_insight_info_intro">La frase sotto la data mostra come tende ad andare la tua giornata. Toccala per vedere i dettagli.</string>
+    <string name="day_insight_info_section_how">Come funziona</string>
+    <string name="day_insight_info_history">Analizza la tua cronologia: il giorno della settimana, ieri, gli ultimi 7 giorni, la tua serie, il sonno e l\'allenamento.</string>
+    <string name="day_insight_info_chance">Calcola la probabilità che oggi sia una giornata debole, con fino al %1$d%% dei tuoi obiettivi.</string>
+    <string name="day_insight_info_check">Mostra la previsione solo quando è più precisa della tua media in quel giorno della settimana. Altrimenti mostra quella media.</string>
+    <string name="day_insight_info_days">Inizia dopo %1$d giorni registrati.</string>
+    <string name="day_insight_info_footer">Tutto viene calcolato sul tuo dispositivo con un semplice modello di machine learning. I tuoi dati non lasciano il dispositivo.</string>
     <string name="notif_kind_streak_bonus_title">Bonus serie</string>
     <string name="notif_kind_streak_bonus_desc">Ti avvisa quando completi una serie settimanale o mensile.</string>
     <string name="notif_event_streak_bonus_body">%1$s! +%2$d punti.</string>

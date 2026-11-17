@@ -594,6 +594,14 @@
     <string name="streak_bonus_info_footer">A semana vai de segunda a domingo. Um dia sem registro quebra a sequência. Se o período inteiro foi nível 5, vale só o bônus maior.</string>
     <string name="points_plus_format">+%1$d pts</string>
     <string name="settings_about_streak_bonus">Bônus de sequência</string>
+    <string name="settings_about_day_insight">Frase do dia</string>
+    <string name="day_insight_info_intro">A frase abaixo da data mostra como o seu dia tende a ser. Toque nela para ver os detalhes.</string>
+    <string name="day_insight_info_section_how">Como funciona</string>
+    <string name="day_insight_info_history">Analisa o seu histórico: o dia da semana, ontem, os últimos 7 dias, a sua sequência, o sono e o treino.</string>
+    <string name="day_insight_info_chance">Calcula a chance de hoje ser um dia fraco, com até %1$d%% das metas.</string>
+    <string name="day_insight_info_check">Só mostra a previsão quando ela acerta mais do que a sua média do dia da semana. Se não, mostra essa média.</string>
+    <string name="day_insight_info_days">Começa depois de %1$d dias de registro.</string>
+    <string name="day_insight_info_footer">Tudo é calculado no seu aparelho, com um modelo simples de machine learning. Seus dados não saem do aparelho.</string>
     <string name="notif_kind_streak_bonus_title">Bônus de sequência</string>
     <string name="notif_kind_streak_bonus_desc">Avisa quando você fecha uma semana ou um mês em sequência.</string>
     <string name="notif_event_streak_bonus_body">%1$s! +%2$d pontos.</string>

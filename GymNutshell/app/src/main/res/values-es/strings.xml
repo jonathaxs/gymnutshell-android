@@ -502,6 +502,14 @@
     <string name="streak_bonus_info_footer">Las semanas van de lunes a domingo. Un día sin registro rompe la racha. Si todo el período fue de nivel 5, solo cuenta el bono mayor.</string>
     <string name="points_plus_format">+%1$d pts</string>
     <string name="settings_about_streak_bonus">Bono de racha</string>
+    <string name="settings_about_day_insight">Frase del día</string>
+    <string name="day_insight_info_intro">La frase debajo de la fecha muestra cómo suele ir tu día. Tócala para ver los detalles.</string>
+    <string name="day_insight_info_section_how">Cómo funciona</string>
+    <string name="day_insight_info_history">Analiza tu historial: el día de la semana, ayer, los últimos 7 días, tu racha, el sueño y el entrenamiento.</string>
+    <string name="day_insight_info_chance">Calcula la probabilidad de que hoy sea un día flojo, con hasta el %1$d%% de tus metas.</string>
+    <string name="day_insight_info_check">Solo muestra la previsión cuando acierta más que tu media de ese día de la semana. Si no, muestra esa media.</string>
+    <string name="day_insight_info_days">Empieza después de %1$d días registrados.</string>
+    <string name="day_insight_info_footer">Todo se calcula en tu dispositivo con un modelo sencillo de machine learning. Tus datos no salen del dispositivo.</string>
     <string name="notif_kind_streak_bonus_title">Bono de racha</string>
     <string name="notif_kind_streak_bonus_desc">Te avisa cuando completas una racha semanal o mensual.</string>
     <string name="notif_event_streak_bonus_body">%1$s! +%2$d puntos.</string>

@@ -599,6 +599,14 @@
     <string name="streak_bonus_info_footer">Weeks run Monday to Sunday. A day without a record breaks the streak. If the whole period was level 5, only the bigger bonus counts.</string>
     <string name="points_plus_format">+%1$d pts</string>
     <string name="settings_about_streak_bonus">Streak bonus</string>
+    <string name="settings_about_day_insight">Daily insight</string>
+    <string name="day_insight_info_intro">The line under the date shows how your day is likely to go. Tap it to see the details.</string>
+    <string name="day_insight_info_section_how">How it works</string>
+    <string name="day_insight_info_history">Looks at your history: the weekday, yesterday, the last 7 days, your streak, sleep and workouts.</string>
+    <string name="day_insight_info_chance">Estimates the chance of today being a weak day, with up to %1$d%% of your goals.</string>
+    <string name="day_insight_info_check">Only shows the forecast when it\'s more accurate than your weekday average. Otherwise, it shows that average.</string>
+    <string name="day_insight_info_days">Starts after %1$d logged days.</string>
+    <string name="day_insight_info_footer">Everything is calculated on your device with a simple machine learning model. Your data never leaves your device.</string>
     <string name="notif_kind_streak_bonus_title">Streak bonus</string>
     <string name="notif_kind_streak_bonus_desc">Lets you know when you finish a week or month streak.</string>
     <string name="notif_event_streak_bonus_body">%1$s! +%2$d points.</string>

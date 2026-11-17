@@ -494,6 +494,14 @@
     <string name="streak_bonus_info_footer">한 주는 월요일부터 일요일까지예요. 기록이 없는 날이 있으면 연속 기록이 끊겨요. 전체 기간이 레벨 5였다면 더 큰 보너스만 적용돼요.</string>
     <string name="points_plus_format">+%1$d pts</string>
     <string name="settings_about_streak_bonus">연속 달성 보너스</string>
+    <string name="settings_about_day_insight">오늘의 한마디</string>
+    <string name="day_insight_info_intro">날짜 아래 문장은 오늘 하루가 어떨지 보여줘요. 탭하면 자세한 내용을 볼 수 있어요.</string>
+    <string name="day_insight_info_section_how">작동 방식</string>
+    <string name="day_insight_info_history">기록을 분석해요: 요일, 어제, 최근 7일, 연속 기록, 수면, 운동.</string>
+    <string name="day_insight_info_chance">오늘이 부진한 날(목표 달성률 %1$d%% 이하)이 될 확률을 계산해요.</string>
+    <string name="day_insight_info_check">예측이 이 요일의 평균보다 정확할 때만 보여줘요. 그렇지 않으면 그 평균을 보여줘요.</string>
+    <string name="day_insight_info_days">기록이 %1$d일 쌓이면 시작돼요.</string>
+    <string name="day_insight_info_footer">모든 계산은 간단한 머신러닝 모델로 이 기기에서 이루어져요. 데이터는 기기 밖으로 나가지 않아요.</string>
     <string name="notif_kind_streak_bonus_title">연속 달성 보너스</string>
     <string name="notif_kind_streak_bonus_desc">주간 또는 월간 연속 기록을 달성했을 때 알려줘요.</string>
     <string name="notif_event_streak_bonus_body">%1$s! +%2$d 포인트.</string>
