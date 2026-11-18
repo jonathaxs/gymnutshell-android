@@ -74,6 +74,7 @@
 
     <!-- Seção About: páginas informativas (mesmos textos do iOS) -->
     <string name="settings_about_link">Gym Nutshell</string>
+    <string name="settings_about_section_details">Details</string>
     <string name="settings_about_title">About the App</string>
     <string name="settings_about_version">Version</string>
     <string name="settings_about_description">Gym Nutshell is your gym daily goals in a nutshell.\n\nSet goals, track them, and watch consistency turn into results.</string>
@@ -93,11 +94,11 @@
     <string name="settings_about_progress_ring">Progress Ring</string>
     <string name="ring_info_intro" formatted="false">The ring shows the average percentage of your goals that you have completed. Each colored segment is worth 20%.</string>
     <string name="ring_info_section_colors">Ring segments</string>
-    <string name="ring_info_color_red">Just starting</string>
-    <string name="ring_info_color_orange">On your way</string>
-    <string name="ring_info_color_green">Doing great</string>
-    <string name="ring_info_color_cyan">Almost there</string>
-    <string name="ring_info_color_purple">Final stretch</string>
+    <string name="ring_info_color_red">Level 1</string>
+    <string name="ring_info_color_orange">Level 2</string>
+    <string name="ring_info_color_green">Level 3</string>
+    <string name="ring_info_color_cyan">Level 4</string>
+    <string name="ring_info_color_purple">Level 5</string>
     <string name="ring_info_color_blue">Goal complete</string>
     <string name="tier_info_range_suffix">" of progress"</string>
     <!-- Frase de progresso "faltam X% pro próximo nível" nas sheets do anel/conquista (abertas pela Today).

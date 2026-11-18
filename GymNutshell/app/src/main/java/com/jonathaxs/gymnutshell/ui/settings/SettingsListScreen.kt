@@ -61,10 +61,6 @@ fun SettingsListScreen(
     onOpenLanguage: () -> Unit,
     onOpenAbout: () -> Unit,
     onOpenWear: () -> Unit,
-    onOpenRingInfo: () -> Unit,
-    onOpenTierInfo: () -> Unit,
-    onOpenBonusInfo: () -> Unit = {},
-    onOpenDayInsightInfo: () -> Unit = {},
     /** Página aberta à direita na tela larga (linha marcada); null no celular. */
     selectedRoute: String? = null,
     viewModel: SettingsViewModel = viewModel(),
@@ -275,7 +271,7 @@ fun SettingsListScreen(
                     )
                 }
 
-                // 4. Seção "Sobre": Sobre o App, Wear OS, Anel de progresso e Conquistas
+                // 4. Seção "Sobre": Gym Nutshell (com os detalhes da conquista, bônus, anel e frase do dia) e Wear OS
                 GroupSection(
                     title = stringResource(R.string.settings_section_about),
                     titleColor = accent.color,
@@ -304,58 +300,6 @@ fun SettingsListScreen(
                         showChevron = true,
                         modifier = highlight(SettingsRoutes.WEAR),
                         onClick = onOpenWear,
-                    )
-                    GroupRowDivider(startInset = dividerInset)
-                    GroupRow(
-                        title = stringResource(R.string.settings_about_progress_ring),
-                        leading = {
-                            GlassIcon(
-                                painter = painterResource(R.drawable.ic_settings_ring),
-                                color = Color(0xFFFF9500),
-                            )
-                        },
-                        showChevron = true,
-                        modifier = highlight(SettingsRoutes.RING_INFO),
-                        onClick = onOpenRingInfo,
-                    )
-                    GroupRowDivider(startInset = dividerInset)
-                    GroupRow(
-                        title = stringResource(R.string.settings_about_achievement),
-                        leading = {
-                            GlassIcon(
-                                painter = painterResource(R.drawable.ic_settings_trophy),
-                                color = Color(0xFFFFCC00),
-                            )
-                        },
-                        showChevron = true,
-                        modifier = highlight(SettingsRoutes.TIER_INFO),
-                        onClick = onOpenTierInfo,
-                    )
-                    GroupRowDivider(startInset = dividerInset)
-                    GroupRow(
-                        title = stringResource(R.string.settings_about_streak_bonus),
-                        leading = {
-                            GlassIcon(
-                                painter = painterResource(R.drawable.ic_settings_streak_bonus),
-                                color = Color(0xFF34C759),
-                            )
-                        },
-                        showChevron = true,
-                        modifier = highlight(SettingsRoutes.BONUS_INFO),
-                        onClick = onOpenBonusInfo,
-                    )
-                    GroupRowDivider(startInset = dividerInset)
-                    GroupRow(
-                        title = stringResource(R.string.settings_about_day_insight),
-                        leading = {
-                            GlassIcon(
-                                painter = painterResource(R.drawable.ic_settings_day_insight),
-                                color = Color(0xFF32ADE6),
-                            )
-                        },
-                        showChevron = true,
-                        modifier = highlight(SettingsRoutes.DAY_INSIGHT_INFO),
-                        onClick = onOpenDayInsightInfo,
                     )
                 }
 

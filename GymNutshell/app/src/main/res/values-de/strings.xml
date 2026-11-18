@@ -53,6 +53,7 @@
     <string name="settings_section_about">Info</string>
     <string name="settings_appearance">Erscheinungsbild</string>
     <string name="settings_about_link">Gym Nutshell</string>
+    <string name="settings_about_section_details">Details</string>
     <string name="settings_about_title">Über die App</string>
     <string name="settings_about_version">Version</string>
     <string name="settings_about_description">Gym Nutshell bringt deine täglichen Fitnessziele auf den Punkt.\n\nZiele setzen, tracken und erleben, wie Beständigkeit zu Ergebnissen führt.</string>
@@ -68,11 +69,11 @@
     <string name="settings_about_progress_ring">Fortschrittsring</string>
     <string name="ring_info_intro" formatted="false">Der Ring zeigt den durchschnittlichen Prozentsatz deiner erreichten Ziele. Jedes farbige Segment entspricht 20 %.</string>
     <string name="ring_info_section_colors">Ringsegmente</string>
-    <string name="ring_info_color_red">Aller Anfang</string>
-    <string name="ring_info_color_orange">Auf dem Weg</string>
-    <string name="ring_info_color_green">Sehr gut</string>
-    <string name="ring_info_color_cyan">Fast geschafft</string>
-    <string name="ring_info_color_purple">Zielgerade</string>
+    <string name="ring_info_color_red">Stufe 1</string>
+    <string name="ring_info_color_orange">Stufe 2</string>
+    <string name="ring_info_color_green">Stufe 3</string>
+    <string name="ring_info_color_cyan">Stufe 4</string>
+    <string name="ring_info_color_purple">Stufe 5</string>
     <string name="ring_info_color_blue">Ziel erreicht</string>
     <string name="tier_info_range_suffix">" Fortschritt"</string>
     <string name="info_next_prefix">"Noch "</string>

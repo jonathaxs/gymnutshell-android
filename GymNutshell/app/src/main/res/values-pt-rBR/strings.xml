@@ -75,6 +75,7 @@
 
     <!-- Seção About -->
     <string name="settings_about_link">Gym Nutshell</string>
+    <string name="settings_about_section_details">Detalhes</string>
     <string name="settings_about_title">Sobre o App</string>
     <string name="settings_about_version">Versão</string>
     <string name="settings_about_description">Gym Nutshell são suas metas diárias da academia em resumo.\n\nMarque, acompanhe e veja a constância virar resultado.</string>
@@ -94,11 +95,11 @@
     <string name="settings_about_progress_ring">Anel de Progresso</string>
     <string name="ring_info_intro" formatted="false">O anel apresenta a média de quantos % você completou das suas metas. Cada segmento colorido vale 20%.</string>
     <string name="ring_info_section_colors">Segmentos do anel</string>
-    <string name="ring_info_color_red">Começando</string>
-    <string name="ring_info_color_orange">No caminho</string>
-    <string name="ring_info_color_green">Muito bem</string>
-    <string name="ring_info_color_cyan">Quase lá</string>
-    <string name="ring_info_color_purple">Reta final</string>
+    <string name="ring_info_color_red">Nível 1</string>
+    <string name="ring_info_color_orange">Nível 2</string>
+    <string name="ring_info_color_green">Nível 3</string>
+    <string name="ring_info_color_cyan">Nível 4</string>
+    <string name="ring_info_color_purple">Nível 5</string>
     <string name="ring_info_color_blue">Meta concluída</string>
     <string name="tier_info_range_suffix">" de progresso"</string>
     <!-- Frase de progresso "faltam X% pro próximo nível" nas sheets do anel/conquista (abertas pela Today).

@@ -51,6 +51,7 @@
     <string name="settings_section_about">关于</string>
     <string name="settings_appearance">外观</string>
     <string name="settings_about_link">Gym Nutshell</string>
+    <string name="settings_about_section_details">详细信息</string>
     <string name="settings_about_title">关于 App</string>
     <string name="settings_about_version">版本</string>
     <string name="settings_about_description">Gym Nutshell 让你对每天的健身目标一目了然。\n\n设定目标，坚持打卡，见证习惯的力量铸就成果。</string>
@@ -66,11 +67,11 @@
     <string name="settings_about_progress_ring">进度环</string>
     <string name="ring_info_intro" formatted="false">进度环显示你已完成目标的平均百分比。每个彩色弧段代表 20%。</string>
     <string name="ring_info_section_colors">环段说明</string>
-    <string name="ring_info_color_red">刚刚开始</string>
-    <string name="ring_info_color_orange">渐入佳境</string>
-    <string name="ring_info_color_green">状态良好</string>
-    <string name="ring_info_color_cyan">胜利在望</string>
-    <string name="ring_info_color_purple">最后冲刺</string>
+    <string name="ring_info_color_red">等级 1</string>
+    <string name="ring_info_color_orange">等级 2</string>
+    <string name="ring_info_color_green">等级 3</string>
+    <string name="ring_info_color_cyan">等级 4</string>
+    <string name="ring_info_color_purple">等级 5</string>
     <string name="ring_info_color_blue">目标达成</string>
     <string name="tier_info_range_suffix">" 进度"</string>
     <string name="info_next_prefix">"还差 "</string>

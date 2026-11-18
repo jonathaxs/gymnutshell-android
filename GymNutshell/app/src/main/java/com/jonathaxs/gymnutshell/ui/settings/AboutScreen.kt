@@ -53,15 +53,21 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.jonathaxs.gymnutshell.R
+import com.jonathaxs.gymnutshell.ui.components.GlassIcon
+import com.jonathaxs.gymnutshell.ui.components.GroupRow
+import com.jonathaxs.gymnutshell.ui.components.GroupRowDivider
+import com.jonathaxs.gymnutshell.ui.components.GroupSection
 import com.jonathaxs.gymnutshell.ui.theme.color
+import androidx.compose.ui.graphics.Color
 
 /**
- * Sobre o app — porte da AboutView (iOS): ícone com easter egg, versão, descrição
- * e botão centralizado para enviar feedback por e-mail.
+ * Sobre o app — porte da AboutView (iOS): ícone com easter egg, versão, descrição, seção Detalhes
+ * (conquista do dia, bônus de sequência, anel de progresso e frase do dia) e botão de feedback por e-mail.
  */
 @Composable
 fun AboutScreen(
     onBack: () -> Unit,
+    onOpenDetail: (String) -> Unit = {},
     viewModel: SettingsViewModel = viewModel(),
 ) {
     val accent = viewModel.accentColor.collectAsStateWithLifecycle().value.color
@@ -140,6 +146,22 @@ fun AboutScreen(
                     .padding(horizontal = 24.dp),
             )
 
+            // Seção Detalhes: como funcionam a conquista do dia, o bônus, o anel e a frase do dia.
+            GroupSection(
+                title = stringResource(R.string.settings_about_section_details),
+                titleColor = accent,
+            ) {
+                detailRows.forEachIndexed { index, row ->
+                    if (index > 0) GroupRowDivider(startInset = 66.dp)
+                    GroupRow(
+                        title = stringResource(row.title),
+                        leading = { GlassIcon(painter = painterResource(row.icon), color = row.color) },
+                        showChevron = true,
+                        onClick = { onOpenDetail(row.route) },
+                    )
+                }
+            }
+
             Spacer(Modifier.height(32.dp))
 
             // Botão centralizado de feedback por e-mail
@@ -175,6 +197,17 @@ fun AboutScreen(
         }
     }
 }
+
+/** Linha da seção Detalhes: título, ícone de vidro, cor e rota da página. */
+private data class DetailRow(val title: Int, val icon: Int, val color: Color, val route: String)
+
+/** Ordem da seção Detalhes, igual ao iOS. */
+private val detailRows = listOf(
+    DetailRow(R.string.settings_about_achievement, R.drawable.ic_settings_trophy, Color(0xFFFFCC00), SettingsRoutes.TIER_INFO),
+    DetailRow(R.string.settings_about_streak_bonus, R.drawable.ic_settings_streak_bonus, Color(0xFF34C759), SettingsRoutes.BONUS_INFO),
+    DetailRow(R.string.settings_about_progress_ring, R.drawable.ic_settings_ring, Color(0xFFFF9500), SettingsRoutes.RING_INFO),
+    DetailRow(R.string.settings_about_day_insight, R.drawable.ic_settings_day_insight, Color(0xFF32ADE6), SettingsRoutes.DAY_INSIGHT_INFO),
+)
 
 @Composable
 private fun AppIcon(onTap: () -> Unit, modifier: Modifier = Modifier) {

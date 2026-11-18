@@ -51,6 +51,7 @@
     <string name="settings_section_about">정보</string>
     <string name="settings_appearance">화면 스타일</string>
     <string name="settings_about_link">Gym Nutshell</string>
+    <string name="settings_about_section_details">세부 정보</string>
     <string name="settings_about_title">앱 정보</string>
     <string name="settings_about_version">버전</string>
     <string name="settings_about_description">Gym Nutshell은 매일의 운동 목표를 한눈에 관리하는 앱이에요.\n\n목표를 설정하고 기록하며, 꾸준함이 만드는 결과를 확인해보세요.</string>
@@ -66,11 +67,11 @@
     <string name="settings_about_progress_ring">진행 링</string>
     <string name="ring_info_intro" formatted="false">진행 링은 달성한 목표의 평균 백분율을 보여줘요. 각 색상 구간은 20%를 나타냅니다.</string>
     <string name="ring_info_section_colors">링 구간</string>
-    <string name="ring_info_color_red">시작 단계</string>
-    <string name="ring_info_color_orange">진행 중</string>
-    <string name="ring_info_color_green">순항 중</string>
-    <string name="ring_info_color_cyan">거의 다 왔어요</string>
-    <string name="ring_info_color_purple">마지막 스퍼트</string>
+    <string name="ring_info_color_red">레벨 1</string>
+    <string name="ring_info_color_orange">레벨 2</string>
+    <string name="ring_info_color_green">레벨 3</string>
+    <string name="ring_info_color_cyan">레벨 4</string>
+    <string name="ring_info_color_purple">레벨 5</string>
     <string name="ring_info_color_blue">목표 달성</string>
     <string name="tier_info_range_suffix">" 진행률"</string>
     <string name="info_next_prefix">"도달까지 "</string>

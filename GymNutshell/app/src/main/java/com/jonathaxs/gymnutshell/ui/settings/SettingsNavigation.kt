@@ -94,10 +94,6 @@ fun NavGraphBuilder.settingsGraph(navController: NavController) {
                         onOpenLanguage = { open(SettingsRoutes.LANGUAGE) },
                         onOpenAbout = { open(SettingsRoutes.ABOUT) },
                         onOpenWear = { open(SettingsRoutes.WEAR) },
-                        onOpenRingInfo = { open(SettingsRoutes.RING_INFO) },
-                        onOpenTierInfo = { open(SettingsRoutes.TIER_INFO) },
-                        onOpenBonusInfo = { open(SettingsRoutes.BONUS_INFO) },
-                        onOpenDayInsightInfo = { open(SettingsRoutes.DAY_INSIGHT_INFO) },
                         selectedRoute = if (wide) selected else null,
                     )
                 }
@@ -242,7 +238,7 @@ fun SettingsPage(route: String, navController: NavController) {
         WidgetBackgroundScreen(onBack = back)
         }
         SettingsRoutes.ABOUT -> {
-        AboutScreen(onBack = back)
+        AboutScreen(onBack = back, onOpenDetail = { route -> navController.navigate(route) })
         }
         SettingsRoutes.WEAR -> {
         WearInstructionsScreen(onBack = back)

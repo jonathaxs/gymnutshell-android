@@ -55,6 +55,7 @@
     <string name="settings_section_about">Info</string>
     <string name="settings_appearance">Aspetto</string>
     <string name="settings_about_link">Gym Nutshell</string>
+    <string name="settings_about_section_details">Dettagli</string>
     <string name="settings_about_title">Info sull\'app</string>
     <string name="settings_about_version">Versione</string>
     <string name="settings_about_description">Gym Nutshell racchiude i tuoi obiettivi di allenamento quotidiani.\n\nFissa gli obiettivi, monitorali e guarda la costanza trasformarsi in risultati.</string>
@@ -70,11 +71,11 @@
     <string name="settings_about_progress_ring">Anello di avanzamento</string>
     <string name="ring_info_intro" formatted="false">L\'anello mostra la percentuale media degli obiettivi completati. Ogni segmento colorato vale il 20%.</string>
     <string name="ring_info_section_colors">Segmenti dell\'anello</string>
-    <string name="ring_info_color_red">All\'inizio</string>
-    <string name="ring_info_color_orange">In cammino</string>
-    <string name="ring_info_color_green">Alla grande</string>
-    <string name="ring_info_color_cyan">Quasi fatta</string>
-    <string name="ring_info_color_purple">Traguardo vicino</string>
+    <string name="ring_info_color_red">Livello 1</string>
+    <string name="ring_info_color_orange">Livello 2</string>
+    <string name="ring_info_color_green">Livello 3</string>
+    <string name="ring_info_color_cyan">Livello 4</string>
+    <string name="ring_info_color_purple">Livello 5</string>
     <string name="ring_info_color_blue">Obiettivo completato</string>
     <string name="tier_info_range_suffix">" di progresso"</string>
     <string name="info_next_prefix">"Mancano "</string>
